@@ -2594,11 +2594,11 @@ body{
 
 
   /* resume-table s-table */
-/* #tableProducts tbody tr:hover{
+#tableProducts tbody tr:hover{
   border: 1px solid var(--Secondary-color, #6136AB);
   background: var(--Purple-200, #DCD0F1);
 }
-#tableProducts thead tr{
+/*#tableProducts thead tr{
   display: flex;
   padding: var(--none, 0px);
   align-items: center;
