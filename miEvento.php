@@ -260,6 +260,22 @@ require_once('./includes/head.php');
                 }
             }
         });
+
+        $(document).on('click', '.quantityProductInput', function () {
+  isProdQuantitySelected = true;
+  prodQuantityElementSelected = $(this);
+
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
+})
 </script>
 
 </html>

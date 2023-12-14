@@ -1355,21 +1355,7 @@ $(document).on('blur', '.totalProdInputResume', function () {
 
 
 
-$(document).on('click', '.quantityProductInput', function () {
-  isProdQuantitySelected = true;
-  prodQuantityElementSelected = $(this);
 
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-})
 
 /*
   // OTHER PRODUCTS SECTION
