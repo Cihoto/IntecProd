@@ -1,3 +1,9 @@
+let isProdQuantitySelected = false;
+let prodQuantityElementSelected = "";
+
+
+
+
 function FillProductos(empresaId) {
   if ($.fn.DataTable.isDataTable('#tableProducts')) {
     $('#tableProducts').DataTable().destroy();
@@ -1344,8 +1350,7 @@ $(document).on('blur', '.totalProdInputResume', function () {
   console.log("_selectedProducts", _selectedProducts);
 })
 
-let isProdQuantitySelected = false;
-let prodQuantityElementSelected = "";
+
 
 $(document).on('click', '.quantityProductInput', function () {
   isProdQuantitySelected = true;
