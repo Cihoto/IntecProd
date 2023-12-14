@@ -132,9 +132,9 @@ require_once('./includes/head.php');
     <script src="/js/map.js"></script> -->
     
     
-    <script src="/js/productos.js"></script>
+    
     <script src="./js/const/projectToSearch.js"></script>
-    <script src="/js/evento/eventoController.js"></script>
+    
     <script src="/js/Funciones/NewProject.js"></script>
     <script src="/js/packages.js"></script>
     <script src="/js/clientes.js"></script>
@@ -155,8 +155,8 @@ require_once('./includes/head.php');
     <script src="/js/eventSchedule.js"></script>
     <script src="/js/filesUpload.js"></script>
     <script src="/js/evento/getEventData.js"></script>
-
-
+    <script src="/js/productos.js"></script>
+    <script src="/js/evento/eventoController.js"></script>
 
     <!-- VALIDATE FORM -->
     <script src="/js/validateForm/addNewFreeLance.js"></script>
@@ -245,7 +245,11 @@ require_once('./includes/head.php');
             SaveOrUpdateEvent();
         });
 
-        $(document).keydown(function(event) {
+
+
+    })
+
+    $(document).keydown(function(event) {
             if (event.which === 13) {
                 event.preventDefault();
                 // console.log("isProdQuantitySelected",isProdQuantitySelected);
@@ -256,8 +260,6 @@ require_once('./includes/head.php');
                 }
             }
         });
-
-    })
 </script>
 
 </html>
