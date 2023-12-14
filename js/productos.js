@@ -197,8 +197,15 @@ function AddProduct(el) {
     $("#tableProducts").DataTable().page(indexTab).draw(false)
 
 
-    isProdQuantitySelected = false
+    isProdQuantitySelected = false;
     prodQuantityElementSelected = "";
+
+    console.log("CAMBIE EL ESTADO DE ESTOOOOO")
+    console.log("CAMBIE EL ESTADO DE ESTOOOOO")
+    console.log("CAMBIE EL ESTADO DE ESTOOOOO")
+    console.log("CAMBIE EL ESTADO DE ESTOOOOO")
+    console.log("CAMBIE EL ESTADO DE ESTOOOOO")
+    console.log("CAMBIE EL ESTADO DE ESTOOOOO")
 
     console.log(_selectedProducts)
 
@@ -1351,6 +1358,17 @@ $(document).on('blur', '.totalProdInputResume', function () {
 $(document).on('click', '.quantityProductInput', function () {
   isProdQuantitySelected = true;
   prodQuantityElementSelected = $(this);
+
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO")
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO")
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO")
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO")
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO")
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO")
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO")
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO")
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO")
+  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO")
 })
 
 /*
