@@ -1,9 +1,6 @@
 let isProdQuantitySelected = false;
 let prodQuantityElementSelected = "";
 
-
-
-
 function FillProductos(empresaId) {
   if ($.fn.DataTable.isDataTable('#tableProducts')) {
     $('#tableProducts').DataTable().destroy();
