@@ -120,56 +120,66 @@ require_once('./includes/head.php');
     </div>
     </div>
 
-    <script src="/js/productos.js"></script>
-
-
-
-
-    <!-- <script src="./js/const/projectToSearch.js"></script> -->
+    
+    
+    
+    
     <!-- REQUIRE DE FUNCIONES JS -->
-    <!-- <script src="/js/evento/eventoController.js"></script> -->
-    <!-- <script src="/js/Funciones/NewProject.js"></script> -->
-    <!-- <script src="/js/packages.js"></script> -->
-    <!-- <script src="/js/clientes.js"></script> -->
-    <!-- <script src="/js/direccion.js"></script> -->
-    <!-- <script src="/js/personal.js"></script> -->
-    <!-- <script src="/js/vehiculos.js"></script> -->
-    <!-- <script src="/js/valuesValidator/validator.js"></script> -->
-    <!-- <script src="/js/ClearData/clearFunctions.js"></script> -->
-    <!-- <script src="/js/localeStorage.js"></script> -->
-    <!-- <script src="/js/ProjectResume/projectResume.js"></script> -->
-    <!-- <script src="/js/ProjectResume/viatico.js"></script> -->
-    <!-- <script src="/js/ProjectResume/subArriendo.js"></script> -->
-    <!-- <script src="/js/Funciones/assigments.js"></script> -->
-    <!-- <script src="/js/cotizacion.js"></script> -->
-    <!-- <script src="/js/provider.js"></script> -->
-    <!-- <script src="/js/map.js"></script> -->
-    <!-- <script src="/js/evento/createEvent.js"> </script> -->
-    <!-- <script src="/js/eventSchedule.js"></script> -->
-    <!-- <script src="/js/filesUpload.js"></script> -->
-    <!-- <script src="/js/evento/getEventData.js"></script> -->
+    
+    <!-- <script src="/js/evento/getEventData.js"></script>
+    <script src="/js/evento/createEvent.js"></script>
+    <script src="/js/evento/eventoController.js"></script>
+    <script src="/js/map.js"></script> -->
+    
+    
+    <script src="/js/productos.js"></script>
+    <script src="./js/const/projectToSearch.js"></script>
+    <script src="/js/evento/eventoController.js"></script>
+    <script src="/js/Funciones/NewProject.js"></script>
+    <script src="/js/packages.js"></script>
+    <script src="/js/clientes.js"></script>
+    <script src="/js/direccion.js"></script>
+    <script src="/js/personal.js"></script>
+    <script src="/js/vehiculos.js"></script>
+    <script src="/js/valuesValidator/validator.js"></script>
+    <script src="/js/ClearData/clearFunctions.js"></script>
+    <script src="/js/localeStorage.js"></script>
+    <script src="/js/ProjectResume/projectResume.js"></script>
+    <script src="/js/ProjectResume/viatico.js"></script>
+    <script src="/js/ProjectResume/subArriendo.js"></script>
+    <script src="/js/Funciones/assigments.js"></script>
+    <script src="/js/cotizacion.js"></script>
+    <script src="/js/provider.js"></script>
+    <script src="/js/map.js"></script>
+    <script src="/js/evento/createEvent.js"> </script>
+    <script src="/js/eventSchedule.js"></script>
+    <script src="/js/filesUpload.js"></script>
+    <script src="/js/evento/getEventData.js"></script>
+
+
+
     <!-- VALIDATE FORM -->
-    <!-- <script src="/js/validateForm/addNewFreeLance.js"></script> -->
-    <!-- <script src="/js/validateForm/addNewProvider.js"></script> -->
+    <script src="/js/validateForm/addNewFreeLance.js"></script>
+    <script src="/js/validateForm/addNewProvider.js"></script>
 </body>
 
 
 <script>
+    let isProdQuantitySelected = false;
+    let prodQuantityElementSelected = "";
+    let is_open = false;
+    let ROL_ID = <?php echo json_encode($rol_id); ?>;
+    let EMPRESA_ID = <?php echo $empresaId; ?>;
+    const PERSONAL_IDS = <?php echo $personal_ids; ?>;
+
+    <?php if (isset($_GET['event_id'])) : ?>
+        const EVENT_ID = <?= $_GET['event_id']; ?>;
+        event_data.event_id = EVENT_ID;
+        projectDates.project_id = EVENT_ID;
+    <?php endif; ?>
+
     $(document).ready(async function() {
 
-
-
-        let is_open = false;
-        let ROL_ID = <?php echo json_encode($rol_id); ?>;
-        let EMPRESA_ID = <?php echo $empresaId; ?>;
-        const PERSONAL_IDS = <?php echo $personal_ids; ?>;
-
-        <?php if (isset($_GET['event_id'])) : ?>
-            const EVENT_ID = <?= $_GET['event_id']; ?>;
-            event_data.event_id = EVENT_ID;
-            projectDates.project_id = EVENT_ID;
-
-        <?php endif; ?>
 
         // SET EVENT_ID
 
@@ -186,7 +196,6 @@ require_once('./includes/head.php');
                 $('#eventNameMessage').css('visibility', 'hidden');
             } else {
                 $('#eventNameMessage').css('visibility', 'visible');
-
             }
         });
 
@@ -195,11 +204,7 @@ require_once('./includes/head.php');
             await getAllProjectData(EVENT_ID, EMPRESA_ID);
         <?php endif; ?>
         console.log("reset all variablesa availables");
-        projectDates.start_date = ""
-        projectDates.finish_date = ""
-        projectDates.total_days = ""
-        projectDates.selectDates = false
-        projectDates.project_id = ""
+
 
 
         $('#status-button').on('click', function() {

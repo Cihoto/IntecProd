@@ -199,6 +199,12 @@ async function getAssignedElements() {
   // ADD PACKAGE TO PROJECT ON PLUS ICON ON PACKAGE LIST
   $(document).ready(async function(){
 
+    projectDates.start_date = ""
+    projectDates.finish_date = ""
+    projectDates.total_days = ""
+    projectDates.selectDates = false
+    projectDates.project_id = ""
+
     console.log("coordsSelectedAddress",coordsSelectedAddress);
 
 
