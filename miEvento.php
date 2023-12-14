@@ -121,13 +121,14 @@ require_once('./includes/head.php');
     </div>
     <script src="./js/const/projectToSearch.js"></script>
       <!-- REQUIRE DE FUNCIONES JS -->
+  <script src="/js/evento/eventoController.js"></script>
+  <script src="/js/productos.js"></script>
   <script src="/js/Funciones/NewProject.js"></script>
   <script src="/js/packages.js"></script>
   <script src="/js/clientes.js"></script>
   <script src="/js/direccion.js"></script>
   <script src="/js/personal.js"></script>
   <script src="/js/vehiculos.js"></script>
-  <script src="/js/productos.js"></script>
   <script src="/js/valuesValidator/validator.js"></script>
   <script src="/js/ClearData/clearFunctions.js"></script>
   <script src="/js/localeStorage.js"></script>
@@ -137,7 +138,6 @@ require_once('./includes/head.php');
   <script src="/js/Funciones/assigments.js"></script>
   <script src="/js/cotizacion.js"></script>
   <script src="/js/provider.js"></script>
-  <script src="/js/evento/eventoController.js"></script>
   <script src="/js/map.js"></script>
   <script src="/js/evento/createEvent.js"> </script>
   <script src="/js/eventSchedule.js"></script>
