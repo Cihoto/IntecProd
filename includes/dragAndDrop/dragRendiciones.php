@@ -12,25 +12,25 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="">
+                <!-- <tr class="rend-item">
                     <td>
-                        <input class="form-control" type="text" name="" id="">
+                        <input class="form-control rendDetalle" type="text" id="">
                     </td>
                     <td>
-                        <select name="" class="form-select" id="allPersonalRendicion">
+                        <select name="" class="form-select renPersonal" id="">
 
                         </select>
                     </td>
                     <td>
-                        <input class="form-control" type="text" name="" id="">
+                        <input class="form-control renMonto" type="text" id="">
                     </td>
                     <td>
-                        <input class="form-control" type="text" name="" id="">
+                        <input class="form-control renFecha" type="text" id="">
                     </td>
                     <td>
-                        <input class="form-control" type="text" name="" id="">
+                        <input class="form-control renComercio" type="text" id="">
                     </td>
-                </tr>
+                </tr> -->
             </tbody>
             <tfoot>
                 <tr>

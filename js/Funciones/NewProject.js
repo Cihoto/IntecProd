@@ -142,30 +142,6 @@ async function assignPersonal(requestasssign) {
 }
 
 
-async function assignProduct(requestAssignFunction) {
-  try {
-    return $.ajax({
-      type: "POST",
-      url: 'ws/productos/Producto.php',
-      data: JSON.stringify({
-        request: requestAssignFunction,
-        action: "assignProductToProject"
-      }),
-      dataType: 'json',
-      success: function (data) {
-
-        console.log("RESPONSE AGIGNACION PRODUCTOS", data);
-
-      },
-      error: function (response) {
-        console.log(response.responseText);
-      }
-    })
-  } catch (e) {
-    console.log(e);
-  }
-}
-
 function AddDivProduct(productName, productPrice, productId, quantity) {
   
   if(!AddStockToProduct(productId, quantity)){

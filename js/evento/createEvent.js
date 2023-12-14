@@ -109,6 +109,13 @@ async function SaveOrUpdateEvent() {
     })
   });
   assignProduct(arrayProducts);
+  // SAVE OTHER PRODUCTS
+  const requestOtherProducts = {
+    'event_id' : event_data.event_id,
+    'empresa_id' : EMPRESA_ID,
+    'request' : _selectedOthersProducts
+  }
+  assignOtherProdsToEvent(requestOtherProducts);
 
   // SAVE ALL SELECTED PACKAGES
   if (_selectedPackages.length > 0) {
@@ -296,6 +303,55 @@ async function assignFilesToEvent(_allmyUploadedFiles, event_id, empresa_id, per
       console.log(response.responseText);
     }
   });
+}
+
+
+// SECTION PRODUCTS 
+async function assignProduct(requestAssignFunction) {
+  try {
+    return $.ajax({
+      type: "POST",
+      url: 'ws/productos/Producto.php',
+      data: JSON.stringify({
+        request: requestAssignFunction,
+        action: "assignProductToProject"
+      }),
+      dataType: 'json',
+      success: function (data) {
+
+        console.log("RESPONSE AGIGNACION PRODUCTOS", data);
+
+      },
+      error: function (response) {
+        console.log(response.responseText);
+      }
+    })
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+
+async function assignOtherProdsToEvent(requestAssignFunction) {
+  try {
+    return $.ajax({
+      type: "POST",
+      url: 'ws/productos/Producto.php',
+      data: JSON.stringify({
+        request: requestAssignFunction,
+        action: "assignOtherProdsToEvent"
+      }),
+      dataType: 'json',
+      success: function (response) {
+        console.log("RESPONSE AGIGNACION OTHERS PRODS", response);
+      },
+      error: function (response) {
+        console.log(response.responseText);
+      }
+    })
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 async function addAssignedPackagesToEvent() {

@@ -1355,7 +1355,10 @@ $(document).on('blur', '.totalProdInputResume', function () {
 
 
 
-
+$(document).on('click', '.quantityProductInput', function () {
+  isProdQuantitySelected = true;
+  prodQuantityElementSelected = $(this);
+})
 
 /*
   // OTHER PRODUCTS SECTION
@@ -1366,7 +1369,7 @@ let lastTotalOthers = 0;
 let _selectedOthersProducts = [];
 
 $('#addNewOthersRow').on('click', async function () {
-  printAllSelectedOthers()
+  printAllSelectedOthers();
 })
 
 
@@ -1414,12 +1417,17 @@ $(document).on('blur', '.cantidadOthers', function () {
 
 
 $(document).on('click', '.totalOthers', function () {
-  if ($(this).val() === "") {
-    lastTotalOthers = 0;
-  } else {
-    lastTotalOthers = parseInt($(this).val());
+
+
+  if($(this).val() !== ""){
+    lastTotalOthers = parseInt(ClpUnformatter($(this).val()));
   }
-  $(this).val("");
+
+  console.log(lastTotalOthers);
+  console.log(lastTotalOthers);
+  console.log(lastTotalOthers);
+  console.log(lastTotalOthers);
+  $(this).val("")
 })
 
 
@@ -1452,13 +1460,14 @@ $(document).on('blur', '.totalOthers', function () {
 
 
 
-function printAllSelectedOthers() {
+function printAllSelectedOthers(){
 
   $('#others-table tbody tr').remove();
 
   _selectedOthersProducts.forEach((other) => {
+    console.log("NOMBRE other product",other);
     let tr = `<tr>
-      <td><input type="text" class="nameOthers" value="${other.nombre}"></td>
+      <td><input type="text" class="nameOthers" value="${other.detalle}"></td>
       <td class="cantTd"><input type="text" class="cantidadOthers" value="${other.cantidad}"></td>
       <td class="totalTd"><input type="text" class="totalOthers" value="${other.total}"></td>
     </tr>`;
@@ -1478,8 +1487,20 @@ function printAllSelectedOthers() {
     animation: 'perspective'
   });
 }
+function printOthersProds(){
 
+  $('#others-table tbody tr').remove();
 
+  _selectedOthersProducts.forEach((other) => {
+    console.log("NOMBRE other product",other);
+    let tr = `<tr>
+      <td><input type="text" class="nameOthers" value="${other.detalle}"></td>
+      <td class="cantTd"><input type="text" class="cantidadOthers" value="${other.cantidad}"></td>
+      <td class="totalTd"><input type="text" class="totalOthers" value="${CLPFormatter(other.total)}"></td>
+    </tr>`;
+    $('#others-table tbody').append(tr)
+  });
+}
 
 function setOtherIfReady() {
   _selectedOthersProducts = [];

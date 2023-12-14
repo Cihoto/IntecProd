@@ -162,14 +162,18 @@ function getProjectResume($request)
 
     $asignadosV = [];
     $clienteAsignado = [];
+    $schedules = [];
     $asignadosPer = [];
     $asignadosPro = [];
+    $asignadosOtherProds = [];
     $assignedPackages = [];
     $projects = [];
     $viaticoAsignado = [];
     $arriendosasignados = [];
     $totalIngresos = [];
+    $files = [];
     $viewasignados = false;
+    
 
     foreach ($request as $key => $value) {
         $idProject = $value->idProject;
@@ -206,9 +210,14 @@ function getProjectResume($request)
         INNER JOIN empresa e on e.id = p.empresa_id 
         WHERE p.id = $idProject";
 
+        $queryGetEventSchedules = "SELECT * FROM event_has_schedules ehs WHERE ehs.event_id = 89;";
+
         $queryProductsAssigned = "SELECT p.nombre , p.precio_arriendo, p.id,php.cantidad  FROM proyecto_has_producto php 
         INNER JOIN producto p on p.id  = php.producto_id 
         WHERE php.proyecto_id = $idProject";
+
+        $queryOtherProductsAssigned = "SELECT * FROM proyecto_has_otros_productos phop
+        WHERE phop.project_id = $idProject;";
 
         $queryAssignedPackages = "SELECT * FROM proyecto_has_paquete php where php.proyecto_id = $idProject";
 
@@ -230,6 +239,10 @@ function getProjectResume($request)
         $queryTotalIngresos = "SELECT * FROM ingresos_has_proyecto ihp 
         INNER JOIN ingresos i on i.id = ihp.ingresos_id 
         WHERE ihp.proyecto_id = $idProject";
+
+        $queryFiles = "SELECT  * FROM proyecto_has_files phf 
+        INNER JOIN file f on f.id = phf.file_id 
+        WHERE phf.event_id = $idProject;";
     }
 
     $queryProject = "SELECT  p.nombre_proyecto, p.fecha_inicio, p.fecha_termino,p.comentarios,
@@ -265,6 +278,11 @@ function getProjectResume($request)
                 $asignadosPro[] = $dataAsignadosPro;
             }
         }
+        if ($responseBd = $conn->mysqli->query($queryOtherProductsAssigned)) {
+            while ($dataAsignadosOthersProds = $responseBd->fetch_object()) {
+                $asignadosOtherProds [] = $dataAsignadosOthersProds;
+            }
+        }
         if ($responseBd = $conn->mysqli->query($queryAssignedPackages)) {
             while ($dataAssignedPackages = $responseBd->fetch_object()) {
                 $assignedPackages[] = $dataAssignedPackages;
@@ -273,6 +291,11 @@ function getProjectResume($request)
         if ($responseBd = $conn->mysqli->query($queryClienteAssigned)) {
             while ($dataClienteAss = $responseBd->fetch_object()) {
                 $clienteAsignado[] = $dataClienteAss;
+            }
+        }
+        if ($responseBd = $conn->mysqli->query($queryGetEventSchedules)) {
+            while ($dataEventSchedules = $responseBd->fetch_object()) {
+                $schedules[] = $dataEventSchedules;
             }
         }
         if ($responseBd = $conn->mysqli->query($queryViaticosAssigned)) {
@@ -290,6 +313,11 @@ function getProjectResume($request)
                 $totalIngresos[] = $dataIngresos;
             }
         }
+        if ($responseBd = $conn->mysqli->query($queryFiles)) {
+            while ($dataFiles  = $responseBd->fetch_object()) {
+                $files[] = $dataFiles;
+            }
+        }
     }
     $conn->desconectar();
     return json_encode(array(
@@ -298,11 +326,14 @@ function getProjectResume($request)
             "vehiculos" => $asignadosV,
             "personal" => $asignadosPer,
             "cliente" => $clienteAsignado,
+            "schedules" => $schedules,
             "productos" => $asignadosPro,
+            "otherProds"=> $asignadosOtherProds,
             "assignedPackages" => $assignedPackages,
             "viaticos" => $viaticoAsignado,
             "arriendos" => $arriendosasignados,
-            "totalIngresos" => $totalIngresos
+            "totalIngresos" => $totalIngresos,
+            "files"=>$files
         )
     ));
 }

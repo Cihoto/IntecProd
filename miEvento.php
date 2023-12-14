@@ -120,21 +120,21 @@ require_once('./includes/head.php');
     </div>
     </div>
 
-    
-    
-    
-    
+
+
+
+
     <!-- REQUIRE DE FUNCIONES JS -->
-    
+
     <!-- <script src="/js/evento/getEventData.js"></script>
     <script src="/js/evento/createEvent.js"></script>
     <script src="/js/evento/eventoController.js"></script>
     <script src="/js/map.js"></script> -->
-    
-    
-    
+
+
+
     <script src="./js/const/projectToSearch.js"></script>
-    
+
     <script src="/js/Funciones/NewProject.js"></script>
     <script src="/js/packages.js"></script>
     <script src="/js/clientes.js"></script>
@@ -157,6 +157,7 @@ require_once('./includes/head.php');
     <script src="/js/evento/getEventData.js"></script>
     <script src="/js/productos.js"></script>
     <script src="/js/evento/eventoController.js"></script>
+    <script src="/js/rendiciones.js"></script>
 
     <!-- VALIDATE FORM -->
     <script src="/js/validateForm/addNewFreeLance.js"></script>
@@ -172,17 +173,20 @@ require_once('./includes/head.php');
     let EMPRESA_ID = <?php echo $empresaId; ?>;
     const PERSONAL_IDS = <?php echo $personal_ids; ?>;
 
-    <?php if (isset($_GET['event_id'])) : ?>
-        const EVENT_ID = <?= $_GET['event_id']; ?>;
-        event_data.event_id = EVENT_ID;
-        projectDates.project_id = EVENT_ID;
-    <?php endif; ?>
-
     $(document).ready(async function() {
-
-
+        
+        projectDates.start_date = ""
+        projectDates.finish_date = ""
+        projectDates.total_days = ""
+        projectDates.selectDates = false
+        projectDates.project_id = ""
+        
         // SET EVENT_ID
-
+        <?php if (isset($_GET['event_id'])) : ?>
+            const EVENT_ID = <?= $_GET['event_id']; ?>;
+            event_data.event_id = EVENT_ID;
+            projectDates.project_id = EVENT_ID;
+        <?php endif; ?>
 
         // OBJECT CONTAINS INFO ABOUT START AND FINISH DATE ON EVENT 
         // TO SHOW PERSONAL, VEHICLES AND PERSONAL ON LIVE AVAILABILITY 
@@ -199,13 +203,9 @@ require_once('./includes/head.php');
             }
         });
 
-
         <?php if (isset($_GET['event_id'])) : ?>
             await getAllProjectData(EVENT_ID, EMPRESA_ID);
         <?php endif; ?>
-        console.log("reset all variablesa availables");
-
-
 
         $('#status-button').on('click', function() {
             $('#statusMenuList').addClass('active')
@@ -244,38 +244,19 @@ require_once('./includes/head.php');
             // $('#hiddenAddProject').trigger('click');
             SaveOrUpdateEvent();
         });
-
-
-
     })
 
     $(document).keydown(function(event) {
-            if (event.which === 13) {
-                event.preventDefault();
-                // console.log("isProdQuantitySelected",isProdQuantitySelected);
-                // console.log("prodQuantityElementSelected",prodQuantityElementSelected);
-                if (isProdQuantitySelected === true) {
-                    $(prodQuantityElementSelected).closest('td').find('.addItem').trigger('click');
-                    // $(prodQuantityElementSelected).trigger('click');
-                }
+        if (event.which === 13) {
+            event.preventDefault();
+            // console.log("isProdQuantitySelected",isProdQuantitySelected);
+            // console.log("prodQuantityElementSelected",prodQuantityElementSelected);
+            if (isProdQuantitySelected === true) {
+                $(prodQuantityElementSelected).closest('td').find('.addItem').trigger('click');
+                // $(prodQuantityElementSelected).trigger('click');
             }
-        });
-
-        $(document).on('click', '.quantityProductInput', function () {
-  isProdQuantitySelected = true;
-  prodQuantityElementSelected = $(this);
-
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-  console.log("CAMBIANDO EL ESTADO ESTADO ESTADO");
-})
+        }
+    });
 </script>
 
 </html>

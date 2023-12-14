@@ -155,12 +155,13 @@ console.log("_selectedClient",_selectedClient);
             'fileNameData' : fileNameData,
             'table_Content':tableContent,
             'totalQuoteResume':quote_resume,
-            'clientData' : _selectedClient
+            'clientData' : _selectedClient,
+            'event_id' : event_data.event_id
         }),
         success: function(response) {
             console.log("response", response);
 
-            let a = `<a target="_blank" id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/quotes/Cotización-101010-2-2023.pdf"></a>`
+            let a = `<a target="_blank" id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/quotes/${response.name}"></a>`
                     // <a href="./ws/BussinessDocuments/documents/buss${empresa_id}/"></a>
             $('#downloadPdf').append(a);
             $('#dwnload')[0].click();

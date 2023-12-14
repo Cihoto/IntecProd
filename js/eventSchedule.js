@@ -5,7 +5,7 @@ let schedule_id = 1;
 
 $('#createNewSchedule').on('click',function(){
     schedule_id ++
-    let scheduleContainer = `<div class="schedule-item incomplete" schedule_id="${schedule_id}" >
+    let scheduleContainer = `<div class="schedule-item incomplete" schedule_id="${schedule_id}">
         <div class="schedule-data">
             <img src="../assets/svg/editPencil.svg" alt="">
             <input type="text" class="detail" placeholder="desc">

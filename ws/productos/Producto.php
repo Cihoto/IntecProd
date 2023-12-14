@@ -91,13 +91,20 @@ if ($_POST) {
             $response = GetAllProductsByBussiness($empresa_id);
             echo json_encode($response);
             break;
-        case 'assignProductJSONToProject':
-            // Recibe el parámetro jsonCreateProd
-            $empresa_id = $data->empresa_id;
+            case 'assignProductJSONToProject':
+                // Recibe el parámetro jsonCreateProd
+                $empresa_id = $data->empresa_id;
             $event_id = $data->event_id;
             $json = $data->json;
             // Llama a la función addProd y devuelve el resultado
             $response = assignProductJSONToProject($json,$empresa_id,$event_id);
+            echo json_encode($response);
+            break;
+        case 'assignOtherProdsToEvent':
+            // Recibe el parámetro jsonCreateProd
+            $request = $data->request;
+            // Llama a la función addProd y devuelve el resultado
+            $response = assignOtherProdsToEvent($request);
             echo json_encode($response);
             break;
         default:
@@ -494,5 +501,36 @@ if ($_POST) {
         }else{
             return array("error"=>true,"message"=>"JSON Object hasn't been assigned");
         }
+    }
+
+    function assignOtherProdsToEvent($request){
+        $conn = new bd();
+        $conn->conectar();
+        $counter = 0;
+        $totalexec = count($request->request);
+
+
+        $queryClearOldData = "DELETE FROM proyecto_has_otros_productos
+        WHERE project_id = $request->event_id";
+
+        if(!$conn->mysqli->query($queryClearOldData)){
+            return array("error"=>true,"message"=>"Fatal Error");
+        }
+        
+        foreach ($request->request as $key => $otherProd) {
+            $queryInsert = "INSERT INTO u136839350_intec.proyecto_has_otros_productos
+            (detalle, cantidad, valor, project_id)
+            VALUES('$otherProd->detalle', $otherProd->cantidad, $otherProd->total, $request->event_id);";
+            if($conn->mysqli->query($queryInsert)){
+                $counter ++;
+            }
+        }
+        if($counter === $totalexec){
+            return array("success"=>true,"message"=>"Others Prods has been assigned successfuly");
+        }else{
+            return array("error"=>true,"message"=>"Others Prods hasn't been assigned");
+        }
+
+
     }
 ?>

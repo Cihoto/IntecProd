@@ -147,7 +147,7 @@ function setIngresos(){
     // CHECK IF totalPerItem.equipos has elements
     
     if(totalPerItem.equipos.length > 0){
-        console.log("ESTO ES LO QUE ESTARE PONIENDO EN VETAN SUB TOTAL", totalPerItem.equipos);
+        // console.log("ESTO ES LO QUE ESTARE PONIENDO EN VETAN SUB TOTAL", totalPerItem.equipos);
 
         totalPerItem.equipos = totalPerItem.equipos.map((categoria)=>{
             // console.log("categoria",categoria)
@@ -155,7 +155,7 @@ function setIngresos(){
                 // console.log("selected",selected);
                 return selected.categoria === categoria.categorie
             })
-            console.log("categoriaExists",categoriaExists);
+            // console.log("categoriaExists",categoriaExists);
             
             if(categoriaExists){
                 return categoria
@@ -163,7 +163,7 @@ function setIngresos(){
         }).filter((item)=>{return item !== undefined})
 
         
-        console.log("TOTALPERITEM.EQUIPOS FILTERED",totalPerItem.equipos);
+        // console.log("TOTALPERITEM.EQUIPOS FILTERED",totalPerItem.equipos);
         totalPerItem.equipos.forEach((totalPerItem)=>{
             if(totalPerItem.isEdited === false){
                 totalPerItem.value = 0;
@@ -220,7 +220,7 @@ function setIngresos(){
 
 function printAllResumeIncome(){
 
-    console.log("ESTO ES LO  QUE SSE VA A IMPRIMIIR", totalPerItem.equipos)
+    // console.log("ESTO ES LO  QUE SSE VA A IMPRIMIIR", totalPerItem.equipos)
     $('#total-productResume > tbody tr').remove();
     $('#total-othersResume > tbody tr').remove();
     let totalEquipos = 0;
@@ -233,23 +233,29 @@ function printAllResumeIncome(){
             <td>${CLPFormatter(equipos.value)}</td>   
         <tr/>`;
         $(`#subtotalCategoria-${equipos.categorie}`).val(CLPFormatter(parseInt(equipos.value)));
-        $('#total-productResume > tbody').append(tr)
+        $('#total-productResume > tbody').append(tr);
     });
 
     _selectedOthersProducts.forEach((other)=>{
+        let tr = `<tr>
+            <td class="col-4"></td>    
+            <td>${other.detalle}</td>    
+            <td>${CLPFormatter(other.total)}</td>   
+        <tr/>`;
+        // $(`#subtotalCategoria-${equipos.categorie}`).val(CLPFormatter(parseInt(equipos.value)));
+        $('#total-othersResume > tbody').append(tr);
         totalOthers += parseInt(other.total);
-
     });
+    
     let total = totalEquipos + totalOthers;
     $('#totalPrice-equipos').text(CLPFormatter(parseInt(total)));
     let iva = parseInt(total) * 0.19;
     let totalPlusIva = total + iva;
     _totalIngresos = total;
-
-    $('#totalOthers').text(CLPFormatter(totalOthers))
-    $('#netoVenta').text(CLPFormatter(total))
-    $('#ivaVenta').text(CLPFormatter(iva))
-    $('#totalVenta').text(CLPFormatter(totalPlusIva))
+    $('#totalOthers').text(CLPFormatter(totalOthers));
+    $('#netoVenta').text(CLPFormatter(total));
+    $('#ivaVenta').text(CLPFormatter(iva));
+    $('#totalVenta').text(CLPFormatter(totalPlusIva));
 }
 
 function SetTotalCost(){

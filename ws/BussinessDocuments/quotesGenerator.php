@@ -14,6 +14,7 @@
     $table_Content = $data->table_Content;
     $totalQuoteResume = $data->totalQuoteResume;
     $clientData = $data->clientData;
+    $event_id = $data->event_id;
 
 
 
@@ -27,7 +28,8 @@
     $day = $fileNameData->day;
     $today = date('d/m/Y');
 
-    $fileName = "\Cotización-$month$month$month-$day-$year.pdf";
+    // $fileName = "\Cotización-$month$month$month-$day-$year.pdf";
+    $fileName = "\Cotización-$event_id$month-$day-$year.pdf";
     // $path = getcwd();
     // echo json_encode($path);
     // echo json_encode(dirname($path,2));
@@ -109,7 +111,7 @@
 
     // $data["nombre_archivo"] = "Cotización-$month$month$month-$day-$year.pdf";
     
-    echo json_encode(array("name"=> "Cotización-$month$month$month-$day-$year.pdf","path"=>$pdfRoot));
+    echo json_encode(array("name"=> "Cotización-$event_id$month-$day-$year.pdf","path"=>$pdfRoot));
 
 
     // $html = file_get_contents("pdfTemplate-firstPage.php");

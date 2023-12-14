@@ -399,13 +399,13 @@
         </tfoot>
     </table>
 
-    <div style="break-before: always;display: inline-block;height: 250px;margin-top: 30px;">
+    <div style="break-before: always;display: inline-block;height: 250px;margin-top: 90px;">
 
-    <p class="sideResumeMessage">La cotización considera servicio completo con operadores</p>
+        <p class="sideResumeMessage">La cotización considera servicio completo con operadores</p>
 
-    <div class="table-resume-container">
-        {{ totalResumeTable }}
-    </div>
+        <div class="table-resume-container">
+            {{ totalResumeTable }}
+        </div>
 
 
     </div>

@@ -22,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="notCompletedSubArriendo">
+                <!-- <tr class="notCompletedSubArriendo">
                     <td>
                         <input class="form-control rentDetail" type="text" name="" id="" value=""> 
                     </td>
@@ -43,7 +43,7 @@
                             <path d="M6.66666 7.33398V11.334" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </td>
-                </tr>
+                </tr> -->
             </tbody>
             <tfoot>
                 <tr>

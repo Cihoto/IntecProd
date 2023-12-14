@@ -3304,6 +3304,61 @@ label.dateLabel{
   top: 9px!important;
 }
 
+.rend-item.incomplete{
+  background-color: rgba(255, 0, 0, 0.202);
+}
 
 
 
+#fileListContainer{
+  display: flex;
+  flex: row;
+  padding: 10px;
+  background-color: #EDEDED;
+  margin-top: 30px;
+  border-radius: 4px;
+  margin-right: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-height:155px;
+  
+}
+
+.file-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  border: 0.3px solid rgba(128, 128, 128, 0.681) ;
+  background-color: #EDEDED;
+  min-height: 100px;
+  min-width: 95px;
+  max-width: 65px;
+  border-radius: 6px;
+  word-break:break-all;
+  transition: all 0.2s ease;
+}
+
+.file-container:hover{
+  cursor: pointer;
+  scale: 1.15;
+
+}
+
+.file-container+.file-container{
+  margin-left: 22px;
+}
+
+
+.file-container i{
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  color: black;
+  font-weight: 700;
+}
+
+.file-container a{
+  overflow: hidden;
+  font-size: 10px;
+}

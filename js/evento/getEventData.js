@@ -1,6 +1,4 @@
 async function getAllProjectData(event_id, empresa_id) {
-    console.log("ESTO ES TODO LO QUE TENGO PARA MOSTRAR DE UIIN EVNETO CREADO");
-
     const projectRequest = {
         'idProject': event_id,
         'empresa_id': empresa_id,
@@ -65,6 +63,26 @@ async function getAllProjectData(event_id, empresa_id) {
         $('#estadoProyecto').text(data.estado);
     });
 
+    if(responseGetData.asignados.schedules.length > 0){
+        $('#schedule-container .schedule-item').remove();
+        responseGetData.asignados.schedules.forEach((schedule)=>{
+            let scheduleContainer = `<div class="schedule-item" schedule_id="${schedule_id}">
+                <div class="schedule-data">
+                    <img src="../assets/svg/editPencil.svg" alt="">
+                    <input type="text" class="detail" placeholder="desc" value="${schedule.schedule_detail}">
+                    <input type="time" class="hour" name="appt" value="${schedule.schedule_hour}"/>
+                </div>
+            </div>`;
+            $('#schedule-container').append(scheduleContainer);
+            schedule_id ++;
+            _all_my_selected_schedules.push({
+                'schedule_id' : schedule_id,
+                'schedule_detail' : schedule.schedule_detail,
+                'schedule_hour' : schedule.schedule_hour
+            });
+        })
+    }
+
     if (responseGetData.asignados.cliente.length > 0) {
 
         responseGetData.asignados.cliente.forEach(cliente => {
@@ -86,6 +104,18 @@ async function getAllProjectData(event_id, empresa_id) {
             printAllSelectedProducts();
             setIngresos();
         });
+    }
+    if(responseGetData.asignados.otherProds.length > 0){
+        responseGetData.asignados.otherProds.forEach(otherProd => {
+            _selectedOthersProducts.push({
+                'detalle': otherProd.detalle,
+                'cantidad': otherProd.cantidad,
+                'total': otherProd.valor
+            })
+        });
+
+        printOthersProds();;
+        setIngresos();
     }
 
     if (responseGetData.asignados.assignedPackages.length > 0) {
@@ -138,4 +168,19 @@ async function getAllProjectData(event_id, empresa_id) {
         $('#fechaInicio').change();
         $('#fechaTermino').change();
     });
+
+    if(responseGetData.asignados.files.length > 0){
+        responseGetData.asignados.files.forEach((file)=>{
+
+            let fileContainer = `<div class="file-container">
+            <i class="fa-regular fa-file"></i>
+            <a href="../ws/BussinessDocuments/documents/buss${EMPRESA_ID}/Ev${event_data.event_id}/${file.name}" download>${file.name}</a>
+        </div>`
+            $('#fileListContainer').append(fileContainer)
+        })
+
+        printOthersProds();;
+        setIngresos();
+    }
+   
 }

@@ -121,7 +121,7 @@
                                     <path d="M9.5 3.75V14.25" stroke="#069B99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M4.25 9H14.75" stroke="#069B99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
-                                <p class="s-P-g">más horarios</p>
+                                <p class="s-P-g">Más horarios</p>
                             </button>
                         </div>
                     </div>
@@ -131,14 +131,24 @@
                         <label for="commentProjectArea">Comentarios</label>
                     </div>
 
-
                     <!-- <form id="addFilesToEvent" enctype="multipart/form-data" action="#" method="post"> -->
-                        <div class="d-flex" style="flex-direction: column;margin-top: 10px;">
+
+                    <div class="row justify-content-between">
+                        <div class="d-flex col-5" style="flex-direction: column;margin-top: 10px;">
                             <p class="date-header" style="margin: 0px!important;">Cargar archivos</p>
                             <input type="file" name="archivo[]" id="archivo" class="file-uploader" multiple style="border: 1px dashed var(--black-grey-100, #BEC0CA)!important;">
                         </div>
-                        <!-- <input type="submit" style="display: none;" value="addDocuments" id="addDocuments"> -->
-
+                        <div id="fileListContainer"  class="col-6 ">
+                            <!-- <div class="file-container">
+                                <i class="fa-regular fa-file"></i>
+                            </div>
+                            <div class="file-container">
+                                <i class="fa-regular fa-file"></i>
+                                <a href="../ws/BussinessDocuments/documents/buss1/Ev61/bsdComprobantePago (9).pdf" download>bsdComprobantePago (9).pdf</a>
+                            </div> -->
+                        </div>
+                    </div>
+                    <!-- <input type="submit" style="display: none;" value="addDocuments" id="addDocuments"> -->
                     </form> 
                     <button type="submit" style="display: none;" id="hiddenAddProject" class="btn btn-success ml-1 col-4">
                         <i class="bx bx-check d-block d-sm-none"></i>
