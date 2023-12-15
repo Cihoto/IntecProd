@@ -134,34 +134,32 @@ require_once('./includes/head.php');
 
 
     <script src="./js/const/projectToSearch.js"></script>
-
-    <script src="/js/Funciones/NewProject.js"></script>
-    <script src="/js/packages.js"></script>
-    <script src="/js/clientes.js"></script>
-    <script src="/js/direccion.js"></script>
-    <script src="/js/personal.js"></script>
-    <script src="/js/vehiculos.js"></script>
-    <script src="/js/valuesValidator/validator.js"></script>
-    <script src="/js/ClearData/clearFunctions.js"></script>
-    <script src="/js/localeStorage.js"></script>
-    <script src="/js/ProjectResume/projectResume.js"></script>
-    <script src="/js/ProjectResume/viatico.js"></script>
-    <script src="/js/ProjectResume/subArriendo.js"></script>
-    <script src="/js/Funciones/assigments.js"></script>
-    <script src="/js/cotizacion.js"></script>
-    <script src="/js/provider.js"></script>
-    <script src="/js/map.js"></script>
-    <script src="/js/evento/createEvent.js"> </script>
-    <script src="/js/eventSchedule.js"></script>
-    <script src="/js/filesUpload.js"></script>
-    <script src="/js/evento/getEventData.js"></script>
-    <script src="/js/productos.js"></script>
-    <script src="/js/evento/eventoController.js"></script>
-    <script src="/js/rendiciones.js"></script>
-
+    <script src="./js/Funciones/NewProject.js"></script>
+    <script src="./js/packages.js"></script>
+    <script src="./js/clientes.js"></script>
+    <script src="./js/direccion.js"></script>
+    <script src="./js/personal.js"></script>
+    <script src="./js/vehiculos.js"></script>
+    <script src="./js/valuesValidator/validator.js"></script>
+    <script src="./js/ClearData/clearFunctions.js"></script>
+    <script src="./js/localeStorage.js"></script>
+    <script src="./js/ProjectResume/projectResume.js"></script>
+    <script src="./js/ProjectResume/viatico.js"></script>
+    <script src="./js/ProjectResume/subArriendo.js"></script>
+    <script src="./js/Funciones/assigments.js"></script>
+    <script src="./js/cotizacion.js"></script>
+    <script src="./js/provider.js"></script>
+    <script src="./js/map.js"></script>
+    <script src="./js/evento/createEvent.js"> </script>
+    <script src="./js/eventSchedule.js"></script>
+    <script src="./js/filesUpload.js"></script>
+    <script src="./js/evento/getEventData.js"></script>
+    <script src="./js/productos.js"></script>
+    <script src="./js/evento/eventoController.js"></script>
+    <script src="./js/rendiciones.js"></script>
     <!-- VALIDATE FORM -->
-    <script src="/js/validateForm/addNewFreeLance.js"></script>
-    <script src="/js/validateForm/addNewProvider.js"></script>
+    <script src="./js/validateForm/addNewFreeLance.js"></script>
+    <script src="./js/validateForm/addNewProvider.js"></script>
 </body>
 
 

@@ -1051,7 +1051,7 @@ $(document).on('click', '.product-price', async function () {
   $(this).val("");
 })
 
-$(document).on('blur', '.product-price', async function () {
+$(document).on('blur', '.product-price', async function (){
 
   const newRentPrice = ClpUnformatter($(this).val());
   if (newRentPrice === "" || newRentPrice === null || newRentPrice === undefined) {
@@ -1073,54 +1073,6 @@ $(document).on('blur', '.product-price', async function () {
   const producto_id = $(this).closest('tr').attr('product_id');
   // CHECK IF ATTR EXISTS ON PRODUCTS ARRAY
   const prodExists = _productos.find((prod) => {
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
-    console.log("alksdj")
     if (prod.id === producto_id) {
       return true;
     }
@@ -1255,14 +1207,14 @@ $(document).on('blur', '.relativeCategorieValue', function () {
   setIngresos();
 })
 
-// $(document).on('click','.hideColumn',function(){
+//$(document).on('click','.hideColumn',function(){
 //   // const 
 //   if($(this).closest('th').hasClass('tempHidden')){
 //     $(this).closest('th').removeClass('tempHidden');
 //     return;
 //   }
 //   $(this).closest('th').addClass('tempHidden');
-// })
+//})
 
 $(document).on('click', '.hide-cu', function () {
   console.log($(this).closest('table'))
