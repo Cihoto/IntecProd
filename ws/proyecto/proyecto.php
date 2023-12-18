@@ -172,6 +172,7 @@ function getProjectResume($request)
     $arriendosasignados = [];
     $totalIngresos = [];
     $files = [];
+    $accountables = [];
     $viewasignados = false;
     
 
@@ -239,6 +240,8 @@ function getProjectResume($request)
         $queryTotalIngresos = "SELECT * FROM ingresos_has_proyecto ihp 
         INNER JOIN ingresos i on i.id = ihp.ingresos_id 
         WHERE ihp.proyecto_id = $idProject";
+
+        $queryAccountables = "SELECT * FROM u136839350_intec.proyecto_has_rendicion phr WHERE phr.event_id =  $idProject";
 
         $queryFiles = "SELECT  * FROM proyecto_has_files phf 
         INNER JOIN file f on f.id = phf.file_id 
@@ -313,6 +316,11 @@ function getProjectResume($request)
                 $totalIngresos[] = $dataIngresos;
             }
         }
+        if ($responseBd = $conn->mysqli->query($queryAccountables)) {
+            while ($dataAccountables  = $responseBd->fetch_object()) {
+                $accountables[] = $dataAccountables;
+            }
+        }
         if ($responseBd = $conn->mysqli->query($queryFiles)) {
             while ($dataFiles  = $responseBd->fetch_object()) {
                 $files[] = $dataFiles;
@@ -333,6 +341,7 @@ function getProjectResume($request)
             "viaticos" => $viaticoAsignado,
             "arriendos" => $arriendosasignados,
             "totalIngresos" => $totalIngresos,
+            "accountables"=>$accountables,
             "files"=>$files
         )
     ));

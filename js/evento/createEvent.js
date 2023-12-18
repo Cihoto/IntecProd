@@ -152,7 +152,21 @@ async function SaveOrUpdateEvent() {
       };
     })
 
-  assignvehicleToProject(requestVehicle)
+  assignvehicleToProject(requestVehicle);
+
+
+// SAVE RENDIICONES
+const requestRendicion = allRendiciones
+.map((rendicion)=>{
+  return {
+    'detalle' :rendicion.detalle,
+      'personal_id' :rendicion.personal_id,
+      'monto' :parseInt(ClpUnformatter(rendicion.monto)) ,
+      'fecha' :rendicion.fecha,
+      'comercio' :rendicion.comercio,
+    }
+  });
+  assignRendicionToEvent(requestRendicion,EMPRESA_ID,event_data.event_id);
 }
 
 function createNewEvent(requestProject) {
@@ -344,6 +358,29 @@ async function assignOtherProdsToEvent(requestAssignFunction) {
       dataType: 'json',
       success: function (response) {
         console.log("RESPONSE AGIGNACION OTHERS PRODS", response);
+      },
+      error: function (response) {
+        console.log(response.responseText);
+      }
+    })
+  } catch (e) {
+    console.log(e);
+  }
+}
+async function assignRendicionToEvent(request,empresa_id,event_id) {
+  try {
+    return $.ajax({
+      type: "POST",
+      url: 'ws/rendicion/rendicion.php',
+      data: JSON.stringify({
+        'action' : "assignRendicionToEvent",
+        'request' : request,
+        'empresa_id' : empresa_id,
+        'event_id' : event_id
+      }),
+      dataType: 'json',
+      success: function (response) {
+        console.log("RESPONSE AGIGNACION assignRendicionToEvent", response);
       },
       error: function (response) {
         console.log(response.responseText);

@@ -160,13 +160,9 @@ console.log("_selectedClient",_selectedClient);
         }),
         success: function(response) {
             console.log("response", response);
-
             let a = `<a target="_blank" id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/quotes/${response.name}"></a>`
-                    // <a href="./ws/BussinessDocuments/documents/buss${empresa_id}/"></a>
             $('#downloadPdf').append(a);
             $('#dwnload')[0].click();
-
-
         },error:  function(error){
             console.log("error",error.responseText)
         }

@@ -155,6 +155,24 @@ async function getAllProjectData(event_id, empresa_id) {
             addVehicle(vehiculo.vehiculo_id)
         });
     } else { }
+    if (responseGetData.asignados.accountables.length > 0) {
+        
+        responseGetData.asignados.accountables.forEach(accountable => {
+
+            createNewFinancialReportingRow(accountable.detalle, accountable.personal_id, accountable.monto, accountable.fecha, accountable.comercio,rendicion_temp_id)
+            // global variable fomr rendicion.js
+            allRendiciones.push({
+                'temp_id':rendicion_temp_id,
+                'detalle': accountable.detalle,
+                'personal_id': accountable.personal_id,
+                'monto': accountable.monto,
+                'fecha': accountable.fecha,
+                'comercio':accountable.comercio 
+            });
+            rendicion_temp_id ++;
+
+        });
+    } else { }
 
     responseGetData.dataProject.forEach(data => {
         if (data.fecha_inicio === "" || data.fecha_inicio === undefined || data.fecha_inicio === null) {
