@@ -144,11 +144,11 @@
               </li>
             <?php endif;?>
             <li class="submenu-item">
-              <a href="proyectos.php" >Lista de Eventos</a>
+              <a href="../eventos.php" >Lista de Eventos</a>
             </li>
-            <li class="submenu-item">
-              <a href="../eventos.php" >Mis eventos</a>
-            </li>
+            <!-- <li class="submenu-item">
+              <a href="" >Mis eventos</a>
+            </li> -->
           </ul>
         </li>
         <?php endif;?>
@@ -302,7 +302,7 @@
       data:JSON.stringify({action:'CloseSession'}),
       dataType: 'json',
       success: async function(response){
-        console.log("RESPONSE DE SESSION",response);
+        // console.log("RESPONSE DE SESSION",response);
         if(response){
           location.reload();
         }

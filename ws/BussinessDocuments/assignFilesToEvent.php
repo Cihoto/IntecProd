@@ -22,8 +22,10 @@ if ($_POST) {
 
     // FOLDER CREATION
     $absolutePath = getcwd();
-    $target_folder_path = $absolutePath."\documents\buss$empresa_id\Ev$event_id";
-    $target_document_path = $absolutePath."\documents\buss$empresa_id\documents";
+    $target_folder_path = $absolutePath."/documents/buss$empresa_id/Ev$event_id";
+    // $target_folder_path = $absolutePath."\documents\buss$empresa_id\Ev$event_id";
+    $target_document_path = $absolutePath."/documents/buss$empresa_id/documents";
+    // $target_document_path = $absolutePath."\documents\buss$empresa_id\documents";
 
     if(!is_dir($target_folder_path)){
         mkdir($target_folder_path);
