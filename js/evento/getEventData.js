@@ -171,11 +171,12 @@ async function getAllProjectData(event_id, empresa_id) {
 
     if(responseGetData.asignados.files.length > 0){
         responseGetData.asignados.files.forEach((file)=>{
+            console.log(`../ws/BussinessDocuments/documents/buss${EMPRESA_ID}/Ev${event_data.event_id}/bsd${file.name}`)
 
             let fileContainer = `<div class="file-container">
-            <i class="fa-regular fa-file"></i>
-            <a href="../ws/BussinessDocuments/documents/buss${EMPRESA_ID}/Ev${event_data.event_id}/${file.name}" download>${file.name}</a>
-        </div>`
+                <i class="fa-regular fa-file"></i>
+                <a href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/Ev${event_data.event_id}/bsd${file.name}" download>${file.name}</a>
+            </div>`
             $('#fileListContainer').append(fileContainer)
         })
 
