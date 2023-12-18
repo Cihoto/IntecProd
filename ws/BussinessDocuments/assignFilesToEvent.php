@@ -44,7 +44,7 @@ if ($_POST) {
             if($fileIsInserted !== false){
 
             }else{
-                rename($target_document_path."\bsd$file_data->name",$target_folder_path."\bsd$file_data->name");
+                rename($target_document_path."/bsd$file_data->name",$target_folder_path."/bsd$file_data->name");
                 array_push($not_pending_files,$file_data);
 
                 $queryInsertFiles = "INSERT INTO u136839350_intec.file
