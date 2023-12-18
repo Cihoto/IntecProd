@@ -168,10 +168,10 @@ $active = 'dashboard';
 <script src="/js/ProjectResume/subArriendo.js"></script>
 <script src="/js/ProjectResume/projectResume.js"></script>
 <script src="/js/Funciones/assigments.js"></script>
-<script src="/js/Cargo_Especialidad/Testing/calendarviewResume.js"></script>
-<script src="/js/calendar.js"></script>
+<!-- <script src="/js/Cargo_Especialidad/Testing/calendarviewResume.js"></script> -->
+<!-- <script src="/js/calendar.js"></script> -->
 
-<script>
+<!-- <script>
   const EMPRESA_ID = $('#empresaId').text();
   let calendar;
   var calendarEl = document.getElementById('calendar');
@@ -526,6 +526,6 @@ $active = 'dashboard';
       $(element).remove()
     })
   }
-</script>
+</script> -->
 
 </html>
