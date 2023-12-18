@@ -153,21 +153,21 @@ $active = 'dashboard';
 
 </body>
 
-<script src="/js/Funciones/UpdateProject.js"></script>
-<script src="/js/clientes.js"></script>
-<script src="/js/direccion.js"></script>
-<script src="/js/personal.js"></script>
-<script src="/js/vehiculos.js"></script>
-<script src="/js/productos.js"></script>
-<script src="/js/project.js"></script>
-<script src="/js/Funciones/NewProject.js"></script>
-<script src="/js/localeStorage.js"></script>
-<script src="/js/valuesValidator/validator.js"></script>
-<script src="/js/ClearData/clearFunctions.js"></script>
-<script src="/js/ProjectResume/viatico.js"></script>
-<script src="/js/ProjectResume/subArriendo.js"></script>
-<script src="/js/ProjectResume/projectResume.js"></script>
-<script src="/js/Funciones/assigments.js"></script>
+<script src="./js/Funciones/UpdateProject.js"></script>
+<script src="./js/clientes.js"></script>
+<script src="./js/direccion.js"></script>
+<script src="./js/personal.js"></script>
+<script src="./js/vehiculos.js"></script>
+<script src="./js/productos.js"></script>
+<script src="./js/project.js"></script>
+<script src="./js/Funciones/NewProject.js"></script>
+<script src="./js/localeStorage.js"></script>
+<script src="./js/valuesValidator/validator.js"></script>
+<script src="./js/ClearData/clearFunctions.js"></script>
+<script src="./js/ProjectResume/viatico.js"></script>
+<script src="./js/ProjectResume/subArriendo.js"></script>
+<script src="./js/ProjectResume/projectResume.js"></script>
+<script src="./js/Funciones/assigments.js"></script>
 <!-- <script src="/js/Cargo_Especialidad/Testing/calendarviewResume.js"></script> -->
 <!-- <script src="/js/calendar.js"></script> -->
 
