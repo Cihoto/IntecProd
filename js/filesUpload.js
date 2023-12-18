@@ -99,6 +99,7 @@ async function saveSelectedFilesInServer(){
                 contentType: false,
                 processData: false,
                 success: function (response) {
+                    console.log("SERVER FILE UPLOAD RESPONSE",response)
                     _allmyUploadedFiles.push({
                         'name':FILES[i].name,
                         'size':FILES[i].size,
