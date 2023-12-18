@@ -21940,6 +21940,11 @@ body .bi:before {
     transition: all .5s
 }
 
+
+.sidebar-link.sidebar-in{
+    height: 45px!important;
+} 
+
 .sidebar-wrapper .menu .sidebar-link i,
 .sidebar-wrapper .menu .sidebar-link svg {
     color: #7c8db5
@@ -21977,7 +21982,9 @@ body .bi:before {
 }
 
 .sidebar-wrapper .menu .sidebar-item.active>.sidebar-link {
-    background-color: #435ebe
+    /* background-color: #435ebe */
+    border-radius: var(--borderRadius, 4px);
+    background: linear-gradient(90deg, #36ABA9 0%, #10E5E1 82.29%);
 }
 
 .sidebar-wrapper .menu .sidebar-item.active>.sidebar-link span {
@@ -21986,13 +21993,38 @@ body .bi:before {
 
 .sidebar-wrapper .menu .sidebar-item.active>.sidebar-link i,
 .sidebar-wrapper .menu .sidebar-item.active>.sidebar-link svg {
-    fill: #fff;
-    color: #fff
+    fill: #36ABA9;
+    color: #FCFCFC;
 }
+
+/* intec style */
+/* ||||||||||||||||||||||||||||||||| */
+/* vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv */
+.sidebar-wrapper .menu .sidebar-item.active>.sidebar-link svg path
+{
+    stroke: #FCFCFC !important;
+}
+
+.sidebar-wrapper .menu .sidebar-item.active>.sidebar-link p{
+    color: var(--Text-white-primary, #F8F8F8);
+    font-feature-settings: 'clig' off, 'liga' off;
+    /* typography/body1 */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+    letter-spacing: 0.15px;
+}
+
+
+
 
 .sidebar-wrapper .menu .sidebar-item.active>.sidebar-link.has-sub:after {
     content: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><path style="fill:none;stroke:%23fff;stroke-width:1" d="m6 9 6 6 6-6"/></svg>')
 }
+
+
+
 
 .sidebar-wrapper .menu .submenu {
     display: none;
@@ -22011,17 +22043,33 @@ body .bi:before {
 }
 
 .sidebar-wrapper .menu .submenu .submenu-item.active>a {
-    color: #435ebe;
-    font-weight: 700
+    /* color: #435ebe;
+    font-weight: 700;
+    color: var(--Text-primary, #2C2D33);
+    /* typography/body1 */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+    letter-spacing: 0.15px;
 }
 
 .sidebar-wrapper .menu .submenu .submenu-item a {
-    color: #25396f;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+    letter-spacing: 0.15px;
+    color: var(--Text-primary, #2C2D33);
     display: block;
-    font-size: .85rem;
-    font-weight: 600;
-    letter-spacing: .5px;
-    padding: .7rem 2rem;
+    padding: .3rem 2rem;
+
+
+
+    /* color: #25396f; */
+    /* font-size: .85rem; */
+    /* font-weight: 600; */
+    /* letter-spacing: .5px; */
     transition: all .3s
 }
 

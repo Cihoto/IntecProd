@@ -61,10 +61,8 @@
         </div>
       </div>
     </div>
-    <div class="sidebar-menu">
-      <ul class="menu">
-        <li class="sidebar-title">Menu</li>
-
+    <div class="sidebar-menu" >
+      <ul class="menu" id="sidebarPr">
         <?php
         if($active == 'dashboard'){
           echo '<li class="sidebar-item active">';
@@ -72,9 +70,13 @@
           echo '<li class="sidebar-item">';
         }
         ?>
-          <a href="index.php" class="sidebar-link">
-            <i class="bi bi-grid-fill"></i>
-            <span>Dashboard</span>
+          <a href="index.php" class="sidebar-link sidebar-in">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+              <path d="M3 9.53369L12 2.53369L21 9.53369V20.5337C21 21.0641 20.7893 21.5728 20.4142 21.9479C20.0391 22.323 19.5304 22.5337 19 22.5337H5C4.46957 22.5337 3.96086 22.323 3.58579 21.9479C3.21071 21.5728 3 21.0641 3 20.5337V9.53369Z" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 21.53V12.5337H15V22" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <!-- <span>Dashboard</span> -->
+            <p class="sidebarTitle">Dashboard</p>
           </a>
         </li>
 
@@ -88,8 +90,13 @@
         }
         ?>
           <a href="inventario.php" class="sidebar-link">
-            <i class="bi bi-stack"></i><!-- style="color: rgb(0, 0, 128);" -->
-            <span>Inventario</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+            <path d="M21 8.53369V21.5337H3V8.53369" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 12.5337H14" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M23 3.53369H1V8.53369H23V3.53369Z" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+              <!-- <span>Inventario</span> -->
+            <p class="sidebarTitle">Inventario</p>
           </a>
           <ul class="submenu">
             <!-- <li class="submenu-item">
@@ -116,9 +123,14 @@
           echo '<li class="sidebar-item has-sub">';
         }
         ?>
-          <a href="#" class="sidebar-link">
-            <i class="bi bi-collection-fill"></i>
-            <span>Eventos</span>
+          <a href="#" class="sidebar-link sidebar-in">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+            <path d="M19 4.53369H5C3.89543 4.53369 3 5.42912 3 6.53369V20.5337C3 21.6383 3.89543 22.5337 5 22.5337H19C20.1046 22.5337 21 21.6383 21 20.5337V6.53369C21 5.42912 20.1046 4.53369 19 4.53369Z" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 10.5337H21" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 2.53369V6.53369" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 2.53369V6.53369" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+            <p class="sidebarTitle">Eventos</p>
           </a>
           <ul class="submenu">
             <?php if (in_array("7", $rol_id) ||in_array("1", $rol_id) ||in_array("2", $rol_id)):?>
@@ -150,9 +162,21 @@
           echo '<li class="sidebar-item">';
         }
         ?>
-          <a href="/clientes.php" class="sidebar-link">
-            <i class="fa-solid fa-handshake"></i>
-            <span>Clientes</span>
+          <a href="/clientes.php" class="sidebar-link sidebar-in">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+            <g clip-path="url(#clip0_857_469)">
+              <path d="M12 15.5337C15.866 15.5337 19 12.3997 19 8.53369C19 4.6677 15.866 1.53369 12 1.53369C8.13401 1.53369 5 4.6677 5 8.53369C5 12.3997 8.13401 15.5337 12 15.5337Z" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8.21 16.236L6 23.5336L12 20.5336L17 23.5336L15.79 16.4136" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+              <!-- <clipPath id="clip0_857_469">
+                <rect width="24" height="24" fill="white" transform="translate(0 0.533691)"/>
+              </clipPath> -->
+            </defs>
+          </svg>
+            <!-- <span>Clientes</span> -->
+            <p class="sidebarTitle">Clientes</p>
+          
           </a>
         </li>
         <?php endif;?>
@@ -165,10 +189,15 @@
           echo '<li class="sidebar-item">';
         }
         ?>
-          <a href="personal.php" class="sidebar-link">
-            <i class="fa-solid fa-user"></i>
-            <!-- <i class="bi bi-person-check"></i> -->
-            <span>Personal</span>
+          <a href="personal.php" class="sidebar-link sidebar-in">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+            <path d="M23 21.5336V19.5336C22.9993 18.6473 22.7044 17.7863 22.1614 17.0859C21.6184 16.3854 20.8581 15.8851 20 15.6636" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M17 21.5337V19.5337C17 18.4728 16.5786 17.4554 15.8284 16.7053C15.0783 15.9551 14.0609 15.5337 13 15.5337H5C3.93913 15.5337 2.92172 15.9551 2.17157 16.7053C1.42143 17.4554 1 18.4728 1 19.5337V21.5337" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 3.66357C16.8604 3.88388 17.623 4.38428 18.1676 5.08588C18.7122 5.78749 19.0078 6.6504 19.0078 7.53857C19.0078 8.42674 18.7122 9.28965 18.1676 9.99126C17.623 10.6929 16.8604 11.1933 16 11.4136" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 11.5337C11.2091 11.5337 13 9.74283 13 7.53369C13 5.32455 11.2091 3.53369 9 3.53369C6.79086 3.53369 5 5.32455 5 7.53369C5 9.74283 6.79086 11.5337 9 11.5337Z" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+            <p class="sidebarTitle">Personal</p>
           </a>
         </li>
         <?php endif;?>
@@ -183,9 +212,13 @@
         }
         ?>
           <a href="vehiculos.php" class="sidebar-link">
-            <i class="fa-solid fa-truck"></i>
-            <!-- <i class="bi bi-person-check"></i> -->
-            <span>Vehiculos</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+            <path d="M18.5 21.5337C19.8807 21.5337 21 20.4144 21 19.0337C21 17.653 19.8807 16.5337 18.5 16.5337C17.1193 16.5337 16 17.653 16 19.0337C16 20.4144 17.1193 21.5337 18.5 21.5337Z" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5.5 21.5337C6.88071 21.5337 8 20.4144 8 19.0337C8 17.653 6.88071 16.5337 5.5 16.5337C4.11929 16.5337 3 17.653 3 19.0337C3 20.4144 4.11929 21.5337 5.5 21.5337Z" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 8.53369H20L23 11.5337V16.5337H16V8.53369Z" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 3.53369H1V16.5337H16V3.53369Z" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+            <p class="sidebarTitle">Vehículos</p>
           </a>
         </li>
         <?php endif;?>
@@ -220,10 +253,13 @@
           echo '<li class="sidebar-item">';
         }
         ?>
-          <a href="/administracion.php" class="sidebar-link">
-            <i class="fa-solid fa-users-gear"></i>
-            <!-- <i class="bi bi-person-check"></i> -->
-            <span>Administración</span>
+          <a href="/administracion.php" class="sidebar-link sidebar-in">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+            <path d="M2 17.5337L12 22.5337L22 17.5337" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 12.5337L12 17.5337L22 12.5337" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 2.53369L2 7.53369L12 12.5337L22 7.53369L12 2.53369Z" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p class="sidebarTitle">Administración</p>
           </a>
         </li>
         <?php endif;?>
