@@ -159,6 +159,12 @@ async function getAllProjectData(event_id, empresa_id) {
         
         responseGetData.asignados.accountables.forEach(accountable => {
 
+            console.log("ACCOUNTABLES 11111111")
+            console.log("ACCOUNTABLES 11111111")
+            console.log("ACCOUNTABLES 11111111")
+            console.log("ACCOUNTABLES 11111111")
+            console.log("ACCOUNTABLES 11111111")
+            console.log("ACCOUNTABLES 11111111")
             createNewFinancialReportingRow(accountable.detalle, accountable.personal_id, accountable.monto, accountable.fecha, accountable.comercio,rendicion_temp_id)
             // global variable fomr rendicion.js
             allRendiciones.push({
@@ -169,6 +175,12 @@ async function getAllProjectData(event_id, empresa_id) {
                 'fecha': accountable.fecha,
                 'comercio':accountable.comercio 
             });
+            console.log("ACCOUNTABLES 22222222")
+            console.log("ACCOUNTABLES 22222222")
+            console.log("ACCOUNTABLES 22222222")
+            console.log("ACCOUNTABLES 22222222")
+            console.log("ACCOUNTABLES 22222222")
+            console.log("ACCOUNTABLES 22222222")
             rendicion_temp_id ++;
 
         });
