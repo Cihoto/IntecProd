@@ -29,7 +29,7 @@
     $today = date('d/m/Y');
 
     // $fileName = "\Cotización-$month$month$month-$day-$year.pdf";
-    $fileName = "\Cotización-$event_id$month-$day-$year.pdf";
+    $fileName = "/Cotización-$event_id$month-$day-$year.pdf";
     // $path = getcwd();
     // echo json_encode($path);
     // echo json_encode(dirname($path,2));
@@ -105,7 +105,7 @@
     // $dompdf->stream("$month-$day-$year.pdf");
     
     $output = $dompdf->output();
-    $pdfRoot = __DIR__."\documents\buss1\quotes$fileName";
+    $pdfRoot = __DIR__."/documents/buss1/quotes$fileName";
     // $pdfAdm = __DIR__."\documents\buss1\quotes";
     file_put_contents($pdfRoot, $output);
 
