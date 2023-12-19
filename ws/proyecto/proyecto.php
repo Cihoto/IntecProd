@@ -173,6 +173,7 @@ function getProjectResume($request)
     $totalIngresos = [];
     $files = [];
     $accountables = [];
+    $otherCosts = [];
     $viewasignados = false;
     
 
@@ -229,19 +230,23 @@ function getProjectResume($request)
         // WHERE pha.proyecto_id =  $idProject";
 
         // $querySubarriendos = "SELECT * FROM arriendos_proyectos ap where ap.proyecto_id = $idProject";
-        $querySubarriendos = "SELECT  a.id, a.item, CONCAT(per.nombre,' ',per.apellido,' - ', df.rut) AS detalle,pha.costo
-        FROM arriendos a
-        INNER JOIN proveedor p on p.id = a.proveedor_id
-        INNER JOIN persona per on per.id = p.persona_id_contacto 
-        INNER JOIN datos_facturacion df on df.id = p.datos_facturacion_id
-        INNER JOIN proyecto_has_arriendos pha on pha.arriendos_id = a.id 
-        WHERE pha.proyecto_id =  $idProject";
+        // $querySubarriendos = "SELECT  a.id, a.item, CONCAT(per.nombre,' ',per.apellido,' - ', df.rut) AS detalle,pha.costo
+        // FROM arriendos a
+        // INNER JOIN proveedor p on p.id = a.proveedor_id
+        // INNER JOIN persona per on per.id = p.persona_id_contacto 
+        // INNER JOIN datos_facturacion df on df.id = p.datos_facturacion_id
+        // INNER JOIN proyecto_has_arriendos pha on pha.arriendos_id = a.id 
+        // WHERE pha.proyecto_id =  $idProject";
+
+        $querySubarriendos = "SELECT proyecto_id, detalle, proveedor_id, valor
+        FROM u136839350_intec.proyecto_has_sub_arriendos WHERE proyecto_id = $idProject;";
 
         $queryTotalIngresos = "SELECT * FROM ingresos_has_proyecto ihp 
         INNER JOIN ingresos i on i.id = ihp.ingresos_id 
         WHERE ihp.proyecto_id = $idProject";
 
         $queryAccountables = "SELECT * FROM u136839350_intec.proyecto_has_rendicion phr WHERE phr.event_id =  $idProject";
+        $queryOtherCosts = "SELECT * FROM u136839350_intec.proyecto_has_other_costs phoc WHERE phoc.event_id =  $idProject";
 
         $queryFiles = "SELECT  * FROM proyecto_has_files phf 
         INNER JOIN file f on f.id = phf.file_id 
@@ -321,6 +326,11 @@ function getProjectResume($request)
                 $accountables[] = $dataAccountables;
             }
         }
+        if ($responseBd = $conn->mysqli->query($queryOtherCosts)) {
+            while ($dataOtherCosts  = $responseBd->fetch_object()) {
+                $otherCosts[] = $dataOtherCosts;
+            }
+        }
         if ($responseBd = $conn->mysqli->query($queryFiles)) {
             while ($dataFiles  = $responseBd->fetch_object()) {
                 $files[] = $dataFiles;
@@ -342,6 +352,7 @@ function getProjectResume($request)
             "arriendos" => $arriendosasignados,
             "totalIngresos" => $totalIngresos,
             "accountables"=>$accountables,
+            "otherCosts"=>$otherCosts,
             "files"=>$files
         )
     ));

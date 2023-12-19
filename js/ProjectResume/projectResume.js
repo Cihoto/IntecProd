@@ -128,9 +128,21 @@ function setEgresos(){
         subArriendototal += subRent.valor;
     });
 
+    // section others costs
+    $('#total-otherCostsResume tbody tr').remove()
+    let totalOthersCosts = 0;
+    _allMyOtherCosts.forEach((cost)=>{
+        totalOthersCosts += parseInt(cost.monto); 
+        let tr = `<tr>
+            <td class="col-4"></td>
+            <td>${cost.name}</td>
+            <td>${CLPFormatter(cost.monto)}</td>
+        </tr>`
 
+        $('#total-otherCostsResume tbody').append(tr);
+    });
 
-    let totalCosts = totalpersonal + totalExternos + totalPropios + subArriendototal;
+    let totalCosts = totalpersonal + totalExternos + totalPropios + subArriendototal + totalOthersCosts;
 
     _totalEgresos = totalCosts;
 
@@ -140,7 +152,9 @@ function setEgresos(){
 
     $('#totalSubArriendos').text(CLPFormatter(subArriendototal));
 
-    setUtilidad()
+    $('#totalOtherCosts-resume').text(CLPFormatter(totalOthersCosts));
+
+    setUtilidad();
 }
 
 function setIngresos(){
@@ -266,7 +280,6 @@ function CalcUtilidad(){
     $('#totalResumeProductos').text(CLPFormatter(totalPersonal))
     $('#totalResumePersonal').text(CLPFormatter(totalPersonal))
 }
-
 
 
 

@@ -12,7 +12,7 @@
 
 
   <link rel="stylesheet" href="./assets/css/main/app.css" />
-  <link rel="stylesheet" href="./assets/css/main/app-dark.css" />
+  <!-- <link rel="stylesheet" href="./assets/css/main/app-dark.css" /> -->
   <link rel="stylesheet" href="./assets/css/main/intechStyle.css">
 
   <!-- FontAwesome -->

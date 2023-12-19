@@ -465,25 +465,9 @@ $(document).on('blur', '.addProdInputResume', async function () {
         return prod.id === product_id;
       });
       if(prodToUpdate){
-        console.log("_selectedProducts.indexOf(prodToUpdate)",_selectedProducts.indexOf(prodToUpdate))
-        console.log("_selectedProducts.indexOf(prodToUpdate)",_selectedProducts.indexOf(prodToUpdate))
-        console.log("_selectedProducts.indexOf(prodToUpdate)",_selectedProducts.indexOf(prodToUpdate))
-        console.log("_selectedProducts.indexOf(prodToUpdate)",_selectedProducts.indexOf(prodToUpdate))
-        console.log("_selectedProducts.indexOf(prodToUpdate)",_selectedProducts.indexOf(prodToUpdate))
-        console.log("_selectedProducts.indexOf(prodToUpdate)",_selectedProducts.indexOf(prodToUpdate))
-        console.log("_selectedProducts.indexOf(prodToUpdate)",_selectedProducts.indexOf(prodToUpdate))
         const indexof = _selectedProducts.indexOf(prodToUpdate); 
         let newarray = _selectedProducts.splice(indexof,0);
-        
-              console.log("SELECTGEDPRODSSSSS",newarray);
-              console.log("SELECTGEDPRODSSSSS",newarray);
-              console.log("SELECTGEDPRODSSSSS",newarray);
-              console.log("SELECTGEDPRODSSSSS",newarray);
-              console.log("SELECTGEDPRODSSSSS",newarray);
-              console.log("SELECTGEDPRODSSSSS",newarray);
-              console.log("SELECTGEDPRODSSSSS",newarray);
-              console.log("SELECTGEDPRODSSSSS",newarray);
-              console.log("SELECTGEDPRODSSSSS",newarray);
+      
       }
       setCategoriesAndSubCategories();
       printAllProductsOnTable();
@@ -1369,16 +1353,9 @@ $(document).on('blur', '.cantidadOthers', function () {
 
 
 $(document).on('click', '.totalOthers', function () {
-
-
   if($(this).val() !== ""){
     lastTotalOthers = parseInt(ClpUnformatter($(this).val()));
   }
-
-  console.log(lastTotalOthers);
-  console.log(lastTotalOthers);
-  console.log(lastTotalOthers);
-  console.log(lastTotalOthers);
   $(this).val("")
 })
 
@@ -1412,7 +1389,7 @@ $(document).on('blur', '.totalOthers', function () {
 
 
 
-function printAllSelectedOthers(){
+function printAllSelectedOthers() {
 
   $('#others-table tbody tr').remove();
 

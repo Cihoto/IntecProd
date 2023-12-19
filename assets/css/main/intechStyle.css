@@ -19,16 +19,16 @@ body{
 .err{
     border: 1px solid red
 }
-.theme-dark .err{
+/* .theme-dark .err{
     border: 1px solid red
-}
+} */
 
-.theme-dark .topbar{
+/* .theme-dark .topbar{
   background-color: #1e1e2d;
   border-radius:10px;
   color: #eee;
   font-weight: 700;
-} 
+}  */
 
 #sidebarPr{
   display: flex;
@@ -36,9 +36,9 @@ body{
   gap: 8px;
 }
 
-.theme-dark #topBar-Content a{
+/* .theme-dark #topBar-Content a{
   color: white;
-}
+} */
 
 
 
@@ -292,13 +292,13 @@ body{
     background-color: white;
     
   }
-  .theme-dark #receiveProducto {
+  /* .theme-dark #receiveProducto {
     position: sticky;
     top: 0;
     width: 100%;
     background-color: #1e1e2d;
     
-  }
+  } */
 
   /* .serachInputDrag{
     display:flex;
@@ -394,9 +394,9 @@ body{
   font-size: 24px;
   font-weight: 600;
 }
-.dark-theme .projectNameResume{
+/* .dark-theme .projectNameResume{
   text-align: center;
-}
+} */
 .verticalTable tr{
   border:1px solid black
 }
@@ -410,14 +410,14 @@ body{
   text-align: center;
   vertical-align: baseline;
 }
-.theme-dark .verticalTable td,.theme-dark .verticalTable th{
+/* .theme-dark .verticalTable td,.theme-dark .verticalTable th{
   margin: 5px;
   padding:3px;
   text-align: center;
   vertical-align: baseline;
   transition: all .4s ease;
 
-}
+} */
 
 .tbodyHeader,.verticalTable th{
   border: 1px solid black;
@@ -430,7 +430,7 @@ body{
 
 }
 
-.theme-dark .tbodyHeader,.theme-dark .verticalTable th{
+/* .theme-dark .tbodyHeader,.theme-dark .verticalTable th{
   border: 1px solid rgba(255, 255, 255, 0.703);
   background-color: #1e1e2d;
   color: white;
@@ -439,12 +439,12 @@ body{
   font-weight: 500;
   transition: all .4s ease;
 
-}
+} */
 
-.theme-dark .tbodyHeaderTotal{
+/* .theme-dark .tbodyHeaderTotal{
   background-color: #1e1e2d;
   transition: all .4s ease;
-}
+} */
 .tbodyHeaderTotal{
   background-color: lightcoral;
   transition: all .4s ease;
@@ -499,28 +499,7 @@ body{
   border:1px solid red;
   background-color: rgba(255, 0, 0, 0.12);
 }
-.theme-dark .err{
-  border:1px solid red;
-  background-color: rgba(255, 0, 0, 0.12);
-}
-.max300{
-  max-height: 300px !important;
-}
-.theme-dark .max300{
- max-height: 300px !important;
-}
-.max800{
-  max-height: 800px !important;
-}
-.theme-dark .max800{
- max-height: 800px !important;
-}
-.max400{
-  max-height: 400px !important;
-}
-.theme-dark .max400{
- max-height: 400px !important;
-}
+
 
 
 /* hide scrollbar but allow scrolling */
@@ -534,34 +513,7 @@ body{
   display: none; /* for Chrome, Safari, and Opera */
 }
 /* hide scrollbar but allow scrolling */
-.theme-dark .hiddenScroll {
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* for Firefox */
-  overflow-y: scroll; 
-}
 
-.theme-dark .hiddenScroll::-webkit-scrollbar {
-  display: none; /* for Chrome, Safari, and Opera */
-}
-
-
-
-/* .theme-dark .btn-confirm{
- padding: 5px;
- font-size: 16px;
- border-radius: 5px;
- color:white;
- font-weight: 600;
- background-color: #04AA6D;  
-}
-.btn-confirm{
- padding: 5px;
- font-size: 16px;
- border-radius: 5px;
- color:white;
- font-weight: 600;
- background-color: #04AA6D;
-} */
 
 
 
@@ -602,19 +554,6 @@ body{
     min-width: 80%;
   }
 }
-/* .sideContainer{
-  display: flex;
-  justify-content: center;
-} */
-
-/* .theme-light  .sideContainer{
-  display: flex;
-  justify-content: center;
-}
-.theme-dark  .sideContainer{
-  display: flex;
-  justify-content: center;
-} */
 
 .elementList{
   list-style: none;
@@ -746,7 +685,7 @@ body{
 }
 
 
-.theme-dark .ulProblems{
+/* .theme-dark .ulProblems{
   display: flex;
   flex-wrap: wrap;
 }
@@ -775,8 +714,6 @@ body{
   justify-content: space-between;
   align-items: center; 
   overflow: auto;
-  /* width: 100%; */
-  /* border: 1px solid black; */
   padding: 5px;  
   height: 70px;
   transition: all .3s ease;
@@ -891,7 +828,7 @@ body{
 
 .theme-dark .just-content-end{
   justify-content: end;
-}
+} */
 
 .ulEspecialidades{
   max-height: 180px;
@@ -927,7 +864,7 @@ body{
   transition: all .4s ease;
 
 }
-.theme-dark #project-resume li{
+/* .theme-dark #project-resume li{
   padding: 5px;
   background-color: #1818556f;
   border: none;
@@ -943,7 +880,7 @@ body{
   transition: all .4s ease;
 
   color: white;
-}
+} */
 
 .projectData{
   display: flex;
@@ -1174,9 +1111,9 @@ body{
   height: 0px;
   overflow-y: scroll;
 }
-.theme-dark hr{
+/* .theme-dark hr{
   color: white;
-}
+} */
 
 
 #rentsUl li{
@@ -1199,9 +1136,9 @@ body{
 #rentsUl .rentObj:hover p {
   color: white;
 }
-.theme-dark #rentsUl li p{
+/* .theme-dark #rentsUl li p{
   color: white;
-}
+} */
 #rentsUl li p{
   color: black;
   list-style: none;
@@ -1264,9 +1201,9 @@ body{
 .closeSessionBtn{
   border: none;
 }
-.theme-dark .closeSessionBtn{
+/* .theme-dark .closeSessionBtn{
   background-color: #1e1e2d;
-}
+} */
 #download-Excel{
   cursor: pointer;
   transition: all 1s ease;
@@ -1541,10 +1478,9 @@ body{
 
 }
 
-.theme-dark .sticky-head{
+/* .theme-dark .sticky-head{
   background-color: #151521;
-}
-
+} */
 
 @media (max-width: 650px) {
   .user-options-info{
@@ -2587,84 +2523,7 @@ body{
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /* resume-table s-table */
+/* resume-table s-table */
 #tableProducts tbody tr:hover{
   border: 1px solid var(--Secondary-color, #6136AB)!important;
   background: var(--Purple-200, #DCD0F1)!important;
@@ -2715,95 +2574,6 @@ body{
   width:13.97% !important;
 } 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .quantityProductInput{
   border-radius: 10px;
   width: 200pxpx;
@@ -2813,15 +2583,6 @@ body{
 .addItem{
   line-height: 30px !important;
 }
-#tableProducts{
-
-}
-/* #tableProducts{
-
-}
-#tableProducts{
-
-} */
 
 .s-table thead tr{
   display: flex;
@@ -3561,4 +3322,115 @@ gap: var(--2, 16px);
   border-radius: 12px;
   background: var(--Cyan-icon, #00B4B0);
   box-shadow: 0px 3.5px 5.5px 0px rgba(0, 0, 0, 0.02);
+}
+
+
+#otherCosts-table{
+  display: flex;
+  padding: var(--3, 24px) var(--2, 16px);
+  flex-direction: column;
+  align-items: start;
+  flex-shrink: 0;
+}
+
+#otherCosts-table thead th{
+  border-radius: var(--none, 0px);
+  border-top: 1px solid var(--Line-table, #DDDDE1);
+  border-right: var(--none, 0px) solid var(--Line-table, #DDDDE1);
+  border-bottom: 1px solid var(--Line-table, #DDDDE1);
+  border-left: 1px solid var(--Line-table, #DDDDE1);
+  background: var(--Fondo-cyan, #E8F3F3);
+}
+
+#otherCosts-table thead th{
+  padding: 16px;
+  align-items: center;
+  flex-shrink: 0;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+  width: 250px;
+}
+
+#otherCosts-table tbody tr.incomplete {
+  background-color: #ff000025;
+}
+#otherCosts-table tbody tr{
+  display: flex;
+  border-radius: var(--none, 0px);
+  border-top: var(--none, 1px) solid var(--Line-table, #DDDDE1);
+  border-right: var(--none, 1px) solid var(--Line-table, #DDDDE1);
+  border-bottom: 1px solid var(--Line-table, #DDDDE1);
+  border-left: var(--none, 1px) solid var(--Line-table, #DDDDE1);
+}
+#otherCosts-table tbody td{
+  display: flex;
+  /* flex-direction: row; */
+  padding: 16px;
+  /* align-items: center; */
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+  background: rgba(0, 0, 0, 0.00);
+  width: 250px;
+}
+
+#otherCosts-table tfoot tr{
+  display: flex;
+  border-radius: var(--none, 0px);
+  border-top: var(--none, 1px) solid var(--Line-table, #DDDDE1);
+  border-right: var(--none, 1px) solid var(--Line-table, #DDDDE1);
+  border-bottom: 1px solid var(--Line-table, #DDDDE1);
+  border-left: var(--none, 1px) solid var(--Line-table, #DDDDE1);
+}
+#otherCosts-table tfoot td{
+  display: flex;
+  /* flex-direction: row; */
+  padding: 16px;
+  /* align-items: center; */
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+  background: rgba(0, 0, 0, 0.00);
+  width: 250px;
+}
+#otherCosts-table input{
+  border-radius: 4px;
+}
+
+.removeOtherCost{
+  cursor: pointer;
+}
+
+
+.s-resumeProjectTable thead th p{
+  color: var(--Text-primary, #2C2D33);
+  font-size: 16px !important;
+  font-style: normal !important;
+  font-weight: 700!important;
+  line-height: 14px!important; 
+  height: 35px!important;
+}
+.s-resumeProjectTable thead th{
+  color: var(--Text-primary, #2C2D33);
+  font-size: 16px !important;
+  font-style: normal !important;
+  font-weight: 700!important;
+  line-height: 14px!important; 
+  height: 35px!important;
+}
+.s-resumeProjectTable tbody td{
+  color: var(--Text-secondary, #53545C);
+  font-size: 14px!important;
+  font-style: normax!important;
+  font-weight: 40x!important;
+  line-height: 14px!important; /* 100% */
+}
+.s-resumeProjectTable tbody td p{
+  color: var(--Text-secondary, #53545C);
+  font-size: 14px!important;
+  font-style: normax!important;
+  font-weight: 40x!important;
+  line-height: 14px!important; /* 100% */
+}
+
+#resumeEventTableContainer{
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }

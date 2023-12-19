@@ -158,13 +158,6 @@ async function getAllProjectData(event_id, empresa_id) {
     if (responseGetData.asignados.accountables.length > 0) {
         
         responseGetData.asignados.accountables.forEach(accountable => {
-
-            console.log("ACCOUNTABLES 11111111")
-            console.log("ACCOUNTABLES 11111111")
-            console.log("ACCOUNTABLES 11111111")
-            console.log("ACCOUNTABLES 11111111")
-            console.log("ACCOUNTABLES 11111111")
-            console.log("ACCOUNTABLES 11111111")
             createNewFinancialReportingRow(accountable.detalle, accountable.personal_id, accountable.monto, accountable.fecha, accountable.comercio,rendicion_temp_id)
             // global variable fomr rendicion.js
             allRendiciones.push({
@@ -175,14 +168,35 @@ async function getAllProjectData(event_id, empresa_id) {
                 'fecha': accountable.fecha,
                 'comercio':accountable.comercio 
             });
-            console.log("ACCOUNTABLES 22222222")
-            console.log("ACCOUNTABLES 22222222")
-            console.log("ACCOUNTABLES 22222222")
-            console.log("ACCOUNTABLES 22222222")
-            console.log("ACCOUNTABLES 22222222")
-            console.log("ACCOUNTABLES 22222222")
             rendicion_temp_id ++;
 
+        });
+    } else { }
+    if (responseGetData.asignados.otherCosts.length > 0) {
+ 
+        responseGetData.asignados.otherCosts.forEach(cost => {
+            appendNewRowOtherCosts(cost.name,cost.quantity,cost.total);
+            // global variable fomr otherCosts.js vvv
+            _allMyOtherCosts.push({
+                'temp_id':others_costs_temp_id,
+                'name':cost.name,
+                'cantidad': cost.quantity,
+                'monto': cost.total
+            });
+            // global variable fomr otherCosts.js vvv
+            others_costs_temp_id ++;
+        });
+    } else { }
+    if (responseGetData.asignados.arriendos.length > 0) {
+ 
+        responseGetData.asignados.arriendos.forEach(subRent => {
+            // global variable fomr otherCosts.js vvv
+            _subRentsToAssign.push({
+                'detalle': subRent.detalle,
+                'proveedor_id': subRent.proveedor_id,
+                'valor': subRent.valor
+            })
+            printNewRow_subRent();
         });
     } else { }
 

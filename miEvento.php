@@ -25,7 +25,7 @@ require_once('./includes/head.php');
                         <li class="breadcrumb-item active" aria-current="page"><a class="txtDec-no" href="#">Crear evento</a></li>
                     </ol>
                 </nav>
-                <p class="headerTitle" style="margin:-13px 0px 16px 0px!important;">Crear un nuevo eventoeventoevento</p>
+                <p class="headerTitle" style="margin:-13px 0px 16px 0px!important;">Crear un nuevo evento</p>
             </header>
 
             <div class="pageContent">
@@ -157,6 +157,7 @@ require_once('./includes/head.php');
     <script src="./js/productos.js"></script>
     <script src="./js/evento/eventoController.js"></script>
     <script src="./js/rendiciones.js"></script>
+    <script src="./js/otherCosts.js"></script>
     <!-- VALIDATE FORM -->
     <script src="./js/validateForm/addNewFreeLance.js"></script>
     <script src="./js/validateForm/addNewProvider.js"></script>

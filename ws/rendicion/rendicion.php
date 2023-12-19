@@ -84,7 +84,7 @@ function removeAllAccountablesFromEvent($event_id,$empresa_id){
     }
 
     $queryDeleteSchedules = "DELETE FROM u136839350_intec.proyecto_has_rendicion
-    WHERE event_id = $empresa_id; ";
+    WHERE event_id = $event_id; ";
 
     if($conn->mysqli->query($queryDeleteSchedules)){
         return array("success"=>true,"message"=>"Accountables has been removed from event successfully");

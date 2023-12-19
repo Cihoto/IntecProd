@@ -155,11 +155,11 @@ async function SaveOrUpdateEvent() {
   assignvehicleToProject(requestVehicle);
 
 
-// SAVE RENDIICONES
+// SAVE RENDICONES
 const requestRendicion = allRendiciones
 .map((rendicion)=>{
   return {
-    'detalle' :rendicion.detalle,
+      'detalle' :rendicion.detalle,
       'personal_id' :rendicion.personal_id,
       'monto' :parseInt(ClpUnformatter(rendicion.monto)) ,
       'fecha' :rendicion.fecha,
@@ -167,6 +167,22 @@ const requestRendicion = allRendiciones
     }
   });
   assignRendicionToEvent(requestRendicion,EMPRESA_ID,event_data.event_id);
+
+
+  // SAVE OTHER PRODUCTS
+  const requestOtherProds = _allMyOtherCosts
+  .map((cost)=>{
+    return{
+      'name' : cost.name,
+      'cantidad' : cost.cantidad,
+      'monto' : cost.monto
+    }
+  });
+  assignOtherCostsToEvent(requestOtherProds,EMPRESA_ID,event_data.event_id);
+
+  // SAVE OTHER SUBRENTS
+
+  assignSubRentToEvent(_subRentsToAssign,EMPRESA_ID,event_data.event_id);
 }
 
 function createNewEvent(requestProject) {
@@ -381,6 +397,52 @@ async function assignRendicionToEvent(request,empresa_id,event_id) {
       dataType: 'json',
       success: function (response) {
         console.log("RESPONSE AGIGNACION assignRendicionToEvent", response);
+      },
+      error: function (response) {
+        console.log(response.responseText);
+      }
+    })
+  } catch (e) {
+    console.log(e);
+  }
+}
+async function assignOtherCostsToEvent(request,empresa_id,event_id) {
+  try {
+    return $.ajax({
+      type: "POST",
+      url: 'ws/otherCosts/otherCosts.php',
+      data: JSON.stringify({
+        'action' : "assignOtherCostsToEvent",
+        'request' : request,
+        'empresa_id' : empresa_id,
+        'event_id' : event_id
+      }),
+      dataType: 'json',
+      success: function (response) {
+        console.log("RESPONSE AGIGNACION assignOtherCostsToEvent", response);
+      },
+      error: function (response) {
+        console.log(response.responseText);
+      }
+    })
+  } catch (e) {
+    console.log(e);
+  }
+}
+async function assignSubRentToEvent(request,empresa_id,event_id) {
+  try {
+    return $.ajax({
+      type: "POST",
+      url: 'ws/subRent/subRent.php',
+      data: JSON.stringify({
+        'action' : "assignSubRentToEvent",
+        'request' : request,
+        'empresa_id' : empresa_id,
+        'event_id' : event_id
+      }),
+      dataType: 'json',
+      success: function (response) {
+        console.log("RESPONSE AGIGNACION assignSubRentToEvent", response);
       },
       error: function (response) {
         console.log(response.responseText);

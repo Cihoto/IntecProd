@@ -66,110 +66,126 @@
                 <p id="" class="resumeDetail"></p>
             </div>
         </div>
-        <table id="total-productResume" style="margin-bottom: 40px;">
-            <thead>
-                <tr style="height: 50px;">
-                    <th colspan="2" style="width: 70%;">
-                        <p style="font-size: 24px;font-weight: 700;">Ingresos del evento</p>
-                    </th>
-                    <th style="width: 30%;" id="totalPrice-equipos">$0</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-        <table id="total-othersResume">
-            <thead>
-                <tr>
-                    <th colspan="2" style="width: 70%;">Otros</th>
-                    <th id="totalOthers">$0</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
+        <div id="resumeEventTableContainer">
+            <table class="s-resumeProjectTable" id="total-productResume" style="margin-bottom: 40px;">
+                <thead>
+                    <tr style="height: 50px;">
+                        <th colspan="2" style="width: 70%;">
+                            <p style="font-size: 24px;font-weight: 700;">Ingresos del evento</p>
+                        </th>
+                        <th style="width: 30%;" id="totalPrice-equipos">$0</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <table class="s-resumeProjectTable" id="total-othersResume">
+                <thead>
+                    <tr>
+                        <th colspan="2" style="width: 70%;">Otros</th>
+                        <th id="totalOthers">$0</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
 
-            </tfoot>
-        </table>
+                </tfoot>
+            </table>
 
-        <table>
-            <thead>
-                <tr style="height: 50px;">
-                    <th colspan="2" style="width: 70%;">
-                        <p style="font-size: 24px;font-weight: 700;">Costos del evento</p>
-                    </th>
-                    <th style="width: 30%;" id="totalCost-project"></th>
-                </tr>
-            </thead>
-        </table>
-        <table id="total-personalResume">
-            <thead>
-                <tr>
-                    <th colspan="2" style="width: 70%;">Personas</th>
-                    <th style="width: 30%;"></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-            </tfoot>
-        </table>
+            <table class="s-resumeProjectTable">
+                <thead>
+                    <tr style="height: 50px;">
+                        <th colspan="2" style="width: 70%;">
+                            <p style="font-size: 24px;font-weight: 700;">Costos del evento</p>
+                        </th>
+                        <th style="width: 30%;" id="totalCost-project"></th>
+                    </tr>
+                </thead>
+            </table>
+            <table class="s-resumeProjectTable" id="total-personalResume">
+                <thead>
+                    <tr>
+                        <th colspan="2" style="width: 70%;">Personas</th>
+                        <th style="width: 30%;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
 
-        <table id="total-vehiculosResume">
-            <thead>
-                <tr>
-                    <th colspan="2" style="width: 70%;">Vehículos</th>
-                    <th style="width: 30%;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="col-4"></td>
-                    <td>Propios</td>
-                    <td id="totalVehiculosPropios"></td>
-                </tr>
-                <tr>
-                    <td class="col-4"></td>
-                    <td>Externos</td>
-                    <td id="totalVehiculosExternos"></td>
-                </tr>
-            </tbody>
-            <tfoot>
-            </tfoot>
-        </table>
+            <table class="s-resumeProjectTable" id="total-vehiculosResume">
+                <thead>
+                    <tr>
+                        <th colspan="2" style="width: 70%;">Vehículos</th>
+                        <th style="width: 30%;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-4"></td>
+                        <td>Propios</td>
+                        <td id="totalVehiculosPropios"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-4"></td>
+                        <td>Externos</td>
+                        <td id="totalVehiculosExternos"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
 
-        <table id="total-SubArriendosResume">
-            <thead>
-                <tr>
-                    <th style="width: 70%;">Sub Arriendos</th>
-                    <th id="totalSubArriendos">$0</th>
-                </tr>
-            </thead>
-            <tbody>
+            <table class="s-resumeProjectTable" id="total-SubArriendosResume">
+                <thead>
+                    <tr>
+                        <th style="width: 70%;">Sub Arriendos</th>
+                        <th id="totalSubArriendos">$0</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-            </tbody>
-            <tfoot>
+                </tbody>
+                <tfoot>
 
-            </tfoot>
-        </table>
-        <table style="margin-top: 50px;">
-            <thead>
-                <tr style="padding: 15px;">
-                    <th class="utev" style="width: 70%;">Utilidad Evento</th>
-                    <th class="utev" id="utilidadEvento">$0</th>
-                </tr>
-                <tr style="padding: 15px;">
-                    <th class="utev" style="width: 70%;">Margen Operacional</th>
-                    <th class="utev" id="margfenOperacional">$0</th>
-                </tr>
-            </thead>
-            <tbody>
+                </tfoot>
+            </table>
+            <table class="s-resumeProjectTable" id="total-otherCostsResume">
+                <thead>
+                    <tr>
+                        <th colspan="2" style="width: 70%;">Otros</th>
+                        <th style="width: 30%;" id="totalOtherCosts-resume">111</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--DINAMYC CONTENT -->
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+            <table class="s-resumeProjectTable" style="margin-top: 50px;">
+                <thead>
+                    <tr style="padding: 15px;">
+                        <th class="utev" style="width: 70%;">Utilidad Evento</th>
+                        <th class="utev" id="utilidadEvento">$0</th>
+                    </tr>
+                    <tr style="padding: 15px;">
+                        <th class="utev" style="width: 70%;">Margen Operacional</th>
+                        <th class="utev" id="margfenOperacional">$0</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-            </tbody>
-            <tfoot>
+                </tbody>
+                <tfoot>
 
-            </tfoot>
-        </table>
+                </tfoot>
+            </table>
+        </div>
+
     </div>
 </div>
 <div class="projectSave-footer">

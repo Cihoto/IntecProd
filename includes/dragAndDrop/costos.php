@@ -80,7 +80,8 @@
             </div>
             <div id="othersAcordion" class="collapse pt-1" aria-labelledby="subArriendo-Heading" data-parent="#cardAccordion">
                 <div class="card-body">
-                    <p>Otros</p>
+                    <!-- <p>Otros</p> -->
+                    <?php require_once('./includes/dragAndDrop/dragOtherCosts.php');?>
                 </div>
             </div>
         </div>
