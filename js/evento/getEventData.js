@@ -223,10 +223,8 @@ async function getAllProjectData(event_id, empresa_id) {
                 <a href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/Ev${event_data.event_id}/bsd${file.name}" download>${file.name}</a>
             </div>`
             $('#fileListContainer').append(fileContainer)
-        })
-
+        });
         printOthersProds();;
         setIngresos();
     }
-   
 }

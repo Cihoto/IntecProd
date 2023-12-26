@@ -274,17 +274,16 @@ function getProjectResume($request)
         WHERE phf.event_id = $idProject;";
     }
 
-    $queryProject = "SELECT  p.nombre_proyecto, p.fecha_inicio, p.fecha_termino,p.comentarios,
-                        d.id as dirId, d.direccion, d.numero,
-                        d.dpto, d.postal_code,c.comuna,r.region, p.id, e.id as estado,
-                        p.event_type_id
-                    FROM proyecto p 
-                    INNER JOIN proyecto_has_estado phe on phe.proyecto_id  = p.id 
-                    INNER JOIN estado e on e.id = phe.estado_id 
-                    LEFT JOIN direccion d on d.id = p.address_id
-                    LEFT JOIN comuna c ON c.id = d.comuna_id
-                    LEFT JOIN region r ON r.id = c.region_id
-                    WHERE p.id = $idProject";
+    $queryProject = "   SELECT  p.nombre_proyecto, p.fecha_inicio, p.fecha_termino,p.comentarios,
+    d.id as dirId, d.direccion, d.numero,
+    d.dpto, d.postal_code,c.comuna,r.region, p.id, e.id as estado,
+    p.event_type_id
+    FROM proyecto p 
+    INNER JOIN estado e on e.id = p.status_id  
+    LEFT JOIN direccion d on d.id = p.address_id
+    LEFT JOIN comuna c ON c.id = d.comuna_id
+    LEFT JOIN region r ON r.id = c.region_id
+    WHERE p.id = $idProject";
 
     if ($responseBd = $conn->mysqli->query($queryProject)) {
         while ($dataProject = $responseBd->fetch_object()) {
