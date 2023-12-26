@@ -120,14 +120,19 @@ function setEgresos(){
     })
 
 
-    $('#totalVehiculosPropios').text(CLPFormatter(totalPropios))
-    $('#totalVehiculosExternos').text(CLPFormatter(totalExternos))
+    $('#totalVehiculosPropios').text(CLPFormatter(totalPropios));
+    $('#totalVehiculosExternos').text(CLPFormatter(totalExternos));
 
     let subArriendototal = 0;
     _subRentsToAssign.forEach((subRent)=>{
-        subArriendototal += subRent.valor;
+        subArriendototal += parseInt(subRent.valor) ;
+        let tr = `<tr>
+            <td class="col-4"></td>
+            <td>${subRent.detalle}</td>
+            <td>${CLPFormatter(subRent.valor)}</td>
+        </tr>`;
+        $('#total-SubArriendosResume tbody').append(tr);
     });
-
     // section others costs
     $('#total-otherCostsResume tbody tr').remove()
     let totalOthersCosts = 0;
@@ -135,10 +140,9 @@ function setEgresos(){
         totalOthersCosts += parseInt(cost.monto); 
         let tr = `<tr>
             <td class="col-4"></td>
-            <td>${cost.name}</td>
-            <td>${CLPFormatter(cost.monto)}</td>
+            <td>${cost.detalle}</td>
+            <td>${CLPFormatter(cost.valor)}</td>
         </tr>`
-
         $('#total-otherCostsResume tbody').append(tr);
     });
 
@@ -150,7 +154,8 @@ function setEgresos(){
     $('#totalCost-project').text(CLPFormatter(parseInt(totalCosts)));
     // SET AND WRITE TOTAL 
 
-    $('#totalSubArriendos').text(CLPFormatter(subArriendototal));
+    $('#totalSubArriendos-resume').text(CLPFormatter(subArriendototal));
+    // $('#total-SubArriendosResume').text(CLPFormatter(subArriendototal));
 
     $('#totalOtherCosts-resume').text(CLPFormatter(totalOthersCosts));
 

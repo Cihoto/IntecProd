@@ -139,7 +139,7 @@
                 </tfoot>
             </table>
 
-            <table class="s-resumeProjectTable" id="total-SubArriendosResume">
+            <!-- <table class="s-resumeProjectTable" id="total-SubArriendosResume">
                 <thead>
                     <tr>
                         <th style="width: 70%;">Sub Arriendos</th>
@@ -152,12 +152,25 @@
                 <tfoot>
 
                 </tfoot>
+            </table> -->
+            <table class="s-resumeProjectTable" id="total-SubArriendosResume">
+                <thead>
+                    <tr>
+                        <th colspan="2" style="width: 70%;">Sub Arriendos</th>
+                        <th style="width: 30%;" id="totalSubArriendos-resume"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--DINAMYC CONTENT -->
+                </tbody>
+                <tfoot>
+                </tfoot>
             </table>
             <table class="s-resumeProjectTable" id="total-otherCostsResume">
                 <thead>
                     <tr>
                         <th colspan="2" style="width: 70%;">Otros</th>
-                        <th style="width: 30%;" id="totalOtherCosts-resume">111</th>
+                        <th style="width: 30%;" id="totalOtherCosts-resume"></th>
                     </tr>
                 </thead>
                 <tbody>

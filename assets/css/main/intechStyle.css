@@ -1929,29 +1929,45 @@ body{
 .theme-dark #personalResumeAssigment thead{
   background-color: #1e1e2d !important;
 } */
+
+#personalResumeAssigment{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+
 #personalResumeAssigment thead tr{
-
-}
-
-#personalResumeAssigment tr{
   display: flex;
-  width: 784px;
-  padding:  0px;
+  width: 100%;
+  padding: var(--none, 0px);
   align-items: center;
-  gap:  8px;
-  border-radius:  0px;
-  border-bottom: 1px solid  rgba(0, 0, 0, 0.12);
-  background:  #E8F3F3;
+  gap: var(--1, 8px);
+  border-radius: var(--none, 0px);
+  border-top: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-right: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-bottom: 1px solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-left: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  background: var(--Fondo-cyan, #E8F3F3);
 }
-
-#personalResumeAssigment td,#personalResumeAssigment th {
+#personalResumeAssigment thead th,#personalResumeAssigment tbody td{
   display: flex;
-  width: 144px;
+  width: 19.1%;
   padding: 16px;
   align-items: center;
   flex-shrink: 0;
-  border: none;
 }
+
+#personalResumeAssigment tbody tr{
+  display: flex;
+  width:100%;
+  padding: var(--none, 0px);
+  align-items: center;
+  gap: var(--1, 8px);
+}
+
+
+
 
 #personalResumeAssigment td p{
   margin: 0px !important;
@@ -1960,13 +1976,9 @@ body{
 
 #personalResumeAssigment tbody tr:hover{
   border-radius: var(--none, 0px);
-
   border: 1px solid var(--Warning, #EF6C00);
   background: var(--Warning-light, #FFE3CC);
 }
-
-
-
 
 .tableContainer{
   max-height: 300px;
@@ -1974,8 +1986,6 @@ body{
   overflow-x: hidden;
   scrollbar-width: none;
 }
-
-
 
 #selectedPersonalSideResume{
   width: 100%;
@@ -2202,11 +2212,11 @@ body{
   align-items: center;
   gap: var(--1, 8px);
   cursor : default;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 #allVehiclesTable tbody tr:hover{
-  background-color: #069b995f;
+  background-color: #069b993a;
 }
 
 #allVehiclesTable td, #allVehiclesTable th{
@@ -2455,7 +2465,7 @@ body{
 
 #allProjectTable-list td,#allProjectTable-list th{
   border-spacing: 0;
-  padding:15px;
+  padding:16px;
   text-align: start;
 }
 

@@ -184,30 +184,22 @@ function AddProduct(el) {
     }]
 
     const addProd = setSelectedProduct_AddNewProducts(prodsToAdd);
+
     _searchProductValue = $('#tableProducts_filter').find('input[type="search"]').val();
+
     let indexTab = $("#tableProducts").DataTable().page();
-    printAllProductsOnTable();
+    printAllProductsOnTableFromPrevSearch(_searchProductValue,indexTab);
     setCategoriesAndSubCategories();
     printAllSelectedProducts();
     setIngresos();
 
-    $('#tableProducts_filter').find('input[type="search"]').val(_searchProductValue);
+    // $('#tableProducts_filter').find('input').val(_searchProductValue);
     // $("#tableProducts").DataTable().page(indexTab);
 
-    $("#tableProducts").DataTable().page(indexTab).draw(false)
 
 
     isProdQuantitySelected = false;
     prodQuantityElementSelected = "";
-
-    console.log("CAMBIE EL ESTADO DE ESTOOOOO")
-    console.log("CAMBIE EL ESTADO DE ESTOOOOO")
-    console.log("CAMBIE EL ESTADO DE ESTOOOOO")
-    console.log("CAMBIE EL ESTADO DE ESTOOOOO")
-    console.log("CAMBIE EL ESTADO DE ESTOOOOO")
-    console.log("CAMBIE EL ESTADO DE ESTOOOOO")
-
-    console.log(_selectedProducts)
 
     if (addProd) {
       Toastify({
@@ -231,8 +223,6 @@ function AddProduct(el) {
     })
   }
 }
-
-
 
 
 // AGREGAR UN ITEM A LA TABLA DE RESUMEN A UN COSTADO DE 
@@ -411,8 +401,8 @@ $(document).on('blur', '.addProdInputResume', async function () {
         'quantityToAdd': quantityToAdd
       }]
       const removedProducts = setSelectedProduct_AddNewProducts(productsToAdd);
-      console.log("CATSANDSUBCATS", _categoriesandsubcategories);
-      console.log("selectedprods", _selectedProducts);
+      // console.log("CATSANDSUBCATS", _categoriesandsubcategories);
+      // console.log("selectedprods", _selectedProducts);
       setCategoriesAndSubCategories();
       printAllProductsOnTable();
       printAllSelectedProducts();
@@ -429,8 +419,8 @@ $(document).on('blur', '.addProdInputResume', async function () {
         'quantity': quantityToRemove
       }]
       const removedProducts = setSelectedProduct_RemoveProducts(productsToRemove);
-      console.log("CATSANDSUBCATS", _categoriesandsubcategories);
-      console.log("selectedprods", _selectedProducts);
+      // console.log("CATSANDSUBCATS", _categoriesandsubcategories);
+      // console.log("selectedprods", _selectedProducts);
       setCategoriesAndSubCategories();
       printAllProductsOnTable();
       printAllSelectedProducts();
@@ -439,12 +429,6 @@ $(document).on('blur', '.addProdInputResume', async function () {
     }
   }else{
 
-      console.log("CURRENTVALUE",currentValue);
-      console.log("CURRENTVALUE",currentValue);
-      console.log("CURRENTVALUE",currentValue);
-      console.log("CURRENTVALUE",currentValue);
-      console.log("CURRENTVALUE",currentValue);
-      console.log("CURRENTVALUE",currentValue);
     if(parseInt(currentValue) > 0)  {
       product_id
 
@@ -915,7 +899,7 @@ function setCategoriesAndSubCategories() {
   _categoriesandsubcategories = catAndSubcats;
 }
 
-function printAllProductsOnTable() {
+function printAllProductsOnTable(searchValue,indexTab){
 
   if ($.fn.DataTable.isDataTable('#tableProducts')) {
     $('#tableProducts').DataTable().destroy();
@@ -937,6 +921,29 @@ function printAllProductsOnTable() {
   $('#tableProducts').dataTable();
 }
 
+function printAllProductsOnTableFromPrevSearch(searchValue,indexTab){
+
+  if ($.fn.DataTable.isDataTable('#tableProducts')) {
+    $('#tableProducts').DataTable().destroy();
+    $('#tableDrop > tr').each((key, element) => {
+      $(element).remove();
+    })
+  }
+  _productos.forEach((producto) => {
+    let td = `
+        <td class="catProd"> ${producto.categoria}</td>
+        <td class="itemProd"> ${producto.item}</td>
+        <td style="width:25%" class="productName">${producto.nombre}</td>
+        <td class="productStock" >${producto.cantidad}</td>
+        <td class="productAvailable">${(producto.disponibles) < 0 ? 0 : producto.disponibles}</td>
+        <td><input style="margin-right:8px" class="addProdInput quantityToAdd quantityProductInput" id="" type="number" min="1"/><i class="fa-solid fa-plus addItem" onclick="AddProduct(this)"></i></td>`
+    $('#tableDrop').append(`<tr product_id="${producto.id}">${td}</tr>`);
+  });
+
+  $('#tableProducts').dataTable();
+  $("#tableProducts").DataTable().page(indexTab).draw(false)
+  $('#tableProducts_filter').find('input[type="search"]').val(searchValue);
+}
 
 
 function printAllSelectedProducts() {

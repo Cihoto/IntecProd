@@ -25,7 +25,6 @@
                         <div class="form-group">
                             <label for="especialidadSelect" class="inputLabel">*Especialidad</label>
                             <select id="especialidadSelect" name="especialidadSelect" type="text" class="form-select input-lg s-Select">
-                                <option value="uno">Uno</option>
                             </select>
                         </div>
                     </div>

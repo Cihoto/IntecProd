@@ -196,8 +196,9 @@ async function getAllProjectData(event_id, empresa_id) {
                 'proveedor_id': subRent.proveedor_id,
                 'valor': subRent.valor
             })
-            printNewRow_subRent();
         });
+        printNewRow_subRent();
+        setEgresos();
     } else { }
 
     responseGetData.dataProject.forEach(data => {

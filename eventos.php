@@ -6,8 +6,6 @@ $title = "Mis Eventos";
 <html lang="en">
 <?php
 require_once('./includes/head.php');
-
-
 ?>
 
 <body>
@@ -36,21 +34,36 @@ require_once('./includes/head.php');
                     <p class="header-P">Aquí puedes ver y editar tus eventos</p>
                 </div>
 
+                <div style="display: flex; justify-content: space-between;margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;">
 
-                <div class="row" style="margin-left: 0px;margin-bottom: -16px; justify-content: space-between;width: 100%;">
-
-                    <button class="s-Button-w">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
-                            <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        <p class="s-P-g">Filtros</p>
-                    </button>
-
+                    <div class="row" style="margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;">
+    
+                        <!-- <button class="s-Button-w">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+                                <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <p class="s-P-g">Filtros</p>
+                        </button> -->
+                        <button class="s-Button-w" id="sortAllMyEvents">
+                            <p class="s-P-g">Todos</p>
+                        </button>
+                        <button class="s-Button-w" id="sortDrafEvents">
+                            <p class="s-P-g">Borradores</p>
+                        </button>
+                        <button class="s-Button-w" id = "sortSells">
+                            <p class="s-P-g">Ventas</p>
+                        </button>
+                        <button class="s-Button-w"  id="sortOperationalEvents">
+                            <p class="s-P-g">Operaciones</p>
+                        </button>
+                        <button class="s-Button-w" style="width: 125px;" id="sortAdmEvents">
+                            <p class="s-P-g">Administración</p>
+                        </button>
+                    </div>
                     <button class="s-Button" id="openModalNewFree">
-                        <p class="s-P">Crear técnico</p>
+                        <p class="s-P">Crear evento</p>
                     </button>
                 </div>
-
 
 
                 <table class="resume-table s-table" id="allProjectTable-list">
@@ -79,12 +92,12 @@ require_once('./includes/head.php');
                                 <p>Owner</p>
                             </th>
                             <th style="width: 14.15%;">
-
+                                <p>Asignación</p> 
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <!-- <tr>
                             <td style="width: 17.8226514%;">
                                 <p class="event-name"> Fiesta fin de año </p>
                                 <button class="commentContainer">
@@ -123,8 +136,8 @@ require_once('./includes/head.php');
                                     <img src="./assets/svg/VehicleNoActive.svg" alt="">
                                 </button>
                             </td>
-                        </tr>
-                        <tr>
+                        </tr>  -->
+                        <!-- <tr>
                             <td style="width: 17.8226514%;">
                                 <p class="event-name"> Fiesta fin de año </p>
                                 <button class="commentContainer">
@@ -243,15 +256,11 @@ require_once('./includes/head.php');
                                     <img src="./assets/svg/VehicleActive.svg" alt="">
                                 </button>
                             </td>
-                        </tr>
+                        </tr>-->
                     </tbody>
                     <tfoot>
-
                     </tfoot>
                 </table>
-
-
-
             </div>
         </div>
     </div>
@@ -264,11 +273,12 @@ require_once('./includes/head.php');
 
 <script src="/js/eventList.js"></script>
 <script src="./js/const/projectToSearch.js"></script>
+<script src="./js/sortTable/eventSort.js"></script>
 
 <script>
+    const EMPRESA_ID = <?php echo $empresaId; ?>;
+    const ROL_ID = <?php echo json_encode($rol_id); ?>;
     $(document).ready(function() {
-        const EMPRESA_ID = <?php echo $empresaId; ?>;
-        const ROL_ID = <?php echo json_encode($rol_id); ?>;
         getEvents(EMPRESA_ID);
     })
 
@@ -279,7 +289,12 @@ require_once('./includes/head.php');
         project_id_to_search = EVENT_ID;
         console.log(project_id_to_search)
         window.location = `/miEvento.php?event_id=${EVENT_ID}`
-    })
+    });
+
+
+
+
+
 </script>
 
 </html>

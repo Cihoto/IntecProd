@@ -62,6 +62,27 @@ if ($_POST) {
             $empresa_id = $data->empresa_id;
             $result = json_encode(removeAddressFromEvent($empresa_id, $event_id));
             break;
+        case 'getAllMyEvents':
+            $empresa_id = $data->empresa_id;
+            $result = json_encode(getAllMyEvents($empresa_id));
+            break;
+        case 'getEventByStatus_id':
+            $empresa_id = $data->empresa_id;
+            $status_id = $data->status_id;
+            $result = json_encode(getEventByStatus_id($empresa_id,$status_id));
+            break;
+        case 'getOperEvents':
+            $empresa_id = $data->empresa_id;
+            $result = json_encode(getOperEvents($empresa_id));
+            break;
+        case 'getSellsEvents':
+            $empresa_id = $data->empresa_id;
+            $result = json_encode(getSellsEvents($empresa_id));
+            break;
+        case 'getAdmEvents':
+            $empresa_id = $data->empresa_id;
+            $result = json_encode(getAdmEvents($empresa_id));
+            break;
         default:
             $result = false;
             break;
@@ -612,20 +633,27 @@ function getAllMyProjects_list_toExecute($empresa_id)
     $today = date('Y-m-d');
 
     $projects = [];
-    $queryProyectos = "SELECT p.id, p.nombre_proyecto,e.estado , 
+    $queryProyectos = "SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',
     CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
     CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
-    p.fecha_inicio ,p.fecha_termino
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
             FROM proyecto p
-    INNER JOIN proyecto_has_estado phe ON  phe.proyecto_id  = p.id 
-    left JOIN estado e on e.id = phe.estado_id 
-    LEFT  JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
+    LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
+    LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
+    LEFT JOIN estado e on e.id = p.status_id
+    LEFT JOIN lugar l on l.id = p.lugar_id 
     LEFT JOIN direccion d on d.id = l.direccion_id 
     LEFT JOIN cliente c on c.id  = p.cliente_id         
     LEFT JOIN persona per on per.id = c.persona_id_contacto
     LEFT JOIN comuna co on co.id = d.comuna_id 
     LEFT JOIN region re on re.id = co.region_id 
-    where p.empresa_id = 1 and p.fecha_inicio >= '2023-11-23';";
+    WHERE p.empresa_id = $empresa_id 
+    AND p.status_id IN (2,4)
+    AND p.fecha_inicio >= '$today'
+    group by p.id
+	ORDER BY p.fecha_inicio asc;";
+// -- where p.empresa_id = 1 and p.fecha_inicio >= '2023-11-23'
 
     // return $queryProyectos;
     if ($responseBd = $conn->mysqli->query($queryProyectos)) {
@@ -633,7 +661,313 @@ function getAllMyProjects_list_toExecute($empresa_id)
             $projects[] = $dataProject;
         }
     }
+    
+    // return $queryProyectos;
     return $projects;
+}
+
+
+function getAllMyEvents($empresa_id){
+    $conn = new bd();
+    $conn->conectar();
+    $empresa_id = $empresa_id;
+    $today = date('Y-m-d');
+    $projects_with_Date = [];
+    $projects_without_Date = [];
+    $queryProyectos_with_date = "SELECT p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
+    CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
+    CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+            FROM proyecto p
+    LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
+    LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
+    LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
+    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN direccion d on d.id = l.direccion_id 
+    LEFT JOIN cliente c on c.id  = p.cliente_id         
+    LEFT JOIN persona per on per.id = c.persona_id_contacto
+    LEFT JOIN comuna co on co.id = d.comuna_id 
+    LEFT JOIN region re on re.id = co.region_id 
+    WHERE p.empresa_id = $empresa_id
+    AND p.fecha_inicio IS NOT NULL
+    group by p.id
+	ORDER BY p.fecha_inicio desc;";
+
+
+    $queryProyectos_without_date = "SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',
+    CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
+    CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+            FROM proyecto p
+    LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
+    LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
+    LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
+    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN direccion d on d.id = l.direccion_id 
+    LEFT JOIN cliente c on c.id  = p.cliente_id         
+    LEFT JOIN persona per on per.id = c.persona_id_contacto
+    LEFT JOIN comuna co on co.id = d.comuna_id 
+    LEFT JOIN region re on re.id = co.region_id 
+    WHERE p.empresa_id = $empresa_id
+    AND p.fecha_inicio IS NULL
+    group by p.id
+	ORDER BY p.createAt desc;";
+
+    // return $queryProyectos_with_date;
+    if ($responseBd = $conn->mysqli->query($queryProyectos_with_date)) {
+        while ($dataProject = $responseBd->fetch_object()) {
+            $projects_with_Date[] = $dataProject;
+        }
+    }
+    if ($responseBd = $conn->mysqli->query($queryProyectos_without_date)) {
+        while ($dataProject = $responseBd->fetch_object()) {
+            $projects_without_Date[] = $dataProject;
+        }
+    }
+
+
+    return array("wd"=>$projects_with_Date,"woutd"=>$projects_without_Date);
+}
+
+
+function  getEventByStatus_id($empresa_id,$status_id){
+    $conn = new bd();
+    $conn->conectar();
+    $empresa_id = $empresa_id;
+    $today = date('Y-m-d');
+    $projects_with_Date = [];
+    $projects_without_Date = [];
+    $queryProyectos_with_date = "SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',
+    CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
+    CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+            FROM proyecto p
+    LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
+    LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
+    LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
+    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN direccion d on d.id = l.direccion_id 
+    LEFT JOIN cliente c on c.id  = p.cliente_id         
+    LEFT JOIN persona per on per.id = c.persona_id_contacto
+    LEFT JOIN comuna co on co.id = d.comuna_id 
+    LEFT JOIN region re on re.id = co.region_id 
+    WHERE p.empresa_id = $empresa_id
+    AND p.fecha_inicio IS NOT NULL
+    AND p.status_id = $status_id
+    group by p.id
+	ORDER BY p.fecha_inicio desc;";
+
+    $queryProyectos_without_date = "SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',
+    CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
+    CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+            FROM proyecto p
+    LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
+    LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
+    LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
+    LEFT JOIN estado e on e.id = p.status_id  
+    LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN direccion d on d.id = l.direccion_id 
+    LEFT JOIN cliente c on c.id  = p.cliente_id         
+    LEFT JOIN persona per on per.id = c.persona_id_contacto
+    LEFT JOIN comuna co on co.id = d.comuna_id 
+    LEFT JOIN region re on re.id = co.region_id 
+    WHERE p.empresa_id = $empresa_id
+    AND p.fecha_inicio IS NULL
+    AND p.status_id = $status_id
+    group by p.id
+	ORDER BY p.createAt desc;";
+
+    // return $queryProyectos_with_date;
+    if ($responseBd = $conn->mysqli->query($queryProyectos_with_date)) {
+        while ($dataProject = $responseBd->fetch_object()) {
+            $projects_with_Date[] = $dataProject;
+        }
+    }
+    if ($responseBd = $conn->mysqli->query($queryProyectos_without_date)) {
+        while ($dataProject = $responseBd->fetch_object()) {
+            $projects_without_Date[] = $dataProject;
+        }
+    }
+    return array("wd"=>$projects_with_Date,"woutd"=>$projects_without_Date);
+}
+
+function getOperEvents($empresa_id){
+    $conn = new bd();
+    $conn->conectar();
+    $empresa_id = $empresa_id;
+    $today = date('Y-m-d');
+    $projects_with_Date = [];
+    $projects_without_Date = [];
+
+    $queryProyectos_with_date = "SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
+    CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
+    CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+            FROM proyecto p
+    LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
+    LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
+    LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
+    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN direccion d on d.id = l.direccion_id 
+    LEFT JOIN cliente c on c.id  = p.cliente_id         
+    LEFT JOIN persona per on per.id = c.persona_id_contacto
+    LEFT JOIN comuna co on co.id = d.comuna_id 
+    LEFT JOIN region re on re.id = co.region_id 
+    WHERE p.empresa_id  = 1
+    AND p.status_id in(1,2)
+    AND p.fecha_inicio IS NOT NULL
+    AND p.fecha_inicio >= '$today' 
+    GROUP BY p.id
+	ORDER BY p.fecha_inicio desc;";
+
+
+    $queryProyectos_without_date = "SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
+    CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
+    CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+            FROM proyecto p
+    LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
+    LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
+    LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
+    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN direccion d on d.id = l.direccion_id 
+    LEFT JOIN cliente c on c.id  = p.cliente_id         
+    LEFT JOIN persona per on per.id = c.persona_id_contacto
+    LEFT JOIN comuna co on co.id = d.comuna_id 
+    LEFT JOIN region re on re.id = co.region_id 
+    WHERE p.empresa_id  = 1
+    AND p.status_id in(1,2)
+    AND p.fecha_inicio IS NULL 
+    GROUP BY p.id
+	ORDER BY p.createAt desc;";
+
+    // return $queryProyectos_with_date;
+    if ($responseBd = $conn->mysqli->query($queryProyectos_with_date)) {
+        while ($dataProject = $responseBd->fetch_object()) {
+            $projects_with_Date[] = $dataProject;
+        }
+    }
+    if ($responseBd = $conn->mysqli->query($queryProyectos_without_date)) {
+        while ($dataProject = $responseBd->fetch_object()) {
+            $projects_without_Date[] = $dataProject;
+        }
+    }
+
+// return $queryProyectos_with_date;
+    return array("wd"=>$projects_with_Date,"woutd"=>$projects_without_Date);
+}
+function getSellsEvents($empresa_id){
+    $conn = new bd();
+    $conn->conectar();
+    $empresa_id = $empresa_id;
+    $today = date('Y-m-d');
+    $projects_with_Date = [];
+    $projects_without_Date = [];
+
+    $queryProyectos_with_date = "SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
+    CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
+    CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+            FROM proyecto p
+    LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
+    LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
+    LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
+    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN direccion d on d.id = l.direccion_id 
+    LEFT JOIN cliente c on c.id  = p.cliente_id         
+    LEFT JOIN persona per on per.id = c.persona_id_contacto
+    LEFT JOIN comuna co on co.id = d.comuna_id 
+    LEFT JOIN region re on re.id = co.region_id 
+    WHERE p.empresa_id  = 1
+    AND p.status_id = 4
+    AND p.fecha_inicio IS NOT NULL
+    AND p.fecha_inicio >= '$today' 
+    GROUP BY p.id
+	ORDER BY p.fecha_inicio desc;";
+
+    if ($responseBd = $conn->mysqli->query($queryProyectos_with_date)) {
+        while ($dataProject = $responseBd->fetch_object()) {
+            $projects_with_Date[] = $dataProject;
+        }
+    }
+    return array("wd"=>$projects_with_Date,"woutd"=>$projects_without_Date);
+    
+    // $queryProyectos_without_date = "SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
+    // CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
+    // CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
+    // p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+    //         FROM proyecto p
+    // INNER JOIN proyecto_has_estado phe ON  phe.proyecto_id  = p.id 
+    // LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
+    // LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
+    // LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
+    // LEFT JOIN estado e on e.id = p.status_id 
+    // LEFT JOIN lugar l on l.id = p.lugar_id 
+    // LEFT JOIN direccion d on d.id = l.direccion_id 
+    // LEFT JOIN cliente c on c.id  = p.cliente_id         
+    // LEFT JOIN persona per on per.id = c.persona_id_contacto
+    // LEFT JOIN comuna co on co.id = d.comuna_id 
+    // LEFT JOIN region re on re.id = co.region_id 
+    // WHERE p.empresa_id  = 1
+    // AND p.status_id in(1,2)
+    // AND p.fecha_inicio IS NULL 
+    // GROUP BY p.id
+	// ORDER BY p.createAt desc;";
+
+    // return $queryProyectos_with_date;
+
+    // if ($responseBd = $conn->mysqli->query($queryProyectos_without_date)) {
+    //     while ($dataProject = $responseBd->fetch_object()) {
+    //         $projects_without_Date[] = $dataProject;
+    //     }
+    // }
+
+    // return $queryProyectos_with_date;
+   
+}
+function getAdmEvents($empresa_id){
+    $conn = new bd();
+    $conn->conectar();
+    $empresa_id = $empresa_id;
+    $today = date('Y-m-d');
+    $projects_with_Date = [];
+    $projects_without_Date = [];
+
+    $queryProyectos_with_date = "SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
+    CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
+    CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+            FROM proyecto p
+    LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
+    LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
+    LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
+    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN direccion d on d.id = l.direccion_id 
+    LEFT JOIN cliente c on c.id  = p.cliente_id         
+    LEFT JOIN persona per on per.id = c.persona_id_contacto
+    LEFT JOIN comuna co on co.id = d.comuna_id 
+    LEFT JOIN region re on re.id = co.region_id 
+    WHERE p.empresa_id  = 1
+    AND p.status_id in(3,5)
+    AND p.fecha_termino <= '$today' 
+    GROUP BY p.id
+	ORDER BY p.fecha_termino desc;";
+
+    if ($responseBd = $conn->mysqli->query($queryProyectos_with_date)) {
+        while ($dataProject = $responseBd->fetch_object()) {
+            $projects_with_Date[] = $dataProject;
+        }
+    }
+    return array("wd"=>$projects_with_Date,"woutd"=>$projects_without_Date);
+   
 }
 
 

@@ -11,33 +11,52 @@ async function getEvents(empresa_id){
             "status": 1
         }),
         success: function (response) {
+            console.log(response)
             _projectsToList = response;
-
             // console.log(_projectsToList)
             printAllProjects();
         }
     })
 }
 
-
-
 async function printAllProjects(){
 
-    // $('#allProjectTable-list tbody tr').remove();
+    $('#allProjectTable-list tbody tr').remove();
     _projectsToList.forEach((evento)=>{
-
-
         let color = "";
-        if(evento.estado === "creado"){
 
+        let phf = "";
+        let php = "";
+        let phv = "";
+
+        if(evento.phf == null){
+            phf = `<img src="./assets/svg/ArchiveNoActive.svg" alt="">`;
+        }else{
+            phf = `<img src="./assets/svg/ArchiveActive.svg" alt="">`
         }
-        if(evento.estado === "confirmado"){
+        if(evento.php == null){
+            php = `<img src="./assets/svg/PersonalNoActive.svg" alt="">`;
+        }else{
+            php = `<img src="./assets/svg/PersonalActive.svg" alt="">`
+        }
+        if(evento.phv == null){
+            phv = `<img src="./assets/svg/VehicleNoActive.svg" alt="">`;
+        }else{
+            phv = `<img src="./assets/svg/VehicleActive.svg" alt="">`
+        }
+
+        if(evento.estado == null){
+            evento.estado = "borrador"
+        }
+        if(evento.estado_id === 1){
+            
+        }
+        if(evento.estado_id === 2){
             color = "#27AE60"
         }
-        if(evento.estado === "finalizado"){
+        if(evento.estado_id === 3){
             color = "#7F45E3"
         }
-
 
         if(evento.nombreCliente === null){
             evento.nombreCliente = ""
@@ -67,20 +86,20 @@ async function printAllProjects(){
 
         </td>
         <td style="width: 6.67251975%;padding: 10px 16px 10px 8px;"><p class="event-status ${evento.estado}">${ evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p></td>
-        <td style="width: 12.642669%;"> <p>${evento.fecha_inicio}</p></td>
+        <td style="width: 12.642669%;"> <p>${evento.fecha_inicio == null ? "" : evento.fecha_inicio }</p></td>
         <td style="width: 13.5355575%;"><p class="event-client-name">${evento.nombreCliente}</p></td>
         <td style="width: 10.5355575%;"><p>Tipo de evento</p></td>
         <td style="width: 10.5355575%;"><p>Precio venta</p></td>
         <td style="width: 10.5355575%;"><p>Owner</p></td>
         <td style="width: 14.15%;">
             <button class="buttonEventList">
-                <img src="./assets/svg/ArchiveActive.svg" alt="">
+                ${phf}
             </button>
             <button class="buttonEventList">
-                <img src="./assets/svg/PersonalNoActive.svg" alt="">
+                ${php}
             </button>
             <button class="buttonEventList">
-                <img src="./assets/svg/VehicleActive.svg" alt="">
+                ${phv}
             </button>
         </td>
     </tr>`

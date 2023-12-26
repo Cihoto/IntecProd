@@ -1,15 +1,19 @@
 <div class="row">
-    <div class="card col-12 box" style="max-height: 350px; overflow-y: scroll;overflow-x: hidden;">
+
+    <div class=" col-12" style="max-height: 350px; overflow-y: scroll;overflow-x: hidden;">
         <div class="row">
-            <div class="col-8 mt-3">
-                <h4>Asignar Vehículo</h4>
+            <div class="formHeader" style="margin-left:18px ;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <circle cx="6" cy="6" r="6" fill="#069B99" />
+                    </svg>
+                    <p class="header-P">Asigna vehículos al evento</p>
+                </div>
             </div>
-        </div>
-        <div class="card-body" id="DragVehiculos">
-            <div class="serachInputDrag">
-                <label for="searchInputVehiculo">Búscar Vehiculos: </label>
+        <!-- <div class="card-body" id="DragVehiculos"> -->
+            <!-- <div class="serachInputDrag">
+                <label for="searchInputVehiculo">Búscar Vehiculos:</label>
                 <input type="text" name="" oninput="searchVehiculoDrag()" id="searchInputVehiculo">
-            </div>
+            </div> -->
 
             <section id="vehicles-Assigment-section">
 
@@ -61,7 +65,7 @@
                     </table>
                 </div>
             </section>
-        </div>
+        <!-- </div> -->
     </div>
 </div>
 <div class="projectSave-footer">
