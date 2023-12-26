@@ -22,6 +22,8 @@ async function getEvents(empresa_id){
 async function printAllProjects(){
 
     $('#allProjectTable-list tr').remove();
+
+    
     _projectsToList.forEach((evento)=>{
         let color = "";
 
