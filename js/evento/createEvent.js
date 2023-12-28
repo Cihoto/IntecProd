@@ -54,9 +54,10 @@ async function SaveOrUpdateEvent() {
   console.log("requestProject", requestProject);
 
   if (requestProject.nombre_proyecto === "") {
-    $('#inputProjectName').focus();
+    $('#details-tab')[0].click();
     $('#eventNameMessage').css('visibility', 'visible');
-    return
+    $('#inputProjectName').focus();
+    return false
   }
 
   // create or update project
@@ -81,21 +82,21 @@ async function SaveOrUpdateEvent() {
       'event_id': event_data.event_id
     }
 
-    insertAddressAndAssignToProject($('#dirInput').val(), EMPRESA_ID, event_data.event_id);
+    await insertAddressAndAssignToProject($('#dirInput').val(), EMPRESA_ID, event_data.event_id);
   } else {
-    removeAddressFromEvent(event_data.event_id, EMPRESA_ID);
+    await removeAddressFromEvent(event_data.event_id, EMPRESA_ID);
   }
 
   // CREATE OR REMOVE EVENT SCHEDULES
   if (_all_my_selected_schedules.length > 0) {
-    insertAndAssignSchedulesToEvent(event_data.event_id, EMPRESA_ID, _all_my_selected_schedules)
+    await insertAndAssignSchedulesToEvent(event_data.event_id, EMPRESA_ID, _all_my_selected_schedules)
   } else {
-    removeAllSchedulesFromEvent(event_data.event_id, EMPRESA_ID)
+    await removeAllSchedulesFromEvent(event_data.event_id, EMPRESA_ID)
   }
 
   //CREATE AND ASSIGN DOCUMENTS TO EVENT
   await saveSelectedFilesInServer();
-  assignFilesToEvent(_allmyUploadedFiles, event_data.event_id, EMPRESA_ID, PERSONAL_IDS);
+  await assignFilesToEvent(_allmyUploadedFiles, event_data.event_id, EMPRESA_ID, PERSONAL_IDS);
 
 
   // SAVE ALL SELECTED PRODUCTS
@@ -108,14 +109,14 @@ async function SaveOrUpdateEvent() {
       'quantity': product.quantityToAdd
     })
   });
-  assignProduct(arrayProducts);
+  await assignProduct(arrayProducts);
   // SAVE OTHER PRODUCTS
   const requestOtherProducts = {
     'event_id' : event_data.event_id,
     'empresa_id' : EMPRESA_ID,
     'request' : _selectedOthersProducts
   }
-  assignOtherProdsToEvent(requestOtherProducts);
+  await assignOtherProdsToEvent(requestOtherProducts);
 
   // SAVE ALL SELECTED PACKAGES
   if (_selectedPackages.length > 0) {
@@ -138,7 +139,7 @@ async function SaveOrUpdateEvent() {
       'worked_hours': personal.horasTrabajadas
     };
   });
-  assignPersonal(requestPersonal);
+  await assignPersonal(requestPersonal);
 
 
   // SAVE ALL SELECTED VEHICLES
@@ -152,7 +153,7 @@ async function SaveOrUpdateEvent() {
       };
     })
 
-  assignvehicleToProject(requestVehicle);
+  await assignvehicleToProject(requestVehicle);
 
 
 // SAVE RENDICONES
@@ -166,7 +167,7 @@ const requestRendicion = allRendiciones
       'comercio' :rendicion.comercio,
     }
   });
-  assignRendicionToEvent(requestRendicion,EMPRESA_ID,event_data.event_id);
+  await assignRendicionToEvent(requestRendicion,EMPRESA_ID,event_data.event_id);
 
 
   // SAVE OTHER PRODUCTS
@@ -178,11 +179,14 @@ const requestRendicion = allRendiciones
       'monto' : cost.monto
     }
   });
-  assignOtherCostsToEvent(requestOtherProds,EMPRESA_ID,event_data.event_id);
+  await assignOtherCostsToEvent(requestOtherProds,EMPRESA_ID,event_data.event_id);
 
   // SAVE OTHER SUBRENTS
 
-  assignSubRentToEvent(_subRentsToAssign,EMPRESA_ID,event_data.event_id);
+  await assignSubRentToEvent(_subRentsToAssign,EMPRESA_ID,event_data.event_id);
+
+
+  return true;
 }
 
 function createNewEvent(requestProject) {

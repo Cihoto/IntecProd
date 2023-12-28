@@ -1,4 +1,4 @@
-<div class="row"  style="">
+<!-- <div class="row"  style="">
 <div class="col-12 col-md-6">
     <h4>EQUIPOS</h4>
 </div>
@@ -8,10 +8,15 @@
         <option value="all">Todos</option>
     </select>
 </div>
-</div>
+</div> -->
 <div id="ventaContainer">
     <div>
         <div id="ventaEventos">
+            <div id="ventaHeader">
+                <p>Categoría</p>
+                <p>Costos Items</p>
+                <p>Monto</p>
+            </div>
         </div>
 
     </div>

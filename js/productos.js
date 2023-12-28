@@ -953,7 +953,8 @@ function printAllSelectedProducts() {
   $('#filterSelectedProducts').append(`<option value="all">Todos</option>`);
   $('#ventaEventos categorieSubTotal').remove();
   $('#ventaEventos h3').remove();
-  $('#ventaEventos p').remove();
+  // $('#ventaEventos p').remove();
+  $('#ventaEventos .categorieHeaderTitle').remove();
   $('#ventaEventos input').remove();
   $('#ventaEventos table').remove();
   $('#projectResumeFilter-products option').remove();
@@ -973,7 +974,7 @@ function printAllSelectedProducts() {
         
         
       </div>
-      <table id="${tableId}" class="table tableCatsAnsResume" style="margin-bottom:20px;">
+      <table id="${tableId}" class="tableCatsAnsResume" style="margin-bottom:20px;">
           <thead>
           <tr>
             <th></th>
@@ -1010,9 +1011,9 @@ function printAllSelectedProducts() {
             <tr>
               <td></td>
               <td></td>
+              <td></td>
               <td><p class="col-lg-5  col-6" style="text-align:end;">Subtotal</p></td>
               <td><input type="text" categorie_name="${categoria.categoria}" class="col-lg-4 col-6 relativeCategorieValue" id="subtotalCategoria-${categoria.categoria}"></td>
-              <td></td>
             </tr>
           </tfoot>
       </table>`

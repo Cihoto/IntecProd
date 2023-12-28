@@ -51,16 +51,19 @@ async function getAllProjectData(event_id, empresa_id) {
         }
 
         $('#inputProjectName').val(data.nombre_proyecto);
-
         $('#direccionInput').val('')
         $('#event_type').val(data.event_type_id);
-
         $('#dirInput').val(data.direccion);
         $('#dirInput').blur();
-
         $('#inputNombreCliente').val(data.nombre_cliente)
         $('#commentProjectArea').val(data.comentarios);
-        $('#estadoProyecto').text(data.estado);
+        // $('#estadoProyecto').text(data.estado);
+
+        console.log($(`.event-status-btn [event_id=${data.estado}]`), $(`.event-status-btn[status_id='${data.estado}']`))
+        
+        const button = $(`.event-status-btn[status_id='${data.estado}']`);
+
+        $(button)[0].click()
     });
 
     if(responseGetData.asignados.schedules.length > 0){
@@ -212,6 +215,7 @@ async function getAllProjectData(event_id, empresa_id) {
         $('#fechaTermino').val(data.fecha_termino)
         $('#fechaInicio').change();
         $('#fechaTermino').change();
+        $('#inputProjectName').change();
     });
 
     if(responseGetData.asignados.files.length > 0){

@@ -158,6 +158,8 @@ require_once('./includes/head.php');
     <script src="./js/evento/eventoController.js"></script>
     <script src="./js/rendiciones.js"></script>
     <script src="./js/otherCosts.js"></script>
+    <script src="/js/bottomBar.js"></script>
+    <script src="/js/factSheet.js"></script>
 
     
     <!-- VALIDATE FORM -->
@@ -226,7 +228,12 @@ require_once('./includes/head.php');
             }
         })
 
-        $('.event-status-btn').on('click', function() {
+        $('.event-status-btn').on('click', function(){
+            console.log("ahhhh esto es los estados del boton")
+            console.log("ahhhh esto es los estados del boton")
+            console.log("ahhhh esto es los estados del boton")
+            console.log("ahhhh esto es los estados del boton")
+            console.log("ahhhh esto es los estados del boton")
             const BUTTON_CLASS = $(this).attr('class').split(" ")[1];
             const ACTUAL_CLASS = $('#status-button').attr('class').split(" ")[1];
             const STATUS_ID = $(this).attr('status_id');

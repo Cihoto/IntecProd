@@ -1,16 +1,43 @@
 
 // NEEDS GLOBAL VARIABLE EMPRESA_ID 
-$('#generateQuotes').on('click',function(){
+$('#generateQuotes').on('click',async function(){
+    clearBottomBar();
+    initBottomBar();
+
+    $('#footerInformation').addClass('active');
+
+    const PROJECT_IS_CREATED = await SaveOrUpdateEvent();
+    console.log("PRIMERA ITERACION",PROJECT_IS_CREATED);
+    console.log("PRIMERA ITERACION",PROJECT_IS_CREATED);
+    console.log("PRIMERA ITERACION",PROJECT_IS_CREATED);
+
+    if(PROJECT_IS_CREATED === false){
+
+        completeEventDataToContinue();
+       
+        setTimeout(() => {
+            closeBottomBar();
+        }, 2000);
+        return;
+    }else if(PROJECT_IS_CREATED === true){
+        eventWasCreatedBottomBar();
+    }
+    
+    setTimeout(() => {
+
+        preparingDocumentBottomBar("Generando Cotización");
+        
+    }, 1700);
 
     const date =  new Date();
     const month = date.getMonth();
     const year = date.getFullYear();
     const day = date.getDay();
 
-    console.log("date",date);
-    console.log("date",month);
-    console.log("date",year);
-    console.log("date",day);
+    // console.log("date",date);
+    // console.log("date",month);
+    // console.log("date",year);
+    // console.log("date",day);
 
     const fileNameData = {
         'month' :month,
@@ -19,10 +46,10 @@ $('#generateQuotes').on('click',function(){
     }
 
 
-    console.log("ESTOY GENERANDO UNA COTIZACIÓN",_categoriesandsubcategories);
-    console.log("ESTOY GENERANDO UNA COTIZACIÓN",totalPerItem.equipos);
-    console.log("ESTOY GENERANDO UNA COTIZACIÓN",_selectedProducts);
-    console.log("ESTOY GENERANDO UNA COTIZACIÓN",_selectedOthersProducts);
+    // console.log("ESTOY GENERANDO UNA COTIZACIÓN",_categoriesandsubcategories);
+    // console.log("ESTOY GENERANDO UNA COTIZACIÓN",totalPerItem.equipos);
+    // console.log("ESTOY GENERANDO UNA COTIZACIÓN",_selectedProducts);
+    // console.log("ESTOY GENERANDO UNA COTIZACIÓN",_selectedOthersProducts);
 
     let personal = "";
     let tr = "";
@@ -70,7 +97,7 @@ $('#generateQuotes').on('click',function(){
             'productos': otherProdsFormatted
         }
     )
-    console.log("12837192837198237",tableContent);
+    // console.log("12837192837198237",tableContent);
 
     let table =`<table id="quoteDetailsTable">
         <thead>
@@ -129,11 +156,11 @@ $('#generateQuotes').on('click',function(){
         <thead>
             <tr>
                 <th style="" class="quote-resume-heading p-15"><p>Total neto del servicio:</p></th>
-                <th style="text-align:center;" >${CLPFormatter(totalVenta)}</th>
+                <th style="text-align:center;">${CLPFormatter(totalVenta)}</th>
             </tr>
             <tr>
                 <th style="" class="quote-resume-heading p-15"><p>IVA:</p></th>
-                <th style="text-align:center;" >${CLPFormatter(iva)}</th>
+                <th style="text-align:center;">${CLPFormatter(iva)}</th>
             </tr>
             <tr class="totalVenta">
                 <th style="" class="quote-resume-heading total-quote p-15"><p>Total:</p></th>
@@ -144,7 +171,6 @@ $('#generateQuotes').on('click',function(){
 
 
 console.log("_selectedClient",_selectedClient);
-
     $.ajax({
         type: "POST",
         url: "ws/BussinessDocuments/quotesGenerator.php",
@@ -158,15 +184,27 @@ console.log("_selectedClient",_selectedClient);
             'clientData' : _selectedClient,
             'event_id' : event_data.event_id
         }),
-        success: function(response) {
-            console.log("response", response);
-            let a = `<a target="_blank" id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/quotes/${response.name}"></a>`
-            $('#downloadPdf').append(a);
-            $('#dwnload')[0].click();
+        success: function(response){
+
+            preparingDocumentDownload("Descargando Cotización");
+            setTimeout(()=>{
+                $('#downloadPdf a').remove();
+                console.log("response", response);
+                // let a = `<a target="_blank" id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/quotes/${response.name}"></a>`
+                let a = `<a id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/quotes/${response.name}" download></a>`
+                $('#downloadPdf').append(a);
+                $('#dwnload')[0].click();
+            },1000)
         },error:  function(error){
             console.log("error",error.responseText)
         }
     })
+    .then(()=>{
+        closeBottomBar();
+    })
 
 })
+
+
+
 

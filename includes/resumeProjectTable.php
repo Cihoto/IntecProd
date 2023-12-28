@@ -6,66 +6,97 @@
         </svg>
         <p class="header-P" style="margin-top: -3px;">Resumen de tu evento creado</p>
     </div>
-    <div class="row resumeProjectTables" style="padding:  16px 24px 24px 24px;">
-        <div style="display: flex;
+
+    <div class="row">
+        <div class="col-10">
+            <div style="display: flex;
         width: 100%;
         padding: var(--none, 0px);
         align-items: flex-start;">
 
-            <div style="display: flex;
+                <div style="display: flex;
             padding: var(--none, 0px);
             align-items: flex-start;
             margin-right: 400px;
             gap: var(--1, 8px);">
-                <p class="resumeDescription" style="margin-right: 500px;">Evento:</p>
-                <p id="projectNameResume" class="resumeDetail"></p>
-            </div>
-            <div style="display: flex;
+                    <p class="resumeDescription" style="margin-right: 500px;">Evento:</p>
+                    <p id="projectNameResume" class="resumeDetail"></p>
+                </div>
+                <div style="display: flex;
             padding: var(--none, 0px);
             align-items: flex-start;
             gap: var(--1, 8px);">
-                <p class="resumeDescription" style="margin-right: 500px;">Cliente:</p>
-                <p id="clienteProjectResume" class="resumeDetail"></p>
-            </div>
+                    <p class="resumeDescription" style="margin-right: 500px;">Cliente:</p>
+                    <p id="clienteProjectResume" class="resumeDetail"></p>
+                </div>
 
-        </div>
-        <div style="display: flex;
+            </div>
+            <div style="display: flex;
         width: 100%;
         padding: var(--none, 0px);
         align-items: flex-start;">
 
-            <div style="display: flex;
+                <div style="display: flex;
             padding: var(--none, 0px);
             align-items: flex-start;
             margin-right: 400px;
             gap: var(--1, 8px);">
-                <p class="resumeDescription" style="margin-right: 500px; width: 250px;">Dirección:</p>
-                <p id="lugarProjectResume" class="resumeDetail"></p>
+                    <p class="resumeDescription" style="margin-right: 500px; width: 250px;">Dirección:</p>
+                    <p id="lugarProjectResume" class="resumeDetail"></p>
+                </div>
             </div>
-        </div>
 
 
 
-        <div style="display: flex;
+            <div style="display: flex;
             width: 100%;
             padding: var(--none, 0px);
             align-items: flex-start;">
-            <div style="display: flex;
+                <div style="display: flex;
                 padding: var(--none, 0px);
                 align-items: flex-start;
                 margin-right: 400px;
                 gap: var(--1, 8px);">
-                <p class="resumeDescription" style="margin-right: 500px;">Fecha:</p>
-                <p id="fechaProjectResume" class="resumeDetail"></p>
-            </div>
-            <div style="display: flex;
+                    <p class="resumeDescription" style="margin-right: 500px;">Fecha:</p>
+                    <p id="fechaProjectResume" class="resumeDetail"></p>
+                </div>
+                <div style="display: flex;
                 padding: var(--none, 0px);
                 align-items: flex-start;
                 gap: var(--1, 8px);">
-                <p class="resumeDescription" style="margin-right: 500px;">Horario:</p>
-                <p id="" class="resumeDetail"></p>
+                    <p class="resumeDescription" style="margin-right: 500px;">Horario:</p>
+                    <p id="" class="resumeDetail"></p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-2">
+            <div id="documentSelectorContainer">
+                <div id="documentOptions">
+                    <p style="margin: 0px!important;">Selecciona para descargar</p>
+
+                    <div class="checkbox-wrapper-13">
+                        <input id="details-documents" type="checkbox">
+                        <label for="details-documents">Detalles</label>
+                    </div>
+                    <div class="checkbox-wrapper-13">
+                        <input id="factSheet-documents" type="checkbox">
+                        <label for="factSheet-documents">Ficha técnica</label>
+                    </div>
+                    <div class="checkbox-wrapper-13">
+                        <input id="documents" type="checkbox">
+                        <label for="documents">Generar nómina</label>
+                    </div>
+                </div>
+                <button id="generateResumePdf">
+                    <p>Exportar PDF</p>
+                    <img src="../assets/svg/download.svg" alt="">
+                </button>
             </div>
         </div>
+    </div>
+    <div class="row resumeProjectTables" style="padding:  16px 24px 24px 24px;">
+
         <div id="resumeEventTableContainer">
             <table class="s-resumeProjectTable" id="total-productResume" style="margin-bottom: 40px;">
                 <thead>
