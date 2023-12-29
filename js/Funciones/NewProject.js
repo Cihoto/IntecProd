@@ -79,23 +79,7 @@ async function createProject(requestProject) {
 }
 
 
-async function assignStandardPackageToProject(request){
-  return $.ajax({
-    type: "POST",
-    url: 'ws/standard_package/standard_package.php',
-    data: JSON.stringify({
-      'request': request,
-      'action': "assignStandardPackageToProject"
-    }),
-    dataType: 'json',
-    success: function (data){
-      
-    },
-    error: function (response){
-      console.log(response.responseText);
-    }
-  })
-}
+
 
 async function assignvehicleToProject(requestasssign) {
   return $.ajax({

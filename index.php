@@ -51,8 +51,8 @@ $active = 'dashboard';
               <div class="detail-month">
                 <p class="month-name">Eventos del mes</p>
                 <div class="d-flex justify-content-start" style="gap: 4px;">
-                  <p class="month-amount">90</p>
-                  <p class="month-perc">+14%</p>
+                  <p class="month-amount" id="eventAmountCurrentMonth"></p>
+                  <p class="month-perc" id="currentMonthEventamountPercentaje"></p>
                 </div>
               </div>
               <div class="img-event-month">
@@ -64,7 +64,7 @@ $active = 'dashboard';
                 <p class="month-name">Utilidad mensual</p>
                 <div class="d-flex justify-content-start" style="gap: 4px;">
                   <p class="month-amount">$12.537.900</p>
-                  <p class="month-perc">-14%</p>
+                  <p class="month-perc neg">-14%</p>
                 </div>
               </div>
               <div class="img-event-month">
@@ -145,29 +145,18 @@ $active = 'dashboard';
       <?php include_once('./includes/Modal/detallesProyecto.php') ?>
     </div>
   </div>
-
   <?php require_once('./includes/footerScriptsJs.php') ?>
-  <?php require_once('./includes/Modal/detallesProyecto.php'); ?>
-  <?php require_once('./includes/Modal/cliente.php'); ?>
-  <?php require_once('./includes/Modal/direccion.php'); ?>
+
+  <script src="./js/dashboard/dashboard.js"></script>
+  <script src="./js/sortTable/eventSort.js"></script>
 
 </body>
 
-<script src="./js/Funciones/UpdateProject.js"></script>
-<script src="./js/clientes.js"></script>
-<script src="./js/direccion.js"></script>
-<script src="./js/personal.js"></script>
-<script src="./js/vehiculos.js"></script>
-<script src="./js/productos.js"></script>
-<script src="./js/project.js"></script>
-<script src="./js/Funciones/NewProject.js"></script>
-<script src="./js/localeStorage.js"></script>
-<script src="./js/valuesValidator/validator.js"></script>
-<script src="./js/ClearData/clearFunctions.js"></script>
-<script src="./js/ProjectResume/viatico.js"></script>
-<script src="./js/ProjectResume/subArriendo.js"></script>
-<script src="./js/ProjectResume/projectResume.js"></script>
-<script src="./js/Funciones/assigments.js"></script>
+
+<script>
+  const EMPRESA_ID = <?php echo $empresaId; ?>;
+</script>
+
 <!-- <script src="/js/Cargo_Especialidad/Testing/calendarviewResume.js"></script> -->
 <!-- <script src="/js/calendar.js"></script> -->
 

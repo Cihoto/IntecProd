@@ -370,6 +370,7 @@
                     echo "<tr class='categorieQuote'>
                         <td class='categorie-quote'  style='padding:6px;'><p style='margin: 0px 0px 0px 10px;'>". ucfirst($item->categoria)."</p></td>
                         <td class='categorie-quote' style='padding:6px;'></td>
+                        <td class='categorie-quote' style='text-align: center;padding:6px'></td>
                     </tr>";
                     foreach ($item->productos as $key => $prod) {
                         echo "<tr>

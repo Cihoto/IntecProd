@@ -3445,6 +3445,15 @@ label.dateLabel {
   /* medium-linear */
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.06), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
   padding: 20px;
+  overflow: auto;
+}
+
+#dash-event-housing tbody tr{
+
+}
+
+#dash-event-housing tbody td{
+
 }
 
 .dstheader {
@@ -3553,12 +3562,18 @@ label.dateLabel {
 .month-perc {
   width: 36.5px;
   height: 19.5px;
-  color: var(--Green-Green-400, #48BB78);
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
   line-height: 140%;
   /* 19.6px */
+}
+
+.month-perc.poss{
+  color: var(--Green-Green-400, #48BB78);
+}
+.month-perc.neg{
+  color: var(--Red-Stop, #EB5757);
 }
 
 .img-event-month {

@@ -119,6 +119,7 @@ async function SaveOrUpdateEvent() {
   await assignOtherProdsToEvent(requestOtherProducts);
 
   // SAVE ALL SELECTED PACKAGES
+  console.log("_selectedPackages",_selectedPackages);
   if (_selectedPackages.length > 0) {
     const arrayPackage = _selectedPackages.map((package) => {
       return {
@@ -457,7 +458,26 @@ async function assignSubRentToEvent(request,empresa_id,event_id) {
   }
 }
 
-async function addAssignedPackagesToEvent() {
+
+async function assignStandardPackageToProject(request){
+  return $.ajax({
+    type: "POST",
+    url: 'ws/standard_package/standard_package.php',
+    data: JSON.stringify({
+      'request': request,
+      'action': "assignStandardPackageToProject"
+    }),
+    dataType: 'json',
+    success: function (data){
+      
+    },
+    error: function (response){
+      console.log(response.responseText);
+    }
+  })
+}
+
+async function addAssignedPackagesToEvent(){
 
   // const package_id = $(element).closest('tr').attr('package_id');
 

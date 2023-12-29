@@ -83,6 +83,10 @@ if ($_POST) {
             $empresa_id = $data->empresa_id;
             $result = json_encode(getAdmEvents($empresa_id));
             break;
+        case 'getDashResume':
+            $empresa_id = $data->empresa_id;
+            $result = json_encode(getDashResume($empresa_id));
+            break;
         default:
             $result = false;
             break;
@@ -1048,3 +1052,42 @@ function removeAddressFromEvent($empresa_id, $event_id)
         return array("error" => true, "message" => "Address has not been removed form event");
     }
 }
+
+
+function getDashResume($empresa_id){
+    $conn = new bd();
+    $conn->conectar();
+
+    // DECLARE ALL ARRAY RESPONSE 
+
+    $currentAndLastMonthEventQuantity = [];
+
+
+
+    // QUERY SECTION
+
+    $queryGetCurAndLastMonthEventQuantity = "SELECT COUNT(p.id) AS total_current_month,
+	(SELECT COUNT(p.id)  from proyecto p 
+        where p.fecha_inicio >=  DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE())  , '01')),INTERVAL 1 MONTH) 
+        and  p.fecha_inicio <=LAST_DAY(DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE())  , '01')),INTERVAL 1 MONTH))
+        and p.empresa_id = 1) AS total_last_month
+        from proyecto p 
+    where p.fecha_inicio >=    DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE()) , '01'))
+    and  p.fecha_inicio >=  LAST_DAY(CURDATE())
+    and p.empresa_id = $empresa_id";
+
+
+
+    // EXECUTE QUERY SECTION
+
+    if($responseBd = $conn->mysqli->query($queryGetCurAndLastMonthEventQuantity)){
+        while($dataResponse = $responseBd->fetch_object()){
+            $currentAndLastMonthEventQuantity  = $dataResponse;
+        }
+    }
+
+    return array("event_quanity_cur_last_month" => $currentAndLastMonthEventQuantity);
+
+}
+
+

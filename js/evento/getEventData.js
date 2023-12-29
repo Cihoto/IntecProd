@@ -123,25 +123,27 @@ async function getAllProjectData(event_id, empresa_id) {
 
     if (responseGetData.asignados.assignedPackages.length > 0) {
         
+        console.log("responseGetData.asignados.assignedPackages",responseGetData.asignados.assignedPackages)
         responseGetData.asignados.assignedPackages.forEach(async (package) => {
-            const productsOnPackage = await GetPackageDetails(package.paquete_id);
-            const productsToAdd = productsOnPackage.products.map((productsOnPackage)=>{
-                return{
-                    'id': productsOnPackage.product_id,
-                    'quantityToAdd' : productsOnPackage.quantity
-                }
-            });
+            console.log("package",package)
+            // const productsOnPackage = await GetPackageDetails(package.paquete_id);
+            // const productsToAdd = productsOnPackage.products.map((productsOnPackage)=>{
+            //     return{
+            //         'id': productsOnPackage.product_id,
+            //         'quantityToAdd' : productsOnPackage.quantity
+            //     }
+            // });
 
-            _selectedPackages.push({
-                'package_id' : productsOnPackage.data[0].id,
-                'package_name' : productsOnPackage.data[0].nombre,
-                'package_products' :  productsOnPackage.products
-            });
+            // _selectedPackages.push({
+            //     'package_id' : productsOnPackage.data[0].id,
+            //     'package_name' : productsOnPackage.data[0].nombre,
+            //     'package_products' :  productsOnPackage.products
+            // });
             
-            if($(`#standardPackagesList tr[package_id = ${package.paquete_id}]`).length > 0)
-            {
-                $(`#standardPackagesList tr[package_id = ${package.paquete_id}]`).addClass("packageSelected");
-            }
+            // if($(`#standardPackagesList tr[package_id = ${package.paquete_id}]`).length > 0)
+            // {
+            //     $(`#standardPackagesList tr[package_id = ${package.paquete_id}]`).addClass("packageSelected");
+            // }
             
         });
     }

@@ -1,16 +1,16 @@
 $(document).ready(function () {
 
-    const  event_status_order = [2, 3, 5, 4, 1];
+    const event_status_order = [2, 3, 5, 4, 1];
     let future_search = false;
     $('#sortAllMyEvents').on('click', async function () {
-        
-        if(future_search === true){
+
+        if (future_search === true) {
             await getEvents(EMPRESA_ID);
             $(this).find('p').text("Todos")
             future_search = false
             return
         }
-        
+
         const allMyEvents = await getAllMyEvents(EMPRESA_ID);
         if (allMyEvents) {
 
@@ -24,17 +24,17 @@ $(document).ready(function () {
                 return ordStatus
             })
             console.log(ordered_events)
-           
+
             ordered_events.forEach(ordered => {
                 ordered.forEach(element => {
                     mergedArray.push(element);
                 });
             });
-            
-            allMyEvents.woutd.forEach((woutd_event)=>{
+
+            allMyEvents.woutd.forEach((woutd_event) => {
                 mergedArray.push(woutd_event);
             })
-           
+
             console.log(mergedArray);
 
             _projectsToList = mergedArray;
@@ -45,46 +45,46 @@ $(document).ready(function () {
     });
 
 
-    $('#sortDrafEvents').on('click',async function(){
-       const ALL_DRAFT_EVENTS =  await getEventByStatus_id(EMPRESA_ID,1);
+    $('#sortDrafEvents').on('click', async function () {
+        const ALL_DRAFT_EVENTS = await getEventByStatus_id(EMPRESA_ID, 1);
 
-       if(!ALL_DRAFT_EVENTS){
-           return;
+        if (!ALL_DRAFT_EVENTS) {
+            return;
         }
         setEventsAndPrintOnTable(ALL_DRAFT_EVENTS);
     })
-    $('#sortSells').on('click',async function(){
-       const ALL_DRAFT_EVENTS =  await getSellsEvents(EMPRESA_ID);
-       if(!ALL_DRAFT_EVENTS){
-           return;
+    $('#sortSells').on('click', async function () {
+        const ALL_DRAFT_EVENTS = await getSellsEvents(EMPRESA_ID);
+        if (!ALL_DRAFT_EVENTS) {
+            return;
         }
         setEventsAndPrintOnTable(ALL_DRAFT_EVENTS);
     })
-    $('#sortOperationalEvents').on('click',async function(){
-       const ALL_DRAFT_EVENTS =  await getOperEvents(EMPRESA_ID);
-       if(!ALL_DRAFT_EVENTS){
-           return;
+    $('#sortOperationalEvents').on('click', async function () {
+        const ALL_DRAFT_EVENTS = await getOperEvents(EMPRESA_ID);
+        if (!ALL_DRAFT_EVENTS) {
+            return;
         }
         setEventsAndPrintOnTable(ALL_DRAFT_EVENTS);
     })
-    $('#sortAdmEvents').on('click',async function(){
-       const ALL_DRAFT_EVENTS =  await getAdmEvents(EMPRESA_ID);
-       if(!ALL_DRAFT_EVENTS){
-           return;
+    $('#sortAdmEvents').on('click', async function () {
+        const ALL_DRAFT_EVENTS = await getAdmEvents(EMPRESA_ID);
+        if (!ALL_DRAFT_EVENTS) {
+            return;
         }
         setEventsAndPrintOnTable(ALL_DRAFT_EVENTS);
     })
 })
 
 
-function setEventsAndPrintOnTable(allEventsOnRange){
+function setEventsAndPrintOnTable(allEventsOnRange) {
     _projectsToList = [];
 
-    allEventsOnRange.wd.forEach((evento)=>{
+    allEventsOnRange.wd.forEach((evento) => {
         _projectsToList.push(evento);
     });
 
-    allEventsOnRange.woutd.forEach((evento)=>{
+    allEventsOnRange.woutd.forEach((evento) => {
         _projectsToList.push(evento);
     });
 
@@ -115,7 +115,7 @@ async function getAllMyEvents(empresa_id) {
     }
 }
 
-async function getEventByStatus_id(empresa_id,status_id){
+async function getEventByStatus_id(empresa_id, status_id) {
     try {
         return $.ajax({
             type: "POST",
@@ -123,7 +123,7 @@ async function getEventByStatus_id(empresa_id,status_id){
             data: JSON.stringify({
                 'action': "getEventByStatus_id",
                 'empresa_id': empresa_id,
-                'status_id':status_id
+                'status_id': status_id
             }),
             dataType: 'json',
             success: function (response) {
@@ -139,7 +139,7 @@ async function getEventByStatus_id(empresa_id,status_id){
 
 }
 
-async function getSellsEvents(empresa_id){
+async function getSellsEvents(empresa_id) {
     try {
         return $.ajax({
             type: "POST",
@@ -160,7 +160,7 @@ async function getSellsEvents(empresa_id){
         console.log(e);
     }
 }
-async function getOperEvents(empresa_id){
+async function getOperEvents(empresa_id) {
     try {
         return $.ajax({
             type: "POST",
@@ -181,7 +181,7 @@ async function getOperEvents(empresa_id){
         console.log(e);
     }
 }
-async function getAdmEvents(empresa_id){
+async function getAdmEvents(empresa_id) {
     try {
         return $.ajax({
             type: "POST",
@@ -201,4 +201,50 @@ async function getAdmEvents(empresa_id){
     } catch (e) {
         console.log(e);
     }
+}
+
+
+// DASHBOARD SECTION
+async function getEventsDashboard(empresa_id) {
+    return $.ajax({
+        type: "POST",
+        url: 'ws/proyecto/proyecto.php',
+        data: JSON.stringify({
+            'action': "getAllMyProjects_list_toExecute",
+            'empresa_id': empresa_id
+        }),
+        dataType: 'json',
+        success: function (response) {
+            console.log(response)
+            _dashEvents = response;
+        },
+        error: function (response) {
+            console.log(response.responseText);
+        }
+    })
+}
+
+
+let _dashEvents = [];
+
+function printNoEventsAvailableDash() {
+    const table = $('#dash-event-table')
+
+    let tr = `<tr style="justify-content:center;">
+        <td style="padding:16px;border:none;">Sin eventos disponibles</td> 
+    </tr>`
+
+    table.append(tr);
+}
+function printEventOnDashTable() {
+    const table = $('#dash-event-table')
+    _dashEvents.forEach((event) => {
+        let tr = `<tr>
+            <td style="width: 176px;">Evento</td>
+            <td style="width: 156px;">Fecha</td>
+            <td style="width: 224px;">Ubicación</td>
+            <td style="width: 176px;">Estado</td>
+      </tr>`;
+      table.append(tr);
+    });
 }
