@@ -66,33 +66,36 @@ require_once('./includes/head.php');
                 </div>
 
 
-                <table class="resume-table s-table" id="allProjectTable-list">
+                <table class="resume-table" id="allProjectTable-list">
                     <thead>
                         <tr>
-                            <th style="width: 17.8226514%;">
+                            <th class="_theadth1" >
                                 <p>Evento</p>
                             </th>
-                            <th style="width: 6.67251975%;">
+                            <th class="_theadth2" >
                                 <p>Estado</p>
                             </th>
-                            <th style="width: 12.642669%;justify-content: space-between;">
+                            <th class="_theadth3" >
                                 <p>Fecha</p>
-                                <img src="./assets//svg/calendar.svg" alt="">
+                                <img src="./assets//svg/calendar.svg" alt="" style="margin-right: 10px;">
                             </th>
-                            <th style="width: 13.5355575%;">
+                            <th class="_theadth4" >
                                 <p>Cliente</p>
                             </th>
-                            <th style="width: 10.5355575%;">
+                            <th class="_theadth5" >
                                 <p>Tipo de evento</p>
                             </th>
-                            <th style="width: 10.5355575%;">
+                            <th class="_theadth6" >
                                 <p>Precio venta</p>
                             </th>
-                            <th style="width: 10.5355575%;">
+                            <th class="_theadth7" >
                                 <p>Owner</p>
                             </th>
-                            <th style="width: 14.15%;">
+                            <th class="_theadth8" >
                                 <p>Asignación</p> 
+                            </th>
+                            <th class="_theadth9" >
+                                <p>Facturación</p> 
                             </th>
                         </tr>
                     </thead>

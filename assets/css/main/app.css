@@ -21793,7 +21793,7 @@ body .bi:before {
     line-height: 1.5;
     min-height: calc(1.5em + .934rem + 2px);
     padding: .467rem .6rem;
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
+    /* transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out */
 }
 
 .dataTable-input:focus {

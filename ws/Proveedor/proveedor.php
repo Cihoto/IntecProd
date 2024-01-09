@@ -17,6 +17,11 @@
                 $providerResponse = addNewProvider($request,$empresa_id);
                 echo json_encode($providerResponse);
                 break;
+            case 'getAllProviderByBussiessId':
+                $empresa_id = $data->empresa_id;
+                $providerResponse = getAllProviderByBussiessId($empresa_id);
+                echo json_encode($providerResponse);
+                break;
             default:
                 echo 'Invalid action.';
                 break;
@@ -38,21 +43,17 @@
         $datosFacturacion_id = 0; 
         $proveedor_id = 0;
 
-        $nombre= $request->nombre;
-        $apellido= $request->apellido;
-        $rut= $request->rut;
-        $correo= $request->correo;
-        $telefono= $request->telefono;
-        $razon_social= $request->razon_social;
-        $nombre_fantasia= $request->nombre_fantasia;
-        $rutEmpresa= $request->rutEmpresa;
-        $direccionEmpresa= $request->direccionEmpresa;
-        $correoEmpresa= $request->correoEmpresa;
+        $nombre_fantasia = $request->nombre_fantasia;
+        $razon_social = $request->razon_social;
+        $rut = $request->rut;
+        $nombre = $request->nombre;
+        $correo = $request->correo;
+        $telefono = $request->telefono;
 
 
         $queryInsertPersona = "INSERT INTO u136839350_intec.persona
         (nombre, apellido, rut, email, telefono)
-        VALUES('$nombre', '$apellido', '$rut', '$correo', '$telefono');";
+        VALUES('$nombre', '', '', '$correo', '$telefono');";
 
         if($conn->mysqli->query($queryInsertPersona)){
             $persona_id = $conn->mysqli->insert_id;
@@ -62,7 +63,7 @@
 
         $queryInsertDatosFacturacion = "INSERT INTO u136839350_intec.datos_facturacion
         (razon_social, nombre_fantasia, rut, direccion, correo)
-        VALUES('$razon_social', '$nombre_fantasia', '$rutEmpresa', '$direccionEmpresa', '$correoEmpresa');";
+        VALUES('$razon_social', '$nombre_fantasia', '$rut', '', '');";
 
         if($conn->mysqli->query($queryInsertDatosFacturacion)){
             $datosFacturacion_id = $conn->mysqli->insert_id;
@@ -86,6 +87,29 @@
             $querydelete = "DELETE FROM u136839350_intec.datos_facturacion WHERE id = $datosFacturacion_id;";
             $conn->mysqli->query($querydelete);
             return array("success"=>false);
+        }
+    }
+
+
+    function getAllProviderByBussiessId($empresa_id){
+        $conn = new bd();
+        $conn->conectar();
+        $providers = [];
+    
+        $query = "SELECT pro.id, df.nombre_fantasia, per.nombre FROM proveedor pro 
+        INNER JOIN persona per ON per.id = pro.persona_id_contacto 
+        inner join datos_facturacion df on df.id = pro.datos_facturacion_id 
+        WHERE pro.empresa_id = '$empresa_id'; ";
+    
+        if($bdResponse =  $conn->mysqli->query($query)){
+            while($dataProviders = $bdResponse->fetch_object()){
+                $providers[] = $dataProviders;
+            }
+            $conn->desconectar();
+            return array("success"=>true,"providers"=>$providers);
+        }else{
+            $conn->desconectar();
+            return array("false"=>true);
         }
     }
 ?>

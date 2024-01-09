@@ -463,7 +463,7 @@ $(document).on('blur', '.addProdInputResume', async function () {
 })
 
 
-function GetAllProductsByBussiness(empresa_id) {
+async function GetAllProductsByBussiness(empresa_id) {
   return $.ajax({
     type: "POST",
     url: "ws/productos/Producto.php",

@@ -1,73 +1,60 @@
-$('#addProviderToSubRents').validate({
+$('#sideProviderForm').validate({
     rules: {
-        providerNameInput:{
+        "providerNameorDesc":{
             required:true
         },
-        providerLastNameInput:{
-            required:true
-        },
-        providerRutInput:{
+        "providerRazonSocial":{
             required:false
         },
-        correoInput:{
-            required:true
-        },
-        telefonoInput:{
-            required:true
-        },
-        razonSocialInput:{
+        "providerRut":{
             required:false
         },
-        nombreFantasiaInput:{
+        "providerContacto":{
             required:false
         },
-        rutEmpresaInput:{
+        "providerCorreo":{
             required:false
         },
-        direccionEmpresaInput:{
-            required:false
-        },
-        correoEmpresaInput:{
+        "providerTelefono":{
             required:false
         }
     },
     messages: {
-
-        providerNameInput:{
+        "providerNameorDesc":{
             required:"Ingrese un valor"
         },
-        providerLastNameInput:{
+        "providerRazonSocial":{
             required:"Ingrese un valor"
         },
-        correoInput:{
+        "providerRut":{
             required:"Ingrese un valor"
         },
-        telefonoInput:{
+        "providerContacto":{
             required:"Ingrese un valor"
         },
+        "providerCorreo":{
+            required:"Ingrese un valor"
+        },
+        "providerTelefono":{
+            required:"Ingrese un valor"
+        }
+      
     },
     submitHandler: async function() {
       event.preventDefault();
 
         const requestProvider = {
-            'nombre' : $('#providerNameInput').val(),
-            'apellido' : $('#providerLastNameInput').val(),
-            'rut' : $('#providerRutInput').val(),
-            'correo' : $('#providerCorreoInput').val(),
-            'telefono' : $('#providerTelefonoInput').val(),
-            'razon_social' : $('#razonSocialInput').val(),
-            'nombre_fantasia' : $('#nombreFantasiaInput').val(),
-            'rutEmpresa' : $('#rutEmpresaInput').val(),
-            'direccionEmpresa' : $('#direccionEmpresaInput').val(),
-            'correoEmpresa' : $('#correoEmpresaInput').val()
-
+            'nombre_fantasia' : $('#providerNameorDesc').val(),
+            'razon_social' : $('#providerRazonSocial').val(),
+            'rut' : $('#providerRut').val(),
+            'nombre' : $('#providerContacto').val(),
+            'correo' : $('#providerCorreo').val(),
+            'telefono' : $('#providerTelefono').val()
         };
 
         console.log("requestProvider",requestProvider)
 
         const providerInserted = await addNewProvider(requestProvider,EMPRESA_ID);
-
-        console.log("providerInserted",providerInserted);
 
         if(providerInserted.success === true){
             Swal.fire({

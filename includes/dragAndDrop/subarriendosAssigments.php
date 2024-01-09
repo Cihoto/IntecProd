@@ -69,3 +69,4 @@
 </div>
 
 <?php require_once('./includes/Modal/addNewProvider.php')?>
+<?php require_once('./includes/sidemenu/providerSideMenu.php')?>

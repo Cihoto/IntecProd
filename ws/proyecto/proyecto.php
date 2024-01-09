@@ -87,6 +87,15 @@ if ($_POST) {
             $empresa_id = $data->empresa_id;
             $result = json_encode(getDashResume($empresa_id));
             break;
+        case 'insertOrUpdateIncomeAndCosts':
+            $request = $data->request;
+            $result = json_encode(insertOrUpdateIncomeAndCosts($request));
+            break;
+        case 'getEventsForDashboard':
+            $request = $data->request;
+            $empresa_id = $data->empresa_id;
+            $result = json_encode(getEventsForDashboard($request,$empresa_id));
+            break;
         default:
             $result = false;
             break;
@@ -1058,23 +1067,41 @@ function getDashResume($empresa_id){
     $conn = new bd();
     $conn->conectar();
 
+
+    $incomeResume = [];
+
     // DECLARE ALL ARRAY RESPONSE 
 
     $currentAndLastMonthEventQuantity = [];
-
-
-
     // QUERY SECTION
 
     $queryGetCurAndLastMonthEventQuantity = "SELECT COUNT(p.id) AS total_current_month,
 	(SELECT COUNT(p.id)  from proyecto p 
         where p.fecha_inicio >=  DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE())  , '01')),INTERVAL 1 MONTH) 
         and  p.fecha_inicio <=LAST_DAY(DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE())  , '01')),INTERVAL 1 MONTH))
-        and p.empresa_id = 1) AS total_last_month
+        and p.empresa_id = $empresa_id) AS total_last_month
         from proyecto p 
     where p.fecha_inicio >=    DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE()) , '01'))
     and  p.fecha_inicio >=  LAST_DAY(CURDATE())
     and p.empresa_id = $empresa_id";
+
+    $queryIncomeComparisonCurrentAndLast = "SELECT 
+    CASE 
+     WHEN SUM(pfr.income) is null
+     THEN 0
+     ELSE pfr.income
+    END as actual_income_month,
+    (SELECT SUM(pfr.income) as actual_income_month
+    FROM project_finance_resume pfr
+    INNER JOIN proyecto p on p.id = pfr.event_id
+    where p.fecha_inicio >=  DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE())  , '01')),INTERVAL 1 MONTH) 
+    and p.fecha_inicio <=LAST_DAY(DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE())  , '01')),INTERVAL 1 MONTH))
+    and p.empresa_id = $empresa_id) AS last_month_income
+    FROM project_finance_resume pfr 
+    INNER JOIN proyecto p on p.id = pfr.event_id
+    where p.fecha_inicio >=    DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE()) , '01'))
+    and  p.fecha_inicio >=  LAST_DAY(CURDATE())
+    and p.empresa_id = $empresa_id;";
 
 
 
@@ -1085,9 +1112,107 @@ function getDashResume($empresa_id){
             $currentAndLastMonthEventQuantity  = $dataResponse;
         }
     }
+    if($responseBd = $conn->mysqli->query($queryIncomeComparisonCurrentAndLast)){
+        while($dataResponse = $responseBd->fetch_object()){
+            $incomeResume  = $dataResponse;
+        }
+    }
 
-    return array("event_quanity_cur_last_month" => $currentAndLastMonthEventQuantity);
+    return array("success"=>true,
+    "event_quanity_cur_last_month" => $currentAndLastMonthEventQuantity,
+    "incomeResume" => $incomeResume);
 
+}
+
+function insertOrUpdateIncomeAndCosts($request){
+    $conn = new bd();
+    $conn->conectar();
+    $udpate = false;
+
+    $query = "SELECT id FROM project_finance_resume pfr where pfr.event_id = $request->event_id ;";
+
+    $result = $conn->mysqli->query($query);
+    if($result->num_rows > 0){
+        $queryUpdate = "UPDATE project_finance_resume 
+        set income = $request->ingreso , cost = $request->costo
+        WHERE event_id = $request->event_id";
+
+        if($conn->mysqli->query($queryUpdate)){
+        
+            return array("success"=>true,"message"=>"Event finance updated");
+            
+        }else{
+            return array("success"=>true,"message"=>"Event finance couldn't be updated");
+        }
+
+    }else{
+        
+        
+        $query = "INSERT INTO project_finance_resume (event_id, income, cost) 
+        VALUES($request->event_id, $request->ingreso, $request->costo);";
+
+                
+        if($conn->mysqli->query($query)){
+                
+            return array("success"=>true,"message"=>"Event finance created");
+            
+        }else{
+            return array("success"=>true,"message"=>"Event finance couldn't be created");
+        }
+    }
+
+}
+
+
+function getEventsForDashboard($request,$empresa_id){
+    $conn = new bd();
+    $conn->conectar();
+
+    $eventos = [];
+
+    $today = date("Y-m-d");
+
+
+    $status = $request->status;
+    $date =   $request->date;
+    $type =   $request->type;
+
+// return $request ;
+    if($request->status !== "all"){ 
+        $status = "and p.status_id = $request->status";
+    }else{
+        $status = "";
+    }
+
+    if($request->date === ""){ 
+        $date = "and p.fecha_inicio >= '$today'";
+    }else{
+        $date = "and p.fecha_inicio >= '$request->date'";
+    }
+
+    if($request->type !==""){ 
+        $type = "and p.event_type_id = $request->type";
+    }else{
+        $type = "";
+    }
+
+    $query = "SELECT p.id, p.nombre_proyecto, d.direccion as address , e.estado as estado, e.id as estado_id FROM proyecto p  
+    LEFT join event_type et on et.id = p.event_type_id  
+    LEFT join direccion d on d.id = p.address_id  
+    LEFT JOIN estado e on e.id = p.status_id  where p.empresa_id = $empresa_id 
+    $status $date $type";
+
+
+    // return $query;
+
+    if($response = $conn->mysqli->query($query)){
+        while($data = $response->fetch_object()){
+            $eventos [] = $data;
+        }
+        return array("success"=>true, "events"=>$eventos);
+    }else{
+        return array("error"=>true);
+    }
 }
 
 

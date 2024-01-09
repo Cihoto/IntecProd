@@ -14,7 +14,7 @@ $(document).ready(function () {
         const allMyEvents = await getAllMyEvents(EMPRESA_ID);
         if (allMyEvents) {
 
-            console.log(allMyEvents);
+            // console.log(allMyEvents);
 
             let mergedArray = [];
             const ordered_events = event_status_order.map((order) => {
@@ -23,7 +23,7 @@ $(document).ready(function () {
                 });
                 return ordStatus
             })
-            console.log(ordered_events)
+            // console.log(ordered_events)
 
             ordered_events.forEach(ordered => {
                 ordered.forEach(element => {
@@ -35,7 +35,7 @@ $(document).ready(function () {
                 mergedArray.push(woutd_event);
             })
 
-            console.log(mergedArray);
+            // console.log(mergedArray);
 
             _projectsToList = mergedArray;
             future_search = true
@@ -104,10 +104,10 @@ async function getAllMyEvents(empresa_id) {
             }),
             dataType: 'json',
             success: function (response) {
-                console.log("RESPONSE  getAllMyEvents", response);
+                // console.log("RESPONSE  getAllMyEvents", response);
             },
             error: function (response) {
-                console.log(response.responseText);
+                // console.log(response.responseText);
             }
         })
     } catch (e) {
@@ -127,10 +127,10 @@ async function getEventByStatus_id(empresa_id, status_id) {
             }),
             dataType: 'json',
             success: function (response) {
-                console.log("RESPONSE  getEventByStatus_id", response);
+                // console.log("RESPONSE  getEventByStatus_id", response);
             },
             error: function (response) {
-                console.log(response.responseText);
+                // console.log(response.responseText);
             }
         })
     } catch (e) {
@@ -150,10 +150,10 @@ async function getSellsEvents(empresa_id) {
             }),
             dataType: 'json',
             success: function (response) {
-                console.log("RESPONSE  getSellsEvents", response);
+                // console.log("RESPONSE  getSellsEvents", response);
             },
             error: function (response) {
-                console.log(response.responseText);
+                // console.log(response.responseText);
             }
         })
     } catch (e) {
@@ -171,10 +171,10 @@ async function getOperEvents(empresa_id) {
             }),
             dataType: 'json',
             success: function (response) {
-                console.log("RESPONSE  getOperEvents", response);
+                // console.log("RESPONSE  getOperEvents", response);
             },
             error: function (response) {
-                console.log(response.responseText);
+                // console.log(response.responseText);
             }
         })
     } catch (e) {
@@ -215,11 +215,28 @@ async function getEventsDashboard(empresa_id) {
         }),
         dataType: 'json',
         success: function (response) {
-            console.log(response)
+            // console.log(response)
             _dashEvents = response;
         },
         error: function (response) {
-            console.log(response.responseText);
+            // console.log(response.responseText);
+        }
+    })
+}
+
+function getEventsForDashboard(request,empresa_id){
+    return $.ajax({
+        type: "POST",
+        url: 'ws/proyecto/proyecto.php',
+        data: JSON.stringify({
+            'action': "getEventsForDashboard",
+            'request': request,
+            "empresa_id":empresa_id
+        }),
+        dataType: 'json',
+        success: function (response) {
+        },
+        error: function (response) {
         }
     })
 }
@@ -236,15 +253,75 @@ function printNoEventsAvailableDash() {
 
     table.append(tr);
 }
+
+
+let table = "";
 function printEventOnDashTable() {
-    const table = $('#dash-event-table')
-    _dashEvents.forEach((event) => {
-        let tr = `<tr>
-            <td style="width: 176px;">Evento</td>
-            <td style="width: 156px;">Fecha</td>
-            <td style="width: 224px;">Ubicación</td>
-            <td style="width: 176px;">Estado</td>
-      </tr>`;
-      table.append(tr);
+
+    // const table =  $('#dash-event-table');
+    // $('#dash-event-table tbody tr').remove();
+
+    if (!$.fn.DataTable.isDataTable('#dash-event-table')) {
+
+        table = new DataTable('#dash-event-table', {
+            "responsive": true,
+            "paging": true,
+            "scrollX": true,
+            "autoWidth": true,
+            scrollY: '230px',
+            lengthMenu: [5, 8, 10, 20,50,100],
+            columnDefs: [ { "defaultContent": "", "targets": "_all" } ],
+            "columns": [
+                { "width": "146px" },
+                { "width": "144px" },
+                { "width": "144px" },
+                { "width": "140px" },
+            ]
+        })
+
+    }else{
+        table
+        .rows()
+        .remove()
+        .draw();
+        // table.clear();
+    }
+
+    // if ( $.fn.DataTable.isDataTable( '#dash-event-table' ) ) {
+    //     $('#dash-event-table').Datatable().destroy();
+    // }
+    
+    _dashEvents.forEach((evento) => {
+        // console.log(evento)
+
+        if(evento.estado == null){
+            evento.estado = "borrador"
+        }
+        if(evento.estado_id === 1){
+            
+        }
+        if(evento.estado_id === 2){
+            color = "#27AE60"
+        }
+        if(evento.estado_id === 3){
+            color = "#7F45E3"
+        }
+
+        if(evento.direccion == null){evento.direccion =""}
+
+        table.row
+            .add([
+                evento.nombre_proyecto,
+                evento.fecha_inicio,
+                evento.direccion,
+                `<p class="event-status ${evento.estado}">${ evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p>`
+            ])
+            .draw(false)
     });
+
+
+    
 }
+
+
+

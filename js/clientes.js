@@ -12,10 +12,20 @@ $.ajax({
   }),
   success: function(response) {
 
-    console.log("response", response);
-  //   $('#clienteSelect').append(new Option("", ""));
-    response.forEach(response => {
-      let opt  = $('#clienteSelect').append(new Option(response.nombre_cliente, response.id))
+    $('#clienteSelect option').remove();
+
+    // console.log("RESPONSE clientes",response)
+
+    $('#clienteSelect').append(new Option("", ""));
+    response.forEach(client => {
+
+      let clientName = client.nombre_fantasia;
+
+      if(clientName === "" || clientName === null){
+        clientName = client.nombre_cliente
+      }
+
+      let opt  = $('#clienteSelect').append(new Option(clientName, client.id))
       opt.addClass()
     })
   }
@@ -25,37 +35,39 @@ $.ajax({
 
 $('#clienteSelect').on('change',function(){
 
-let idCliente = this.value;
-console.log(idCliente);
+const CLIENTE_ID = $(this).val();
+
+
+if(CLIENTE_ID === ""){
+  resetClientForm();
+  return;
+}
+console.log(CLIENTE_ID);
+
 $.ajax({
     type: "POST",
     url: "ws/cliente/cliente.php",
     dataType: 'json',
     data: JSON.stringify({
       "tipo": "getClienteById",
-      request: idCliente
+      request: CLIENTE_ID
     }),
     success: function(response) {
 
       // console.log(response);
       // console.log(response.cliente);
 
-      setSelectedClient(response.cliente);
-
+      setSelectedClient(response.cliente); 
       console.log(_selectedClient);
 
       response.cliente.forEach(cli => {
         $('#idClienteModalResume').text(cli.id);
-        document.getElementById('inputNombreClienteForm').value = cli.nombre;
-        document.getElementById('inputApellidos').value = cli.apellido;
-        document.getElementById('inputRutCliente').value = cli.rut;
-        document.getElementById('inputCorreo').value = cli.email;
-        document.getElementById('inputTelefono').value = cli.telefono;
-        document.getElementById('inputRut').value = cli.df_rut;
-        document.getElementById('inputRazonSocial').value = cli.razon_social;
-        document.getElementById('inputNombreFantasia').value = cli.nombre_fantasia;
-        document.getElementById('inputDireccionDatosFacturacion').value = cli.direccion;
-        document.getElementById('inputCorreoDatosFacturacion').value = cli.correo;
+        $('#clientNameorDesc').val(cli.nombre_fantasia);
+        $('#clientRazonSocial').val(cli.razon_social);
+        $('#clientRut').val(cli.rut);
+        $('#clientContacto').val(cli.persona_contacto);
+        $('#clientCorreo').val(cli.email);
+        $('#clientTelefono').val(cli.telefono);
       })
 
 
@@ -70,7 +82,12 @@ function setSelectedClient(selectedClient){
 }
 
 function CleanCliente(){
-    document.getElementById("clienteForm").reset();
+  // document.getElementById("sideclientForm").reset();
+  $('#sideclientForm').reset();
+}
+
+function resetPoroviderForm(){
+  $('#sideProviderForm')[0].reset();
 }
 
 

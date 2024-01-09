@@ -187,6 +187,15 @@ const requestRendicion = allRendiciones
   await assignSubRentToEvent(_subRentsToAssign,EMPRESA_ID,event_data.event_id);
 
 
+  // SAVE INCOME AND COSTS
+  const REQUEST_INCOME_COST ={
+    "event_id":event_data.event_id,
+    "ingreso":_totalEgresos,
+    "costo":_totalIngresos
+  }
+  const responseIncomeAndCosts =  await insertOrUpdateIncomeAndCosts(REQUEST_INCOME_COST);
+
+
   return true;
 }
 
@@ -466,6 +475,23 @@ async function assignStandardPackageToProject(request){
     data: JSON.stringify({
       'request': request,
       'action': "assignStandardPackageToProject"
+    }),
+    dataType: 'json',
+    success: function (data){
+      
+    },
+    error: function (response){
+      console.log(response.responseText);
+    }
+  })
+}
+async function insertOrUpdateIncomeAndCosts(request){
+  return $.ajax({
+    type: "POST",
+    url: 'ws/proyecto/proyecto.php',
+    data: JSON.stringify({
+      'request': request,
+      'action': "insertOrUpdateIncomeAndCosts"
     }),
     dataType: 'json',
     success: function (data){

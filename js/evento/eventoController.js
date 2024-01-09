@@ -206,7 +206,7 @@ async function getAssignedElements() {
     //fillvehiculos
     FillVehiculos(EMPRESA_ID);
     // Fill Clientes
-    FillClientes(EMPRESA_ID);
+    // FillClientes(EMPRESA_ID);
     //FILL DIRECCIONES
     FillDirecciones();
 
@@ -524,7 +524,10 @@ $('#direccionInput').on('click', function() {
 })
 //OPEN MODAL CLIENTE
 $('#inputNombreCliente').on('click', function() {
-  $('#clienteModal').modal('show');
+  // $('#clienteModal').modal('show');
+  $('#clientSideMenu').addClass('active');
+  FillClientes(EMPRESA_ID);
+
 })
 
 // GUARDAR CLIENTE EN INPUT CLIENTE

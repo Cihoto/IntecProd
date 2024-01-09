@@ -201,7 +201,7 @@ $active = 'eventos';
     <script src="/js/productos.js"></script>
 
     <script>
-        const EMPRESA_ID = <?php echo $empresaId; ?>;
+        const EMPRESA_ID = <?php echo $empresaId;?>;
 
 
         let arrayPackage = [];
@@ -295,15 +295,15 @@ $active = 'eventos';
         /* FILL PRODUCTS BY GIVES JSON ARRAY AND TRANSFORM TRABLE TO DATATABLE TO SORT IT AND ADD SELECTED PRODUCT TO STANDARD
          PROJECT PACKAGE*/
         function FillPackageProductsTable(products) {
-            // console.log(products);
-            products.forEach(product => {
+            console.log(products);
+            products.data.forEach(product => {
                 let td = `<tr product_id="${product.id}">
                     <td>${product.categoria}</td>
                     <td>${product.item}</td>
                     <td>${product.nombre}</td>
                     <td>${product.cantidad}</td>
                     <td style="cursor: pointer;" class="addToPackage"><i class="fa-solid fa-plus addNewProdToPackage"></i></td>
-                </tr>`
+                </tr>`;
                 $('#productsTable').append(td);
             })
 

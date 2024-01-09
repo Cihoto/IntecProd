@@ -134,43 +134,83 @@ if ($_POST) {
         $conn =  new bd();
         $conn->conectar();
 
-        $empresaId = $request->empresaId; 
-        $nombreCliente = $request->nombreCliente;
-        $apellidos = $request->apellidos;
-        $rutCliente = $request->rutCliente;
-        $correoCliente = $request->correoCliente;
-        $telefono = $request->telefono;
-        $rut = $request->rut;
-        $razonSocial = $request->razonSocial;
-        $nombreFantasia = $request->nombreFantasia;
-        $direccionDatosFacturacion = $request->direccionDatosFacturacion;
-        $correoDatosFacturacion = $request->correoDatosFacturacion;
-
-        $queryInsertPersona = "INSERT INTO persona
-        (nombre, apellido, rut, email, telefono)
-        VALUES('".$nombreCliente."', '".$apellidos."', '".$rutCliente."', '".$correoCliente."', '".$telefono."')";
+        $clientData = [];
+        $persona_id = 0;
+        $df_id = 0;
         
-        $conn->mysqli->query($queryInsertPersona);
-        $idPer = $conn->mysqli->insert_id;
-        
-        $queryInsertDatosFacturacion = "INSERT INTO datos_facturacion
-        (razon_social, nombre_fantasia, rut, direccion, correo)
-        VALUES('".$razonSocial."', '".$nombreFantasia."', '".$rut."', '".$direccionDatosFacturacion."', '".$correoDatosFacturacion."');";
-        $conn->mysqli->query($queryInsertDatosFacturacion);
-        $idDf = $conn->mysqli->insert_id;
+        $empresaId = $request->empresaId;
+        $clientNameorDesc = $request->clientNameorDesc;
+        $clientRazonSocial = $request->clientRazonSocial;
+        $clientRut = $request->clientRut;
+        $clientContacto = $request->clientContacto;
+        $clientCorreo = $request->clientCorreo;
+        $clientTelefono = $request->clientTelefono;
+        $clienteId = $request->clienteId;
+        $updatepersona = $request->updatepersona;
 
-        $queryCliente = "INSERT INTO cliente
-        (datos_facturacion_id, persona_id_contacto, empresa_id)
-        VALUES($idDf, $idPer, $empresaId);";
+        if($updatepersona){
 
-        if($conn->mysqli->query($queryCliente)){
-            $idCliente = $conn->mysqli->insert_id;
+            $querySelect = "SELECT p.id as persona_id, df.id as df_id FROM cliente c
+            INNER JOIN persona p on p.id = c.persona_id_contacto 
+            INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
+            where c.id = $clienteId; ";
+
+
+            if($response = $conn->mysqli->query($querySelect)){
+                while($data = $response->fetch_object()){
+                    $clientData = $data;
+                }
+            }
+
+            $persona_id = $clientData->persona_id;
+            $df_id = $clientData->df_id;
+
+            $queryUpdatePersona = "UPDATE u136839350_intec.persona SET nombre='$clientContacto',
+             rut='$clientRut', email='$clientCorreo', telefono='$clientTelefono' WHERE id=$persona_id;";
+
+            $conn->mysqli->query($queryUpdatePersona);
+
+            $queryUpdateDatosFacturacion = "UPDATE datos_facturacion
+            set razon_social = '$clientRazonSocial',
+             persona_contacto =  '$clientContacto',
+             nombre_fantasia = '$clientNameorDesc',
+             rut = '$clientRut'
+            WHERE id = $df_id;";
+
+            $conn->mysqli->query($queryUpdateDatosFacturacion);
+
             $conn->desconectar();
-            return json_encode(array("idCliente"=>$idCliente));
+
+            return json_encode(array("success"=>true,"created"=>false,"message"=>"Cliente modificado exitosamente"));
         }else{
-            $conn->desconectar();
-            return false;
+            $queryInsertPersona = "INSERT INTO u136839350_intec.persona 
+            (nombre,apellido, rut, email, telefono) 
+            VALUES( '$clientContacto','','$clientRut','$clientCorreo','$clientTelefono');";
+
+             $conn->mysqli->query($queryInsertPersona);
+             $persona_id = $conn->mysqli->insert_id;
+            $queryInsertDF = "INSERT INTO u136839350_intec.datos_facturacion 
+            (razon_social,nombre_fantasia ,persona_contacto,rut) 
+            VALUES('$clientRazonSocial','$clientNameorDesc','$clientContacto','$clientRut');";
+
+             $conn->mysqli->query($queryInsertDF);
+             $df_id = $conn->mysqli->insert_id;
+
+            $queryCliente = "INSERT INTO cliente
+            (datos_facturacion_id, persona_id_contacto, empresa_id)
+            VALUES($df_id, $persona_id, $empresaId);";
+    
+            if($conn->mysqli->query($queryCliente)){
+                $idCliente = $conn->mysqli->insert_id;
+                $conn->desconectar();
+
+                return json_encode(array("success"=>true,"created"=>true,"message"=>"Cliente modificado exitosamente"));
+            }else{
+                $conn->desconectar();
+                return false;
+            }
         }
+
     }
 
     function AddClientMasiva($request){
@@ -273,7 +313,9 @@ if ($_POST) {
         $empresaId = $request;
 
 
-        $query = "SELECT CONCAT(p.nombre ,' ',p.apellido) as nombre_cliente ,c.id from cliente c 
+        $query = "SELECT CONCAT(p.nombre ,' ',p.apellido) as nombre_cliente ,c.id ,
+        df.*    
+        from cliente c 
         INNER JOIN persona p on p.id = c.persona_id_contacto 
         INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
         INNER JOIN empresa e on e.id = c.empresa_id 
@@ -299,11 +341,19 @@ if ($_POST) {
         $clientes = [];
         $clienteId = $request;
 
-
-        $query = "SELECT *,df.rut as df_rut  From cliente c 
-                INNER JOIN persona p on p.id = c.persona_id_contacto 
-                INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
-                where c.id = $clienteId ";
+        $query = "SELECT c.id,
+        df.nombre_fantasia,
+        df.razon_social,
+        df.rut,
+        p.nombre,
+        df.persona_contacto,
+        p.email,
+        df.correo,
+        p.telefono
+         FROM cliente c 
+            INNER JOIN persona p on p.id = c.persona_id_contacto 
+            INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
+            where c.id = $clienteId";
 
         if($responseBd = $conn->mysqli->query($query)){
             while($dataResponse =$responseBd->fetch_object()){
@@ -344,9 +394,9 @@ if ($_POST) {
         }
 
         $queryUpdateDatosFacturacion = "UPDATE datos_facturacion
-                                            SET razon_social='".$razonSocial."', nombre_fantasia='".$nombreFantasia."', rut='".$rut."',
-                                            direccion='".$direccionDatosFacturacion."', correo='".$correoDatosFacturacion."'
-                                            WHERE id= $idDatosFacturacion";
+        SET razon_social='".$razonSocial."', nombre_fantasia='".$nombreFantasia."', rut='".$rut."',
+        direccion='".$direccionDatosFacturacion."', correo='".$correoDatosFacturacion."'
+        WHERE id= $idDatosFacturacion";
 
         $queryUpdatePersona = "UPDATE persona
         SET nombre='".$nombreCliente."', apellido='".$apellidos."', rut='".$rutCliente."', email='".$correo."', telefono='".$telefono."'

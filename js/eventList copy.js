@@ -21,28 +21,12 @@ async function getEvents(empresa_id){
 
 async function printAllProjects(){
 
-    
+    $('#allProjectTable-list tbody tr').remove();
 
-    
-    // const table = $('#allProjectTable-list').DataTable();
-    
-    if ($.fn.DataTable.isDataTable('#allProjectTable-list')) {
-        $('#allProjectTable-list tbody tr').remove();
-
-
-
-        $('#allProjectTable-list').DataTable().destroy();
-
-
-        // $('#allProjectTable-list > tr').each((key, element) => {
-        //     $(element).remove();
-        //   })
-        // table.clear();
-    }
-    
 
     _projectsToList.forEach((evento)=>{
         let color = "";
+
         let phf = "";
         let php = "";
         let phv = "";
@@ -94,7 +78,7 @@ async function printAllProjects(){
 
 
       let tr = `<tr evento_id="${evento.id}" class="eventListRow">
-        <td  width="204.453";>
+        <td style="width: 16.8226514%">
             <p class="event-name"> ${evento.nombre_proyecto} </p>
             <button class="commentContainer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -103,45 +87,26 @@ async function printAllProjects(){
             </button>
 
         </td>
-        <td style="width: 80.7344px;"><p class="event-status ${evento.estado}">${ evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p></td>
-        <td style="width: 120px;"> <p>${evento.fecha_inicio == null ? "" : evento.fecha_inicio }</p></td>
-        <td style="width: 158.188px;"><p class="event-client-name">${evento.nombreCliente}</p></td>
-        <td style="width: 119px;"><p>Tipo de evento</p></td>
-        <td style="width: 125.406px;"><p>Precio venta</p></td>
-        <td style="width: 125.406px;"><p>Owner</p></td>
-        <td style="width: 164.906px;"">
+        <td style="width: 6.67251975%;padding: 10px 16px 10px 8px;"><p class="event-status ${evento.estado}">${ evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p></td>
+        <td style="width: 9.642669%;"> <p>${evento.fecha_inicio == null ? "" : evento.fecha_inicio }</p></td>
+        <td style="width: 12.5355575%;"><p class="event-client-name">${evento.nombreCliente}</p></td>
+        <td style="width: 9.5355575%; "><p>Tipo de evento</p></td>
+        <td style="width: 10%;"><p>Precio venta</p></td>
+        <td style="width: 10%;"><p>Owner</p></td>
+        <td style="width: 13.15%;">
         <button class="buttonEventList">
-            ${phf}
+        ${phf}
             </button>
             <button class="buttonEventList">
             ${php}
             </button>
             <button class="buttonEventList">
-                ${phv}
+            ${phv}
             </button>
         </td>
-        <td style="display:flex;justify-content:space-between;width: 94.0469px;">            
-            <button class="buttonEventList">
-                <img src="./assets/svg/dollar-sign-inactive.svg" alt="">
-            </button>
-            <button class="buttonEventList">
-                <img src="./assets/svg/paperclip.svg" alt="">
-            </button>
-        </td> 
+        <td style="width: 12%;"><p>Owner</p></td> 
     </tr>`
 
       $('#allProjectTable-list tbody').append(tr);
-    });
-
-
-    if (!$.fn.DataTable.isDataTable('#allProjectTable-list')) {
-       
-        $('#allProjectTable-list').DataTable({
-            // fixedHeader: true
-        })
-    }
-
-    // $("#allProjectTable-list_length select").change();
-    // $("#allProjectTable-list_length select option[value=25]").attr('selected','selected');
-    
+    })
 }

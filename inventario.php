@@ -115,7 +115,7 @@ $active = 'inventario';
                 </div>
             </nav>
 
-            <header class="mb-3">
+            <header class="mb-3"> 
                 <a href="#" class="burger-btn d-block d-xl-none">
                     <i class="bi bi-justify fs-3"></i>
                 </a>
@@ -187,7 +187,7 @@ $active = 'inventario';
                                             </tr>
                                         </thead>
                                         <tbody>
-
+                                            
                                         </tbody>
                                         <tfoot>
                                             <tr>
@@ -203,8 +203,6 @@ $active = 'inventario';
                                             </tr>
                                         </tfoot>
                                     </table>
-
-
                                 </div>
                             </div>
                         </div>

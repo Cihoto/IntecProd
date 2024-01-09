@@ -2662,23 +2662,12 @@ textarea {
   margin: 0px;
 }
 
-#allProjectTable-list {
-  width: 100%;
-}
 
-#allProjectTable-list td,
-#allProjectTable-list th {
-  border-spacing: 0;
-  padding: 16px;
-  text-align: start;
-}
 
-#allProjectTable-list tr {
-  text-align: start;
-}
+
 
 .p-estado {
-  padding: 15px;
+  /* padding: 15px; */
 }
 
 
@@ -3482,13 +3471,16 @@ label.dateLabel {
   display: flex;
   width: 794px;
   height: 69px;
+  gap: 8px;
   padding: var(--none, 0px) var(--2, 16px) var(--1, 8px) var(--2, 16px);
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   align-content: center;
   row-gap: var(--2, 16px);
   flex-wrap: wrap;
 }
+
+
 
 .select-area-dashEvent {
   display: flex;
@@ -3501,6 +3493,30 @@ label.dateLabel {
 
 #dash-event-table {
   width: 100%;
+}
+
+#dash-event-table tbody tr{
+  display: flex;
+  padding: var(--none, 0px);
+  align-items: center;
+  gap: var(--1, 8px);
+  align-self: stretch;
+}
+#dash-event-table tbody td{
+  display: flex;
+  width: 176px;
+  padding: 16px 0px 16px 4px;
+  align-items: center;
+}
+
+#dash-searchBy{
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+  letter-spacing: 0.15px;
 }
 
 #dash-monthResumeContainer {
@@ -3928,3 +3944,160 @@ label.dateLabel {
   line-height: 60px;
 }
 
+#allProjectTable-list_wrapper{
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+#allProjectTable-list{
+ table-layout: fixed;
+ margin-top: 45px!important;
+}
+#allProjectTable-list thead th{
+  border: none;
+}
+
+#allProjectTable-list tr{
+  display: flex;
+  padding: var(--none, 0px);
+  align-items: center;
+}
+#allProjectTable-list thead tr{
+  border-radius: var(--none, 0px);
+  border: 1px solid var(--Line-table, #DDDDE1);
+  background: var(--Fondo-cyan, #E8F3F3);
+}
+
+#allProjectTable-list tbody tr{
+  transition: all .2s ease;
+  border-radius: var(--none, 0px);
+  border-top: var(--none, 0px) solid var(--Line-table, #DDDDE1)!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1)!important;
+  border-bottom: 1px solid var(--Line-table, #DDDDE1)!important;
+  border-left: 1px solid var(--Line-table, #DDDDE1)!important;
+}
+
+button{
+  transition: none;
+}
+#allProjectTable-list tr svg,
+#allProjectTable-list tr button {
+  transition:none!important;
+}
+#allProjectTable-list tr:hover svg,
+#allProjectTable-list tr:hover button {
+  /* transition: all 0s!important; */
+  /* transition: none !important; */
+  background: var(--Purple-200, #DCD0F1);
+}
+
+#allProjectTable-list tbody tr:hover {
+  scale: 1.004;
+  cursor: pointer;
+  border: 1px solid var(--Secondary-color, #6136AB)!important;
+  background: var(--Purple-200, #DCD0F1);
+}
+#allProjectTable-list tbody tr:hover td {
+  border-right: none!important;
+}
+
+.sorting{
+  display: flex!important;
+}
+
+
+#allProjectTable-list tbody td{
+  display: flex!important;
+  /* padding: 16px!important; */
+  align-items: center!important;
+  flex-shrink: 0!important;
+  /* border-right: 1px solid var(--Line-table, #DDDDE1); */
+  background: rgba(0, 0, 0, 0.00)!important;
+}
+
+#allProjectTable-list tbody td,#allProjectTable-list thead th {
+  padding: 16px!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1)!important;
+}
+
+
+._theadth1{
+ width: 16.25%!important;
+}
+._theadth2{
+ width: 6.44%!important;
+}
+._theadth3{
+ width: 9.642669%!important;
+ justify-content: space-between;
+}
+._theadth4{
+ width: 12.5355575%!important;
+}
+._theadth5{
+ width: 9.5355575%!important;
+}
+._theadth6{
+ width: 10%!important;
+}
+._theadth7{
+ width: 10%!important;
+}
+._theadth8{
+ width: 13.15%!important;
+}
+._theadth9{
+ width: 7.5%!important;
+}
+
+
+.sideMenu-s{
+  position: fixed;
+  height: 800px;
+  width: 800px;
+  margin-top: 0px;
+}
+
+
+.sideMenu-s{
+  z-index: 10000;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 700px;
+  height: 100%;
+  bottom: 0px;
+  margin-right:0px ;
+  right: -710px;
+  background-color: white ;
+  color: black;
+  transition: all .5s cubic-bezier(0.42, 0, 0.06, 0.89);
+  box-shadow: rgba(0, 0, 0, 0.75) 0px 5px 15px;
+  overflow: auto;
+}
+.sideMenu-s.active{
+  right: 0px!important;
+}
+
+.sideMenu-s p {
+  margin: 0px!important;
+  text-align: center;
+  line-height: 60px;
+}
+
+
+
+.sideMenu-s{
+
+
+}
+
+#dash-event-status{
+  margin: 10px 0px;
+ display: flex;
+ flex-direction: row;
+ gap: 10px;
+}
+
+ 

@@ -1,5 +1,5 @@
 let _allMyProviders = [];
-let _subRentsToAssign = []
+let _subRentsToAssign = [];
 
 async function getAllMyProviders(empresa_id) {
     return $.ajax({
@@ -25,9 +25,9 @@ async function getAllMyProviders(empresa_id) {
 async function setAllMyProviders(empresa_id) {
     return $.ajax({
         type: "POST",
-        url: 'ws/Arriendos/arriendos.php',
+        url: 'ws/Proveedor/proveedor.php',
         data: JSON.stringify({
-            action: 'getAllMyProviders',
+            action: 'getAllProviderByBussiessId',
             empresa_id: empresa_id
         }),
         dataType: 'json',
@@ -47,10 +47,14 @@ function printAllMyProviders() {
     $('#mySelect2').select2('destroy');
     $('.allProvidersSelect').each((key, element) => {
         $(element).append(new Option("", ""))
-        console.log("element", $(element));
         if ($(element).val() === "") {
             _allMyProviders.forEach((provider) => {
-                $(element).append(new Option(`${provider.nombre} ${provider.apellido}`, provider.id))
+                let name = provider.nombre_fantasia; 
+
+                if(name === ""){
+                    name = provider.nombre
+                }
+                $(element).append(new Option(`${name}`, provider.id))
             })
         }
     })
@@ -261,6 +265,10 @@ async function AddArriendoToTable(element) {
     }
 }
 
+function resetClientForm(){
+    $('#sideclientForm')[0].reset();
+}
+
 async function printNewRow_subRent(){
     await  setAllMyProviders(EMPRESA_ID);
     $('#subarriendosTable tbody tr').remove();
@@ -270,13 +278,20 @@ async function printNewRow_subRent(){
 
     _subRentsToAssign.forEach((subRent) => {
         let options = "";
+        
         _allMyProviders.forEach((provider) => {
+
+            let name = provider.nombre_fantasia;
+
+            if(name === ""){
+                name = provider.nombre
+            };
 
             if (provider.id === subRent.proveedor_id) {
 
-                options += `<option selected value="${provider.id}">${provider.nombre} ${provider.apellido}</option>`
+                options += `<option selected value="${provider.id}">${name}</option>`
             } else {
-                options += `<option value="${provider.id}">${provider.nombre} ${provider.apellido}</option>`
+                options += `<option value="${provider.id}">${name}</option>`
 
             }
         })
@@ -308,7 +323,12 @@ async function printNewRow_subRent(){
     })
     let newOpt =`<option value=""></option>`;
     _allMyProviders.forEach((provider) => {
-        newOpt += `<option value="${provider.id}">${provider.nombre} ${provider.apellido}</option>`
+        let name = provider.nombre_fantasia; 
+
+        if(name === ""){
+            name = provider.nombre
+        }
+        newOpt += `<option value="${provider.id}">${name} </option>`
     })
 
     let tr = `<tr class="notCompletedSubArriendo">
@@ -344,7 +364,14 @@ async function printNewRow_subRent(){
 }
 
 $('#AddNewProvider').on('click',function(){
-    $('#newProvider-Modal').modal('show');
+    // $('#newProvider-Modal').modal('show');
+    $('#providerSideMenu').addClass('active');
+
+})
+$('#closeProviderSideMenu').on('click',function(){
+    // $('#newProvider-Modal').modal('show');
+    $('#providerSideMenu').removeClass('active');
+
 })
 
 $('#triggerNewProvider').on('click',function(){
@@ -391,10 +418,6 @@ $(document).on('change', '.rentDetail', function () {
 })
 
 function setSubarriendoIfReady() {
-    // console.log("$(element).closest('tr').find('.rentDetail').val()",$(element).closest('tr').find('.rentDetail').val())    
-    // console.log("$(element).closest('tr').find('.allProvidersSelect').val()",$(element).closest('tr').find('.allProvidersSelect').val())    
-    // console.log("$(element).closest('tr').find('.subArriendoValue').val()",$(element).closest('tr').find('.subArriendoValue').val())
-
 
     _subRentsToAssign = [];
     $('#subarriendosTable tbody tr').each((key, element) => {

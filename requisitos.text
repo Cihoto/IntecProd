@@ -118,28 +118,42 @@ SUBARRIENDOS TODOS EN RESUMEN ALL IGUAL QUE EN OTRAS VENTAS
 
 TOP TIER
 
-LISTADO DE EVENTOS AGREGAR COLUMNA FINANZAS,-->>2 ICONOS->>>  ICONO DE FACTURA, ICONO PESO EN CASO DE ESTAR PAGADO;
+LISTADO DE EVENTOS AGREGAR COLUMNA FINANZAS,-->>2 ICONOS->>>  ICONO DE FACTURA, ICONO PESO EN CASO DE ESTAR PAGADO;--->>FALTA DECIDIR CUADO ESTA PAGADO
 
-CARGAS EVENTOS PASADOS Y FINALIZADOS 
+CARGAS EVENTOS PASADOS Y FINALIZADOS ->>PENDIENTE->>falta poder activar Office
 
 
-MOVER PAQUETES DE RECURSOS A INVENTARIO(DESDE EVENTOS A INVENTARIO)
-OPO UP CLIENTES 
+MOVER PAQUETES DE RECURSOS A INVENTARIO(DESDE EVENTOS A INVENTARIO);
+
+
+
+pop UP CLIENTES a un costado
 DATOS CLIENTE 
 1.- NOMBRE O DESCRIPCION
-2.- RAZON SOCIAL 
+2.- RAZON SOCIAL    
 3.- RUT 
 TODO JUNTO  1,2 Y 3
-
 CONTACTO -> CORREO Y TELEFONO;
+LO MISMO PARA PROVEEDOR;
 
-LO MISMO PARA PORVEEDOR
 DATOS DE TRANSFERECIA BANCO TIPO DE CUENTA Y NUMERO DE CUENTA(OPCIONALES);
 
 
 precio unitario escritura INVERSA desde la derecha a izquierda
 
 PASAR A DATATABLE
+
+
+
+cambiar modal y tipo de pago de pago diario a noraml y xl
+->>>modales de seleccion de tipo de pago se hacen al inicio, no al momento de salir del recinto
+->>>Dentro de la pesta;a pagar dia completo tambien poder seleccionar el tipo de vehículo que ingresará(cobro especial o cobro normal)
+
+
+mostrar tiempo transcurrido en minutos a la salida
+mostrar saldo total en pestaña de dentro del recinto.
+
+
 
 
 

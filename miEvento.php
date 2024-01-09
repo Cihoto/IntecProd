@@ -15,9 +15,11 @@ require_once('./includes/head.php');
 
     <div id="app">
 
+
         <?php require_once('./includes/sidebar.php') ?>
 
         <div id="main">
+
             <header class="page-header">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
@@ -99,6 +101,9 @@ require_once('./includes/head.php');
     </div>
 
 
+
+<?php require_once('./includes/sidemenu/clientSideMenu.php')?>
+
     <div style="display: none;" id="downloadPdf">
     </div>
 
@@ -161,10 +166,13 @@ require_once('./includes/head.php');
     <script src="/js/bottomBar.js"></script>
     <script src="/js/factSheet.js"></script>
 
-    
+
     <!-- VALIDATE FORM -->
     <script src="./js/validateForm/addNewFreeLance.js"></script>
     <script src="./js/validateForm/addNewProvider.js"></script>
+    <script src="./js/validateForm/clientForm.js"></script>
+
+
 </body>
 
 
@@ -176,14 +184,19 @@ require_once('./includes/head.php');
     let EMPRESA_ID = <?php echo $empresaId; ?>;
     const PERSONAL_IDS = <?php echo $personal_ids; ?>;
 
+    $('#closeThis').on("click", function() {
+        $("#clientSideMenu").removeClass("active");
+        resetClientForm();
+    })
+
     $(document).ready(async function() {
-        
+
         projectDates.start_date = ""
         projectDates.finish_date = ""
         projectDates.total_days = ""
         projectDates.selectDates = false
         projectDates.project_id = ""
-        
+
         // SET EVENT_ID
         <?php if (isset($_GET['event_id'])) : ?>
             const EVENT_ID = <?= $_GET['event_id']; ?>;
@@ -228,12 +241,7 @@ require_once('./includes/head.php');
             }
         })
 
-        $('.event-status-btn').on('click', function(){
-            console.log("ahhhh esto es los estados del boton")
-            console.log("ahhhh esto es los estados del boton")
-            console.log("ahhhh esto es los estados del boton")
-            console.log("ahhhh esto es los estados del boton")
-            console.log("ahhhh esto es los estados del boton")
+        $('.event-status-btn').on('click', function() {
             const BUTTON_CLASS = $(this).attr('class').split(" ")[1];
             const ACTUAL_CLASS = $('#status-button').attr('class').split(" ")[1];
             const STATUS_ID = $(this).attr('status_id');

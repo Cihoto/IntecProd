@@ -79,11 +79,6 @@
                 <a href="miEvento.php">Crear Evento</a>
               </li>
             <?php endif; ?>
-            <?php if (in_array("7", $rol_id) || in_array("1", $rol_id) || in_array("2", $rol_id)) : ?>
-              <li class="submenu-item">
-                <a href="projectPackages.php">Crear paquetes de recursos</a>
-              </li>
-            <?php endif; ?>
             <li class="submenu-item">
               <a href="../eventos.php">Lista de Eventos</a>
             </li>
@@ -119,6 +114,13 @@
             <li class="submenu-item">
               <a href="inventario.php">Disponible</a>
             </li>
+            <!-- < -->
+            <!-- php if (in_array("7", $rol_id) || in_array("1", $rol_id) || in_array("2", $rol_id)) : ?> -->
+              <li class="submenu-item">
+                <a href="projectPackages.php">Crear paquetes de recursos</a>
+              </li>
+            <!-- < -->
+            <!-- php endif; ?> -->
             <li class="submenu-item">
               <a href="#">Por reparar</a>
             </li>

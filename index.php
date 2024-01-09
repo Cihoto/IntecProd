@@ -37,7 +37,7 @@ $active = 'dashboard';
 
             <div class="welcome-container">
 
-              <p class="user-welcome">Hola, <strong class="user-name"> Cote</strong></p>
+              <p class="user-welcome">Hola, <strong class="user-name">Cote</strong></p>
             </div>
             <p class="user-tip">Consulta el estado de tus eventos</p>
 
@@ -47,7 +47,7 @@ $active = 'dashboard';
         <div class="page-content page-r-content">
 
           <div id="dash-monthResumeContainer">
-            <div id="monthEventsAmount" class="resume-event-container" >
+            <div id="monthEventsAmount" class="resume-event-container">
               <div class="detail-month">
                 <p class="month-name">Eventos del mes</p>
                 <div class="d-flex justify-content-start" style="gap: 4px;">
@@ -63,8 +63,8 @@ $active = 'dashboard';
               <div class="detail-month">
                 <p class="month-name">Utilidad mensual</p>
                 <div class="d-flex justify-content-start" style="gap: 4px;">
-                  <p class="month-amount">$12.537.900</p>
-                  <p class="month-perc neg">-14%</p>
+                  <p id="dash-amountIncome" class="month-amount">$12.537.900</p>
+                  <p id="dash-amountIncomePercentaje" class="month-perc neg">-14%</p>
                 </div>
               </div>
               <div class="img-event-month">
@@ -83,18 +83,31 @@ $active = 'dashboard';
                 <img src="./assets/svg/medal.svg" alt="">
               </div>
             </div>
-            
+
           </div>
 
           <div id="dash-event-housing">
             <p class="dstheader">Historial de eventos</p>
             <form id="dash-event-menu">
-              <fieldset>
-                <input type="radio" value="Creados">Creados
-                <input type="radio" value="Confirmados">
-                <input type="radio" value="Finalizados">
-                <input type="radio" value="Todos">
-              </fieldset>
+              <div id="dash-event-status">
+                <label for="" id="dash-searchBy">Buscar por:</label>
+                <div class="select-status-container">
+                  <input type="radio" class="eventStatusSortDash" value="all" checked>
+                  <label for="">Todos</label>
+                </div>
+                <div class="select-status-container">
+                  <input type="radio" class="eventStatusSortDash" value="1">
+                  <label for="">Creados</label>
+                </div>
+                <div class="select-status-container">
+                  <input type="radio" class="eventStatusSortDash" value="2">
+                  <label for="">Confirmados</label>
+                </div>
+                <div class="select-status-container">
+                  <input type="radio" class="eventStatusSortDash" value="3">
+                  <label for="">Finalizados</label>
+                </div>
+              </div>
               <div class="row justify-content-between">
                 <div class="dash-filter-event">
                   <div class="select-area-dashEvent">
@@ -102,34 +115,37 @@ $active = 'dashboard';
                       <label for="fechaInicio" class="inputLabel dateLabel">Fecha</label>
                       <input id="fechaInicio" name="dpInicio" type="date" class="form-control s-Input-g">
                     </div>
-                    <div class="form-group" style="width: 180px;">
-                      <label for="especialidadSelect" class="inputLabel">Periodo</label>
-                      <select id="especialidadSelect" name="especialidadSelect" type="text" class="form-select s-Select-g">
-                        <option value="uno">Uno</option>
-                      </select>
-                    </div>
-                    <div class="form-group" style="width:180px">
-                      <label for="nombreInput" class="inputLabel">Tipo de evento</label>
-                      <input id="nombreInput" name="nombreInput" type="text" class="form-control s-Input-g" />
-                    </div>
                   </div>
-                  <button class="s-Button-w" style="margin-top: 10px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
-                      <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <p class="s-P-g">Filtros</p>
-                  </button>
+                  <div class="form-group" style="width:180px">
+                    <label for="eventTypeSelect" class="inputLabel">Tipo de evento</label>
+                    <select id="eventTypeSelect" name="eventTypeSelect" type="text" class="form-select s-Select-g">
+                      <option value=""></option>
+                      <option value="1">Evento corporativo </option>
+                      <option value="2">Recital o festival </option>
+                      <option value="3">Fiestas</option>
+                      <option value="4">Matrimonio</option>
+                      <option value="5">Seminario, charlas o conferencias</option>
+                      <option value="6">Rental</option>
+                      <option value="7">Otro</option>
+                    </select>
+                  </div>
                 </div>
+                <!-- <button class="s-Button-w" style="margin-top: 10px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+                    <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <p class="s-P-g">Filtros</p>
+                </button> -->
               </div>
             </form>
 
-            <table class="s-table" id="dash-event-table">
+            <table class="s-table" id="dash-event-table" style="margin-top: 20px;">
               <thead>
                 <tr>
-                  <th style="width: 176px;">Evento</th>
-                  <th style="width: 156px;">Fecha</th>
-                  <th style="width: 224px;">Ubicación</th>
-                  <th style="width: 176px;">Estado</th>
+                  <th style="width: 100px;">Evento</th>
+                  <th style="width: 100px;">Fecha</th>
+                  <th style="width: 100px;">Ubicación</th>
+                  <th style="width: 100px;">Estado</th>
                 </tr>
               </thead>
               <tbody>
@@ -142,8 +158,9 @@ $active = 'dashboard';
           </div>
         </div>
       </div>
-      <?php include_once('./includes/Modal/detallesProyecto.php') ?>
     </div>
+    <?php include_once('./includes/Modal/detallesProyecto.php') ?>
+  </div>
   </div>
   <?php require_once('./includes/footerScriptsJs.php') ?>
 

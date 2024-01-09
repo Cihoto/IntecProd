@@ -112,7 +112,6 @@
             <div id="rendicionesAcordion" class="collapse pt-1" aria-labelledby="subArriendo-Heading" data-parent="#cardAccordion">
                 <div class="card-body">
                     <?php require_once('./includes/dragAndDrop/dragRendiciones.php')?>
-                    
                 </div>
             </div>
         </div>
