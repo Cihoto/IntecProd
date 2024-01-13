@@ -206,7 +206,7 @@ async function getAssignedElements() {
     //fillvehiculos
     FillVehiculos(EMPRESA_ID);
     // Fill Clientes
-    // FillClientes(EMPRESA_ID);
+    FillClientes(EMPRESA_ID);
     //FILL DIRECCIONES
     FillDirecciones();
 

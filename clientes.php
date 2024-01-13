@@ -18,6 +18,40 @@ $active = 'clientes';
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
+
+            <div id="clientsContainer">
+                <div class="formHeader" style="align-items: center;align-content:center;margin-left: 14px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <circle cx="6" cy="6" r="6" fill="#069B99" />
+                    </svg>
+                    <p class="header-P">Aquí puedes ver, editar y crear los vehículos para tus eventos</p>
+                </div>
+
+                <div class="row justify-content-end" style="margin:0px 14px;">
+                    <button class="s-Button" id="openMasivaCliente" style="position: relative; right:-138px ; bottom: 50px;">
+                        <p class="s-P">Agregar clientes masiva</p>
+                    </button>
+                    <button class="s-Button" id="openSideClientForm">
+                        <p class="s-P">Agregar cliente</p>
+                    </button>
+                </div>
+
+                <table class="s-table" id="dashClient-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Rut</th>
+                            <th>Correo Eléctronico</th>
+                            <th>Eventos</th>
+                            <th>Facturación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+
             <div class="page-header" style="margin-bottom: 30px;">
                 <div style="display:flex; align-items: center;justify-content: space-between; ">
                     <h3 style="margin-right: 50px">Clientes</h3>
@@ -44,7 +78,7 @@ $active = 'clientes';
                                     <div class="row">
                                         <h5>Carga masiva de clientes</h5>
                                     </div>
-                                    <input type="file" name="" id="excel_input">
+                                    <input type="file" name="" id="excel_inputt">
                                 </div>
                             </div>
                         </div>
@@ -53,7 +87,7 @@ $active = 'clientes';
             </div>
             <div class="page-content">
 
-                <table id="clientesTable">
+                <table id="cclientesTable">
                     <thead>
                         <th>Nombre Empresa</th>
                         <th>Nombre Cliente</th>
@@ -75,14 +109,15 @@ $active = 'clientes';
         <?php require_once('./includes/footer.php') ?>
     </div>
     </div>
-    <?php require_once('./includes/Modal/cliente.php') ?>
+
+    <?php require_once('./includes/sidemenu/clientSideMenu.php') ?>
+    <?php require_once('./includes/sidemenu/clienteMasivaSideMenu.php') ?>
     <?php require_once('./includes/footerScriptsJs.php') ?>
 
     <!-- MODAL DE INFORMACION DE CLIENTE -->
     <?php require_once('./includes/Modal/clientInfo.php') ?>
 
     <!-- require once de modal para ingresar clientes Masiva -->
-    <?php require_once('./includes/Modal/productosMasiva.php') ?>
 
     <!-- Validador intec -->
     <script src="./js/valuesValidator/validator.js"></script>
@@ -97,36 +132,67 @@ $active = 'clientes';
     <!-- SCRIPTS FUNCIONES JS -->
 
 
-    <script src="/js/Funciones/NewProject.js"></script>
-    <script src="/js/clientes.js"></script>
-    <script src="/js/project.js"></script>
-    <script src="/js/direccion.js"></script>
-    <script src="/js/personal.js"></script>
-    <script src="/js/vehiculos.js"></script>
-    <script src="/js/productos.js"></script>
-    <script src="/js/valuesValidator/validator.js"></script>
-    <script src="/js/ClearData/clearFunctions.js"></script>
-    <script src="/js/localeStorage.js"></script>
-    <script src="/js/ProjectResume/projectResume.js"></script>
-    <script src="/js/ProjectResume/viatico.js"></script>
-    <script src="/js/ProjectResume/subArriendo.js"></script>
-    <script src="/js/Funciones/assigments.js"></script>
-    <script src="/js/validateForm/client.js"></script>
-
+    <script src="./js/clientes.js"></script>
+    <script src="./js/valuesValidator/validator.js"></script>
+    <script src="./js/ClearData/clearFunctions.js"></script>
+    <script src="./js/ProjectResume/viatico.js"></script>
+    <script src="./js/validateForm/clientForm.js"></script>
 
 </body>
 
 <script>
-    $('#newClient').on('click', function() {
-        $('#clienteModal').modal('show');
-    })
+
+    const EMPRESA_ID = <?php echo $empresaId;?>;
+    // Obtener el elemento de input file y el elemento de visualización del nombre del archivo
+    const fileInput = document.getElementById('excel_input');
+    const fileNameDisplay = document.getElementById('fileName');
+    const fileLabel = document.getElementById('fileLabel');
 
     $(document).ready(async function() {
-        // FillCientesDisplay()
-        FillClientesTable()
+        // fILL MAIN TABLE ON CLIENT
+        FillClientesTable();
+        // Fill Clientes ON CLIENTE SELECT AND SIDE MENU
+        FillClientes(EMPRESA_ID);
+
+        $('#openSideClientForm').on('click', function() {
+            $('#clientSideMenu').addClass('active');
+        })
+        $('#closeThis').on('click', function() {
+            $('#clientSideMenu').removeClass('active');
+        })
+        $('#openMasivaCliente').on('click', function() {
+            $('#masivaClienteSideMenu').addClass('active');
+        })
+        $('#closeMasivaClientes').on('click', function() {
+            $('#masivaClienteSideMenu').removeClass('active');
+        });
+
+        // Escuchar cambios en el input file y actualizar el nombre del archivo seleccionado
+        fileInput.addEventListener('change', function() {
+            const fileName = fileInput.files[0].name;
+            fileNameDisplay.textContent = `Archivo seleccionado: ${fileName}`;
+        });
     })
 
-    const dataArrayIndex = ['Nombre Cliente', 'Apellido Cliente', 'Rut (opcional)', 'Correo', 'Teléfono', 'Rut Facturación', 'Razón Social', 'Nombre Fantasía', 'Dirección', 'Correo Contacto']
+    // Evitar el comportamiento predeterminado del arrastre sobre el label
+    function handleDragOver(event) {
+        event.preventDefault();
+        fileLabel.classList.add('dragover');
+    }
+    // Manejar el evento de soltar archivos en el label
+    function handleDrop(event) {
+        event.preventDefault();
+        fileLabel.classList.remove('dragover');
+
+        const files = event.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            const fileName = files[0].name;
+            fileNameDisplay.textContent = `Archivo seleccionado: ${fileName}`;
+        }
+    }
+
+    const dataArrayIndex = ['Nombre Cliente', 'Razón social (opcional)', 'Rut (opcional)', 'Contacto (opcional)', 'Correo (opcional)' , 'Teléfono (opcional)']
     const dataArray = {
         'xlsxData': [{
                 'name': 'Nombre Cliente',
@@ -135,15 +201,13 @@ $active = 'clientes';
                 'maxlength': 50,
                 'notNull': false
             },
-
             {
-                'name': 'Apellido Cliente',
+                'name': 'Razón social (opcional)',
                 'type': 'string',
                 'minlength': 3,
                 'maxlength': 15,
-                'notNull': false
+                'notNull': true
             },
-
             {
                 'name': 'Rut (opcional)',
                 'type': 'string',
@@ -152,22 +216,7 @@ $active = 'clientes';
                 'notNull': true
             },
             {
-                'name': 'Correo',
-                'type': 'string',
-                'minlength': 3,
-                'maxlength': 50,
-                'notNull': false
-            },
-
-            {
-                'name': 'Teléfono',
-                'type': 'string',
-                'minlength': 3,
-                'maxlength': 50,
-                'notNull': false
-            },
-            {
-                'name': 'Rut Facturación',
+                'name': 'Contacto (opcional)',
                 'type': 'string',
                 'minlength': 3,
                 'maxlength': 50,
@@ -175,29 +224,14 @@ $active = 'clientes';
             },
 
             {
-                'name': 'Razón Social',
-                'type': 'string',
-                'minlength': 3,
-                'maxlength': 50,
-                'notNull': true
-            },
-
-            {
-                'name': 'Nombre Fantasía',
+                'name': 'Correo (opcional)',
                 'type': 'string',
                 'minlength': 3,
                 'maxlength': 50,
                 'notNull': true
             },
             {
-                'name': 'Dirección',
-                'type': 'string',
-                'minlength': 3,
-                'maxlength': 50,
-                'notNull': false
-            },
-            {
-                'name': 'Correo Contacto',
+                'name': 'Teléfono (opcional)',
                 'type': 'string',
                 'minlength': 3,
                 'maxlength': 50,
@@ -220,19 +254,12 @@ $active = 'clientes';
 
             const tableContent = await xlsxReadandWrite(dataArray);
 
-            console.log(tableContent);
-
             let tableHead = $('#excelTable>thead')
             let tableBody = $('#excelTable>tbody')
-            $('#masivaProductoCreation').modal('show')
-
-            //LIMPIAR TABLA
-            tableBody.empty()
-            tableHead.empty()
-            //LLENAR TABLA
-            tableHead.append(tableContent[0])
-            tableBody.append(tableContent[1])
-
+            tableHead.append(tableContent.table[0])
+            tableBody.append(tableContent.table[1])
+            $('#fileName').text(tableContent[0]);
+            $('#excel_input').val("");
         } else(
             Swal.fire({
                 icon: 'error',
@@ -244,65 +271,57 @@ $active = 'clientes';
 
     $('#excelTable>tbody').on('blur', 'td', function() {
 
-        let value = $(this).text()
-
+        let value = $(this).text();
         //obtencion de las propiedades del TD
         let tdListClass = $(this).attr("class").split(/\s+/);
-        let tdClass = tdListClass[0]
-        let tdPropertiesIndex = dataArrayIndex.indexOf(tdClass)
-        let tdProperties = dataArray.xlsxData[tdPropertiesIndex]
+        let tdClass = tdListClass[0].replaceAll("_", " ");
+        let tdPropertiesIndex = dataArrayIndex.indexOf(tdClass);
+        let tdProperties = dataArray.xlsxData[tdPropertiesIndex];
 
         // SETEO DE PROPIEDADES
-        let type = tdProperties.type
-        let minlength = tdProperties.minlength
-        let maxlength = tdProperties.maxlength
-        let notNull = tdProperties.notNull
+        let type = tdProperties.type;
+        let minlength = tdProperties.minlength;
+        let maxlength = tdProperties.maxlength;
+        let notNull = tdProperties.notNull;
 
         //OBTENCION DE PROPIEDADES DE VALOR DE CELDA
-
-        let tdType = isNumeric(value)
-        let tdMinlength = minLength(value, minlength)
-        let tdMaxlength = maxLength(value, maxlength)
-
+        let tdType = isNumeric(value);
+        let tdMinlength = minLength(value, minlength);
+        let tdMaxlength = maxLength(value, maxlength);
         let tdNull = isNull(value);
-
-        let errorCheck = false
-        let tdTitle = ""
-
-
+        let errorCheck = false;
+        let tdTitle = "";
 
         //atributos return a td
         if (!notNull && tdNull) {
-            errorCheck = false
-            tdTitle = "Ingrese un valor"
-
+            errorCheck = false;
+            tdTitle = "Ingrese un valor";
         } else {
-
             if (type === "string" && tdType) {
                 errorCheck = true
             } else if (type === "int" && !tdType) {
-                errorCheck = false
-                tdTitle = "Ingrese un número"
+                errorCheck = false;
+                tdTitle = "Ingrese un número";
             } else {
                 errorCheck = true
             }
             if (!notNull) {
                 if (!tdMinlength) {
-                    tdTitle = `Debe tener un mínimo de ${minlength} caracteres`
-                    errorCheck = false
+                    tdTitle = `Debe tener un mínimo de ${minlength} caracteres`;
+                    errorCheck = false;
                 }
                 if (!tdMaxlength) {
-                    tdTitle = `Debe tener un máximo de ${maxlength} caracteres`
-                    errorCheck = false
+                    tdTitle = `Debe tener un máximo de ${maxlength} caracteres`;
+                    errorCheck = false;
                 }
             } else {}
         }
         if (!errorCheck) {
-            $(this).prop('title', tdTitle)
-            $(this).addClass('err')
+            $(this).prop('title', tdTitle);
+            $(this).addClass('err');
         } else {
-            $(this).prop('title', "")
-            $(this).removeClass('err')
+            $(this).prop('title', "");
+            $(this).removeClass('err');
         }
     })
 
@@ -314,72 +333,79 @@ $active = 'clientes';
 
         $('#excelTable>tbody td').each(function() {
 
-            var cellText = $(this).hasClass('err')
+            var cellText = $(this).hasClass('err');
             if (cellText) {
-                counterErr++
+                counterErr++;
             }
 
         });
 
         if (counterErr == 0) {
 
-            let arrTd = []
-            let preRequest = []
+            let arrTd = [];
+            let preRequest = [];
 
-            $('#excelTable>tbody tr').each(function() {
+            $('#excelTable tbody tr').each(function(index,element) {
 
-                arrTd = []
-                let td = $(this).find('td')
+                console.log(element)
+
+                arrTd = [];
+                let td = $(this).find('td');
 
                 td.each(function() {
-                    let tdTextValue = $(this).text()
-                    arrTd.push(tdTextValue)
+                    let tdTextValue = $(this).text();
+                    arrTd.push(tdTextValue);
                 })
-                preRequest.push(arrTd)
+                preRequest.push(arrTd);
             });
 
+            console.log(preRequest);
+
             const arrayRequest = preRequest.map(function(value) {
-                let requestCliente = {
-                    empresaId: EMPRESA_ID,
-                    nombreCliente: value[0],
-                    apellidos: value[1],
-                    rutCliente: value[2],
-                    correoCliente: value[3],
-                    telefono: value[4],
-                    rut: value[5],
-                    razonSocial: value[6],
-                    nombreFantasia: value[7],
-                    direccionDatosFacturacion: value[8],
-                    correoDatosFacturacion: value[9]
+                let  req_cliente ={
+                    "nombre":value[0],
+                    "razonSocial": value[1],
+                    "rut": value[2],
+                    "contacto": value[3],
+                    "correo": value[4],
+                    "telefono": value[5],
                 }
-                return requestCliente
+                return req_cliente;
             })
-            console.table(arrayRequest);
-            console.log(arrayRequest);
+            // console.table(arrayRequest);
+            // console.log(arrayRequest);
 
             $.ajax({
                 type: "POST",
                 url: "ws/cliente/cliente.php",
                 data: JSON.stringify({
                     tipo: 'AddClientMasiva',
-                    request: arrayRequest
+                    request: arrayRequest,
+                    "empresa_id": EMPRESA_ID
                 }),
                 dataType: 'json',
-                success: async function(data) {
-                    Swal.fire({
-                        'icon': "success",
-                        'title': 'Excelente',
-                        'text': `Se han ingresado ${data.inserted} de ${data.total} clientes`,
-                        'showConfirmButton': false
-                    }).then(() => {
-                        FillClientesTable()
-                    })
+                success: async function(response){
+                    if(response.success){
+                        
+                        $('#masivaClienteSideMenu').removeClass('active');
+                        Swal.fire({
+                            'icon': "success",
+                            'title': 'Excelente',
+                            'text': 'Clientes ingresados exitosamente',
+                            'showConfirmButton': false,
+                            'timer':2500
+                        }).then(() => {
+                            FillClientesTable();
+                        });
+                        
+                        $('#excelTable thead tr').remove();
+                        $('#excelTable tbody tr').remove();
+                    }
                 },
                 error: function(data) {
                     console.log(data);
                 }
             })
-
         } else {
             Swal.fire({
                 icon: 'error',
@@ -431,7 +457,7 @@ $active = 'clientes';
     }
 
     $('#showEventsRecord').on('click', function() {
-        ShowEventRecord()
+        ShowEventRecord();
     })
 
     async function ShowEventRecord() {

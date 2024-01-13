@@ -9,9 +9,10 @@ $detalle = true;
 <?php
 require_once('./includes/head.php');
 $active = 'dashboard';
-?>
 
+?>                      
 <body>
+  
   <script src="./assets/js/initTheme.js"></script>
   <?php require_once('./includes/Constantes/empresaId.php') ?>
 
@@ -139,20 +140,19 @@ $active = 'dashboard';
               </div>
             </form>
 
-            <table class="s-table" id="dash-event-table" style="margin-top: 20px;">
+            <table class="dashEventsTable" id="dash-event-table" >
               <thead>
                 <tr>
-                  <th style="width: 100px;">Evento</th>
-                  <th style="width: 100px;">Fecha</th>
-                  <th style="width: 100px;">Ubicación</th>
-                  <th style="width: 100px;">Estado</th>
+                  <th>Evento</th>
+                  <th>Fecha</th>
+                  <th>Ubicación</th>
+                  <th>Estado</th>
                 </tr>
               </thead>
               <tbody>
 
               </tbody>
               <tfoot>
-
               </tfoot>
             </table>
           </div>
@@ -173,6 +173,21 @@ $active = 'dashboard';
 <script>
   const EMPRESA_ID = <?php echo $empresaId; ?>;
 </script>
+
+<style>
+  table.dataTable thead > tr > th.sorting,
+  table.dataTable thead > tr > th.sorting_asc,
+  table.dataTable thead > tr > th.sorting_desc,
+  table.dataTable thead > tr > th.sorting_asc_disabled,
+  table.dataTable thead > tr > th.sorting_desc_disabled,
+  table.dataTable thead > tr > td.sorting,
+  table.dataTable thead > tr > td.sorting_asc,
+  table.dataTable thead > tr > td.sorting_desc,
+  table.dataTable thead > tr > td.sorting_asc_disabled,
+  table.dataTable thead > tr > td.sorting_desc_disabled {
+    padding-right: 0px!important;
+  }
+</style>
 
 <!-- <script src="/js/Cargo_Especialidad/Testing/calendarviewResume.js"></script> -->
 <!-- <script src="/js/calendar.js"></script> -->

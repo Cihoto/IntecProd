@@ -264,19 +264,21 @@ function printEventOnDashTable() {
     if (!$.fn.DataTable.isDataTable('#dash-event-table')) {
 
         table = new DataTable('#dash-event-table', {
-            "responsive": true,
             "paging": true,
-            "scrollX": true,
-            "autoWidth": true,
+            "autoWidth":false,
             scrollY: '230px',
             lengthMenu: [5, 8, 10, 20,50,100],
-            columnDefs: [ { "defaultContent": "", "targets": "_all" } ],
-            "columns": [
-                { "width": "146px" },
-                { "width": "144px" },
-                { "width": "144px" },
-                { "width": "140px" },
-            ]
+            columnDefs: [ 
+                { "defaultContent": "", "targets": "_all" }
+                // { "width" : "147px", "targets": "_all"}
+            ],
+            // "columns":[
+            //     { "width": "147px" },
+            //     { "width": "147px" },
+            //     { "width": "147px" },
+            //     { "width": "147px" }
+            // ]
+
         })
 
     }else{
@@ -306,6 +308,10 @@ function printEventOnDashTable() {
         if(evento.estado_id === 3){
             color = "#7F45E3"
         }
+        
+        if(evento.address === null){ 
+            evento.address = ""
+        }
 
         if(evento.direccion == null){evento.direccion =""}
 
@@ -313,7 +319,7 @@ function printEventOnDashTable() {
             .add([
                 evento.nombre_proyecto,
                 evento.fecha_inicio,
-                evento.direccion,
+                `<p><img src="./assets/svg/location.svg" alt=""> ${evento.address}</p>`,
                 `<p class="event-status ${evento.estado}">${ evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p>`
             ])
             .draw(false)

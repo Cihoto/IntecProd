@@ -64,11 +64,12 @@ $('#sideclientForm').validate({
         'updatepersona':updatepersona
     }
       console.log("requestCliente",requestCliente);
-      console.log("requestCliente",requestCliente);
-      console.log("requestCliente",requestCliente);
-      console.log("requestCliente",requestCliente);
       const response = await addOrUpdateClientData(requestCliente,EMPRESA_ID);
       if(response.success){
+    
+        console.log(response);
+        console.log(response);
+        console.log(response);
         Toastify({
             text: `${response.message}`,
             duration: 3000,
@@ -81,6 +82,8 @@ $('#sideclientForm').validate({
             },
           }).showToast();
       }
+      
+      setSelectedClient(response.client_id)
       resetClientForm()
       $("#clientSideMenu").removeClass('active');
     }

@@ -88,10 +88,27 @@ async function getAllProjectData(event_id, empresa_id) {
 
     if (responseGetData.asignados.cliente.length > 0) {
 
+        
+        console.log("responseGetData.asignados.cliente",responseGetData.asignados.cliente);
+        console.log("responseGetData.asignados.cliente",responseGetData.asignados.cliente);
+        console.log("responseGetData.asignados.cliente",responseGetData.asignados.cliente);
         responseGetData.asignados.cliente.forEach(cliente => {
+
+            let name = "";
+            if(cliente.nombre_persona !== "" || cliente.nombre_persona !==null){
+                name = cliente.persona_contacto
+            }
+            if(cliente.nombre_persona !== "" || cliente.nombre_persona !==null){
+                name = cliente.nombre_persona
+            }
+            if(cliente.nombre_fantasia !== "" || cliente.nombre_fantasia !==null){
+                name = cliente.nombre_fantasia
+            }
             $('#inputTelefono').val(cliente.telefono);
-            $('#inputNombreCliente').val(`${cliente.nombre} ${cliente.apellido} | ${cliente.razon_social} | ${cliente.rut_df}`);
-            nombre_cliente = `${cliente.nombre} ${cliente.apellido} | ${cliente.razon_social} | ${cliente.rut_df}`;
+            $('#inputNombreCliente').val(name);
+            event_data.client_id = cliente.cliente_id
+            $('#clienteSelect').val(cliente.cliente_id);
+            $('#clienteSelect').change();
         });
     }
 

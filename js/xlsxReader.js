@@ -74,8 +74,6 @@ async function xlsxReadandWrite(arrayHead){
         console.table(arrayHead);
         console.table (headers);
 
-
-
         //ARRAY HEADERS EXCEL
         headers.row.forEach((element, index) => {
 
@@ -152,6 +150,9 @@ async function xlsxReadandWrite(arrayHead){
         console.log("ARRAY HEAD ", xlsxHead);
         console.log(counterErrHead);
 
+
+        let tHeadData = [];
+
         if(counterErrHead == 0){
             let cell = ""
             let ifNull=""
@@ -164,23 +165,25 @@ async function xlsxReadandWrite(arrayHead){
 
             tHead = `<tr>`
             xlsxHead.forEach(theadElement => {
-                tHead += `<td>${theadElement}</td>`
+                tHeadData.push(theadElement)
+                tHead += `<th>${theadElement}</th>`
             });
             tHead += `</tr>`    
 
-
+            let tBodyData = [];
             let rowCount  = xlsxRow.length;
             for(i = 0 ; i < rowCount ; i++){
                 td += `<tr>`
                 cell = xlsxRow[i]
-
+                
+                let tempTrComponents = [];
                 for (j = 0 ; j < arrayCount ; j ++){
 
                     ifNull = xlsxNull[j]
                     minlength = xslxMinLength[j]
                     maxlength = xlsxMaxLength[j]
 
-                    let tdName = xlsxHead[j]
+                    let tdName =   xlsxHead[j].trim().replaceAll(/\s/g,"_")
                     let tdType = xslxType[j]
                     let tdCell = cell[j]
                     let tdNull = ifNull
@@ -233,25 +236,36 @@ async function xlsxReadandWrite(arrayHead){
                         }
                         td += `<td class="${tdName}" title="${tdTitle}"  contenteditable>${tdCell}</td>`
                         tdTest = `<td class="${tdName}" title="${tdTitle}"  contenteditable>${tdCell}</td>`
+                        tempTrComponents.push({
+                            "tdName":tdName,
+                            "tdTitle":tdTitle,
+                            "tdCell":tdCell
+                        })
                     }else{
                         if(tdCell == null){
                             tdCell = ""
                         }
                         td += `<td class="${tdName} err" title="${tdTitle}" contenteditable>${tdCell}</td>`
                         tdTest = `<td class="${tdName} err" title="${tdTitle}" contenteditable>${tdCell}</td>`
+                        tempTrComponents.push({
+                            "tdName":tdName,
+                            "tdTitle":tdTitle,
+                            "tdCell":tdCell
+                        })
                     }
 
                 }
+                tBodyData.push(tempTrComponents);
                 td += `</tr>`
             }
 
             tBody = td;
             table = [tHead , tBody]
-            return table
+            return {"table" : table, "headers": tHeadData ,"body" : tBodyData}
 
 
         }else{
-            console.log("EL ARCHIVO CARGADO NO ES EL CORRESPONDIENTE");
+            return {"error" : true, "message" : "El archivo cargado no es el corespondiente, por favor descargue nuestro excel tipo"}
         }
     // }catch(error){
         

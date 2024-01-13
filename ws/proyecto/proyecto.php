@@ -237,14 +237,44 @@ function getProjectResume($request)
         INNER JOIN tipo_contrato tc on tc.id = p.tipo_contrato_id 
         where pro.id = $idProject";
 
-        $queryClienteAssigned = "SELECT c.id ,per.nombre, per.apellido, per.rut, per.telefono,per.email,
-        df.razon_social, df.nombre_fantasia,df.rut as rut_df, df.direccion, df.correo
-        FROM proyecto p
-        INNER JOIN cliente c on c.id = p.cliente_id 
-        INNER JOIN persona per on per.id = c.persona_id_contacto 
+        // $queryClienteAssigned = "SELECT c.id ,per.nombre, per.apellido, per.rut, per.telefono,per.email,
+        // df.razon_social, df.nombre_fantasia,df.rut as rut_df, df.direccion, df.correo
+        // FROM proyecto p
+        // INNER JOIN cliente c on c.id = p.cliente_id 
+        // INNER JOIN persona per on per.id = c.persona_id_contacto 
+        // INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
+        // INNER JOIN empresa e on e.id = p.empresa_id 
+        // WHERE p.id = $idProject";
+
+        // $queryClienteAssigned = "SELECT c.id ,per.nombre, per.apellido, per.rut, per.telefono,per.email,
+        // df.razon_social, df.nombre_fantasia,df.rut as rut_df, df.direccion, df.correo
+        // FROM proyecto p
+        // INNER JOIN cliente c on c.id = p.cliente_id 
+        // INNER JOIN persona per on per.id = c.persona_id_contacto 
+        // INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
+        // INNER JOIN empresa e on e.id = p.empresa_id 
+        // WHERE p.id = $idProject";
+
+        $queryClienteAssigned = "SELECT 
+        c.id AS cliente_id ,
+        CONCAT(p.nombre,' ',p.apellido) as nombre_persona,
+        p.rut AS rut_persona, 
+        p.email as cli_correo,
+        p.telefono as cli_telefono,
+        df.razon_social,
+        df.nombre_fantasia,
+        df.rut AS rut_df,
+        df.direccion AS df_direccion,
+        df.correo AS df_correo,
+        df.persona_contacto,
+        (SELECT COUNT(p.id) from proyecto p
+        inner join cliente cli on cli.id = p.cliente_id 
+        and p.cliente_id  = c.id) as event_quantity
+        FROM cliente c
         INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
-        INNER JOIN empresa e on e.id = p.empresa_id 
-        WHERE p.id = $idProject";
+        INNER JOIN persona p on p.id = c.persona_id_contacto 
+        INNER JOIN proyecto pro on pro.cliente_id = c.id
+        where pro.id = $idProject";
 
         $queryGetEventSchedules = "SELECT * FROM event_has_schedules ehs WHERE ehs.event_id = 89;";
 
@@ -258,19 +288,6 @@ function getProjectResume($request)
         $queryAssignedPackages = "SELECT * FROM proyecto_has_paquete php where php.proyecto_id = $idProject";
 
         $queryViaticosAssigned = "SELECT * from proyecto_has_viatico phv WHERE phv.proyecto_id = $idProject";
-
-        // $querySubarriendos = "SELECT * FROM proyecto_has_arriendos pha 
-        // INNER JOIN arriendos a ON a.id = pha.arriendos_id
-        // WHERE pha.proyecto_id =  $idProject";
-
-        // $querySubarriendos = "SELECT * FROM arriendos_proyectos ap where ap.proyecto_id = $idProject";
-        // $querySubarriendos = "SELECT  a.id, a.item, CONCAT(per.nombre,' ',per.apellido,' - ', df.rut) AS detalle,pha.costo
-        // FROM arriendos a
-        // INNER JOIN proveedor p on p.id = a.proveedor_id
-        // INNER JOIN persona per on per.id = p.persona_id_contacto 
-        // INNER JOIN datos_facturacion df on df.id = p.datos_facturacion_id
-        // INNER JOIN proyecto_has_arriendos pha on pha.arriendos_id = a.id 
-        // WHERE pha.proyecto_id =  $idProject";
 
         $querySubarriendos = "SELECT proyecto_id, detalle, proveedor_id, valor
         FROM u136839350_intec.proyecto_has_sub_arriendos WHERE proyecto_id = $idProject;";
@@ -1196,14 +1213,11 @@ function getEventsForDashboard($request,$empresa_id){
         $type = "";
     }
 
-    $query = "SELECT p.id, p.nombre_proyecto, d.direccion as address , e.estado as estado, e.id as estado_id FROM proyecto p  
+    $query = "SELECT p.id, p.nombre_proyecto, d.direccion as 'address' ,p.fecha_inicio ,e.estado as estado, e.id as estado_id FROM proyecto p  
     LEFT join event_type et on et.id = p.event_type_id  
     LEFT join direccion d on d.id = p.address_id  
     LEFT JOIN estado e on e.id = p.status_id  where p.empresa_id = $empresa_id 
     $status $date $type";
-
-
-    // return $query;
 
     if($response = $conn->mysqli->query($query)){
         while($data = $response->fetch_object()){

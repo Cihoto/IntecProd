@@ -43,7 +43,7 @@ async function SaveOrUpdateEvent() {
     'lugar_id': "",
     'fecha_inicio': $('#fechaInicio').val(),
     'fecha_termino': $('#fechaTermino').val(),
-    'cliente_id': $('#clienteSelect').val(),
+    'cliente_id': event_data.client_id,
     'comentarios': $('#commentProjectArea').val(),
     'empresa_id': EMPRESA_ID,
     'owner': $('#ownerSelect').val(),
