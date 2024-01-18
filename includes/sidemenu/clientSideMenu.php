@@ -9,15 +9,18 @@
         <p class="header-P">Aquí puedes agregar un nuevo cliente</p>
     </div>
     <form id="sideclientForm" style="margin: 15px; height: 100%;">
-        <div class="centered-spaced">
+
+    <div class="centered-spaced">
+        <?php if($clientDash === false):?>
             <div class="col-12 mb-4">
-                <label for="selectProjectClient">Buscar Clientes</label>
-                <select class="form-select" id="clienteSelect" name="selectCliente">
-                    <option value=""></option>
-                    <option value="new" style="background-color: green;color: white;font-weight: 700; ">Nuevo Cliente <p><i class="fa-solid fa-plus"></i></p>
+                    <label for="selectProjectClient">Buscar Clientes</label>
+                    <select class="form-select" id="clienteSelect" name="selectCliente">
+                        <option value=""></option>
+                        <option value="new" style="background-color: green;color: white;font-weight: 700; ">Nuevo Cliente <p><i class="fa-solid fa-plus"></i></p>
                     </option>
                 </select>
             </div>
+        <?php endif;?>
             <hr>
             <div style="display: flex;flex-direction: column;justify-content: space-between;">
                 <div class="row" style="margin-bottom: 15px;">
@@ -50,7 +53,11 @@
                     </div>
                 </div>
                 <?php if (in_array("7", $rol_id) || in_array("1", $rol_id) || in_array("2", $rol_id)) : ?>
-                    <div style="display: flex; margin-top: 250px; justify-content:space-between;">
+                    <?php if($clientDash === false):?>
+                        <div style="display: flex; margin-top: 250px; justify-content:space-between;">
+                    <?php else: ?>
+                        <div style="display: flex; margin-top: 310px; justify-content:space-between;">
+                    <?php endif; ?>
                         <button type="button" class="s-Button" style="justify-self: start;" onclick="resetClientForm()">
                             <p class="s-P">Limpiar Formulario</p>
                         </button>

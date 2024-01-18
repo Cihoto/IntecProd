@@ -24,7 +24,6 @@
 <div class="divider" style="margin-top: -25px;"></div>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active tab-data" id="details" role="tabpanel" aria-labelledby="details-tab">
-
         <div class="form-group">
             <div class="mt-2">
                 <form id="projectForm">

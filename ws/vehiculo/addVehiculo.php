@@ -8,29 +8,41 @@
     $json = file_get_contents('php://input');
     $data = json_decode($json);
 
-    
-
-
     $vehicleArray = $data;
     $returnErrArray = [];
     $countTotal = 0;
     $counter = 0;
 
 
-    foreach ($vehicleArray as $key => $value){
+    foreach ($vehicleArray as $key => $request){
 
-        $patente = $value->patente;
-        $empresaId = $value->empresaId;
-        
-     
-        $query = "INSERT INTO vehiculo
-                (patente, IsDelete, empresa_id)
-                VALUES('".$patente."', 0, $empresaId)";
-        if($conn->mysqli->query($query)){
+        if($request->type === "" || $request->type === null ){ $request->type = "NULL";}
+        if($request->brand === "" || $request->brand === null ){ $request->brand = "NULL";}
+        if($request->model === "" || $request->model === null ){ $request->model = "NULL";}
+        if($request->patente === "" || $request->patente === null ){ $request->patente = "";}
+        if($request->owner === "" || $request->owner === null ){ $request->owner = 0;}
+        if($request->costPerTrip === "" || $request->costPerTrip === null ){ $request->costPerTrip = "NULL";}
+
+        $queryInsert = "INSERT INTO vehiculo 
+        (patente, IsDelete, empresa_id, ownCar, tripValue, tipoVehiculo_id, marca, modelo)
+        VALUES('$request->patente',
+         0,
+         $request->empresa_id,
+         $request->owner,
+         $request->costPerTrip,
+         $request->type,
+         $request->brand,
+         $request->model);";
+
+        if($conn->mysqli->query($queryInsert)){
+            // return json_encode(array("success"=>true,"message"=>"Vehículo ingresado exitosamente"));
             $counter++;
+        }else{
+            
+            $countTotal ++;
+            // return json_encode(array("error"=>true,"message"=>"Intente nuevamente"));
         }
-        $countTotal ++;
-    }
+    };
 
-    echo json_encode(array("data"=>'Se han ingresado '.$counter.' de '.$countTotal));
+    echo json_encode(array("data"=>'Se han ingresado '.$counter.' de '.$countTotal,"query"=>$queryInsert));                                             
 ?>

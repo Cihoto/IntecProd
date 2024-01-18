@@ -2309,7 +2309,7 @@ textarea {
   color: #2C2D33;
   font-size: 16px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 22px;
   /* 137.5% */
   letter-spacing: 0.46px;
@@ -4193,6 +4193,143 @@ button{
   border: 1px dashed var(--Black-Grey-100, #BEC0CA);
 }
 
+#eventsPerClient_dash tbody td{
+  display: flex;
+  width:19.2%;
+  padding: 16px;
+  align-items: center;
+  flex-shrink: 0;
+
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+  background: rgba(0, 0, 0, 0.00);
+}
 
 
- 
+#eventsPerClient_dash thead th, #eventsPerClient_dash thead td {
+  border-bottom: none!important;
+}
+
+
+#module-container{
+  display: flex;
+  width: 100%;
+  padding: var(--2, 16px);
+  flex-direction: column;
+  gap: var(--3, 24px);
+  border-radius: var(--1, 8px);
+  background: var(--White, #FCFCFC);
+} 
+#personalDashTable td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#personalDashTable .personalName{
+  width: 19.21%;
+}
+#personalDashTable .rutPersonal{
+  width: 11.21%
+}
+#personalDashTable .personalData{
+  width:11.21%;
+}
+
+#eventsPerPersonal_dash tbody tr{
+  display: flex;
+  padding: var(--none, 0px);
+  align-items: center;
+  gap: var(--1, 8px);
+  border-radius: var(--none, 0px);
+  border-top: var(--none, 0px) solid var(--Line-table, #DDDDE1);
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+  border-bottom: 1px solid var(--Line-table, #DDDDE1);
+  border-left: 1px solid var(--Line-table, #DDDDE1);
+}
+#eventsPerPersonal_dash thead th{
+border-bottom: none!important;
+}
+#eventsPerPersonal_dash tbody td{
+  display: flex;
+  padding: 16px;
+  width: 19.3%;
+  align-items: center;
+  flex-shrink: 0;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+  background: rgba(0, 0, 0, 0.00);
+  
+}
+#eventsPerPersonal_dash tbody td p {
+  line-height: 16px!important;
+}
+
+#vehiclesDashTable tbody td{
+
+}
+#vehiclesDashTable tbody td{
+  display: flex;
+  width: calc(100% / 6);
+  padding: 16px;
+  align-items: center;
+  flex-shrink: 0;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+  background: rgba(0, 0, 0, 0.00);
+}
+
+
+#vehiclesDashTable thead tr{
+  display: flex;
+  width: 69.3%;
+  padding: var(--none, 0px);
+  align-items: center;
+  gap: var(--1, 8px);
+  border-radius: var(--none, 0px);
+  border: 1px solid var(--Line-table, #DDDDE1);
+  background: var(--Fondo-cyan-2, #EDF6F6);
+}
+#vehiclesDashTable thead th{
+  display: flex;
+  width: 130px;
+  padding: 16px;
+  align-items: center;
+  flex-shrink: 0;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+  background: rgba(0, 0, 0, 0.00);
+}
+table.dataTable thead th, table.dataTable thead td{
+  border-bottom: none!important;
+}
+
+#vehiclesDashTable tbody tr{
+  display: flex;
+  width: 69.3%;
+  padding: var(--none, 0px);
+  align-items: center;
+  gap: var(--1, 8px);
+  border-radius: var(--none, 0px);
+  border-top: var(--none, 0px) solid var(--Line-table, #DDDDE1);
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+  border-bottom: 1px solid var(--Line-table, #DDDDE1);
+  border-left: 1px solid var(--Line-table, #DDDDE1);
+}
+#vehiclesDashTable tbody td{
+  display: flex;
+  width: 130px;
+  padding: 16px;
+  align-items: center;
+  flex-shrink: 0;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+  background: rgba(0, 0, 0, 0.00);
+}
+#vehiclesDashTable tbody tr:hover{
+  cursor: pointer;
+  border: 1px solid var(--Secondary-color, #6136AB) !important;
+  background: var(--Purple-200, #DCD0F1) !important;
+}
+
+#vehiclesDashTable_filter{
+  margin-right: 436px;
+}
+#vehiclesDashTable_paginate{
+  margin-right: 436px;
+}

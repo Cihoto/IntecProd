@@ -15,15 +15,20 @@ if ($_POST) {
 
     // Realiza la acción correspondiente según el valor de 'action'
     switch ($action) {
+        case 'getVehiclesByBussiness':
+            // Recibe el parámetro empresaId
+            $empresa_id = $data->empresa_id;
+            // Llama a la función getVehiculos y devuelve el resultado
+            $vehiculos = json_encode(getVehiclesByBussiness($empresa_id));
+            echo $vehiculos;
+            break;
         case 'getVehiculos':
             // Recibe el parámetro empresaId
             $empresaId = $data->empresaId;
-            
             // Llama a la función getVehiculos y devuelve el resultado
             $vehiculos = getVehiculos($empresaId);
             echo json_encode($vehiculos);
             break;
-        
         case 'getAvailableVehiculos':
             // Recibe el parámetro empresaId
             $request = $data->request->arrayRequest;
@@ -76,6 +81,26 @@ if ($_POST) {
             $response = addVehicle($vehicleData,$empresaId);
             echo $response;
             break;
+        case 'getVehicleBrandsAndModels':
+            
+            // Llama a la función addVehicle y devuelve el resultado
+            $response = getVehicleBrandsAndModels();
+            echo $response;
+            break;
+        case 'insertVehicle':
+            $request = $data->request;
+            $empresa_id = $data->empresa_id;
+            // Llama a la función addVehicle y devuelve el resultado
+            $response = insertVehicle($request, $empresa_id);
+            echo $response;
+            break;
+        case 'getVehicleInfoById':
+            $vehicle_id = $data->vehicle_id;
+            $empresa_id = $data->empresa_id;
+            // Llama a la función addVehicle y devuelve el resultado
+            $response = getVehicleInfoById($vehicle_id, $empresa_id);
+            echo $response;
+            break;
         
         default:
             echo 'Invalid action.';
@@ -85,7 +110,29 @@ if ($_POST) {
     require_once('./ws/bd/bd.php');
 }
 
+function getVehiclesByBussiness($empresa_id){
+    $conn = new bd();
+    $conn->conectar();
+    $vehiculos = [];
 
+    $query = "SELECT v.*,v.id as vehicle_id, tv.tipo, vb.*, vm.* from vehiculo v 
+    left join vehicle_brand vb on vb.id = v.marca
+    left join vehicle_model vm on vm.id = v.modelo
+    left join tipo_vehiculo tv on tv.id = v.tipoVehiculo_id 
+    where v.empresa_id = $empresa_id and IsDelete = 0;";
+
+    if ($response = $conn->mysqli->query($query)) {
+        while ($data = $response->fetch_object()) {
+            $vehiculos[] = $data;
+        }
+        $conn->desconectar();
+
+        return array("success"=>true,"data"=>$vehiculos);
+    }else{
+        return array("error"=>true,"message"=>"Intente nuevamente");
+        // return $vehiculos;
+    }
+}
 
 function getVehiculos($empresaId)
 {
@@ -270,5 +317,95 @@ function addVehicle($vehicleData, $empresaId)
     } else {
         return json_encode(array("status" => 1, "array" => $returnErrArray));
     }
+}
+
+function getVehicleBrandsAndModels(){
+    $conn = new bd();
+    $conn->conectar();
+    $brands = [];
+    $models = [];
+    $type = [];
+
+
+    $query_brands = "SELECT * FROM vehicle_brand";
+    $query_models = "SELECT * FROM vehicle_model";
+    $query_type = "SELECT * FROM tipo_vehiculo tv";
+
+    $result  = $conn->mysqli->query($query_brands);
+    while($data = $result->fetch_object()){
+        $brands [] = $data;
+    }
+
+    $result  = $conn->mysqli->query($query_models);
+    while($data = $result->fetch_object()){
+        $models [] = $data;
+    }
+    $result  = $conn->mysqli->query($query_type);
+    while($data = $result->fetch_object()){
+        $type [] = $data;
+    }
+
+    $conn->desconectar();
+    return json_encode(array("brands"=>$brands, "models"=>$models,"types"=>$type));
+}
+
+
+function insertVehicle($request, $empresa_id){
+    $conn = new bd();
+    $conn->conectar();
+
+    if($request->type === "" || $request->type === null ){ $request->type = "NULL";}
+    if($request->brand === "" || $request->brand === null ){ $request->brand = "NULL";}
+    if($request->model === "" || $request->model === null ){ $request->model = "NULL";}
+    if($request->patente === "" || $request->patente === null ){ $request->patente = "NULL";}
+    if($request->owner === "" || $request->owner === null ){ $request->owner = 0;}
+    if($request->costPerTrip === "" || $request->costPerTrip === null ){ $request->costPerTrip = "NULL";}
+
+    $queryInsert = "INSERT INTO vehiculo 
+    (patente, IsDelete, empresa_id, ownCar, tripValue, tipoVehiculo_id, marca, modelo)
+    VALUES('$request->patente', 0, $empresa_id, $request->owner, $request->costPerTrip, $request->type, $request->brand, $request->model);";
+
+    if($conn->mysqli->query($queryInsert)){
+        return json_encode(array("success"=>true,"message"=>"Vehículo ingresado exitosamente"));
+    }else{
+        
+        return json_encode(array("error"=>true,"message"=>"Intente nuevamente"));
+    }
+}
+function getVehicleInfoById($vehicle_id, $empresa_id){
+    $conn = new bd();
+    $conn->conectar();
+    $vehicle_data = [];
+    $vehicle_events = [];
+
+    $queryGetVehicleInformation = "SELECT v.id , vb.id as brand_id , vm.id as model_id , 
+    tv.id as vehicle_type_id
+    FROM vehiculo v
+    LEFT JOIN vehicle_brand vb on vb.id = v.marca 
+    LEFT JOIN vehicle_model vm on vm.id = v.modelo
+    LEFT JOIN tipo_vehiculo tv on tv.id  = v.tipoVehiculo_id  
+    WHERE v.id  = $vehicle_id
+    and v.empresa_id = $empresa_id;";
+
+    $queryGetVehicleEvents = "SELECT p.* , phv.* FROM vehiculo v
+    INNER JOIN proyecto_has_vehiculo phv on phv.vehiculo_id = v.id
+    INNER JOIN proyecto p on p.id = phv.proyecto_id 
+    WHERE phv.vehiculo_id  = $vehicle_id
+    AND p.empresa_id = $empresa_id
+    and v.empresa_id = $empresa_id;";
+
+    if($response = $conn->mysqli->query($queryGetVehicleInformation)){
+        while($data = $response->fetch_object()){
+            $vehicle_data = $data;
+        }
+    }
+    if($response = $conn->mysqli->query($queryGetVehicleEvents)){
+        while($data = $response->fetch_object()){
+            $vehicle_events [] = $data;
+        }
+    }
+
+
+    return json_encode(array("success"=>true,"data"=>$vehicle_data,"events"=>$vehicle_events));  
 }
 ?>

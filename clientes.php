@@ -1,3 +1,7 @@
+<?php 
+$clientDash = true;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <?php
@@ -52,7 +56,9 @@ $active = 'clientes';
                 </table>
             </div>
 
-            <div class="page-header" style="margin-bottom: 30px;">
+            <?php if (in_array("9", $rol_id) || in_array("1", $rol_id) ||  in_array("2", $rol_id)) : ?>
+            <?php endif; ?>
+            <!-- <div class="page-header" style="margin-bottom: 30px;">
                 <div style="display:flex; align-items: center;justify-content: space-between; ">
                     <h3 style="margin-right: 50px">Clientes</h3>
                     <a href="./ExcelFiles/Clientes.xlsx" download="Carga Masiva Clientes">
@@ -62,7 +68,7 @@ $active = 'clientes';
                         </div>
                     </a>
                 </div>
-                <?php if (in_array("9", $rol_id) || in_array("1", $rol_id) ||  in_array("2", $rol_id)) : ?>
+                
                     <div class="row">
                         <div class="col-md-5 col-12">
                             <div class="card">
@@ -83,41 +89,16 @@ $active = 'clientes';
                             </div>
                         </div>
                     </div>
-                <?php endif; ?>
-            </div>
-            <div class="page-content">
-
-                <table id="cclientesTable">
-                    <thead>
-                        <th>Nombre Empresa</th>
-                        <th>Nombre Cliente</th>
-                        <th>Rut</th>
-                        <th>Dirección</th>
-                        <th>Teléfono</th>
-                        <th>Correo</th>
-                        <th>Info</th>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-
-
-
-            </div>
+            </div> -->
         </div>
         <?php require_once('./includes/footer.php') ?>
     </div>
     </div>
-
+    
     <?php require_once('./includes/sidemenu/clientSideMenu.php') ?>
+    <?php require_once('./includes/sidemenu/clientSideMenuDash.php') ?>
     <?php require_once('./includes/sidemenu/clienteMasivaSideMenu.php') ?>
     <?php require_once('./includes/footerScriptsJs.php') ?>
-
-    <!-- MODAL DE INFORMACION DE CLIENTE -->
-    <?php require_once('./includes/Modal/clientInfo.php') ?>
-
-    <!-- require once de modal para ingresar clientes Masiva -->
 
     <!-- Validador intec -->
     <script src="./js/valuesValidator/validator.js"></script>
@@ -137,6 +118,7 @@ $active = 'clientes';
     <script src="./js/ClearData/clearFunctions.js"></script>
     <script src="./js/ProjectResume/viatico.js"></script>
     <script src="./js/validateForm/clientForm.js"></script>
+    <script src="./js/validateForm/updateClient.js"></script>
 
 </body>
 
@@ -150,7 +132,7 @@ $active = 'clientes';
 
     $(document).ready(async function() {
         // fILL MAIN TABLE ON CLIENT
-        FillClientesTable();
+        FillClientesTable_dash();
         // Fill Clientes ON CLIENTE SELECT AND SIDE MENU
         FillClientes(EMPRESA_ID);
 
@@ -166,7 +148,9 @@ $active = 'clientes';
         $('#closeMasivaClientes').on('click', function() {
             $('#masivaClienteSideMenu').removeClass('active');
         });
-
+        $('#closeDashClientSideMenu').on('click', function() {
+            $('#clientSideMenu-clientDash').removeClass('active');
+        });
         // Escuchar cambios en el input file y actualizar el nombre del archivo seleccionado
         fileInput.addEventListener('change', function() {
             const fileName = fileInput.files[0].name;
@@ -395,7 +379,7 @@ $active = 'clientes';
                             'showConfirmButton': false,
                             'timer':2500
                         }).then(() => {
-                            FillClientesTable();
+                            FillClientesTable_dash();
                         });
                         
                         $('#excelTable thead tr').remove();
@@ -413,141 +397,11 @@ $active = 'clientes';
                 text: 'Debe corregir los datos mal ingresado para continuar'
             })
         }
-    })
-
-
-
-
-    // VIEW CLIENT DATA AND EVENT RECORDS
-    $(document).on('click', '.viewClientData', function() {
-        const cliente_id = $(this).closest('tr').attr('cliente_id');
-        ViewClientData(cliente_id);
-    })
-
-    async function ViewClientData(cliente_id) {
-
-        const clientInformation = await getClientInformation(cliente_id);
-
-        if (clientInformation.success) {
-            const infoClient = clientInformation.data;
-            console.log(infoClient);
-
-            if (infoClient.length > 0) {
-                $('#clientInfoModal').modal('show');
-                $('#clientInfoModal').attr('cliente_id', cliente_id);
-
-                infoClient.forEach(cliente => {
-
-                    console.log(cliente.nombre);
-                    $('#clientName').val(cliente.nombre);
-                    $('#clientLastName').val(cliente.apellido);
-                    $('#clientRut').val(cliente.rut_persona);
-                    $('#clientEmail').val(cliente.email_persona);
-                    $('#clientNumber').val(cliente.telefono);
-                    $('#clientRutDf').val(cliente.rut_razon_social);
-                    $('#clientRazonSocial').val(cliente.razon_social);
-                    $('#clientNombreFantasia').val(cliente.nombre_fantasia);
-                    $('#clientAddressDf').val(cliente.direccion);
-                    $('#clientEmailDf').val(cliente.correo);
-                });
-
-            }
-
-        }
-    }
+    });
 
     $('#showEventsRecord').on('click', function() {
         ShowEventRecord();
     })
-
-    async function ShowEventRecord() {
-
-        $('.recordEvent').remove();
-
-        const cliente_id = $('#clientInfoModal').attr('cliente_id');
-
-        console.log(cliente_id);
-
-        const record = await GetEventsByClient(cliente_id);
-
-        console.log(record);
-
-        if (record.success) {
-            const events = record.data;
-            if (events.length > 0) {
-                events.forEach(e => {
-                    $('#EventRecord').append(`
-                    <div class="card recordEvent">
-                    <div class="card-content">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-lg-3 col-md-6">
-                                    <h4 class="card-title">${ifNull(e.nombre_proyecto)}</h4>
-                                    <p class="card-text">
-                                        Fecha de realización : ${ifNull(e.fecha_inicio)} - ${ifNull(e.fecha_termino)}
-                                    </p>
-                                    <p class="card-text">
-                                        Dirección : ${ ifNull(e.direccion)} ${ifNull(e.numero)} ${ifNull(e.dpto)}, ${ifNull(e.comuna)} ${ifNull(e.region)}
-                                    </p>
-                                </div>
-                                <div class="col-6 col-lg-3 col-md-6">
-                                    <div class="card">
-                                        <div class="card-body px-4 py-4-5">
-                                            <div class="row">
-                                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-center">
-                                                    <div class="stats-icon green mb-2">
-                                                        <i class="fa-solid fa-arrow-up-long"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7 d-flex justify-content-center">
-                                                    <div class="">
-                                                        <h6 class="text-muted font-semibold">Ingresos</h6>
-                                                        <h6 style="text-align:center" class="font-extrabold mb-0">112.000</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-lg-3 col-md-6">
-                                    <div class="card">
-                                        <div class="card-body px-4 py-4-5">
-                                            <div class="row">
-                                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-center">
-                                                    <div class="stats-icon red mb-2">
-                                                        <i class="fa-solid fa-arrow-down-long"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7 d-flex justify-content-center">
-                                                    <div class="">
-                                                        <h6 class="text-muted font-semibold">Egresos</h6>
-                                                        <h6 style="text-align:center" class="font-extrabold mb-0">112.000</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <div class="card-footer d-flex justify-content-between">
-                        <span>Ver resumen del evento</span>
-                        <button class="btn btn-success">Ver Detalles del evento</button>
-                    </div>
-                </div>`)
-                });
-            }
-        }
-        if (record.error) {
-            Swal.fire({
-                icon: 'error',
-                title: "Ups!",
-                text: record.message,
-                timer: 2000,
-                showConfirmButton: false
-            })
-        }
-    }
 
     function ifNull(value) {
         if (value == null || value === undefined || value === "") {

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,40 +8,29 @@ $active = 'personal';
 
 <body>
     <script src="./assets/js/initTheme.js"></script>
-    <?php include_once('./includes/Constantes/empresaId.php');?>
-    <?php include_once('./includes/Constantes/rol.php');?>
+    <?php include_once('./includes/Constantes/empresaId.php'); ?>
+    <?php include_once('./includes/Constantes/rol.php'); ?>
     <?php
-        require_once('./ws/bd/bd.php');
-        $conn = new bd();
-        $conn->conectar();
-        $arregloPersonal = [];
+    require_once('./ws/bd/bd.php');
+    $conn = new bd();
+    $conn->conectar();
+    $arregloPersonal = [];
 
-        // $queryPersonal = 'SELECT p.id , per.nombre , per.apellido ,e.especialidad ,c.cargo, tc.contrato,per.rut FROM personal p 
-        //                 INNER JOIN cargo c on c.id  = p.cargo_id 
-        //                 INNER JOIN especialidad e on e.id  = p.especialidad_id 
-        //                 INNER JOIN persona per on per.id = p.persona_id 
-        //                 LEFT JOIN usuario u on u.id  = p.usuario_id 
-        //                 INNER JOIN tipo_contrato tc on tc.id  = p.tipo_contrato_id 
-        //                 INNER JOIN empresa emp on emp.id = p.empresa_id 
-        //                 where emp.id = 1
-        //                 AND p.IsDelete = 0';
+    $queryContrato = 'select contrato FROM tipo_contrato tc';
 
+    // //BUILD DATA PERSONAL
+    // $responseDbPersonal = $conn->mysqli->query($queryPersonal);
 
-        $queryContrato = 'select contrato FROM tipo_contrato tc';
+    // while ($dataPersonal = $responseDbPersonal->fetch_object()) {
+    //     $arregloPersonal[] = $dataPersonal;
+    // }
 
-        // //BUILD DATA PERSONAL
-        // $responseDbPersonal = $conn->mysqli->query($queryPersonal);
+    //BUILD TIPO CONTRATO DATA
+    $responseDbTipoContrato = $conn->mysqli->query($queryContrato);
 
-        // while ($dataPersonal = $responseDbPersonal->fetch_object()) {
-        //     $arregloPersonal[] = $dataPersonal;
-        // }
-
-        //BUILD TIPO CONTRATO DATA
-        $responseDbTipoContrato = $conn->mysqli->query($queryContrato);
-
-        while ($dataContratos = $responseDbTipoContrato->fetch_object()) {
-            $contratos[] = $dataContratos;
-        }
+    while ($dataContratos = $responseDbTipoContrato->fetch_object()) {
+        $contratos[] = $dataContratos;
+    }
     ?>
 
 
@@ -52,237 +39,104 @@ $active = 'personal';
         <?php require_once('./includes/sidebar.php') ?>
 
         <div id="main">
-            <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
-                    <i class="bi bi-justify fs-3"></i>
-                </a>
-            </header>
 
-            <div class="page-header">
-                <div style="display:flex; align-items: center; margin-bottom: 30px;" >
-                    <h3 style="margin-right: 50px; line-height: 34px;text-align: center;">Personal</h3>
-                    <a id="download-Excel" style="height: 20px; line-height: 20px;font-size: 30px;" href="./ExcelFiles/PersonalM.xlsx" download="Carga Masiva Personal"><i class="fa-solid fa-file-excel" style="color: #1D6F42; "></i></a>
+            <div id="module-container">
+                <div class="formHeader" style="align-items: center;align-content:center;margin-left: 14px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <circle cx="6" cy="6" r="6" fill="#069B99" />
+                    </svg>
+                    <p class="header-P">Aquí puedes ver, editar y crear los técnicos para tus eventos</p>
                 </div>
-                <?php if (in_array("11", $rol_id) || in_array("1", $rol_id) ||  in_array("2", $rol_id)):?>
-                <div class="row justify-content-center">
-                    <div class="col-8 col-lg-3 col-sm-4">
-                        <div class="card">
-                            <button type="button" id="btnPersonalUnitario" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#xlarge">
-                                Agregar personal
-                            </button>
-                            <button class="btn mt-2" onclick="ExportToExcel('xlsx')">
-                                <h4>Exportar a Excel</h4>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-8 col-lg-3 col-sm-4">
-                        <div class="card">
-                            <button type="button" disabled class="btn btn-success" data-bs-toggle="modal" data-bs-target="#xlarge">
-                                Agregar personal masivo
-                            </button>
-                            <input class="form-control form-control-sm" id="excel_input" type="file" />
-                        </div>
-                    </div>
-                    <div class="col-8 col-lg-3 col-sm-4">
-                        <div class="card">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cargoEspecialidad">
-                                Agregar Especialidades y cargos
-                            </button>
-                        </div>
-                    </div>
+                <div class="row justify-content-end" style="margin:0px 14px; gap :8px;">
+                    <button class="s-Button" id="openMasivaPersonal" style="position: relative; right:-395px ; bottom: 50px;">
+                        <p class="s-P">Agregar personal masiva</p>
+                    </button>
+                    <button class="s-Button" id="openEspCarController">
+                        <p class="s-P">Agregar cargo especialidad</p>
+                    </button>
+                    <button class="s-Button" id="openSidePersonalForm">
+                        <p class="s-P">Agregar personal</p>
+                    </button>
                 </div>
-                <?php  endif;?>
+
+                <table class="s-table" id="personalDashTable">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Rut</th>
+                            <th>Especialidad</th>
+                            <th>Teléfono</th>
+                            <th>Correo eléctronico</th>
+                            <th>Tipo contrato</th>
+                            <th>Costo mensual </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <tr>
+                            <td>Nombre</td>
+                            <td>Rut</td>
+                            <td>Especialidad</td>
+                            <td>Teléfono</td>
+                            <td>Correo eléctronico</td>
+                            <td>Tipo contrato</td>
+                            <td>Costo mensual </td>
+                        </tr> -->
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+                </table>
             </div>
-            <?php include_once('./includes/Modal/cargoEspecialidad.php')?>
 
-            <!-- modal agregar personal -->
-            <div class="modal fade text-left w-100" id="xlarge" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title" style="align-items: center;">
-                                Agregar Personal
-                            </h3>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <i data-feather="x"></i>
-                            </button>
-                        </div>
-                        <form id="addPersonal">
-                            <div class="modal-body">
-
-                                <div class="row" style="margin-bottom: 8px;">
-                                    <div class="col-lg-4 col-md-6 col-12">
-                                        <label for="nombres">Nombres:</label>
-                                        <div class="form-group">
-                                            <input name="nombres" id="nombres" type="text" placeholder="Nombres" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6 col-12">
-                                        <label for="apellidos">Apellidos:</label>
-                                        <div class="form-group">
-                                            <input name="apellidos" id="apellidos" type="text" placeholder="Apellidos" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6 col-12">
-                                        <label for="rut">Rut:</label>
-                                        <div class="form-group">
-                                            <input name="rut" id="rut" type="text" placeholder="rut" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6 col-12">
-                                        <label>Telefono</label>
-                                        <div class="form-group">
-                                            <input name="telefono" id="inputTelefonoPersonal" type="text" placeholder="56 9 1231 2345" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6 col-12">
-                                            <label for="correoPersonalAddUnitario">Correo</label>
-                                           <input type="text" name="correoPersonalAddUnitario" class="form-control" id="correoPersonalAddUnitario">
-                                    </div>
-                                    <hr>
-                                    
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4 col-12">
-                                        <label>Cargo:</label>
-                                        <div class="form-group">
-                                            <select name="cargo_select" id="cargo_select" class="form-select">
-                                                <option value=""></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-12">
-                                        <label>Especialidad</label>
-                                        <div class="form-group">
-                                            <select name="especialidad_select" id="especialidad_select" class="form-select">
-                                                <option value=""></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-12">
-                                        <label>Tipo de contrato</label>
-                                        <div class="form-group">
-                                            <select name="contrato_Select" id="contrato_Select" class="form-select">
-                                                <option value=""></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-12">
-                                        <div class="form-group">
-                                            <label for="neto">Costo Neto</label>
-                                            <input type="number" name="neto" class="form-control" id="neto">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                    <i class="bx bx-x d-block d-sm-none"></i>
-                                    <span class="d-none d-sm-block">Close</span>
-                                </button>
-                                <input type="submit" value="Agregar" class="btn btn-success">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- end modal -->
-
-            <div class="page-content">
-                <!-- PAGE CONTENT -->
-
-                <div class="col-12">
-                    <!-- primer  -->
-                    <div class="row" style="text-align: right;">
-
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
+           
+               
+                <!-- < 
+                if (in_array("11", $rol_id) || in_array("1", $rol_id) ||  in_array("2", $rol_id)) : 
+                > -->
+                <!-- <p endif; > -->
+                    <!-- <div class="row justify-content-center">
+                        <div class="col-8 col-lg-3 col-sm-4">
                             <div class="card">
-                                <div class="card-body px-4 py-4">
-
-                                    <table class="table" id="AllPersonalTable" class="display" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th style="text-align: center; display:none">id</th>
-                                                <th style="text-align: center;">Nombre</th>
-                                                <th style="text-align: center;">Apellido</th>
-                                                <th style="text-align: center;">Rut</th>
-                                                <th style="text-align: center;">Email</th>
-                                                <th style="text-align: center;">Telefono</th>
-                                                <th style="text-align: center;">Cargo</th>
-                                                <th style="text-align: center;">Especialidad</th>
-                                                <th style="text-align: center;">Tipo Contrato</th>
-                                                <th style="text-align: center;">Disponibilidad</th>
-                                                <th style="text-align: center;">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th style="text-align: center; display:none">id</th>
-                                                <th style="text-align: center;">Nombre</th>
-                                                <th style="text-align: center;">Apellido</th>
-                                                <th style="text-align: center;">Rut</th>
-                                                <th style="text-align: center;">Email</th>
-                                                <th style="text-align: center;">Telefono</th>
-                                                <th style="text-align: center;">Cargo</th>
-                                                <th style="text-align: center;">Especialidad</th>
-                                                <th style="text-align: center;">Tipo Contrato</th>
-                                                <th style="text-align: center;">Disponibilidad</th>
-                                                <th style="text-align: center;">Acciones</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-
-                                </div>
+                                <button type="button" id="btnPersonalUnitario" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#xlarge">
+                                    Agregar personal
+                                </button>
+                                <button class="btn mt-2" onclick="ExportToExcel('xlsx')">
+                                    <h4>Exportar a Excel</h4>
+                                </button>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <!-- Modal agregar personal masiva -->
-            <div class="modal fade" id="masivaPersonalCreation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-full modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Desea ingresar esta información</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        <div class="col-8 col-lg-3 col-sm-4">
+                            <div class="card">
+                                <button type="button" disabled class="btn btn-success" data-bs-toggle="modal" data-bs-target="#xlarge">
+                                    Agregar personal masivo
+                                </button>
+                                <input class="form-control form-control-sm" id="excel_input" type="file" />
+                            </div>
                         </div>
-                        <div class="modal-body">
-
-                            <table class="table" id="excelTable">
-                                <thead>
-
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-
+                        <div class="col-8 col-lg-3 col-sm-4">
+                            <div class="card">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cargoEspecialidad">
+                                    Agregar Especialidades y cargos
+                                </button>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" id="modalClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button class="btn btn-success" id="saveExcelData">Guardar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    </div> -->
+           
+
             <!-- FIN modal masiva -->
             <?php require_once('./includes/footer.php') ?>
-            <?php require_once('./includes/Modal/masivaProblems.php')?>
+            <?php require_once('./includes/Modal/masivaProblems.php') ?>
 
         </div>
     </div>
 
     <?php require_once('./includes/footerScriptsJs.php') ?>
 
+    <!-- REQUIRE SIDEMENU PERSONAL -->
+    <?php require_once('./includes/sidemenu/personalSideMenu.php')?>
+    <?php require_once('./includes/sidemenu/personalSideMenuDash.php')?>
+    <?php require_once('./includes/sidemenu/personalMasivaSideMenu.php')?>
+    <?php require_once('./includes/sidemenu/especialidadCargoCrud.php')?>
     <!-- xlsx Reader -->
     <script src="js/xlsxReader.js"></script>
     <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
@@ -295,41 +149,64 @@ $active = 'personal';
     <!-- FUNCTIONS (JS AJAX WITH PHP) PERSONAL MANAGEMENT  -->
     <script src="/js/personal.js"></script>
 
+    <!-- valida form Create new personal -->
+    <script src="./js/validateForm/personalSideMenu.js"></script>
+    <!-- VALIDATE UPDATE PERSONAL -->
+    <script src="./js/validateForm/udpatePersonal.js"></script>
     <script>
-        
         const EMPRESA_ID = $('#empresaId').text();
+        const fileInput = document.getElementById('excel_input');
+        const fileNameDisplay = document.getElementById('fileName');
+        const fileLabel = document.getElementById('fileLabel');
 
-        $('#btnConfirmEspecialidad').on('click',function(){
+        $('#btnConfirmEspecialidad').on('click', function() {
             AddEspecialidad(EMPRESA_ID);
         });
-        $('#btnConfirmCargo').on('click',function(){
+        $('#btnConfirmCargo').on('click', function() {
             AddCargo(EMPRESA_ID);
         });
-        $('#btnPersonalUnitario').on('click',function(){
+        $('#openSidePersonalForm').on('click', function() {
             // FILL ESPECIALIDAD
-            GetEspecialidad(EMPRESA_ID);  
+            GetEspecialidad(EMPRESA_ID);
             // FILL CARGOS
             GetCargo(EMPRESA_ID);
         });
 
-        function FillPersonalAllData(empresaId){
 
+        function handleDragOver(event) {
+            event.preventDefault();
+            fileLabel.classList.add('dragover');
+        }
+        // Manejar el evento de soltar archivos en el label
+        function handleDrop(event) {
+            event.preventDefault();
+            fileLabel.classList.remove('dragover');
+
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                const fileName = files[0].name;
+                fileNameDisplay.textContent = `Archivo seleccionado: ${fileName}`;
+            }
+        }
+
+        function FillPersonalAllData(empresaId) {
             $.ajax({
                 type: "POST",
                 url: "ws/personal/Personal.php",
                 data: JSON.stringify({
-                    'action':'getAllPersonalData',
-                    'empresaId':EMPRESA_ID
+                    'action': 'getAllPersonalData',
+                    'empresaId': EMPRESA_ID
                 }),
                 dataType: 'json',
-                success: function(data){
+                success: function(data) {
 
-                    console.log("TODO EL PERSONAL",data);
+                    console.log("TODO EL PERSONAL", data);
 
-                    if($('#AllPersonalTable tbody tr').length > 0){
+                    if ($('#AllPersonalTable tbody tr').length > 0) {
                         $('#AllPersonalTable').empty();
                     }
-                    if($.fn.DataTable.isDataTable( '#AllPersonalTable' )){
+                    if ($.fn.DataTable.isDataTable('#AllPersonalTable')) {
                         $('#AllPersonalTable').DataTable().destroy();
                     }
                     data.forEach(per => {
@@ -349,7 +226,7 @@ $active = 'personal';
                     });
                     $('#AllPersonalTable').DataTable({
                         fixedHeader: true,
-                        scrollX:true
+                        scrollX: true
                     })
                 },
                 error: function(data) {
@@ -358,25 +235,59 @@ $active = 'personal';
             })
         }
 
-        function GetContratos(){
-            
+        function GetContratos() {
+
         }
+
+        $('#openSidePersonalForm').on("click",async function(){
+            $('#personaSideMenu').addClass('active'); 
+        })
+        $('#closePersonalSideMenu').on("click",async function(){
+            $('#personaSideMenu').removeClass('active'); 
+        })
+        $('#closeUpdatePersonalSideMenu').on("click",async function(){
+            $('#personalSideMenu-personalDash').removeClass('active'); 
+        })
+
+        $('#openMasivaPersonal').on("click",async function(){
+            $('#masivaPersonalSideMenu').addClass('active'); 
+        })
+        $('#closeMasivaPersonal').on("click",async function(){
+            $('#masivaPersonalSideMenu').removeClass('active'); 
+        })
+
+        $('#openEspCarController').on("click",async function(){
+            const ESPECIALIDADES = await GetEspecialidadByBussiness(EMPRESA_ID);
+            printEspecialidadOnCrud(ESPECIALIDADES);
+            const CARGOS = await GetCargoByBussiness(EMPRESA_ID);
+            printCargosOnCrud(CARGOS);
+            $('#especialidadCargoCrud').addClass('active'); 
+        });
+
+
+        $('#closeEspecialidadCargoCrud').on("click",async function(){
+            $('#especialidadCargoCrud').removeClass('active'); 
+        })
 
 
         $(document).ready(function() {
 
-            FillPersonalAllData(EMPRESA_ID);
+            printPersonal();
+
+
             $.ajax({
                 type: "POST",
                 url: "ws/personal/Personal.php",
-                data:JSON.stringify({action:"getAllContratos"}),
+                data: JSON.stringify({
+                    action: "getAllContratos"
+                }),
                 dataType: 'json',
-                success: function(data){
+                success: function(data) {
                     // console.table(data);
                     console.log(data);
                     $('#contrato_Select').empty();
                     $('#contrato_Select').append(new Option("", ""));
-                        data.forEach(con => {
+                    data.forEach(con => {
                         $('#contrato_Select').append(new Option(`${con.contrato}`, con.id))
                     })
 
@@ -408,13 +319,13 @@ $active = 'personal';
                     cargo_select: {
                         required: true
                     },
-                    telefono:{
-                        required:true
+                    telefono: {
+                        required: true
                     },
-                    correoPersonalAddUnitario:{
-                        required:true
+                    correoPersonalAddUnitario: {
+                        required: true
                     },
-                    neto:{
+                    neto: {
 
                     }
                 },
@@ -428,7 +339,7 @@ $active = 'personal';
                         minlength: "El largo mínimo es de 3 caracteres"
                     },
                     rut: {
-                        required:"Ingrese un valor"
+                        required: "Ingrese un valor"
                     },
                     especialidad_select: {
                         required: "Ingrese un valor"
@@ -439,13 +350,13 @@ $active = 'personal';
                     cargo_select: {
                         required: "Ingrese un valor"
                     },
-                    telefono:{
-                        required:"Ingrese un valor"
+                    telefono: {
+                        required: "Ingrese un valor"
                     },
-                    correoPersonalAddUnitario:{
-                        required:"Ingrese un valor"
+                    correoPersonalAddUnitario: {
+                        required: "Ingrese un valor"
                     },
-                    neto:{
+                    neto: {
 
                     }
 
@@ -481,25 +392,25 @@ $active = 'personal';
                         data: JSON.stringify({
                             'action': 'AddPersonal',
                             'request': arrayRequest,
-                            'empresaId':EMPRESA_ID
+                            'empresaId': EMPRESA_ID
                         }),
                         dataType: 'json',
                         success: function(data) {
-                            console.log("RESPONSE ADD PERSONAL UNITARIO",data);
+                            console.log("RESPONSE ADD PERSONAL UNITARIO", data);
 
-                            if(data.success){
+                            if (data.success) {
                                 Swal.fire({
-                                    'icon':'success',
-                                    'title':"Listo",
-                                    'text':data.success.message,
+                                    'icon': 'success',
+                                    'title': "Listo",
+                                    'text': data.success.message,
                                     'timer': 2500
                                 })
                             }
-                            if(data.error){
+                            if (data.error) {
                                 Swal.fire({
-                                    'icon':'error',
-                                    'title':"Ups!",
-                                    'text':data.error.message,
+                                    'icon': 'error',
+                                    'title': "Ups!",
+                                    'text': data.error.message,
                                     'timer': 2500
                                 })
                             }
@@ -507,7 +418,7 @@ $active = 'personal';
                         error: function(data) {
                             console.log(data.responseText);
                         }
-                    }).then(()=>{
+                    }).then(() => {
                         $('#xlarge').modal('hide');
                         FillPersonalAllData(empresaId)
                     })
@@ -515,77 +426,64 @@ $active = 'personal';
             })
         });
 
-        const dataArrayIndex = ['nombres', 'apellidos', 'rut', 'telefono', 'correo', 'cargo', 'especialidad', 'contrato']
+        const dataArrayIndex = ['Nombre', 'Rut (opcional)','Especialidad', 'Cargo (opcional)','Tipo contrato (opcional)','Costo Mensual (opcional)','Correo (opcional)','Teléfono (opcional)']
         const dataArray = {
             'xlsxData': [{
-                    'name': 'nombres',
+                    'name': 'Nombre',
                     'type': 'string',
                     'minlength': 3,
                     'maxlength': 50,
                     'notNull': false
                 },
                 {
-                    'name': 'apellidos',
-                    'type': 'string',
-                    'minlength': 3,
-                    'maxlength': 50,
-                    'notNull': false
-                },
-
-                {
-                    'name': 'rut',
+                    'name': 'Rut (opcional)',
                     'type': 'string',
                     'minlength': 3,
                     'maxlength': 50,
                     'notNull': true
                 },
-
                 {
-                    'name': 'telefono',
-                    'type': 'int',
-                    'minlength': 3,
-                    'maxlength': 50,
-                    'notNull': true
-                },
-                {
-                    'name': 'correo',
+                    'name': 'Especialidad',
                     'type': 'string',
-                    'minlength': 3,
-                    'maxlength': 50,
-                    'notNull': true
-                },
-
-                {
-                    'name': 'cargo',
-                    'type': 'string',
-                    'minlength': 3,
-                    'maxlength': 50,
-                    'notNull': false
-                },
-
-                {
-                    'name': 'especialidad',
-                    'type': 'string',
-                    'minlength': 3,
+                    'minlength': 1,
                     'maxlength': 15,
                     'notNull': false
                 },
-
                 {
-                    'name': 'contrato',
+                    'name': 'Cargo (opcional)',
+                    'type': 'string',
+                    'minlength': 1,
+                    'maxlength': 50,
+                    'notNull': true
+                },
+                {
+                    'name': 'Tipo contrato (opcional)',
                     'type': 'string',
                     'minlength': 3,
                     'maxlength': 50,
-                    'notNull': false
+                    'notNull': true
+                },
+                {
+                    'name':'Costo Mensual (opcional)',
+                    'type': 'string',
+                    'minlength': 1,
+                    'maxlength': 50,
+                    'notNull': true
+                },
+                {
+                    'name': 'Correo (opcional)',
+                    'type': 'string',
+                    'minlength': 3,
+                    'maxlength': 50,
+                    'notNull': true
+                },
+                {
+                    'name': 'Teléfono (opcional)',
+                    'type': 'string',
+                    'minlength': 3,
+                    'maxlength': 50,
+                    'notNull': true
                 }
-                // ,
-                // {
-                //     'name': 'neto',
-                //     'type': 'string',
-                //     'minlength': 1,
-                //     'maxlength': 50,
-                //     'notNull': false
-                // }
             ]
         }
 
@@ -600,19 +498,16 @@ $active = 'personal';
         $('#excel_input').on('change', async function() {
             const extension = GetFileExtension()
             if (extension == "xlsx") {
+                
 
                 const tableContent = await xlsxReadandWrite(dataArray);
+
                 let tableHead = $('#excelTable>thead')
                 let tableBody = $('#excelTable>tbody')
-                $('#masivaPersonalCreation').modal('show')
-
-                //LIMPIAR TABLA
-                tableBody.empty()
-                tableHead.empty()
-
-                //LLENAR TABLA
-                tableHead.append(tableContent[0])
-                tableBody.append(tableContent[1])
+                tableHead.append(tableContent.table[0])
+                tableBody.append(tableContent.table[1])
+                $('#fileName').text(tableContent[0]);
+                $('#excel_input').val("");
 
 
             } else(
@@ -630,9 +525,9 @@ $active = 'personal';
 
             //obtencion de las propiedades del TD
             let tdListClass = $(this).attr("class").split(/\s+/);
-            let tdClass = tdListClass[0]
-            let tdPropertiesIndex = dataArrayIndex.indexOf(tdClass)
-            let tdProperties = dataArray.xlsxData[tdPropertiesIndex]
+            let tdClass = tdListClass[0].replaceAll("_", " ");
+            let tdPropertiesIndex = dataArrayIndex.indexOf(tdClass);
+            let tdProperties = dataArray.xlsxData[tdPropertiesIndex];
 
             // SETEO DE PROPIEDADES
             let type = tdProperties.type
@@ -724,105 +619,118 @@ $active = 'personal';
                     })
                     preRequest.push(arrTd)
                 });
-
                 const arrayRequest = preRequest.map(function(value) {
                     let returnArray = {
                         "nombre": value[0],
-                        "apellido": value[1],
-                        "rut": value[2],
-                        "telefono": value[3],
-                        "correo": value[4],
-                        "cargo": value[5],
-                        "especialidad": value[6],
-                        "contrato": value[7]
+                        "apellido":"",
+                        "rut": value[1],
+                        "especialidad": value[2],
+                        "cargo": value[3],
+                        "contrato": value[4],
+                        "neto": value[5],
+                        "correo": value[6],
+                        "telefono": value[7],
                     }
                     return returnArray
                 })
                 $.ajax({
                     type: "POST",
                     url: "ws/personal/Personal.php",
-                    data: JSON.stringify({action:"addPersonalMasiva",request:arrayRequest,empresaId:EMPRESA_ID}),
+                    data: JSON.stringify({
+                        action: "addPersonalMasiva",
+                        request: arrayRequest,
+                        empresaId: EMPRESA_ID
+                    }),
                     dataType: 'json',
                     success: function(data) {
                         $('#masivaProblems').modal('show');
                         $('#masivaProblemsTitle').text('Resumen del ingreso del personal');
                         let table = $('#tableProblems')
                         console.log(data);
-                        if(data.success){
+                        if (data.success) {
+                            Swal.fire({
+                                "icon":"success",
+                                "title":"Excelente!",
+                                "text":"Técnicos agregados exitosamente",
+                                "timer":2500
+                            });
+                            $('#masivaPersonalSideMenu').removeClass('active');
+                            $('#excelTable tr').remove();
+                            $('#excel_input').val("");
+                            $('#fileName').text("");
+
+
                         }
-                        if(data.error){
+                        if (data.error) {
                             let responseArray = data.error.arrErr
                             let cargos = [];
                             let especialidades = [];
                             let contratos = [];
-                            responseArray.forEach(el=>{
-                                if(el.problem === "Especialidad"){
-                                    if(especialidades.includes(el.data.especialidad)){
-                                    }else{
+                            responseArray.forEach(el => {
+                                if (el.problem === "Especialidad") {
+                                    if (especialidades.includes(el.data.especialidad)) {} else {
                                         especialidades.push(el.data.especialidad)
                                     }
                                 }
-                                if(el.problem === "Cargo"){
-                                    if(cargos.includes(el.data.cargo)){
-                                    }else{
+                                if (el.problem === "Cargo") {
+                                    if (cargos.includes(el.data.cargo)) {} else {
                                         cargos.push(el.data.cargo)
                                     }
                                 }
-                                if(el.problem === "Contrato"){
-                                    if(contratos.includes(el.data.contrato)){
-                                    }else{
+                                if (el.problem === "Contrato") {
+                                    if (contratos.includes(el.data.contrato)) {} else {
                                         contratos.push(el.data.contrato)
                                     }
                                 }
                                 let tdToSearch = $(`#tableProblems .excelRow`);
-                                if(tdToSearch.length > 0 ){
+                                if (tdToSearch.length > 0) {
 
                                     let arrayRows = [];
 
-                                    $(`#tableProblems .excelRow`).each((key,element)=>{
+                                    $(`#tableProblems .excelRow`).each((key, element) => {
 
                                         let row = $(element).text();
-                                        if(arrayRows.includes(row)){
+                                        if (arrayRows.includes(row)) {
 
-                                        }else{
+                                        } else {
                                             arrayRows.push(row);
                                         }
                                     })
 
-                                    console.log("ARRAY ROWS",arrayRows);
+                                    console.log("ARRAY ROWS", arrayRows);
 
-                                    if(arrayRows.includes(`${el.row}`)){
+                                    if (arrayRows.includes(`${el.row}`)) {
 
                                         let element = $(`#tableProblems .excelRow:contains('${el.row}')`)
-                                        if(el.problem === "Cargo"){
+                                        if (el.problem === "Cargo") {
                                             let cargo = $(element).closest('tr').find('.cargo');
-                                            if(!$(cargo).hasClass('err')){
+                                            if (!$(cargo).hasClass('err')) {
                                                 $(cargo).addClass('err');
                                                 $(cargo).text(el.data.cargo);
                                             }
                                         }
 
-                                        if(el.problem === "Especialidad"){
+                                        if (el.problem === "Especialidad") {
                                             let especialidad = $(element).closest('tr').find('.especialidad');
-                                            if(!$(especialidad).hasClass('err')){
-                                                
+                                            if (!$(especialidad).hasClass('err')) {
+
                                                 $(especialidad).addClass('err');
                                                 $(especialidad).text(el.data.especialidad);
 
                                             }
                                         }
-                                        if(el.problem === "Contrato"){
+                                        if (el.problem === "Contrato") {
 
                                             let contrato = $(element).closest('tr').find('.contrato');
 
-                                            if(!$(contrato).hasClass('err')){
+                                            if (!$(contrato).hasClass('err')) {
 
                                                 $(contrato).addClass('err');
                                                 $(contrato).text(el.data.contrato);
 
                                             }
                                         }
-                                    }else{
+                                    } else {
                                         let tr = `<tr><td class="excelRow">${el.row}</td>
                                             <td class="nombre" >${el.data.nombre}</td>
                                             <td class="apellido" >${el.data.apellido}</td>
@@ -834,7 +742,7 @@ $active = 'personal';
                                             <td class="contrato ${el.problem === "Contrato" ? "err" :""}">${el.data.contrato}</td></tr>`;
                                         table.append(tr);
                                     }
-                                }else{
+                                } else {
                                     let tr = `<tr><td class="excelRow">${el.row}</td>
                                         <td>${el.data.nombre}</td>
                                         <td>${el.data.apellido}</td>
@@ -848,10 +756,10 @@ $active = 'personal';
                                 }
                             })
 
-                            let ulEspecialidades =$('#ulEspecialidades'); 
+                            let ulEspecialidades = $('#ulEspecialidades');
                             let ulCargos = $('#ulCargos');
-    
-                            especialidades.forEach(el=>{
+
+                            especialidades.forEach(el => {
                                 ulEspecialidades.append(`<li> <p class="especialidadName">${el}</p>
                                                             <div class="container-end">
                                                                 <div class="actionContainer">
@@ -863,8 +771,8 @@ $active = 'personal';
                                                             </div>
                                                         </li>`);
                             });
-    
-                            cargos.forEach(el=>{
+
+                            cargos.forEach(el => {
                                 ulCargos.append(`<li> <p class="cargoName">${el}</p>
                                                     <div class="container-end">
                                                         <div class="actionContainer">
@@ -937,84 +845,87 @@ $active = 'personal';
             })
         })
 
-        async function AddespecialidadMasiva(){
+        async function AddespecialidadMasiva() {
 
             let names = $('#ulEspecialidades li');
             let arrayEspecialidades = [];
 
-            if(names.length > 0){
-                $(names).each((key,value)=>{
+            if (names.length > 0) {
+                $(names).each((key, value) => {
                     arrayEspecialidades.push($(value).find('.especialidadName').text());
                 })
-                const response = await Promise.all([AddEspecialidadGivenArray(EMPRESA_ID,arrayEspecialidades)]);
+                const response = await Promise.all([AddEspecialidadGivenArray(EMPRESA_ID, arrayEspecialidades)]);
 
-                if(response.length > 0){
+                if (response.length > 0) {
                     let li = $('#ulEspecialidades');
-                    li.hide('slow', function(){li.empty();});
+                    li.hide('slow', function() {
+                        li.empty();
+                    });
                     Swal.fire({
-                        'icon':'success',
+                        'icon': 'success',
                         'title': 'Excelente!',
                         'text': 'Datos ingresados con exito',
                         'timer': 1500,
-                        'position':'bottom-end',
-                        'showConfirmButton':false
-                    }).then(()=>{
+                        'position': 'bottom-end',
+                        'showConfirmButton': false
+                    }).then(() => {
                         RemoveErrClass('especialidad', arrayEspecialidades);
                     })
-                }else{
+                } else {
                     Swal.fire({
-                        'icon':'error',
+                        'icon': 'error',
                         'title': 'Ups!',
                         'text': `No se ha podido ingresar las especialidades`,
                         'timer': 1500,
-                        'position':'bottom-end',
-                        'showConfirmButton':false
-                    }).then(()=>{
-                    })
+                        'position': 'bottom-end',
+                        'showConfirmButton': false
+                    }).then(() => {})
                 }
-            }else{
+            } else {
                 Swal.fire({
-                    'icon':'error',
+                    'icon': 'error',
                     'title': 'Ups!',
                     'text': `No hay especialidades para agregar`,
                     'timer': 2000,
-                    'position':'bottom-end',
-                    'showConfirmButton':false
+                    'position': 'bottom-end',
+                    'showConfirmButton': false
                 })
             }
         }
 
 
-        async function AddEspecialidadFromModal(element){
+        async function AddEspecialidadFromModal(element) {
 
             let valor = $(element).closest('li').find('.especialidadName').text();
             let li = $(element).closest('li');
 
-            const response = await Promise.all([AddEspecialidadGivenArray(EMPRESA_ID,[valor])]);
-            if(response.length > 0){
-                li.hide('slow', function(){li.remove();});
+            const response = await Promise.all([AddEspecialidadGivenArray(EMPRESA_ID, [valor])]);
+            if (response.length > 0) {
+                li.hide('slow', function() {
+                    li.remove();
+                });
                 Swal.fire({
-                    'icon':'success',
-                    'title': 'Excelente!',
-                    'text': 'Datos ingresados con exito',
-                    'timer': 1500,
-                    'position':'bottom-end',
-                    'showConfirmButton':false
-                })
-                .then(()=>{
-                    RemoveErrClass('especialidad', [valor]);
-                })
+                        'icon': 'success',
+                        'title': 'Excelente!',
+                        'text': 'Datos ingresados con exito',
+                        'timer': 1500,
+                        'position': 'bottom-end',
+                        'showConfirmButton': false
+                    })
+                    .then(() => {
+                        RemoveErrClass('especialidad', [valor]);
+                    })
 
-            }else{
+            } else {
 
                 Swal.fire({
-                    'icon':'error',
+                    'icon': 'error',
                     'title': 'Ups!',
                     'text': `No se ha podido ingresar la especialidad ${valor}`,
                     'timer': 1500,
-                    'position':'bottom-end',
-                    'showConfirmButton':false
-                }).then(()=>{
+                    'position': 'bottom-end',
+                    'showConfirmButton': false
+                }).then(() => {
                     $('#especialidadName').val("");
                     $('#cargoEspecialidad').modal('hide');
                 })
@@ -1022,152 +933,163 @@ $active = 'personal';
             }
         }
 
-        async function AddCargoFromModal(element){
+        async function AddCargoFromModal(element) {
             let valor = $(element).closest('li').find('.cargoName').text();
             let li = $(element).closest('li');
 
-            const response = await Promise.all([AddCargoGivenArray(EMPRESA_ID,[valor])]);
-            if(response.length > 0){
+            const response = await Promise.all([AddCargoGivenArray(EMPRESA_ID, [valor])]);
+            if (response.length > 0) {
 
-                li.hide('slow', function(){li.remove();});
-
-                Swal.fire({
-                    'icon':'success',
-                    'title': 'Excelente!',
-                    'text': 'Datos ingresados con exito',
-                    'timer': 1500,
-                    'position':'bottom-end',
-                    'showConfirmButton':false
-                })
-                .then(()=>{
-                    RemoveErrClass('cargo', [valor]);
-                })
-
-            }else{
+                li.hide('slow', function() {
+                    li.remove();
+                });
 
                 Swal.fire({
-                    'icon':'error',
+                        'icon': 'success',
+                        'title': 'Excelente!',
+                        'text': 'Datos ingresados con exito',
+                        'timer': 1500,
+                        'position': 'bottom-end',
+                        'showConfirmButton': false
+                    })
+                    .then(() => {
+                        RemoveErrClass('cargo', [valor]);
+                    })
+
+            } else {
+
+                Swal.fire({
+                    'icon': 'error',
                     'title': 'Ups!',
                     'text': `No se ha podido ingresar la especialidad ${valor}`,
                     'timer': 1500,
-                    'position':'bottom-end',
-                    'showConfirmButton':false
+                    'position': 'bottom-end',
+                    'showConfirmButton': false
                 })
             }
         }
 
-        async function AddCargoMasiva(){
+        async function AddCargoMasiva() {
 
             let names = $('#ulCargos li');
             let arrayCargos = [];
 
-            if(names.length > 0){
-                $(names).each((key,value)=>{
+            if (names.length > 0) {
+                $(names).each((key, value) => {
                     arrayCargos.push($(value).find('.cargoName').text());
                 })
-                const response = await Promise.all([AddCargoGivenArray(EMPRESA_ID,arrayCargos)]);
+                const response = await Promise.all([AddCargoGivenArray(EMPRESA_ID, arrayCargos)]);
 
-                if(response.length > 0){
+                if (response.length > 0) {
                     let li = $('#ulCargos');
-                    li.hide('slow', function(){li.empty();});
+                    li.hide('slow', function() {
+                        li.empty();
+                    });
                     Swal.fire({
-                        'icon':'success',
-                        'title': 'Excelente!',
-                        'text': 'Datos ingresados con exito',
-                        'timer': 1500,
-                        'position':'bottom-end',
-                        'showConfirmButton':false
-                    })
-                    .then(()=>{
-                        RemoveErrClass('cargo', arrayCargos)
-                    })
+                            'icon': 'success',
+                            'title': 'Excelente!',
+                            'text': 'Datos ingresados con exito',
+                            'timer': 1500,
+                            'position': 'bottom-end',
+                            'showConfirmButton': false
+                        })
+                        .then(() => {
+                            RemoveErrClass('cargo', arrayCargos)
+                        })
 
-                }else{
+                } else {
 
                     Swal.fire({
-                        'icon':'error',
+                        'icon': 'error',
                         'title': 'Ups!',
                         'text': `No se ha podido ingresar las especialidades`,
                         'timer': 1500,
-                        'position':'bottom-end',
-                        'showConfirmButton':false
+                        'position': 'bottom-end',
+                        'showConfirmButton': false
                     })
                 }
-            }else{
+            } else {
 
                 Swal.fire({
-                    'icon':'error',
+                    'icon': 'error',
                     'title': 'Ups!',
                     'text': `No hay especialidades para agregar`,
                     'timer': 2000,
-                    'position':'bottom-end',
-                    'showConfirmButton':false
+                    'position': 'bottom-end',
+                    'showConfirmButton': false
                 })
             }
         }
 
 
-        function RemoveErrClass(tipo,arrayToEvaulate){
+        function RemoveErrClass(tipo, arrayToEvaulate) {
             const evaluateArray = arrayToEvaulate;
-            if(tipo ==="especialidad"){
+            if (tipo === "especialidad") {
                 const arrayEspecialidad = $('#tableProblems > tbody tr .especialidad');
-                $(arrayEspecialidad).each((key,element)=>{
+                $(arrayEspecialidad).each((key, element) => {
                     console.log($(element).text());
-                    if($(element).hasClass('err') && evaluateArray.includes($(element).text())){
+                    if ($(element).hasClass('err') && evaluateArray.includes($(element).text())) {
                         $(element).removeClass('err')
                     }
                 })
             }
-            if(tipo ==="cargo"){
+            if (tipo === "cargo") {
                 const arrayEspecialidad = $('#tableProblems > tbody tr .cargo');
-                $(arrayEspecialidad).each((key,element)=>{
-                    if($(element).hasClass('err') && evaluateArray.includes($(element).text())){
+                $(arrayEspecialidad).each((key, element) => {
+                    if ($(element).hasClass('err') && evaluateArray.includes($(element).text())) {
                         $(element).removeClass('err');
                     }
                 });
             }
         }
 
-        function AddPersonalFromModalProblems(){
+        function AddPersonalFromModalProblems() {
             let arrayPersonal = [];
 
-            $('#tableProblems > tbody tr').each((key,element)=>{
-                if(!$(element).find('.cargo').hasClass('err') && !$(element).find('.especilidad').hasClass('err')){
+            $('#tableProblems > tbody tr').each((key, element) => {
+                if (!$(element).find('.cargo').hasClass('err') && !$(element).find('.especilidad').hasClass('err')) {
                     arrayPersonal.push({
-                        nombre : $(element).find('.nombre').text(),
-                        apellido : $(element).find('.apellido').text(),
-                        rut : $(element).find('.rut').text(),
-                        correo : $(element).find('.telefono').text(),
-                        telefono : $(element).find('.correo').text(),
-                        neto : $(element).find('.neto').text(),
-                        especialidad : $(element).find('.especialidad').text(),
-                        contrato : $(element).find('.contrato').text(),
-                        cargo : $(element).find('.cargo').text()
+                        nombre: $(element).find('.nombre').text(),
+                        apellido: $(element).find('.apellido').text(),
+                        rut: $(element).find('.rut').text(),
+                        correo: $(element).find('.telefono').text(),
+                        telefono: $(element).find('.correo').text(),
+                        neto: $(element).find('.neto').text(),
+                        especialidad: $(element).find('.especialidad').text(),
+                        contrato: $(element).find('.contrato').text(),
+                        cargo: $(element).find('.cargo').text()
                     });
                 }
             });
 
-            if(arrayPersonal.length > 0){
+            if (arrayPersonal.length > 0) {
                 $.ajax({
-                    type: "POST",
-                    url: "ws/personal/Personal.php",
-                    data: JSON.stringify({action:"addPersonalMasiva",request:arrayPersonal,empresaId:EMPRESA_ID}),
-                    dataType: 'json',
-                    success: function(data){
+                        type: "POST",
+                        url: "ws/personal/Personal.php",
+                        data: JSON.stringify({
+                            action: "addPersonalMasiva",
+                            request: arrayPersonal,
+                            empresaId: EMPRESA_ID
+                        }),
+                        dataType: 'json',
+                        success: function(data) {
 
-                    }
-                })
-                .then(()=>{
-                    FillPersonalAllData(EMPRESA_ID);
-                })
+                        }
+                    })
+                    .then(() => {
+                        FillPersonalAllData(EMPRESA_ID);
+                    })
             }
         }
 
-        function removeLi(element){
+        function removeLi(element) {
             let li = $(element).closest('li');
-            li.hide('slow', function(){li.remove();});
+            li.hide('slow', function() {
+                li.remove();
+            });
         }
     </script>
 
 </body>
+
 </html>

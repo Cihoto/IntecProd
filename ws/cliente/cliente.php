@@ -45,7 +45,12 @@ if ($_POST) {
             break;
         case 'getClientInformation':
             $cliente_id = $data->cliente_id;
-            $result = getClientInformation($cliente_id);
+            $result = getClientInformation($cliente_id,$empresa_id);
+            break;
+        case 'getClienteById_dataAndEvents':
+            $cliente_id = $data->cliente_id;
+            $empresa_id = $data->empresa_id;
+            $result = getClienteById_dataAndEvents($cliente_id,$empresa_id);
             break;
         default:
             $result = false;
@@ -427,6 +432,7 @@ if ($_POST) {
         $conn =  new bd();
         $conn->conectar();
         $clientInfo = [];
+        $events = [];
 
         $queryGetClientData = "SELECT  per.nombre, per.apellido, per.rut as rut_persona, per.email  as email_persona , per.telefono,
         df.rut as rut_razon_social, df.razon_social, df.nombre_fantasia, df.direccion,df.correo 
@@ -434,7 +440,6 @@ if ($_POST) {
         INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
         INNER JOIN persona per on per.id = c.persona_id_contacto 
         where c.id = $cliente_id";
-
 
         if($responseDbClientInfo = $conn->mysqli->query($queryGetClientData)){
             while($dataCliente = $responseDbClientInfo->fetch_object()){
@@ -444,7 +449,47 @@ if ($_POST) {
             return json_encode(array("success"=>true, "data"=>$clienteInfo));
         }else{
             $conn->desconectar();
-            return json_encode(array("success"=>true, "message"=>"Ha ocurrido un error, por favor intente nuevamente"));
+            return json_encode(array("error"=>true, "message"=>"Ha ocurrido un error, por favor intente nuevamente"));
+        }
+    }
+
+    function getClienteById_dataAndEvents($cliente_id,$empresa_id){
+        $conn =  new bd();
+        $conn->conectar();
+        $clientInfo = [];
+        $events = [];
+
+        $queryGetClientData = "SELECT c.id as client_id, per.nombre, per.apellido, per.rut as rut_persona, per.email  as email_persona , per.telefono,
+        df.rut as rut_razon_social, df.razon_social, df.nombre_fantasia, df.direccion,df.correo 
+        FROM cliente c
+        INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
+        INNER JOIN persona per on per.id = c.persona_id_contacto 
+        where c.id = $cliente_id
+        and c.empresa_id = $empresa_id";
+
+        $queryGetEventsByCliente = "SELECT * , p.id as event_id FROM proyecto p
+        inner join cliente c on c.id = p.cliente_id
+        left join project_finance_resume pfr on pfr.event_id  = p.id
+        inner join estado e on e.id = p.status_id  
+        where p.cliente_id = $cliente_id
+        and p.empresa_id  = $empresa_id
+        and c.empresa_id  = $empresa_id";
+
+
+        if($responseDbClientInfo = $conn->mysqli->query($queryGetClientData)){
+            while($dataCliente = $responseDbClientInfo->fetch_object()){
+                $clienteInfo [] = $dataCliente;
+            }
+            if($responseEventsClient = $conn->mysqli->query($queryGetEventsByCliente)){
+                while($dataEventsClient = $responseEventsClient->fetch_object()){
+                    $events [] = $dataEventsClient;
+                }
+            }
+            $conn->desconectar();
+            return json_encode(array("success"=>true, "data"=>$clienteInfo,"events"=>$events));
+        }else{
+            $conn->desconectar();
+            return json_encode(array("error"=>true, "message"=>"Ha ocurrido un error, por favor intente nuevamente"));
         }
     }
 

@@ -1,7 +1,20 @@
 let allVehicles = [];
 let selectedVehicles = [];
+let _allMyVehicles = [];
+let _brands = [];
+let _models = [];
+let _types = [];
+let vehicleData = {
+    data:[
 
-function searchVehiculoDrag(){
+    ],
+    events:[
+
+    ],
+    vehicle_id: ""
+}
+
+function searchVehiculoDrag() {
     let dragVehiculos = document.getElementById('sortable1').getElementsByTagName('li')
     let inputValue = document.getElementById('searchInputVehiculo').value.toUpperCase();
     for (let item of dragVehiculos) {
@@ -13,6 +26,133 @@ function searchVehiculoDrag(){
         }
     }
 }
+
+$(document).ready(async function () {
+    const VEHICLES_BRANDS_MODELS = await getVehicleBrandsAndModels();
+    _brands = VEHICLES_BRANDS_MODELS.brands;
+    _models = VEHICLES_BRANDS_MODELS.models;
+    _types = VEHICLES_BRANDS_MODELS.types;
+
+    const selData = _brands.map((brand) => {
+        return {
+            'id': brand.id,
+            'text': brand.brand
+        }
+    });
+
+    const typeData = _types.map((type) => {
+        return {
+            'id': type.id,
+            'text': type.tipo
+        }
+    });
+
+    $('#vehicleCreateModel').select2({
+
+    })
+    $('#vehicleCreateBrand').select2({
+        data : selData
+    });
+    $('#vehicleCreateType').select2({
+        data : typeData
+    });
+})
+
+$('#vehicleCreateBrand').on("change",function(){
+    const BRAND_ID = $(this).val();
+    const modelSelData = _models.filter((model)=>{
+
+        if(model.brand_id === BRAND_ID){
+
+            return {
+                'id' : model.id,
+                'text' : model.model
+            }
+        }
+    }).map((model)=>{
+        return {
+            'id' : model.id ,
+            'text' : model.model
+        }
+    });
+
+    $('#vehicleCreateModel').select2('destroy');
+    $('#vehicleCreateModel').empty();
+    $('#vehicleCreateModel').select2({
+        data : modelSelData
+    });
+});
+
+
+$(document).on("click",'#vehiclesDashTable tbody tr',async function(){
+    
+    const VEHICLE_ID = $(this).closest('tr').attr('vehicle_id');
+    const VEHICLE_EXISTS = _allMyVehicles.find((vehicle)=>{return vehicle.vehicle_id === VEHICLE_ID})
+
+    
+    console.log(VEHICLE_ID)
+    console.log(VEHICLE_EXISTS)
+    if(!VEHICLE_EXISTS){
+        Swal.fire({
+            "icon":"error",
+            "title" : "Ups!",
+            "text": "Intenta nuevamente"
+        })
+        return
+    }
+    
+    
+    $('#vehicleInfoSideMenu').addClass('active');
+    const VEHICLE_INFO = await getVehicleInfoById(VEHICLE_ID, EMPRESA_ID);
+    
+    if(!VEHICLE_INFO.success){
+        
+        $('#vehicleInfoSideMenu').removeClass('active');
+        Swal.fire({
+            "icon":"error",
+            "title" : "Ups!",
+            "text": "Ha ocurrido un error intenta nuevamente"
+        })
+        return
+        
+    }
+
+    vehicleData.data = VEHICLE_INFO.data
+    vehicleData.events = VEHICLE_INFO.events
+    vehicleData.vehicleData = VEHICLE_INFO.data.id
+
+
+    $('#vehicleUpdateType').val();
+    $('#vehicleUpdateBrand').val();
+    $('#vehicleUpdateModel').val();
+    $('#vehicleUpdatePatente').val();
+    $('#vehicleUpdateOwner').val();
+    $('#vehicleUpdateCostPerTrip').val();
+
+    console.log(vehicleData);               
+    console.log(vehicleData);
+    console.log(vehicleData);
+
+})
+
+async function getVehicleInfoById(vehicle_id, empresa_id){
+    return $.ajax({
+        type: "POST",
+        url: "ws/vehiculo/Vehiculo.php",
+        dataType: 'json',
+        data: JSON.stringify({
+            "action": "getVehicleInfoById",
+            'vehicle_id': vehicle_id,
+            'empresa_id': empresa_id
+        }),
+        success: function (response) {
+
+        },error:function(error){
+            
+        }
+    })
+}
+
 
 function FillVehiculos(empresaId) {
 
@@ -26,25 +166,111 @@ function FillVehiculos(empresaId) {
         }),
         success: function (response) {
 
-            allVehicles = response.map((vehicle)=>{
+            allVehicles = response.map((vehicle) => {
                 return {
-                    'id' : vehicle.id,
-                    'patente' : vehicle.patente,
-                    'ownCar' : vehicle.ownCar,
-                    'tripValue' : vehicle.tripValue,
+                    'id': vehicle.id,
+                    'patente': vehicle.patente,
+                    'ownCar': vehicle.ownCar,
+                    'tripValue': vehicle.tripValue,
                     'tipoVehiculo': vehicle.tipo,
                     'cantidadViajes': 2,
-                    'isSelected' : false,
-                    'isPicked' : false
+                    'isSelected': false,
+                    'isPicked': false
                 }
             });
-            console.log("allVehicles",allVehicles)
+            console.log("allVehicles", allVehicles)
             printSelectedVehicles();
         }
     })
 }
+function getVehicleBrandsAndModels() {
 
-function GetAvailableVehicles(empresaId, fechaInicio, fechaTermino){
+    return $.ajax({
+        type: "POST",
+        url: "ws/vehiculo/Vehiculo.php",
+        dataType: 'json',
+        data: JSON.stringify({
+            "action": "getVehicleBrandsAndModels"
+        }),
+        success: function (response) {
+
+        }, error: function (error) {
+
+        }
+    })
+}
+function getVehiclesByBussiness(empresa_id) {
+
+    return $.ajax({
+        type: "POST",
+        url: "ws/vehiculo/Vehiculo.php",
+        dataType: 'json',
+        data: JSON.stringify({
+            "action": "getVehiclesByBussiness",
+            'empresa_id': empresa_id
+        }),
+        success: function (response) {
+
+        }, error: function (error) {
+
+        }
+    })
+}
+
+function printAllMyVehicles() {
+
+    if ($.fn.DataTable.isDataTable('#vehiclesDashTable')) {
+        $('#vehiclesDashTable').DataTable()
+            .clear()
+            .draw();
+        $('#vehiclesDashTable').DataTable().destroy();
+    }
+    _allMyVehicles.forEach((vehicle) => {
+        
+        let ownCar = "Propio"
+
+        if (vehicle.ownCar === "0") {
+            ownCar = "Externo"
+        }
+        let tr = `<tr vehicle_id="${vehicle.vehicle_id}">
+            <td class="ps-header">${vehicle.tipo === null ? "-" : vehicle.tipo}</td>
+            <td>${vehicle.brand === null ? "-" : vehicle.brand}</td>
+            <td>${vehicle.model === null ? "-" : vehicle.model}</td>
+            <td>${vehicle.patente === null ? "-" : vehicle.patente.toUpperCase()}</td>
+            <td>${ownCar}</td>
+            <td>${vehicle.tripValue === null ? "-" : CLPFormatter(vehicle.tripValue)}</td>
+        </tr>`;
+        $('#vehiclesDashTable tbody').append(tr)
+    });
+    if (!$.fn.DataTable.isDataTable('#vehiclesDashTable')) {
+        $('#vehiclesDashTable').DataTable({
+            lengthMenu: [3,5,10,20],
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Vehículos",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+            "pageLength": 5
+        });
+    }
+}
+
+function GetAvailableVehicles(empresaId, fechaInicio, fechaTermino) {
     let arrayRequest = [{ "empresaId": empresaId, "fechaInicio": fechaInicio, "fechaTermino": fechaTermino }];
     $.ajax({
         type: "POST",
@@ -75,9 +301,9 @@ function GetAvailableVehicles(empresaId, fechaInicio, fechaTermino){
     })
 }
 
-function AddVehiculo(element){
+function AddVehiculo(element) {
 
-    if (ROL_ID.includes("1")||ROL_ID.includes("2")||ROL_ID.includes("13")){
+    if (ROL_ID.includes("1") || ROL_ID.includes("2") || ROL_ID.includes("13")) {
         console.log(allVehicles)
 
         const valorVehiculo = $('.addVehicle').closest('.personalPricing').find('.vehiclePrice').val();
@@ -85,27 +311,34 @@ function AddVehiculo(element){
         let idVehiculo = $(element).closest('li').attr('class').trim();
 
         if (valorVehiculo === undefined || valorVehiculo === "" || valorVehiculo === 0) {
+
             Swal.fire({
                 icon: 'info',
                 title: 'Ups!',
                 text: 'Ingresa el costo de este Vehículo antes de asignarlo a este evento'
             })
+
             return;
         }
-        const vehicleExists = allVehicles.find((vehicle)=>{
-            if(vehicle.id === idVehiculo){
-                return true 
-            }    
+        const vehicleExists = allVehicles.find((vehicle) => {
+
+            if (vehicle.id === idVehiculo) {
+                return true
+            }
+
         })
-        if(vehicleExists){
+
+        if (vehicleExists) {
+
             selectedVehicles.push({
-                'id':vehicleExists.id,
-                'patente':vehicleExists.patente,
-                'valor':valorVehiculo
+                'id': vehicleExists.id,
+                'patente': vehicleExists.patente,
+                'valor': valorVehiculo
             })
+
         }
         printSelectedVehicles();
-    }else{
+    } else {
         Swal.fire({
             title: 'Lo sentimos',
             text: "No tienes los persisos para poder ejecutar esta acción, si deseas tenerlos debes ponerte en contacto con el administrador de tú organización",
@@ -117,17 +350,17 @@ function AddVehiculo(element){
     }
 }
 
-function removeVehicle(element){
-    if (ROL_ID.includes("1")||ROL_ID.includes("2")||ROL_ID.includes("13")){
+function removeVehicle(element) {
+    if (ROL_ID.includes("1") || ROL_ID.includes("2") || ROL_ID.includes("13")) {
         let vehicle_id = $(element).closest('li').attr('vehicle_id');
-        const existsToDelete = selectedVehicles.find((selected,index)=>{
-            if(selected.id === vehicle_id){
-                selectedVehicles.splice(index,1);
+        const existsToDelete = selectedVehicles.find((selected, index) => {
+            if (selected.id === vehicle_id) {
+                selectedVehicles.splice(index, 1);
                 return true
             }
         })
         printSelectedVehicles();
-    }else{
+    } else {
         Swal.fire({
             title: 'Lo sentimos',
             text: "No tienes los persisos para poder ejecutar esta acción, si deseas tenerlos debes ponerte en contacto con el administrador de tú organización",
@@ -139,7 +372,7 @@ function removeVehicle(element){
     }
 }
 
-function printSelectedVehicles(){
+function printSelectedVehicles() {
     $('#sortable2 li').remove();
     $('#sortable1 li').remove();
     $("#vehiculosProject .resumeVehicleData").remove();
@@ -147,27 +380,25 @@ function printSelectedVehicles(){
     $('#allVehiclesTable tbody tr').remove();
     $('#selectedVehiclesCosts tbody tr').remove();
 
-    console.log("selected VEHICLES", selectedVehicles);
-
     // allVehiclesTable
-    allVehicles.forEach((vehiculo)=>{
+    allVehicles.forEach((vehiculo) => {
 
         let vehicleStatus = "";
 
 
-        if(vehiculo.isSelected === true){
+        if (vehiculo.isSelected === true) {
             vehicleStatus = "isSelected"
         }
 
-        if(vehiculo.tripValue === null ){
+        if (vehiculo.tripValue === null) {
             vehiculo.tripValue = 0
         }
 
         let owner = "";
 
-        if(vehiculo.propietario === true){
+        if (vehiculo.propietario === true) {
             owner = "Propio";
-        }else{
+        } else {
             owner = "Externo";
         }
 
@@ -182,16 +413,16 @@ function printSelectedVehicles(){
         $('#allVehiclesTable tbody').append(tr);
     })
 
-    selectedVehicles.forEach((selectedVehicle)=>{
+    selectedVehicles.forEach((selectedVehicle) => {
         let owner = "";
         let tripCostTd = ``;
         let total = 0;
         total = parseInt(selectedVehicle.cantidadViajes) * parseInt(selectedVehicle.tripValue);
 
-        if(selectedVehicle.ownCar === "1"){
+        if (selectedVehicle.ownCar === "1") {
             owner = "Propio";
             total = parseInt(selectedVehicle.cantidadViajes) * parseInt(selectedVehicle.tripValue);
-        }else{
+        } else {
             owner = "Externo";
             // total = parseInt(selectedVehicle.tripValue) * parseInt();
         }
@@ -221,7 +452,7 @@ function printSelectedVehicles(){
     })
 
     tippy('.isPicked', {
-        content:'<strong></strong>'
+        content: '<strong></strong>'
     });
 
     setEgresos();
@@ -231,38 +462,38 @@ function printSelectedVehicles(){
 // capture current vehicle value and use it on case to invalid user input
 
 let lastVehicleValue = 0;
-$(document).on('click','.vehiclePrice',function(){
+$(document).on('click', '.vehiclePrice', function () {
     lastVehicleValue = $(this).val();
     console.log(lastVehicleValue);
 })
 
-$(document).on('change','.vehiclePrice',function(){
+$(document).on('change', '.vehiclePrice', function () {
 
     const valor = $(this).val();
-    if(isNumeric(valor)){
+    if (isNumeric(valor)) {
 
-    }else{
+    } else {
         $(this).val(lastVehicleValue);
         Swal.fire({
-            'title':'Ups!',
-            'text':'Ingresa un precio valido',
-            'icon':'warning'
+            'title': 'Ups!',
+            'text': 'Ingresa un precio valido',
+            'icon': 'warning'
         })
-        return 
+        return
     }
 
-    if(valor < 0){
+    if (valor < 0) {
         Swal.fire({
-            'title':'Ups!',
-            'text':'Ingresa un precio valido',
-            'icon':'warning'
+            'title': 'Ups!',
+            'text': 'Ingresa un precio valido',
+            'icon': 'warning'
         })
-    }   
+    }
 })
-               
+
 function removeVehicle_old(element) {
 
-    if (ROL_ID.includes("1")||ROL_ID.includes("2")||ROL_ID.includes("13")){
+    if (ROL_ID.includes("1") || ROL_ID.includes("2") || ROL_ID.includes("13")) {
         let li = $(element).closest('li');
         let idVehiculoDelete = li.attr('class');
         let patente = li.text();
@@ -288,7 +519,7 @@ function removeVehicle_old(element) {
 }
 
 function RemoveVehicleFromResume(id) {
-    
+
     let tdPersonal = $('#vehiculosProject tbody').find('.idVehicleResume')
     tdPersonal.each((index, td) => {
         if ($(td).text() === id) {
@@ -331,31 +562,31 @@ function AppendVehiculoTableResumeArray(arrayVehiculos) {
 }
 
 
-$(document).on('click','.addVehicleToResume',function(){
+$(document).on('click', '.addVehicleToResume', function () {
     const vehiculo_id = $(this).closest('tr').attr('vehiculo_id');
     addVehicle(vehiculo_id);
 })
 
-function addVehicle(vehiculo_id){
-    const vehiculo_exists = allVehicles.find((vehiculo)=>{
+function addVehicle(vehiculo_id) {
+    const vehiculo_exists = allVehicles.find((vehiculo) => {
         return vehiculo.id === vehiculo_id;
     });
 
-    if(!vehiculo_exists){
+    if (!vehiculo_exists) {
         Swal.fire({
-            'icon' : "error",
+            'icon': "error",
             'title': "Ups!",
-            'text' : "Ha ocurrido un error",
-            'showConfirmButton' : false,
-            'timer' : 2000
+            'text': "Ha ocurrido un error",
+            'showConfirmButton': false,
+            'timer': 2000
         });
         return;
     };
-    const vehiculoIsSelected = selectedVehicles.find((selected)=>{
+    const vehiculoIsSelected = selectedVehicles.find((selected) => {
         return selected.id === vehiculo_id;
     });
 
-    if(vehiculoIsSelected){
+    if (vehiculoIsSelected) {
         return;
     };
 
@@ -365,44 +596,44 @@ function addVehicle(vehiculo_id){
 }
 
 let lastCostoPorViaje = 0;
-$(document).on('click','.tripValueInput',function(){
+$(document).on('click', '.tripValueInput', function () {
     lastCostoPorViaje = ClpUnformatter($(this).val());
 
     $(this).val("")
 })
 
-$(document).on('blur','.tripValueInput',function(){
+$(document).on('blur', '.tripValueInput', function () {
 
     const value = $(this).val();
     const vehiculo_id = $(this).closest('tr').attr('vehiculo_id');
-    if(value === "" || value === undefined || value === null){
+    if (value === "" || value === undefined || value === null) {
         $(this).val(CLPFormatter(lastCostoPorViaje))
         return;
     }
 
-    if(!isNumeric(value)){
+    if (!isNumeric(value)) {
         Swal.fire({
-            icon:'warning',
-            title:'Ups!',
-            text:'Ingrese un número',
-            showConfirmButton:false,
-            timer:2000
+            icon: 'warning',
+            title: 'Ups!',
+            text: 'Ingrese un número',
+            showConfirmButton: false,
+            timer: 2000
         });
         $(this).val(CLPFormatter(lastCostoPorViaje))
         return
     }
 
-    const vehiculoExiste = allVehicles.find((vehiculo)=>{
+    const vehiculoExiste = allVehicles.find((vehiculo) => {
         return vehiculo.id === vehiculo_id;
     })
 
-    if(!vehiculoExiste){
+    if (!vehiculoExiste) {
         Swal.fire({
-            icon:'error',
-            title:'Ups!',
-            text:'Ha ocurrido un error',
-            showConfirmButton:false,
-            timer:2000
+            icon: 'error',
+            title: 'Ups!',
+            text: 'Ha ocurrido un error',
+            showConfirmButton: false,
+            timer: 2000
         });
         $(this).val(CLPFormatter(lastCostoPorViaje))
         return;
@@ -418,43 +649,43 @@ $(document).on('blur','.tripValueInput',function(){
 })
 
 let cantidadViajes = 0;
-$(document).on('click','.cantidadViajesInput',function(){
+$(document).on('click', '.cantidadViajesInput', function () {
     cantidadViajes = $(this).val();
     $(this).val("")
 })
 
-$(document).on('blur','.cantidadViajesInput',function(){
+$(document).on('blur', '.cantidadViajesInput', function () {
 
     const value = $(this).val();
     const vehiculo_id = $(this).closest('tr').attr('vehiculo_id');
-    if(value === "" || value === undefined || value === null){
+    if (value === "" || value === undefined || value === null) {
         $(this).val(cantidadViajes)
         return;
     }
 
-    if(!isNumeric(value)){
+    if (!isNumeric(value)) {
         Swal.fire({
-            icon:'warning',
-            title:'Ups!',
-            text:'Ingrese un número',
-            showConfirmButton:false,
-            timer:2000
+            icon: 'warning',
+            title: 'Ups!',
+            text: 'Ingrese un número',
+            showConfirmButton: false,
+            timer: 2000
         });
         $(this).val(cantidadViajes)
         return
     }
 
-    const vehiculoExiste = allVehicles.find((vehiculo)=>{
+    const vehiculoExiste = allVehicles.find((vehiculo) => {
         return vehiculo.id === vehiculo_id;
     })
 
-    if(!vehiculoExiste){
+    if (!vehiculoExiste) {
         Swal.fire({
-            icon:'error',
-            title:'Ups!',
-            text:'Ha ocurrido un error',
-            showConfirmButton:false,
-            timer:2000
+            icon: 'error',
+            title: 'Ups!',
+            text: 'Ha ocurrido un error',
+            showConfirmButton: false,
+            timer: 2000
         });
         $(this).val(cantidadViajes)
         return;
@@ -463,34 +694,34 @@ $(document).on('blur','.cantidadViajesInput',function(){
     printSelectedVehicles();
 })
 
-$(document).on('click','.removeVehiculoToAssigment',function(){
-    
+$(document).on('click', '.removeVehiculoToAssigment', function () {
+
     const vehiculo_id = $(this).closest('tr').attr('vehiculo_id');
-    const vehiculo_exists = allVehicles.find((vehiculo)=>{
+    const vehiculo_exists = allVehicles.find((vehiculo) => {
         return vehiculo.id === vehiculo_id;
     });
 
-    if(!vehiculo_exists){
+    if (!vehiculo_exists) {
         Swal.fire({
-            'icon' : "error",
+            'icon': "error",
             'title': "Ups!",
-            'text' : "Ha ocurrido un error",
-            'showConfirmButton' : false,
-            'timer' : 2000
+            'text': "Ha ocurrido un error",
+            'showConfirmButton': false,
+            'timer': 2000
         });
         return;
     };
-    const vehiculoIsSelected = selectedVehicles.find((selected)=>{
+    const vehiculoIsSelected = selectedVehicles.find((selected) => {
         return selected.id === vehiculo_id;
     });
 
-    if(!vehiculoIsSelected){
+    if (!vehiculoIsSelected) {
         return;
     };
 
     vehiculo_exists.isSelected = false;
     // console.log("INDEX OF",selectedVehicles.indexOf(vehiculoIsSelected))
-    selectedVehicles.splice(selectedVehicles.indexOf(vehiculoIsSelected),1);
+    selectedVehicles.splice(selectedVehicles.indexOf(vehiculoIsSelected), 1);
     printSelectedVehicles();
 
 })

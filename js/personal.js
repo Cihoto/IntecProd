@@ -3,11 +3,245 @@ let allTipoContrato = [];
 let selectedTypeContract = [];
 let allSelectedPersonal = [];
 let allMyOwners = [];
+let _allPersonalToList = [];
+let _allCargos = []
+let _allEspecialidades = []
+let personalData = {
+    "data": {
+
+    },
+    "events": {
+
+    },
+    "persona_id": 0,
+    "personal_id": 0
+
+}
+
+
+
+let dash_personal_table
+async function printPersonal() {
+    const PERSONAL = await getPersonalByBussiness(EMPRESA_ID);
+    if (!PERSONAL.success) {
+        Swal.fire({
+            icon: "error",
+            title: "Ups!",
+            text: "Intente nuevamente"
+        })
+        return;
+    };
+
+    _allPersonalToList = PERSONAL.data;
+
+    if ($.fn.DataTable.isDataTable('#personalDashTable')) {
+        $('#personalDashTable').DataTable()
+            .clear()
+            .draw();
+        $('#personalDashTable').DataTable().destroy();
+    }
+    console.log(_allPersonalToList);
+    _allPersonalToList.forEach((personal) => {
+
+        if (personal.nombre === "") { personal.nombre = "-" }
+        if (personal.rut === "") { personal.rut = "-" }
+        if (personal.especialidad === "") { personal.especialidad = "-" }
+        if (personal.telefono === "") { personal.telefono = "-" }
+        if (personal.email === "") { personal.email = "-" }
+        if (personal.contrato === "") { personal.contrato = "-" }
+        if (personal.neto === "") { personal.neto = "-" }
+        let tr = `<tr personal_id="${personal.personal_id}">
+            <td>${personal.nombre} ${personal.apellido}</td>
+            <td>${personal.rut}</td>
+            <td>${personal.especialidad}</td>
+            <td>${personal.telefono}</td>
+            <td>${personal.email}</td>
+            <td>${personal.contrato}</td>
+            <td>${CLPFormatter(personal.neto)}</td>
+        </tr>`;
+        $('#personalDashTable tbody').append(tr);
+    });
+    if (!$.fn.DataTable.isDataTable('#personalDashTable')) {
+        $('#personalDashTable').DataTable({
+            columnDefs: [
+                { "width": "10%", "targets": [2, 3, 4, 5, 6] },
+                { "width": "18%", "targets": [0] },
+                { "width": "10%", "targets": [1] },
+                { className: "personalName", "targets": [0] },
+                { className: "rutPersonal", "targets": [1] },
+                { className: "personalData", "targets": [2, 3, 4, 5, 6] },
+                { "defaultContent": "-", "targets": "_all" },
+            ],
+            lengthMenu: [5, 10, 20, 50, 100, 200, 500],
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Clientes",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+            "pageLength": 5
+        });
+    }
+}
+
+
+$(document).on("click", "#personalDashTable tbody tr", async function () {
+    const PERSONAL_ID = $(this).attr("personal_id");
+
+    const PERSONAL_EXISTS = _allPersonalToList.find((personal) => personal.personal_id === PERSONAL_ID);
+
+    if (!PERSONAL_EXISTS) {
+        Swal.fire({
+            icon: "error",
+            title: "Ups!",
+            text: "Intente nuevamente"
+        })
+        return;
+    }
+    const PERSONAL_BY_ID = await getPersonalById(PERSONAL_ID, EMPRESA_ID);
+
+    if (!PERSONAL_BY_ID.success) {
+        Swal.fire({
+            icon: "error",
+            title: "Ups!",
+            text: "Intente nuevamente"
+        })
+        return;
+    }
+    personalData.data = PERSONAL_BY_ID.data;
+    personalData.events = PERSONAL_BY_ID.events;
+    personalData.persona_id = PERSONAL_BY_ID.data.persona_id;
+    personalData.personal_id = PERSONAL_ID;
+
+    $('#update_nombrePersonal').val(personalData.data.nombre);
+    $('#update_rutPersonal').val(personalData.data.rut);
+    $('#update_tipoContratoPersonal').val(personalData.data.tipo_contrato_id);
+    $('#update_costoMensualPersonal').val(CLPFormatter(personalData.data.neto));
+    $('#update_correoPersonal').val(personalData.data.email);
+    $('#update_telefonoPersonal').val(personalData.data.telefono);
+    $('#personalSideMenu-personalDash').addClass("active");
+
+    // FILL ESPECIALIDAD
+    const especialidad = await GetEspecialidad(EMPRESA_ID);
+    $('#update_especialidadPersonal').val(personalData.data.especialidad_id).change();
+    // FILL CARGOS
+    const cargos = await GetCargo(EMPRESA_ID);
+    $('#update_cargoPersonal').val(personalData.data.cargo_id);
+
+    console.log(personalData);
+    console.log(PERSONAL_BY_ID);
+
+
+
+    if ($.fn.DataTable.isDataTable('#eventsPerPersonal_dash')) {
+        $('#eventsPerPersonal_dash').DataTable()
+            .clear()
+            .draw();
+        $('#eventsPerPersonal_dash').DataTable().destroy();
+    }
+
+    personalData.events.forEach((event) => {
+        let color = "";
+        if (event.estado == null) {
+            event.estado = "borrador"
+        }
+        if (event.status_id === 1) {
+
+        }
+        if (event.status_id === 2) {
+            color = "#27AE60"
+        }
+        if (event.status_id === 3) {
+            color = "#7F45E3"
+        }
+
+        if (event.nombre_proyecto === null || event.nombre_proyecto === "") { event.nombre_proyecto = "-" }
+        if (event.fecha_inicio === null || event.fecha_inicio === "") { event.fecha_inicio = "-" }
+        if (event.estado === null || event.estado === "") { event.estado = "-" }
+        if (event.costo === null || event.costo === "") { event.costo = 0 }
+        let tr = `<tr event_id="${event.proyecto_id}">
+            <td>${event.nombre_proyecto}</td>
+            <td>${event.fecha_inicio}</td>
+            <td><p class="event-status ${event.estado}">${event.estado[0].toUpperCase()}${event.estado.slice(1)}</p></td>
+            <td>${CLPFormatter(parseInt(event.costo))}</td>
+        </tr>`
+
+        $('#eventsPerPersonal_dash').append(tr);
+    })
+    if (!$.fn.DataTable.isDataTable('#eventsPerPersonal_dash')) {
+        $('#eventsPerPersonal_dash').DataTable({
+            columnDefs: [
+                { "defaultContent": "-", "targets": "_all" },
+                { "width": "19%", "targets": "_all" }
+            ],
+            lengthMenu: [5, 10, 20, 50, 100, 200, 500],
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Eventos",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+            "pageLength": 5
+        });
+    }
+
+});
+
+$('#enableEditPersonal').on("click", function () {
+    $('#updatePersonal input').attr("readonly", false)
+    $('#updatePersonal input').attr("disabled", false)
+    $('#updatePersonal select').attr("readonly", false)
+    $('#updatePersonal select').attr("disabled", false)
+    $('#confirmEditPersonal').css("display", "flex")
+})
+function unsetUpdateFormPersonal() {
+    $('#updatePersonal input').attr("readonly", true)
+    $('#updatePersonal input').attr("disabled", true)
+    $('#updatePersonal select').attr("readonly", true)
+    $('#updatePersonal select').attr("disabled", true)
+    $('#confirmEditPersonal').css("display", "none");
+    $('#update_nombrePersonal').val(personalData.data.nombre);
+    $('#update_rutPersonal').val(personalData.data.rut);
+    $('#update_especialidadPersonal').val(personalData.data.especialidad_id);
+    $('#update_cargoPersonal').val(personalData.data.cargo_id);
+    $('#update_tipoContratoPersonal').val(personalData.data.tipo_contrato_id);
+    $('#update_costoMensualPersonal').val(CLPFormatter(personalData.data.neto));
+    $('#update_correoPersonal').val(personalData.data.email);
+    $('#update_telefonoPersonal').val(personalData.data.telefono);
+}
 
 function searchPersonalDrag() {
     let dragPersonal = document.getElementById('sortablePersonal1').getElementsByTagName('li')
     let inputValue = document.getElementById('searchInputPersonal').value.toUpperCase();
-    for (let item of dragPersonal){
+    for (let item of dragPersonal) {
         let liValue = item.innerText.toUpperCase()
         if (!liValue.includes(inputValue)) {
             item.style.display = 'none';
@@ -17,25 +251,58 @@ function searchPersonalDrag() {
     }
 }
 
-async function insertPersonal(arrayPersonal,empresa_id){
-    return     $.ajax({
+async function getPersonalById(personal_id, empresa_id) {
+    return $.ajax({
+        type: "POST",
+        url: "ws/personal/Personal.php",
+        dataType: 'json',
+        data: JSON.stringify({
+            "action": "getPersonalById",
+            'personal_id': personal_id,
+            'empresa_id': empresa_id
+        }),
+        success: function (response) {
+            console.log(response);
+        }, error: function (error) {
+            console.log(error);
+        }
+    })
+}
+async function getPersonalByBussiness(empresa_id) {
+    return $.ajax({
+        type: "POST",
+        url: "ws/personal/Personal.php",
+        dataType: 'json',
+        data: JSON.stringify({
+            "action": "getPersonalByBussiness",
+            'empresa_id': empresa_id
+        }),
+        success: function (response) {
+            console.log(response);
+        }, error: function (error) {
+            console.log(error);
+        }
+    })
+}
+async function insertPersonal(arrayPersonal, empresa_id) {
+    return $.ajax({
         type: "POST",
         url: "ws/personal/Personal.php",
         dataType: 'json',
         data: JSON.stringify({
             "action": "insertPersonal",
             'empresa_id': empresa_id,
-            'personalData' : arrayPersonal
+            'personalData': arrayPersonal
         }),
         success: function (response) {
             console.log(response);
-        },error:function(error){
+        }, error: function (error) {
             console.log(error);
         }
     })
 }
 
-async function GetAllPersonal(empresaId){
+async function GetAllPersonal(empresaId) {
     $.ajax({
         type: "POST",
         url: "ws/personal/Personal.php",
@@ -46,19 +313,19 @@ async function GetAllPersonal(empresaId){
         }),
         success: function (response) {
             allPersonal = response;
-            allPersonal = allPersonal.map((personal)=>{
+            allPersonal = allPersonal.map((personal) => {
                 return {
                     'cargo': personal.cargo,
-                    'cargo_id':personal.cargo_id,
+                    'cargo_id': personal.cargo_id,
                     'contrato': personal.contrato,
                     'especialidad': personal.especialidad,
                     'id': personal.id,
-                    'rut':personal.rut,
+                    'rut': personal.rut,
                     'neto': personal.neto,
-                    'nombre':  personal.nombre,
-                    'isPicked':false,
-                    'isSelected':false,
-                    'horasTrabajadas':0
+                    'nombre': personal.nombre,
+                    'isPicked': false,
+                    'isSelected': false,
+                    'horasTrabajadas': 0
                 }
             })
             setAllTipoContrato();
@@ -69,30 +336,30 @@ async function GetAllPersonal(empresaId){
     })
 }
 
-function setAllMyOwners(){
+function setAllMyOwners() {
     allMyOwners = [];
-    allMyOwners = allPersonal.map((personal)=>{
-        return{
-            'id' : personal.id,
-            'nombre' : personal.nombre
+    allMyOwners = allPersonal.map((personal) => {
+        return {
+            'id': personal.id,
+            'nombre': personal.nombre
         }
     });
     printAllMyOwners();
 }
 
-function printAllMyOwners(){
+function printAllMyOwners() {
     $('#ownerSelect option').remove();
 
-    allMyOwners.forEach((owner)=>{
+    allMyOwners.forEach((owner) => {
 
         const personal_id = PERSONAL_IDS.personal_id;
 
-        if(personal_id === owner.id){
-            
-            $('#ownerSelect').append(new Option(owner.nombre,owner.id,false,true));
-        }else{
-            $('#ownerSelect').append(new Option(owner.nombre,owner.id,false,false));
-            
+        if (personal_id === owner.id) {
+
+            $('#ownerSelect').append(new Option(owner.nombre, owner.id, false, true));
+        } else {
+            $('#ownerSelect').append(new Option(owner.nombre, owner.id, false, false));
+
         }
     })
 
@@ -100,11 +367,11 @@ function printAllMyOwners(){
 
 }
 
-function setAllTipoContrato(){
-    allPersonal.forEach((personal)=>{
-        if(allTipoContrato.includes(personal.contrato)){
+function setAllTipoContrato() {
+    allPersonal.forEach((personal) => {
+        if (allTipoContrato.includes(personal.contrato)) {
 
-        }else{
+        } else {
             allTipoContrato.push(personal.contrato);
         }
     })
@@ -112,16 +379,16 @@ function setAllTipoContrato(){
     // console.log("allTipoContrato",allTipoContrato);
 }
 
-function setSelectedContractType(){
+function setSelectedContractType() {
     selectedTypeContract = [];
 
-    if(allSelectedPersonal.length === 0){
+    if (allSelectedPersonal.length === 0) {
         return
     }
-    allSelectedPersonal.forEach((personal)=>{
-        if(selectedTypeContract.includes(personal.contrato)){
+    allSelectedPersonal.forEach((personal) => {
+        if (selectedTypeContract.includes(personal.contrato)) {
 
-        }else{
+        } else {
             selectedTypeContract.push(personal.contrato);
         }
     })
@@ -157,10 +424,10 @@ function FillPersonal(empresaId) {
     })
 }
 
-function fillPersonal(){
+function fillPersonal() {
 
-    allPersonal.forEach((personal)=>{
-        let tr =`<tr personal_id="${personal.id}">
+    allPersonal.forEach((personal) => {
+        let tr = `<tr personal_id="${personal.id}">
             <td>${personal.nombre}</td>
             <td>${personal.rut}</td>
             <td>${personal.contrato}</td>
@@ -171,26 +438,26 @@ function fillPersonal(){
     })
     console.table(allTipoContrato);
 
-    $('#filterAllPersonal').append(new Option("Todos","Todos"))
-    allTipoContrato.forEach((contrato)=>{
+    $('#filterAllPersonal').append(new Option("Todos", "Todos"))
+    allTipoContrato.forEach((contrato) => {
         console.log(contrato);
-        $('#filterAllPersonal').append(new Option(contrato,contrato))
+        $('#filterAllPersonal').append(new Option(contrato, contrato))
     })
 }
 
-function printFilterDataAllPersonal(personalArray){
+function printFilterDataAllPersonal(personalArray) {
     $('#personalResumeAssigment tbody tr').remove();
 
-    const allSelectedIds = allSelectedPersonal.map((selected)=>{
+    const allSelectedIds = allSelectedPersonal.map((selected) => {
         return selected.id;
     })
 
-    const filteredPersonalByContract = personalArray.filter((personal)=>{
-        return  !allSelectedIds.includes(personal.id)
+    const filteredPersonalByContract = personalArray.filter((personal) => {
+        return !allSelectedIds.includes(personal.id)
     })
 
-    filteredPersonalByContract.forEach((filterPersonal)=>{
-        let tr =`<tr personal_id="${filterPersonal.id}">
+    filteredPersonalByContract.forEach((filterPersonal) => {
+        let tr = `<tr personal_id="${filterPersonal.id}">
             <td>${filterPersonal.nombre}</td>
             <td>${filterPersonal.contrato}</td>
             <td>${CLPFormatter(parseInt(filterPersonal.neto))}</td>
@@ -200,54 +467,54 @@ function printFilterDataAllPersonal(personalArray){
     })
 }
 
-$(document).on('change','#filterAllPersonal', function(){
+$(document).on('change', '#filterAllPersonal', function () {
     const contract = $(this).val();
-    if(contract === "Todos"){
+    if (contract === "Todos") {
         printFilterDataAllPersonal(allPersonal);
         return;
     }
-    const allPersonalFiltered = allPersonal.map((personal)=>{
-        if(personal.contrato === contract){
+    const allPersonalFiltered = allPersonal.map((personal) => {
+        if (personal.contrato === contract) {
             return personal;
         }
-        return 
+        return
     })
-    .filter((personal)=>{
-        return personal !== undefined
-    })
+        .filter((personal) => {
+            return personal !== undefined
+        })
 
-    console.log("PERSONAL CON CONTRATOS",allPersonalFiltered)
+    console.log("PERSONAL CON CONTRATOS", allPersonalFiltered)
     printFilterDataAllPersonal(allPersonalFiltered)
 
 })
 
-$(document).on('click','.addPersonalToResume',function(){
+$(document).on('click', '.addPersonalToResume', function () {
 
-    if (ROL_ID.includes("1")||ROL_ID.includes("2")||ROL_ID.includes("11")){
-        const  personal_id = $(this).closest('tr').attr('personal_id');
+    if (ROL_ID.includes("1") || ROL_ID.includes("2") || ROL_ID.includes("11")) {
+        const personal_id = $(this).closest('tr').attr('personal_id');
         const personalExists = checkIfPersonalAIdsExists(personal_id);
-        if(!personalExists){
+        if (!personalExists) {
             return;
         }
 
-        const personalIsSelected = allSelectedPersonal.find((selectedPersonal)=>{
+        const personalIsSelected = allSelectedPersonal.find((selectedPersonal) => {
             return selectedPersonal.id === personal_id
         })
-        if(personalIsSelected){
+        if (personalIsSelected) {
             swal.fire({
-                'icon':'warning',
-                'title':'Ups!',
-                'text':'Técnico ya seleccionado',
+                'icon': 'warning',
+                'title': 'Ups!',
+                'text': 'Técnico ya seleccionado',
                 'showConfirmButton': false,
                 'timer': 2000
             })
-            return  
+            return
         }
-        
+
         AddSelectedPersonal(personal_id);
         setAllTipoContrato();
         printAllSelectedPersonal();
-    }else{
+    } else {
         Swal.fire({
             title: 'Lo sentimos',
             text: "No tienes los persisos para poder ejecutar esta acción, si deseas tenerlos debes ponerte en contacto con el administrador de tú organización",
@@ -260,19 +527,19 @@ $(document).on('click','.addPersonalToResume',function(){
 })
 
 let personalCurrentValue = 0;
-$(document).on('click','.personalValueInput',function(){
+$(document).on('click', '.personalValueInput', function () {
     personalCurrentValue = ClpUnformatter($(this).val());
     $(this).val("")
 });
-$(document).on('blur','.personalValueInput',function(){
+$(document).on('blur', '.personalValueInput', function () {
     const valor = parseInt($(this).val());
-    if(valor === "" || valor === undefined || valor === null){
-        
+    if (valor === "" || valor === undefined || valor === null) {
+
         $(this).val(CLPFormatter(personalCurrentValue))
         return
     }
 
-    if(!isNumeric($(this).val())){
+    if (!isNumeric($(this).val())) {
         Swal.fire({
             title: 'Ups!',
             text: "Debes ingresar un número",
@@ -280,7 +547,7 @@ $(document).on('blur','.personalValueInput',function(){
             showCancelButton: false,
             showConfirmButton: true,
             confirmButtonText: "Entendido",
-            timer:2000
+            timer: 2000
         })
         $(this).val(CLPFormatter(parseInt(personalCurrentValue)));
         return;
@@ -289,7 +556,7 @@ $(document).on('blur','.personalValueInput',function(){
     const personal_id = $(this).closest('tr').attr('personal_id');
     const personalExists = checkIfPersonalAIdsExists(personal_id);
 
-    if(!personalExists){
+    if (!personalExists) {
         Swal.fire({
             title: 'Ups!',
             text: "Ha ocurrido un error",
@@ -297,16 +564,16 @@ $(document).on('blur','.personalValueInput',function(){
             showCancelButton: false,
             showConfirmButton: true,
             confirmButtonText: "Entendido",
-            timer:2000
+            timer: 2000
         })
         return;
     }
 
     const availableContract = checkTypeContract(personal_id);
-    if(availableContract.contrato !== "Freelance"){
+    if (availableContract.contrato !== "Freelance") {
 
-        const personalData = allPersonal.find((personal)=>{
-            if(personal.id === personal_id){
+        const personalData = allPersonal.find((personal) => {
+            if (personal.id === personal_id) {
                 return true;
             }
         })
@@ -326,18 +593,18 @@ $(document).on('blur','.personalValueInput',function(){
     printAllSelectedPersonal();
     setEgresos();
 })
-    
-$(document).on('click','.removePersonalToAssigment',function(){
 
-    if (ROL_ID.includes("1")||ROL_ID.includes("2")||ROL_ID.includes("11")){
+$(document).on('click', '.removePersonalToAssigment', function () {
+
+    if (ROL_ID.includes("1") || ROL_ID.includes("2") || ROL_ID.includes("11")) {
         let personal_id = $(this).closest('tr').attr('personal_id');
         const personalExists = checkIfPersonalAIdsExists(personal_id);
-        if(!personalExists){
+        if (!personalExists) {
             return;
         }
         RemoveSelectedPersonal(personal_id);
         printAllSelectedPersonal();
-    }else{
+    } else {
         Swal.fire({
             title: 'Lo sentimos',
             text: "No tienes los persisos para poder ejecutar esta acción, si deseas tenerlos debes ponerte en contacto con el administrador de tú organización",
@@ -349,72 +616,72 @@ $(document).on('click','.removePersonalToAssigment',function(){
     }
 })
 
-function checkIfPersonalAIdsExists(personal_id){
-    const personalExists = allPersonal.find((personal)=>{
-        if(personal.id === personal_id){
+function checkIfPersonalAIdsExists(personal_id) {
+    const personalExists = allPersonal.find((personal) => {
+        if (personal.id === personal_id) {
             return true;
         }
     })
-    if(personalExists){
+    if (personalExists) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
 
-function checkTypeContract(personal_id){
-    const tipoContrato = allPersonal.find((personal)=>{
-        if(personal.id === personal_id){
+function checkTypeContract(personal_id) {
+    const tipoContrato = allPersonal.find((personal) => {
+        if (personal.id === personal_id) {
             return personal.contrato
         }
     })
 
     return tipoContrato;
 }
-function changePersonalAmount(personal_id, newCost){
-    allSelectedPersonal.forEach((personal)=>{
-        if(personal.id === personal_id){
+function changePersonalAmount(personal_id, newCost) {
+    allSelectedPersonal.forEach((personal) => {
+        if (personal.id === personal_id) {
             personal.neto = newCost;
             console.table(personal);
         }
     })
 }
 
-function AddSelectedPersonal(personal_id){
-    const personal = allPersonal.find((personal)=>{
-        if(personal.id === personal_id){
+function AddSelectedPersonal(personal_id) {
+    const personal = allPersonal.find((personal) => {
+        if (personal.id === personal_id) {
             return true;
         }
     });
-    if(personal){
+    if (personal) {
         personal.isSelected = true;
         allSelectedPersonal.push(personal);
     }
 
-    console.log("ESTE ES EL BOTON DE AGREGAR EL PERSONAL LLASELECTEDPERSONAL",allSelectedPersonal);
+    // console.log("ESTE ES EL BOTON DE AGREGAR EL PERSONAL LLASELECTEDPERSONAL", allSelectedPersonal);
 }
 
-function RemoveSelectedPersonal(personal_id){
-    const personal =  allPersonal.find((personal)=>{
+function RemoveSelectedPersonal(personal_id) {
+    const personal = allPersonal.find((personal) => {
         return personal.id === personal_id
-    }) 
+    })
 
-    if(personal){
+    if (personal) {
         personal.isSelected = false;
-        allSelectedPersonal = allSelectedPersonal.filter((personal)=>{return personal.id !== personal_id});
+        allSelectedPersonal = allSelectedPersonal.filter((personal) => { return personal.id !== personal_id });
     }
 }
 
-function printAllSelectedPersonal(){
-    console.log("allSelectedPersonal",allSelectedPersonal)
-    console.log("allPersonal",allPersonal)
+function printAllSelectedPersonal() {
+    console.log("allSelectedPersonal", allSelectedPersonal)
+    console.log("allPersonal", allPersonal)
     // console.log("projectDates",projectDates);
     $('#personalResumeAssigment tbody tr').remove();
     $('#selectedPersonalSideResume tbody tr').remove();
     $('#selectedPersonalAssigtment tbody tr').remove();
     $('.personalResumeTable').remove();
     $('#searchAllPersonal option').remove();
-    allPersonal.forEach((personal)=>{
+    allPersonal.forEach((personal) => {
         // const personalExists = allSelectedPersonal.find((personalSelected)=>{
         //     if(personalSelected.id === personal.id){
         //         return true;
@@ -423,17 +690,17 @@ function printAllSelectedPersonal(){
         // if(!personalExists){
 
         let personalStatus = "";
-        if(personal.isSelected){
+        if (personal.isSelected) {
             personalStatus = "personalSelected"
         }
-        if(personal.isPicked === true){
+        if (personal.isPicked === true) {
             personalStatus = "isPicked";
         }
-        if(personal.isPicked && personal.isSelected){
+        if (personal.isPicked && personal.isSelected) {
             personalStatus = "pickedAndSelected"
         }
 
-        let tr =`<tr personal_id="${personal.id}" class="${personalStatus}">
+        let tr = `<tr personal_id="${personal.id}" class="${personalStatus}">
             <td>${personal.nombre}</td>
             <td>${personal.rut}</td>
             <td>${personal.especialidad}</td>
@@ -444,26 +711,26 @@ function printAllSelectedPersonal(){
         // }
     });
 
-    allSelectedPersonal.forEach((personal)=>{
+    allSelectedPersonal.forEach((personal) => {
         let personalStatus = "";
-        if(personal.isSelected){
+        if (personal.isSelected) {
             personalStatus = ""
         }
-        if(personal.isPicked === true){
+        if (personal.isPicked === true) {
             personalStatus = "isPicked";
         }
-        if(personal.isPicked && personal.isSelected){
+        if (personal.isPicked && personal.isSelected) {
             personalStatus = "pickedAndSelected"
         }
 
         let horaHombre = 0;
         let tr = "";
-        if(personal.contrato !== "Freelance"){
+        if (personal.contrato !== "Freelance") {
             horaHombre = (parseInt(personal.neto) / 180);
             let totalHombre = 0;
             let totalHorasTrabajadas = personal.horasTrabajadas;
             totalHombre = parseInt(horaHombre) * totalHorasTrabajadas;
-            
+
             tr = `<tr class="personalResumeTable ${personalStatus}" personal_id="${personal.id}">
                 <td class="">${personal.nombre}</td>
                 <td class="">${personal.especialidad}</td>
@@ -473,9 +740,9 @@ function printAllSelectedPersonal(){
                 <td class="total">${CLPFormatter(parseInt(totalHombre))}</td>
             </tr>`;
             personal.horasTrabajadas = parseInt(totalHorasTrabajadas);
-        }else{
+        } else {
             horaHombre = 0;
-            tr =`<tr class="personalResumeTable ${personalStatus}" personal_id="${personal.id}">
+            tr = `<tr class="personalResumeTable ${personalStatus}" personal_id="${personal.id}">
                 <td>${personal.nombre}</td>
                 <td>${personal.especialidad}</td>
                 <td>${personal.contrato}</td>
@@ -502,28 +769,28 @@ function printAllSelectedPersonal(){
     });
 
     tippy('.isPicked', {
-        content:'<strong>Técnico reservado para otro evento en la fecha seleccionada</strong>'
+        content: '<strong>Técnico reservado para otro evento en la fecha seleccionada</strong>'
     });
     tippy('.pickedAndSelected', {
-        content:'<strong>Técnico seleccionado para este y otro(s) evento(s)</strong>'
+        content: '<strong>Técnico seleccionado para este y otro(s) evento(s)</strong>'
     });
 
     setEgresos();
 }
 
-function FillAvailablepersonal(empresaId,fechaInicio,fechaTermino){
+function FillAvailablepersonal(empresaId, fechaInicio, fechaTermino) {
     $.ajax({
         type: "POST",
         url: "ws/personal/Personal.php",
         dataType: 'json',
         data: JSON.stringify({
             "action": "getAvailablePersonal",
-            request:{
+            request: {
                 "empresaId": empresaId,
-                "fechaInicio":fechaInicio,
-                "fechaTermino":fechaTermino
+                "fechaInicio": fechaInicio,
+                "fechaTermino": fechaTermino
             }
-            
+
         }),
         success: function (response) {
             console.table(response);
@@ -547,20 +814,20 @@ function FillAvailablepersonal(empresaId,fechaInicio,fechaTermino){
     })
 }
 
-function AddPersonal(el){
-    if (ROL_ID.includes("1")||ROL_ID.includes("2")||ROL_ID.includes("11")){     
+function AddPersonal(el) {
+    if (ROL_ID.includes("1") || ROL_ID.includes("2") || ROL_ID.includes("11")) {
 
         let idProd = el.closest('li').className;
         let li = el.closest('li');
         let valor = CLPFormatter(el.previousElementSibling.value);
         let notFormattedValue = el.previousElementSibling.value;
         let tipoContrato = $(el).closest('li').find('.tipoContrato').text();
-    
+
         let nombrePersonal = el.closest('li').innerText;
         let idPersonal = el.closest('li').className;
-    
+
         let tbodyPersonal = $('#projectPersonal tbody > tr');
-    
+
         if (notFormattedValue === undefined || notFormattedValue === "" || notFormattedValue === 0) {
             Swal.fire({
                 icon: 'info',
@@ -568,33 +835,33 @@ function AddPersonal(el){
                 text: 'Ingresa el costo de este trabajador antes de asignarlo a este evento'
             })
         } else {
-    
+
             $(el).hide();
             $(el).closest(li).find('.removePersonal').show();
             li.remove()
-    
+
             $('#sortablePersonal2').append(li)
-            PersonalLocalStorage(idPersonal, nombrePersonal, notFormattedValue,tipoContrato);
+            PersonalLocalStorage(idPersonal, nombrePersonal, notFormattedValue, tipoContrato);
             TotalCosts(notFormattedValue);
             changePersonalTableResume("add");
         }
 
-       } else {
+    } else {
         Swal.fire({
-          title: 'Lo sentimos',
-          text: "No tienes los persisos para poder ejecutar esta acción, si deseas tenerlos debes ponerte en contacto con el administrador de tú organización",
-          icon: 'warning',
-          showCancelButton: false,
-          showConfirmButton: true,
-          confirmButtonText: "Entendido"
+            title: 'Lo sentimos',
+            text: "No tienes los persisos para poder ejecutar esta acción, si deseas tenerlos debes ponerte en contacto con el administrador de tú organización",
+            icon: 'warning',
+            showCancelButton: false,
+            showConfirmButton: true,
+            confirmButtonText: "Entendido"
         })
-      }
+    }
 
 }
 
 function removePersonal(element) {
 
-    if (ROL_ID.includes("1")||ROL_ID.includes("2")||ROL_ID.includes("11")){
+    if (ROL_ID.includes("1") || ROL_ID.includes("2") || ROL_ID.includes("11")) {
         let li = $(element).closest('li');
         let idProduct = li.attr('class');
         $(element).closest(li).find('.addPersonal').show();
@@ -606,12 +873,12 @@ function removePersonal(element) {
         removePersonalFromResume(idProduct);
     } else {
         Swal.fire({
-          title: 'Lo sentimos',
-          text: "No tienes los persisos para poder ejecutar esta acción, si deseas tenerlos debes ponerte en contacto con el administrador de tú organización",
-          icon: 'warning',
-          showCancelButton: false,
-          showConfirmButton: true,
-          confirmButtonText: "Entendido"
+            title: 'Lo sentimos',
+            text: "No tienes los persisos para poder ejecutar esta acción, si deseas tenerlos debes ponerte en contacto con el administrador de tú organización",
+            icon: 'warning',
+            showCancelButton: false,
+            showConfirmButton: true,
+            confirmButtonText: "Entendido"
         })
     }
 
@@ -635,16 +902,16 @@ function SetResumePersonalValue() {
     Array.from(personalCost).forEach(pCost => {
         let tipoContrato = $(pCost).closest('tr').find('.tipoContratoProjectResume').text();
 
-        if(tipoContrato === "BHE"){
+        if (tipoContrato === "BHE") {
             totalPersonalBHE = totalPersonalBHE + parseInt(ClpUnformatter($(pCost).text()));
-        }else{
+        } else {
             totalPersonalContratado = totalPersonalContratado + parseInt(ClpUnformatter($(pCost).text()));
         }
     });
 
     total = totalPersonalContratado + totalPersonalBHE;
     $('#totalResumePersonal').text(CLPFormatter(total))
-    console.log("totalPersonalContratado",totalPersonalContratado);
+    console.log("totalPersonalContratado", totalPersonalContratado);
     $('#totalPersonalDes').text(CLPFormatter(totalPersonalContratado));
     $('#totalPersonalBHEDes').text(CLPFormatter(totalPersonalBHE));
 }
@@ -697,182 +964,443 @@ function AppendPersonalTableResumeArray(arrayPersonal) {
 }
 
 
-function AddEspecialidad(empresaId){
+function AddEspecialidad(empresaId) {
     let string = $('#especialidadName').val()
-    if(string !== ""){
+    if (string !== "") {
 
-        const arrayCargos  = string.split(",")
+        const arrayCargos = string.split(",")
         $.ajax({
             type: "POST",
             url: "ws/personal/Personal.php",
             data: JSON.stringify({
                 action: "AddEspecialidad",
-                request: {arrayCargos},
-                "empresaId":empresaId
+                request: { arrayCargos },
+                "empresaId": empresaId
             }),
             dataType: 'json',
-            success: async function(data){
+            success: async function (data) {
                 Swal.fire({
-                    'icon':'success',
+                    'icon': 'success',
                     'title': 'Excelente!',
                     'text': 'Datos ingresados con exito',
                     'timer': 1500
-                }).then(()=>{
+                }).then(() => {
                     $('#especialidadName').val("");
                     $('#cargoEspecialidad').modal('hide');
                 })
             }
         })
 
-    }else{
+    } else {
         Swal.fire({
-            'icon':'error',
+            'icon': 'error',
             'title': 'Ups!',
             'text': 'Ingrese al menos una especialidad'
         })
     }
 }
-async function AddEspecialidadGivenArray(empresaId,valor){
+async function AddEspecialidadGivenArray(empresaId, valor) {
     let arrayCargos = valor
-    let response ;
+    let response;
     return $.ajax({
         type: "POST",
         url: "ws/personal/Personal.php",
         data: JSON.stringify({
             action: "AddEspecialidad",
-            request: {arrayCargos},
-            "empresaId":empresaId
+            request: { arrayCargos },
+            "empresaId": empresaId
         }),
         dataType: 'json',
-        success: function(data){
-           return true;
-        },error:function(){
-           return false;
+        success: function (data) {
+            return true;
+        }, error: function () {
+            return false;
         }
     })
 }
-async function AddCargoGivenArray(empresaId,valor){
-    
+async function AddCargoGivenArray(empresaId, valor) {
+
     let arrayCargos = valor
-    let response ;
+    let response;
     return $.ajax({
         type: "POST",
         url: "ws/personal/Personal.php",
         data: JSON.stringify({
             action: "AddCargo",
-            request: {arrayCargos},
-            "empresaId":empresaId
+            request: { arrayCargos },
+            "empresaId": empresaId
         }),
         dataType: 'json',
-        success: function(data){
-            console.log('ESPECIALIDADES AGREGADAS A LA BASE DE DATOS',data);
-           return true;
-        },error:function(){
-           return false;
+        success: function (data) {
+            console.log('ESPECIALIDADES AGREGADAS A LA BASE DE DATOS', data);
+            return true;
+        }, error: function () {
+            return false;
         }
     })
 }
 
-function AddCargo(empresaId){
-    let string = $('#CargoName').val()
-    console.log("STRINGS",string);
-    if(string !== ""){
+function AddCargo(empresaId) {
+    let string = $('#CargoName').val();
+    console.log("STRINGS", string);
+    if (string !== "") {
 
-        const arrayCargos  = string.split(",")
-        console.log("ARRAY CARGOS",arrayCargos);
+        const arrayCargos = string.split(",")
+        console.log("ARRAY CARGOS", arrayCargos);
         $.ajax({
             type: "POST",
             url: "ws/personal/Personal.php",
             data: JSON.stringify({
                 action: "AddCargo",
-                request: {arrayCargos},
-                "empresaId":empresaId
+                request: { arrayCargos },
+                "empresaId": empresaId
             }),
             dataType: 'json',
-            success: async function(data) {
+            success: async function (data) {
                 Swal.fire({
-                    'icon':'success',
+                    'icon': 'success',
                     'title': 'Excelente!',
-                    'text': 'Datos ingresados con exito',
-                    'timer': 1500
-                }).then(()=>{
+                    'text': 'Cargos ingresados exitosamente',
+                    'timer': 2500
+                }).then(() => {
                     $('#CargoName').val("");
                     $('#cargoEspecialidad').modal('hide');
 
                 })
             }
         })
-    }else{
+    } else {
         Swal.fire({
-            'icon':'error',
+            'icon': 'error',
             'title': 'Ups!',
             'text': 'Ingrese al menos un cargo'
         })
     }
 }
 
+function printEspecialidadOnCrud(especialidades){
+    if ($.fn.DataTable.isDataTable('#esp-table-crud')) {
+        $('#esp-table-crud').DataTable()
+            .clear()
+            .draw();
+        $('#esp-table-crud').DataTable().destroy();
+    }
 
-function GetEspecialidad(empresaId){
+    especialidades.especialidades.forEach((cargo) => {
 
-    $.ajax({
-        type: "POST",
-        url: "ws/personal/Personal.php",
-        data: JSON.stringify({
-            action: "getEspecialidad",
-            "empresaId":empresaId
-        }),
-        dataType: 'json',
-        success: async function(data){
-            console.log("ESPECIALIDADES",data);
-            $('#especialidad_select').empty();
-            $('#especialidad_select').append(new Option("", ""));
-            data.especialidades.forEach(esp => {
-              $('#especialidad_select').append(new Option(`${esp.especialidad}`, esp.id))
-            })
-        }
-    })
+        let tr = `<tr especialidad_id="${cargo.id}">
+            <td>${cargo.especialidad}</td>
+            <td class="deleteEpecialidad"><img src="./assets/svg/trash-2.svg" alt="trashCan icon"></td>
+        </tr>`
 
+        $('#esp-table-crud').append(tr);
+    });
+
+    if (!$.fn.DataTable.isDataTable('#esp-table-crud')) {
+        $('#esp-table-crud').DataTable({
+            columnDefs: [
+                { "defaultContent": "-", "targets": "_all" },
+                { "width": "84%", "targets": [0] },
+                { "width": "15%", "targets": [1] },
+                { "className": "e-1", "targets": [0] },
+                { "className": "e-2", "targets": [1] }
+            ],
+            lengthMenu: [3,5,10,20],
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Eventos",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+            "pageLength": 5
+        });
+    }
 }
 
-function getAllEspecialidades(empresa_id){
+$(document).on("click",".deleteEpecialidad",async function(){
+    const ESPECIALIDAD_ID = $(this).closest('tr').attr('especialidad_id');
+
+    const ESP_EXISTS = _allEspecialidades.find((esp)=>{ return esp.id  === ESPECIALIDAD_ID})
+
+    if(!ESP_EXISTS){
+        Swal.fire({
+            'icon':'error',
+            'title':"Ups!",
+            'text':'Intente nuevamente'
+        })
+        return
+    }
+
+    const DELETE_ESPECIALIDAD_RESPONSE  = await deleteEspecialidad(ESPECIALIDAD_ID,EMPRESA_ID);
+    if(!DELETE_ESPECIALIDAD_RESPONSE.success){
+        Swal.fire({
+            'icon':'warning',
+            'title':"Ups!",
+            'text':DELETE_ESPECIALIDAD_RESPONSE.message
+        })
+        return
+    }
+
+    Swal.fire({
+        'icon':'success',
+        'title':"Excelente!",
+        'text':DELETE_ESPECIALIDAD_RESPONSE.message
+    });
+
+    const ESPECIALIDADES = await GetEspecialidadByBussiness(EMPRESA_ID);
+    printEspecialidadOnCrud(ESPECIALIDADES);
+})
+function printCargosOnCrud(cargos){
+
+    if ($.fn.DataTable.isDataTable('#cargo-table-controller')) {
+        $('#cargo-table-controller').DataTable()
+            .clear()
+            .draw();
+        $('#cargo-table-controller').DataTable().destroy();
+    }
+
+    cargos.cargos.forEach((cargo) => {
+
+        let tr = `<tr cargo_id="${cargo.id}">
+            <td>${cargo.cargo}</td>
+            <td class="deleteCargo"><img src="./assets/svg/trash-2.svg" alt="trashCan icon"></td>
+        </tr>`
+
+        $('#cargo-table-controller').append(tr);
+    });
+
+    if (!$.fn.DataTable.isDataTable('#cargo-table-controller')) {
+        $('#cargo-table-controller').DataTable({
+            columnDefs: [
+                { "defaultContent": "-", "targets": "_all" },
+                { "width": "85%", "targets": [0] },
+                { "width": "15%", "targets": [1] },
+                { "className": "w-85", "targets": [0] },
+                { "className": "w-15", "targets": [1] }
+            ],
+            lengthMenu: [3,5,10,20],
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Eventos",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+            "pageLength": 5
+        });
+    }
+}
+
+$(document).on("click",".deleteCargo",async function(){
+    const CARGO_ID = $(this).closest('tr').attr('cargo_id');
+    console.table(_allCargos)
+    console.table(CARGO_ID)
+
+    const CARGO_EXISTS = _allCargos.find((car)=>{return car.id === CARGO_ID})
+
+    if(!CARGO_EXISTS){
+        Swal.fire({
+            'icon':'error',
+            'title':"Ups!",
+            'text':'Intente nuevamente'
+        })
+        return
+    }
+
+    const DELETE_CARGO_RESPONSE  = await deleteCargo(CARGO_ID,EMPRESA_ID);
+    if(!DELETE_CARGO_RESPONSE.success){
+        Swal.fire({
+            'icon':'warning',
+            'title':"Ups!",
+            'text':DELETE_CARGO_RESPONSE.message
+        })
+        return
+    }
+
+    Swal.fire({
+        'icon':'success',
+        'title':"Excelente!",
+        'text':DELETE_CARGO_RESPONSE.message
+    });
+
+
+    const CARGOS = await GetCargoByBussiness(EMPRESA_ID);
+    printCargosOnCrud(CARGOS);
+})
+
+
+async function GetEspecialidadByBussiness(empresaId){
+
     return $.ajax({
         type: "POST",
         url: "ws/personal/Personal.php",
         data: JSON.stringify({
             action: "getEspecialidad",
-            "empresaId":empresa_id
+            "empresaId": empresaId
         }),
         dataType: 'json',
-        success: async function(data){
-            console.log("ESPECIALIDADES",data);
+        success: async function (data) {
+            _allEspecialidades = data.especialidades
+           
+        },error:function(error){
+            console.log(error)
         }
     })
 }
 
-function GetCargo(empresaId){
+async function GetEspecialidad(empresaId){
 
-    $.ajax({
+    return $.ajax({
+        type: "POST",
+        url: "ws/personal/Personal.php",
+        data: JSON.stringify({
+            action: "getEspecialidad",
+            "empresaId": empresaId
+        }),
+        dataType: 'json',
+        success: async function (data) {
+            console.log("ESPECIALIDADES", data);
+            $('#especialidadPersonal').empty();
+            $('#especialidadPersonal').append(new Option("", ""));
+            data.especialidades.forEach(esp => {
+                $('#especialidadPersonal').append(new Option(`${esp.especialidad}`, esp.id))
+            })
+            $('#update_especialidadPersonal').empty();
+            $('#update_especialidadPersonal').append(new Option("", ""));
+            data.especialidades.forEach(esp => {
+                $('#update_especialidadPersonal').append(new Option(`${esp.especialidad}`, esp.id))
+            })
+        }
+    })
+}
+
+async function  deleteEspecialidad(especialidad_id, empresa_id){
+
+    return $.ajax({
+        type: "POST",
+        url: "ws/personal/Personal.php",
+        data: JSON.stringify({
+            action: "deleteEspecialidad",
+            "empresa_id": empresa_id,
+            "especialidad_id": especialidad_id
+        }),
+        dataType: 'json',
+        success: async function (data) {
+           
+        },error:function(error){
+            console.log(error)
+        }
+    })
+}
+
+async function  deleteCargo(cargo_id, empresa_id){
+
+    return $.ajax({
+        type: "POST",
+        url: "ws/personal/Personal.php",
+        data: JSON.stringify({
+            action: "deleteCargo",
+            "empresa_id": empresa_id,
+            "cargo_id": cargo_id
+        }),
+        dataType: 'json',
+        success: async function (data) {
+           
+        },error:function(error){
+            console.log(error)
+        }
+    })
+}
+
+function getAllEspecialidades(empresa_id) {
+    return $.ajax({
+        type: "POST",
+        url: "ws/personal/Personal.php",
+        data: JSON.stringify({
+            action: "getEspecialidad",
+            "empresaId": empresa_id
+        }),
+        dataType: 'json',
+        success: async function (data) {
+            console.log("ESPECIALIDADES", data);
+        }
+    })
+}
+
+async function GetCargoByBussiness(empresaId) {
+
+    return $.ajax({
         type: "POST",
         url: "ws/personal/Personal.php",
         data: JSON.stringify({
             action: "getCargo",
-            "empresaId":empresaId
+            "empresaId": empresaId
         }),
         dataType: 'json',
-        success: async function(data) {
+        success: async function (data) {
+            _allCargos = data.cargos;
+        },error:function(error){
+            console.log(error)
+        }
+    })
+
+}
+async function GetCargo(empresaId) {
+
+    return $.ajax({
+        type: "POST",
+        url: "ws/personal/Personal.php",
+        data: JSON.stringify({
+            action: "getCargo",
+            "empresaId": empresaId
+        }),
+        dataType: 'json',
+        success: async function (data) {
             console.log(data);
-            $('#cargo_select').empty();
-            $('#cargo_select').append(new Option("", ""));
+            $('#cargoPersonal').empty();
+            $('#cargoPersonal').append(new Option("", ""));
             data.cargos.forEach(car => {
-              $('#cargo_select').append(new Option(`${car.cargo}`, car.id))
+                $('#cargoPersonal').append(new Option(`${car.cargo}`, car.id))
+            })
+            $('#update_cargoPersonal').empty();
+            $('#update_cargoPersonal').append(new Option("", ""));
+            data.cargos.forEach(car => {
+                $('#update_cargoPersonal').append(new Option(`${car.cargo}`, car.id))
             })
         }
     })
 
 }
 
-async function GetPersonalByEmpresa(empresaId){
-   return  $.ajax({
+async function GetPersonalByEmpresa(empresaId) {
+    return $.ajax({
         type: "POST",
         url: "ws/personal/Personal.php",
         data: JSON.stringify({
@@ -880,74 +1408,74 @@ async function GetPersonalByEmpresa(empresaId){
             "empresa_id": empresaId
         }),
         dataType: 'json',
-        success: async function(response){
+        success: async function (response) {
         }
     })
 }
 
 function getTakenPersonalByDateRange(data, empresa_id) {
     return $.ajax({
-      type: "POST",
-      url: "ws/personal/Personal.php",
-      dataType: 'json',
-      data: JSON.stringify({
-        "action": "getTakenPersonalByDateRange",
-        'empresa_id': empresa_id,
-        'request': {
-          'data': data
+        type: "POST",
+        url: "ws/personal/Personal.php",
+        dataType: 'json',
+        data: JSON.stringify({
+            "action": "getTakenPersonalByDateRange",
+            'empresa_id': empresa_id,
+            'request': {
+                'data': data
+            }
+        }),
+        success: function (response) {
+
+        },
+        error: function (error) {
+            console.log(error);
         }
-      }),
-      success: function (response) {
-  
-      },
-      error: function (error) {
-        console.log(error);
-      }
     })
 }
 _takenPersonal = [];
-async function setTakenPersonalByRangeDate(){
+async function setTakenPersonalByRangeDate() {
     const fecha_inicial = $('#fechaInicio').val();
     const fecha_termino = $('#fechaTermino').val();
     if (fecha_inicial === "" || fecha_termino === "") {
-      return false;
+        return false;
     }
     // set dates to get taken prods and substract from productList
     const dates = {
-      'fecha_inicio': projectDates.start_date,
-      'fecha_termino': projectDates.finish_date
+        'fecha_inicio': projectDates.start_date,
+        'fecha_termino': projectDates.finish_date
     }
     const takenPersonal = await getTakenPersonalByDateRange(dates, EMPRESA_ID);
     _takenPersonal = takenPersonal.data;
     console.table("_takenPersonal", _takenPersonal);
     return true;
 
-    
+
 }
 
-function setAllPersonal_DiscountTakenPersonal(){
+function setAllPersonal_DiscountTakenPersonal() {
     // MODIFY ALLPERSONAL ARRAY AND ADD IF IS PICKED
 
-    console.log("selectedPersonal",allSelectedPersonal);
+    console.log("selectedPersonal", allSelectedPersonal);
 
 
-    allPersonal.forEach((personal)=>{
+    allPersonal.forEach((personal) => {
         personal.isPicked = false
     })
-    _takenPersonal.forEach((takenPersonal)=>{
-        if(takenPersonal.proyecto_id !== projectDates.project_id){
+    _takenPersonal.forEach((takenPersonal) => {
+        if (takenPersonal.proyecto_id !== projectDates.project_id) {
             // DISCOUNTS ON ALLPERSONAL ON NO SELECTED ARRAY
-            const personalExists = allPersonal.find((personal)=>{
+            const personalExists = allPersonal.find((personal) => {
                 return personal.id === takenPersonal.personal_id;
             })
-            if(personalExists){
+            if (personalExists) {
                 personalExists.isPicked = true;
             }
             // DISOCUNT TAKEN PRODUCTS ON SELECTED PRODUCTS
-            const selectedPersonal = allSelectedPersonal.find((selectedPersonal)=>{
+            const selectedPersonal = allSelectedPersonal.find((selectedPersonal) => {
                 return selectedPersonal.id === takenPersonal.personal_id
             })
-            if(selectedPersonal){
+            if (selectedPersonal) {
                 personalExists.isPicked = true;
             }
         }
@@ -955,86 +1483,86 @@ function setAllPersonal_DiscountTakenPersonal(){
 };
 
 let lastFreeLanceValue = 0;
-$(document).on('click','.freeLanceValue',function(){ 
-    const currentValue = ClpUnformatter($(this).val()) ;
+$(document).on('click', '.freeLanceValue', function () {
+    const currentValue = ClpUnformatter($(this).val());
     lastFreeLanceValue = currentValue;
     console.log("current Value", currentValue);
     $(this).val("")
 })
-$(document).on('blur','.freeLanceValue',function(){
+$(document).on('blur', '.freeLanceValue', function () {
     const valor = $(this).val();
     const personal_id = $(this).closest('tr').attr('personal_id');
-    console.log("valor",valor);
-    console.log("lastFreeLanceValue",lastFreeLanceValue);
-    console.log("personal_id",personal_id);
+    console.log("valor", valor);
+    console.log("lastFreeLanceValue", lastFreeLanceValue);
+    console.log("personal_id", personal_id);
 
-    if(valor === "" || valor === undefined || valor === null){
+    if (valor === "" || valor === undefined || valor === null) {
         $(this).val(CLPFormatter(parseInt(lastFreeLanceValue)));
         return
     }
-    if(!isNumeric(valor)){
+    if (!isNumeric(valor)) {
         Swal.fire({
             title: "Ups!",
             text: "Ingrese un número",
             icon: "warning",
-            timer:2000
-        }); 
+            timer: 2000
+        });
         $(this).val(CLPFormatter(lastFreeLanceValue));
         return;
     }
 
-    const personalSelectedExists = allSelectedPersonal.find((selectedPersonal)=>{
+    const personalSelectedExists = allSelectedPersonal.find((selectedPersonal) => {
         return selectedPersonal.id === personal_id
     })
 
-    if(!personalSelectedExists){
+    if (!personalSelectedExists) {
         Swal.fire({
             title: "Ups!",
             text: "Ha ocurrido un error",
             icon: "error",
-            timer:2000
+            timer: 2000
         });
         return;
     }
-    if(personalSelectedExists.contrato !== "Freelance"){
+    if (personalSelectedExists.contrato !== "Freelance") {
         Swal.fire({
             title: "Ups!",
             text: "No se puede modificar el total a pagar a un técnico que no sea freeLance",
             icon: "info",
-            timer:2000
+            timer: 2000
         });
-        return; 
+        return;
     }
     personalSelectedExists.neto = valor;
     $(this).val(CLPFormatter(parseInt(valor)));
 
 
-    console.log("allSelectedPersonal",allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
 })
 
 
 
 let lastHorasTrabajadas = 0;
-$(document).on('click','.input-horasTrabajadas',function(){
+$(document).on('click', '.input-horasTrabajadas', function () {
     lastHorasTrabajadas = parseInt($(this).val());
     $(this).val("")
 })
 
-$(document).on('blur','.input-horasTrabajadas',function(){
+$(document).on('blur', '.input-horasTrabajadas', function () {
     const newHorasTrabajadas = $(this).val();
 
-    if(newHorasTrabajadas === "" || newHorasTrabajadas === undefined || newHorasTrabajadas ===  null){
+    if (newHorasTrabajadas === "" || newHorasTrabajadas === undefined || newHorasTrabajadas === null) {
         Swal.fire({
             title: "Ups!",
             text: "No se puede modificar el total a pagar a un técnico que no sea freeLance",
             icon: "info",
-            timer:2000
+            timer: 2000
         });
         $(this).val(lastHorasTrabajadas);
         return;
     }
 
-    if(!isNumeric(newHorasTrabajadas)){
+    if (!isNumeric(newHorasTrabajadas)) {
         Swal.fire({
             title: "Ups!",
             text: "Debes ingresar un número",
@@ -1047,11 +1575,11 @@ $(document).on('blur','.input-horasTrabajadas',function(){
 
     const personal_id = $(this).closest('tr').attr('Personal_id');
 
-    const personalExiste = allSelectedPersonal.find((selectedPersonal)=>{
+    const personalExiste = allSelectedPersonal.find((selectedPersonal) => {
         return selectedPersonal.id === personal_id;
     })
 
-    if(!personalExiste){
+    if (!personalExiste) {
         Swal.fire({
             title: "Ups!",
             text: "Ha ocurrido un error",
@@ -1061,21 +1589,21 @@ $(document).on('blur','.input-horasTrabajadas',function(){
         return;
     }
 
-    personalExiste.horasTrabajadas = parseInt(newHorasTrabajadas); 
+    personalExiste.horasTrabajadas = parseInt(newHorasTrabajadas);
 
     printAllSelectedPersonal();
 })
 
-$('#openModalNewFree').on('click',async function(){
+$('#openModalNewFree').on('click', async function () {
     $('#newFreeLance-Modal').modal('show');
-    const especialidades =  await getAllEspecialidades(EMPRESA_ID); 
+    const especialidades = await getAllEspecialidades(EMPRESA_ID);
     $('#especialidadSelect option').remove();
-    especialidades.especialidades.forEach((especialidad)=>{
-        $('#especialidadSelect').append(new Option(especialidad.especialidad,especialidad.id))
+    especialidades.especialidades.forEach((especialidad) => {
+        $('#especialidadSelect').append(new Option(especialidad.especialidad, especialidad.id))
     })
 })
 
-$('#triggerNewFreeLance').on('click',function(){
+$('#triggerNewFreeLance').on('click', function () {
     $('#createNewFreeLance').trigger('click')
 })
 

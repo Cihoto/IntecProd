@@ -14,7 +14,7 @@ $vehiculos = [];
 $queryVehiculos = "SELECT v.id , v.patente, CONCAT(p.nombre,' ',p.apellido) as nombre  FROM vehiculo v 
                     LEFT JOIN persona p ON p.id =v.persona_id 
                     INNER JOIN empresa e on e.id  = v.empresa_id 
-                    WHERE e.id = $empresaId";
+                    WHERE e.id = $empresaId ";
 
 // $queryDuenoAuto = 'SELECT CONCAT(p.nombre ," ", p.apellido) as nombre FROM personal p 
 //                     INNER JOIN empresa e on e.id = p.empresa_id 
@@ -56,6 +56,54 @@ $active = 'vehiculos';
         <?php require_once('./includes/sidebar.php') ?>
 
         <div id="main">
+
+
+        <div id="module-container">
+                <div class="formHeader" style="align-items: center;align-content:center;margin-left: 14px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <circle cx="6" cy="6" r="6" fill="#069B99" />
+                    </svg>
+                    <p class="header-P">Aquí puedes ver, editar y crear los vehículos para tus eventos</p>
+                </div>
+                <div class="row justify-content-end" style="margin:0px 14px; gap :8px;">
+                    <button class="s-Button" id="openMasivaVehicle" style="position: relative; right:-156px ; bottom: 50px;">
+                        <p class="s-P">Agregar vehículos masiva</p>
+                    </button>
+                    <button class="s-Button" id="openSideVehicleForm">
+                        <p class="s-P">Agregar vehículo</p>
+                    </button>
+                </div>
+
+                <table id="vehiclesDashTable">
+                    <thead>
+                        <tr>
+                            <th>Tipo de vehículo</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Patente</th>
+                            <th>Propietario</th>
+                            <th>Costo por viaje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- <tr>
+                            <td>Nombre</td>
+                            <td>Rut</td>
+                            <td>Especialidad</td>
+                            <td>Teléfono</td>
+                            <td>Correo eléctronico</td>
+                            <td>Tipo contrato</td>
+                            <td>Costo mensual </td>
+                        </tr> -->
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+                </table>
+            </div>
+
+            
             <header class="mb-3">
                 <a href="#" class="burger-btn d-block d-xl-none">
                     <i class="bi bi-justify fs-3"></i>
@@ -154,7 +202,7 @@ $active = 'vehiculos';
                     </div>
                     <div class="modal-body">
 
-                        <table class="table" id="excelTable">
+                        <table class="table" id="eexcelTable">
                             <thead>
 
                             </thead>
@@ -167,7 +215,7 @@ $active = 'vehiculos';
                     <div class="modal-footer">
                         <div class="row">
                             <button type="button" id="modalClose" class="col-md-3 col-12 btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button class="btn btn-success col-md-4 col-12" id="saveExcelData">Guardar</button>
+                            <button class="btn btn-success col-md-4 col-12" id="saveExcelDatssa">Guardar</button>
                         </div>
                     </div>
                 </div>
@@ -221,125 +269,120 @@ $active = 'vehiculos';
             </div>
         </div>
         <!-- end modal -->
-
         <?php require_once('./includes/footer.php') ?>
-
     </div>
     </div>
-
     <?php require_once('./includes/footerScriptsJs.php') ?>
-
     <!-- xlsx Reader -->
     <script src="js/xlsxReader.js"></script>
     <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
-
     <!-- Validador intec -->
     <script src="./js/valuesValidator/validator.js"></script>
-
     <!-- Validate.js -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
-
+    <!-- SIDEMENU VEHICLES -->
+    <?php require_once('./includes/sidemenu/vehicleSideMenu.php')?>
+    <?php require_once('./includes/sidemenu/vehicleMasivaSideMenu.php')?>
+    <?php require_once('./includes/sidemenu/vehicleInfoSideMenu.php')?>
+    <!-- jsfunctions -->
+    <script src="./js/vehiculos.js"></script>
+    <!-- VALIDATE FORMS -->
+    <script src="./js/validateForm/createVehicle.js"></script>
 
     <script>
-        const EMPRESA_ID = $('#empresaId').text();
+        const EMPRESA_ID = <?php echo $empresaId;?>;
+        const fileInput = document.getElementById('excel_input');
+        const fileNameDisplay = document.getElementById('fileName');
+        const fileLabel = document.getElementById('fileLabel');
 
-        $(document).ready(function() {
-            $('#tableVehiculo').DataTable({
-                scrollX: true
-            });
+        function handleDragOver(event) {
+            event.preventDefault();
+            fileLabel.classList.add('dragover');
+        }
 
-            $('#addVehiculo').validate({
-                rules: {
-                    patente: {
-                        required: true
-                    }
-                },
-                messages: {
-                    patente: {
-                        required: "Ingrese un valor"
-                    }
-                },
-                submitHandler: function() {
-                    event.preventDefault()
+        // Manejar el evento de soltar archivos en el label
+        function handleDrop(event) {
+            event.preventDefault();
+            fileLabel.classList.remove('dragover');
 
-                    let patente = $('#patente').val()
-                    let asignacion_Select = $('#asignacion_Select').val()
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                const fileName = files[0].name;
+                fileNameDisplay.textContent = `Archivo seleccionado: ${fileName}`;
+            }
+        }
 
-                    let arrayRequest = [{
-                        patente: patente,
-                        nombre: asignacion_Select
-                    }]
+        $('#openSideVehicleForm').on("click",function(){
+            $('#vehicleSideMenu').addClass('active')
+        })
+        $('#closeVehicleSideMenu').on("click",function(){
+            $('#vehicleSideMenu').removeClass('active');
+        })
+        $('#openMasivaVehicle').on("click",function(){
+            $('#masivaVehicleSideMenu').addClass('active')
+        })
+        $('#closeMasivaVehicle').on("click",function(){
+            $('#masivaVehicleSideMenu').removeClass('active');
+        })
+        $('#closeVehicleInfoSideMenu').on("click",function(){
+            $('#vehicleInfoSideMenu').removeClass('active');
+        })
 
-                    $.ajax({
-                        type: "POST",
-                        url: "ws/vehiculo/Vehiculo.php",
-                        data: JSON.stringify({
-                            action: "addVehicle",
-                            vehicleData: {
-                                arrayRequest
-                            },
-                            'empresaId': EMPRESA_ID
-                        }),
-                        dataType: 'json',
-                        success: function(data) {
-                            console.log(data);
+        $(document).ready(async function() {
 
-                            if (data.status === 1) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Excelente',
-                                    text: `Se han agregado ${arrayRequest.length}`
-                                })
-                            }
-                            if (data.status === 0) {
+            const RESPONSE_VEHICLES = await getVehiclesByBussiness(EMPRESA_ID);
+            if(RESPONSE_VEHICLES.success){
+                _allMyVehicles = RESPONSE_VEHICLES.data;
+                printAllMyVehicles();
+            }
 
-
-
-                                // let arrayErr = data.array;
-                                // let htmlSwal = ""
-                                // arrayErr.forEach(el => {
-                                //     htmlSwal += `<tr><td>${el.patente}</td><td>${el.nombre}</td></tr>`
-                                // });
-                                // Swal.fire({
-                                //     icon: 'error',
-                                //     title: 'Ups',
-                                //     html:  `<p>Estos nombres no pueden ser asignados a un vehiculo </p>
-                                //             <table class="table">
-                                //                 <thead>
-                                //                     <th>Patente</th>
-                                //                     <th>Nombre</th>
-                                //                 </thead>
-                                //                 <tbody>
-                                //                     ${htmlSwal}
-                                //                 </tbody>
-                                //             </table>`
-                                // })
-                            }
-                        },
-                        error: function(data) {
-                            console.log(data.responseText);
-                        }
-                    })
-                }
-            })
         });
-
-        const dataArrayIndex = ['patente', 'asignado']
+   
+        const dataArrayIndex = ['Patente','Marca (opcional)','Modelo (opcional)','Tipo de Vehículo (opcional)',	'Propietario (opcional)',	'Costo viaje (opcional)']
         const dataArray = {
-            'xlsxData': [{
-                    'name': 'patente',
+            'xlsxData': [
+                {
+                    'name': 'Patente',
                     'type': 'string',
                     'minlength': 6,
                     'maxlength': 6,
                     'notNull': false
                 },
-
                 {
-                    'name': 'asignado',
+                    'name': 'Marca (opcional)',
                     'type': 'string',
                     'minlength': 3,
                     'maxlength': 50,
-                    'notNull': false
+                    'notNull': true
+                },
+                {
+                    'name': 'Modelo (opcional)',
+                    'type': 'string',
+                    'minlength': 6,
+                    'maxlength': 6,
+                    'notNull': true
+                },
+                {
+                    'name': 'Tipo de Vehículo (opcional)',
+                    'type': 'string',
+                    'minlength': 3,
+                    'maxlength': 50,
+                    'notNull': true
+                },
+                {
+                    'name': 'Propietario (opcional)',
+                    'type': 'string',
+                    'minlength': 6,
+                    'maxlength': 6,
+                    'notNull': true
+                },
+                {
+                    'name': 'Costo viaje (opcional)',
+                    'type': 'string',
+                    'minlength': 3,
+                    'maxlength': 50,
+                    'notNull': true
                 }
             ]
         }
@@ -359,16 +402,17 @@ $active = 'vehiculos';
 
                 const tableContent = await xlsxReadandWrite(dataArray);
                 if (tableContent !== undefined) {
+
+
+
+                    // const tableContent = await xlsxReadandWrite(dataArray);
+
                     let tableHead = $('#excelTable>thead')
                     let tableBody = $('#excelTable>tbody')
-                    $('#masivavehicleCreation').modal('show')
-
-                    //Limpiar datos de Excel Previo
-                    tableBody.empty()
-                    tableHead.empty()
-                    // LLENAR TABLA 
-                    tableHead.append(tableContent[0])
-                    tableBody.append(tableContent[1])
+                    tableHead.append(tableContent.table[0])
+                    tableBody.append(tableContent.table[1])
+                    $('#fileName').text(tableContent[0]);
+                    $('#excel_input').val("");
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -392,7 +436,7 @@ $active = 'vehiculos';
 
             //obtencion de las propiedades del TD
             let tdListClass = $(this).attr("class").split(/\s+/);
-            let tdClass = tdListClass[0]
+            let tdClass = tdListClass[0].replaceAll("_", " ");
             let tdPropertiesIndex = dataArrayIndex.indexOf(tdClass)
             let tdProperties = dataArray.xlsxData[tdPropertiesIndex]
 
@@ -455,12 +499,14 @@ $active = 'vehiculos';
 
         $('#modalClose').on('click', function() {
             $('#masivavehicleCreation').modal('hide')
-        })
+        });
+
 
 
         //GUARDAR REGISTROS MASIVA DENTRO DE MODAL
         $('#saveExcelData').on('click', function() {
             let counterErr = 0;
+
 
             $('#excelTable>tbody td').each(function() {
 
@@ -488,15 +534,44 @@ $active = 'vehiculos';
                     preRequest.push(arrTd)
                 });
 
-                const arrayRequest = preRequest.map(function(value) {
+                const arrayRequest = preRequest.map(function(value,index) {
+ 
+                    let BRAND  = _brands.find((brand)=>{ return brand.brand.toLowerCase() === value[1].toLowerCase()})
+                    let MODEL  = _models.find((model)=>{ return model.model.toLowerCase() === value[2].toLowerCase()})
+                    let TYPE  = _types.find((type)=>{ return type.tipo.toLowerCase() === value[3].toLowerCase()})
+                    let owner = 1;
+                    if(value[4].toLowerCase() === "externo"){
+                        owner = 0 
+                    }
+
+                    if(BRAND === undefined){
+                        BRAND = ""
+                    }else{
+                        BRAND = BRAND.id;
+                    }
+                    if(MODEL === undefined){
+                        MODEL = ""
+                    }else{
+                        MODEL = MODEL.id;
+                    }
+                    if(TYPE === undefined){
+                        TYPE = ""
+                    }else{
+                        TYPE = TYPE.id;
+                    }
+
                     let returnArray = {
-                        "empresaId": EMPRESA_ID,
-                        "patente": value[0],
-                        "nombre": value[1]
+                        "empresa_id": EMPRESA_ID,
+                        'patente':value[0] ,
+                        'brand':BRAND,
+                        'model':MODEL,
+                        'type': TYPE,
+                        'owner':owner,
+                        'costPerTrip':value[5] 
                     }
                     return returnArray
                 })
-                console.log(arrayRequest);
+                
                 $.ajax({
                     type: "POST",
                     url: "ws/vehiculo/addVehiculo.php",
@@ -507,39 +582,10 @@ $active = 'vehiculos';
                         Swal.fire({
                             icon: 'info',
                             title: 'Excelente',
-                            position: 'bottom-end',
-                            text: data.data
-                        })
-
-                        if (data.status === 1) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Excelente',
-                                text: `Se han agregado ${arrayRequest.length}`
-                            })
-                        }
-                        if (data.status === 0) {
-
-                            let arrayErr = data.array;
-                            let htmlSwal = ""
-                            arrayErr.forEach(el => {
-                                htmlSwal += `<tr><td>${el.patente}</td><td>${el.nombre}</td></tr>`
-                            });
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Ups',
-                                html: `<p>Estos nombres no pueden ser asignados a un vehiculo </p>
-                                <table class="table">
-                                    <thead>
-                                        <th>Patente</th>
-                                        <th>Nombre</th>
-                                    </thead>
-                                    <tbody>
-                                        ${htmlSwal}
-                                    </tbody>
-                                </table>`
-                            })
-                        }
+                            text: "Se han ingresado los vehículos"
+                        });
+                        _allMyVehicles = RESPONSE_VEHICLES.data;
+                        printAllMyVehicles();
                     },
                     error: function(data) {
                         console.log(data.responseText);

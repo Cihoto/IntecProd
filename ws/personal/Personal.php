@@ -11,16 +11,16 @@ if ($_POST) {
         case 'getPersonal':
             // Recibe el parámetro empresaId
             $empresaId = $data->empresaId;
-            
+
             // Llama a la función getPersonal y devuelve el resultado
             $personal = getPersonal($empresaId);
             echo json_encode($personal);
             break;
-        
+
         case 'addPersonalToProject':
             // Recibe el parámetro request
             $request = $data->request;
-            
+
             // Llama a la función addtoProject y devuelve el resultado
             $response = addPersonalToProject($request);
             echo json_encode($response);
@@ -51,7 +51,7 @@ if ($_POST) {
             $request = $data->request;
             $empresaId = $data->empresaId;
             // Llama a la función SetTotalProject y devuelve el resultado
-            $response = AddPersonal($request,$empresaId);
+            $response = AddPersonal($request, $empresaId);
             echo json_encode($response);
             break;
         case 'getAvailablePersonal':
@@ -73,7 +73,7 @@ if ($_POST) {
             $request = $data->request;
             $empresaId = $data->empresaId;
             // Llama a la función AddEspecialidad y devuelve el resultado
-            $response = AddEspecialidad($request,$empresaId);
+            $response = AddEspecialidad($request, $empresaId);
             echo json_encode($response);
             break;
         case 'AddCargo':
@@ -81,7 +81,7 @@ if ($_POST) {
             $request = $data->request;
             $empresaId = $data->empresaId;
             // Llama a la función AddCargo y devuelve el resultado
-            $response = AddCargo($request,$empresaId);
+            $response = AddCargo($request, $empresaId);
             echo json_encode($response);
             break;
         case 'getEspecialidad':
@@ -109,7 +109,7 @@ if ($_POST) {
             // Llama a la función getAllContratos y devuelve el resultado
             $response = getAllContratos();
             // $response = "123123123123123123";
-            
+
             echo json_encode($response);
             break;
         case 'dropAssigmentPersonal':
@@ -126,7 +126,7 @@ if ($_POST) {
             $empresaId = $data->empresaId;
             // Llama a la función dropAssigmentPersonal =>
             // devuelve los ids eliminados de las asignaciones
-            $response = addPersonalMasiva($request,$empresaId);
+            $response = addPersonalMasiva($request, $empresaId);
             echo json_encode($response);
             break;
         case 'getTakenPersonalByDateRange':
@@ -134,7 +134,7 @@ if ($_POST) {
             $request = $data->request;
             $empresa_id = $data->empresa_id;
             // Llama a la función addProd y devuelve el resultado
-            $response = getTakenPersonalByDateRange($request,$empresa_id);
+            $response = getTakenPersonalByDateRange($request, $empresa_id);
             echo json_encode($response);
             break;
         case 'insertPersonal':
@@ -142,7 +142,44 @@ if ($_POST) {
             $personalData = $data->personalData;
             $empresa_id = $data->empresa_id;
             // Llama a la función addProd y devuelve el resultado
-            $response = insertPersonal($personalData,$empresa_id);
+            $response = insertPersonal($personalData, $empresa_id);
+            echo json_encode($response);
+            break;
+        case 'getPersonalByBussiness':
+            // Recibe el parámetro jsonCreateProd
+            $empresa_id = $data->empresa_id;
+            // Llama a la función addProd y devuelve el resultado
+            $response = getPersonalByBussiness($empresa_id);
+            echo json_encode($response);
+            break;
+        case 'insertPersonalForm':
+            $request = $data->request;
+            $empresa_id = $data->empresa_id;
+            $response = insertPersonalForm($request, $empresa_id);
+            echo json_encode($response);
+            break;
+        case 'getPersonalById':
+            $personal_id = $data->personal_id;
+            $empresa_id = $data->empresa_id;
+            $response = getPersonalById($personal_id, $empresa_id);
+            echo json_encode($response);
+            break;
+        case 'updatePersonal':
+            $request = $data->request;
+            $empresa_id = $data->empresa_id;
+            $response = updatePersonal($request, $empresa_id);
+            echo json_encode($response);
+            break;
+        case 'deleteEspecialidad':
+            $especialidad_id = $data->especialidad_id;
+            $empresa_id = $data->empresa_id;
+            $response =  deleteEspecialidad($especialidad_id, $empresa_id);
+            echo json_encode($response);
+            break;
+        case 'deleteCargo':
+            $cargo_id = $data->cargo_id;
+            $empresa_id = $data->empresa_id;
+            $response = deleteCargo($cargo_id, $empresa_id);
             echo json_encode($response);
             break;
         default:
@@ -153,12 +190,13 @@ if ($_POST) {
     require_once('./ws/bd/bd.php');
 }
 
-function AddPersonal($request,$empresaId){
+function AddPersonal($request, $empresaId)
+{
     $conn = new bd();
     $conn->conectar();
-    $today= date('Y-m-d');
+    $today = date('Y-m-d');
 
-    foreach($request as $req){
+    foreach ($request as $req) {
         $nombre = $req->nombre;
         $apellido = $req->apellido;
         $rut = $req->rut;
@@ -172,25 +210,26 @@ function AddPersonal($request,$empresaId){
 
     $queryPersona = "INSERT INTO persona
     (nombre, apellido, rut, telefono, email)
-    VALUES('".$nombre." ', '".$apellido."', '".$rut."', '".$telefono."', '".$correo."')";
+    VALUES('" . $nombre . " ', '" . $apellido . "', '" . $rut . "', '" . $telefono . "', '" . $correo . "')";
 
     $conn->mysqli->query($queryPersona);
     $idPersona = $conn->mysqli->insert_id;
 
     $queryInsert = "INSERT INTO personal
     (persona_id, cargo_id, especialidad_id, tipo_contrato_id, createAt, IsDelete, empresa_id,neto)
-    VALUES(".$idPersona.",".$cargo.",".$especialidad.",".$idContrato.",'".$today."', 0, $empresaId, $neto)";
+    VALUES(" . $idPersona . "," . $cargo . "," . $especialidad . "," . $idContrato . ",'" . $today . "', 0, $empresaId, $neto)";
 
     // return $queryInsert;
 
-    if($conn->mysqli->query($queryInsert)){
-        return array("success"=>array("message"=>"Se ha ingresado a ".$nombre." ".$apellido." al sistema"));
-    }else{
-        return array("error"=>array("message"=>"No se ha podido ingresar a ".$nombre." ".$apellido." al sistema"));
+    if ($conn->mysqli->query($queryInsert)) {
+        return array("success" => array("message" => "Se ha ingresado a " . $nombre . " " . $apellido . " al sistema"));
+    } else {
+        return array("error" => array("message" => "No se ha podido ingresar a " . $nombre . " " . $apellido . " al sistema"));
     }
 }
 
-function setviatico($request){
+function setviatico($request)
+{
     $conn = new bd();
     $conn->conectar();
     $arrayResponse = [];
@@ -201,7 +240,7 @@ function setviatico($request){
 
     $queryIfAssigned = "SELECT * from personal_has_proyecto php where php.proyecto_id = $idProject";
 
-    if($conn->mysqli->query($queryIfAssigned)->num_rows>0){
+    if ($conn->mysqli->query($queryIfAssigned)->num_rows > 0) {
         $qdelete = "DELETE FROM proyecto_has_viatico WHERE proyecto_id =$idProject";
         $conn->mysqli->query($qdelete);
     }
@@ -216,7 +255,7 @@ function setviatico($request){
         $conn->mysqli->query($queryInsertViatico);
 
         $viaticoId = $conn->mysqli->insert_id;
-        
+
         $query = "INSERT INTO proyecto_has_viatico
                     (proyecto_id, viatico_id)
                     VALUES($idProject, $viaticoId)";
@@ -231,9 +270,9 @@ function setviatico($request){
     }
     $conn->desconectar();
     return $arrayResponse;
-
 }
-function setArriendos($request){
+function setArriendos($request)
+{
     $conn = new bd();
     $conn->conectar();
     $arrayResponse = [];
@@ -244,7 +283,7 @@ function setArriendos($request){
 
     $queryIfAssigned = "SELECT * from arriendos_proyectos php where php.proyecto_id = $idProject";
 
-    if($conn->mysqli->query($queryIfAssigned)->num_rows>0){
+    if ($conn->mysqli->query($queryIfAssigned)->num_rows > 0) {
         $qdelete = "DELETE FROM arriendos_proyectos WHERE proyecto_id =$idProject";
         $conn->mysqli->query($qdelete);
     }
@@ -256,7 +295,7 @@ function setArriendos($request){
 
         $query = "INSERT INTO arriendos_proyectos
                 (proyecto_id, detalle_arriendo, valor)
-                VALUES($idProject, '".$detalle."', ".intval($valor).")";
+                VALUES($idProject, '" . $detalle . "', " . intval($valor) . ")";
 
         if ($conn->mysqli->query($query)) {
 
@@ -268,10 +307,10 @@ function setArriendos($request){
     }
     $conn->desconectar();
     return $arrayResponse;
-
 }
 
-function SetTotalProject($request){
+function SetTotalProject($request)
+{
     $conn = new bd();
     $conn->conectar();
     $today = date('Y-m-d');
@@ -284,15 +323,15 @@ function SetTotalProject($request){
 
     $queryIfTotal = "SELECT * FROM ingresos_has_proyecto WHERE proyecto_id =  $idProject";
 
-    if($conn->mysqli->query($queryIfTotal)->num_rows>0){
+    if ($conn->mysqli->query($queryIfTotal)->num_rows > 0) {
         $qdelete = "DELETE FROM ingresos_has_proyecto WHERE proyecto_id = $idProject";
         $conn->mysqli->query($qdelete);
     }
 
-    foreach($request as $req){
+    foreach ($request as $req) {
 
         $queryInsertIngreso = "INSERT INTO ingresos (ingreso, monto)
-        VALUES('Ingreso Cobro Evento', ".intval($req->valor).")";
+        VALUES('Ingreso Cobro Evento', " . intval($req->valor) . ")";
 
         $conn->mysqli->query($queryInsertIngreso);
         $idIngreso = $conn->mysqli->insert_id;
@@ -327,8 +366,8 @@ function getAvailablePersonal($request)
                         LEFT JOIN proyecto pro on p.id = php.proyecto_id
                         LEFT JOIN proyecto_has_estado phe on phe.proyecto_id = pro.id
                         where pro.id IS NULL or phe.estado_id != 2
-                        or '".$fechaInicio."' < pro.fecha_inicio and '".$fechaTermino."' < pro.fecha_inicio 
-                        or '".$fechaInicio."' > pro.fecha_termino and '".$fechaTermino."' > pro.fecha_termino
+                        or '" . $fechaInicio . "' < pro.fecha_inicio and '" . $fechaTermino . "' < pro.fecha_inicio 
+                        or '" . $fechaInicio . "' > pro.fecha_termino and '" . $fechaTermino . "' > pro.fecha_termino
                         and p.empresa_id = $empresaId";
 
 
@@ -343,7 +382,8 @@ function getAvailablePersonal($request)
 }
 
 
-function AddEspecialidad($request,$empresaId){
+function AddEspecialidad($request, $empresaId)
+{
 
     $conn =  new bd();
     $conn->conectar();
@@ -351,21 +391,22 @@ function AddEspecialidad($request,$empresaId){
     $today = date('Y-m-d');
 
     // return count($request->arrayCategorias);
-    for($i = 0 ; $i < count($request->arrayCargos); $i++){
+    for ($i = 0; $i < count($request->arrayCargos); $i++) {
 
         $queryInsertCargo = "INSERT INTO especialidad
         (especialidad, createAt, IsDelete, empresa_id)
-        VALUES('".trim($request->arrayCargos[$i])."', '".$today."', 0, $empresaId);";
+        VALUES('" . trim($request->arrayCargos[$i]) . "', '" . $today . "', 0, $empresaId);";
 
-        if($conn->mysqli->query($queryInsertCargo)){
-            array_push($arrayIdsInserted,$conn->mysqli->insert_id);
+        if ($conn->mysqli->query($queryInsertCargo)) {
+            array_push($arrayIdsInserted, $conn->mysqli->insert_id);
         }
     }
 
     // return $queryInsertCargo;
     return $arrayIdsInserted;
 }
-function AddCargo($request,$empresaId){
+function AddCargo($request, $empresaId)
+{
 
     $conn =  new bd();
     $conn->conectar();
@@ -373,13 +414,13 @@ function AddCargo($request,$empresaId){
     $today = date('Y-m-d');
 
     // return count($request->arrayCategorias);
-    for($i = 0 ; $i < count($request->arrayCargos); $i++){
-        
-        $queryInsertCargo = "INSERT INTO cargo (cargo,empresa_id)
-        VALUES('".trim($request->arrayCargos[$i])."', $empresaId)";
+    for ($i = 0; $i < count($request->arrayCargos); $i++) {
 
-        if($conn->mysqli->query($queryInsertCargo)){
-            array_push($arrayIdsInserted,$conn->mysqli->insert_id);
+        $queryInsertCargo = "INSERT INTO cargo (cargo,empresa_id)
+        VALUES('" . trim($request->arrayCargos[$i]) . "', $empresaId)";
+
+        if ($conn->mysqli->query($queryInsertCargo)) {
+            array_push($arrayIdsInserted, $conn->mysqli->insert_id);
         }
     }
 
@@ -387,33 +428,35 @@ function AddCargo($request,$empresaId){
     return $arrayIdsInserted;
 }
 
-function getEspecialidad($empresaId){
+function getEspecialidad($empresaId)
+{
 
     $conn = new bd();
     $conn->conectar();
     $especialidades = [];
-    $queryGetEspecialidad = "SELECT id, especialidad FROM especialidad e WHERE empresa_id = $empresaId";
+    $queryGetEspecialidad = "SELECT id, especialidad FROM especialidad e WHERE empresa_id = $empresaId and IsDelete = 0";
     $responseBd = $conn->mysqli->query($queryGetEspecialidad);
 
-    while($dataEspecialidad = $responseBd->fetch_object()){
+    while ($dataEspecialidad = $responseBd->fetch_object()) {
         $especialidades[] = $dataEspecialidad;
     }
 
-    return array("especialidades"=>$especialidades);
+    return array("especialidades" => $especialidades);
 }
-function getCargo($empresaId){
+function getCargo($empresaId)
+{
 
     $conn = new bd();
     $conn->conectar();
     $cargos = [];
-    $queryGetCargo = "SELECT id, cargo FROM cargo  WHERE empresa_id = $empresaId";
+    $queryGetCargo = "SELECT id, cargo FROM cargo  WHERE empresa_id = $empresaId and IsDelete = 0;";
     $responseBd = $conn->mysqli->query($queryGetCargo);
 
-    while($datosCargo = $responseBd->fetch_object()){
+    while ($datosCargo = $responseBd->fetch_object()) {
         $cargos[] = $datosCargo;
     }
 
-    return array("cargos"=>$cargos);
+    return array("cargos" => $cargos);
 }
 
 function getPersonal($empresaId)
@@ -455,11 +498,10 @@ function getAllPersonalData($empresaId)
                     INNER JOIN tipo_contrato tc on tc.id = p.tipo_contrato_id 
                     where emp.id = $empresaId";
 
-    if ($responseBd = $conn->mysqli->query($queryPersonal)){
+    if ($responseBd = $conn->mysqli->query($queryPersonal)) {
         while ($dataPersonal = $responseBd->fetch_object()) {
 
             $personal[] = $dataPersonal;
-
         }
     }
 
@@ -474,17 +516,16 @@ function addPersonalToProject($request)
     $arrayResponse = [];
 
 
-    foreach (array_slice($request, 0, 1) as $req){
-        if(isset($req->idProject)){
+    foreach (array_slice($request, 0, 1) as $req) {
+        if (isset($req->idProject)) {
 
             $idProject = $req->idProject;
             $queryIfAssigned = "SELECT * from personal_has_proyecto php where php.proyecto_id = $idProject";
 
-            if($conn->mysqli->query($queryIfAssigned)->num_rows>0){
+            if ($conn->mysqli->query($queryIfAssigned)->num_rows > 0) {
 
                 $qdelete = "DELETE FROM personal_has_proyecto WHERE proyecto_id =$idProject";
                 $conn->mysqli->query($qdelete);
-
             }
         }
     }
@@ -511,13 +552,14 @@ function addPersonalToProject($request)
     return $arrayResponse;
 }
 
-function dropAssigmentPersonal($idProject){
+function dropAssigmentPersonal($idProject)
+{
     $conn = new bd();
     $conn->conectar();
 
     $queryIfAssigned = "SELECT * from personal_has_proyecto php where php.proyecto_id = $idProject";
 
-    if($conn->mysqli->query($queryIfAssigned)->num_rows>0){
+    if ($conn->mysqli->query($queryIfAssigned)->num_rows > 0) {
         $qdelete = "DELETE FROM personal_has_proyecto WHERE proyecto_id =$idProject";
         $conn->mysqli->query($qdelete);
     }
@@ -526,127 +568,133 @@ function dropAssigmentPersonal($idProject){
     return $deleted;
 }
 
-function getAllContratos(){
+function getAllContratos()
+{
     $conn = new bd();
     $conn->conectar();
     $contratos = [];
     $queryAllContratos = "SELECT * FROM tipo_contrato tc";
-    
-    if($responseBd = $conn->mysqli->query($queryAllContratos)){
-        while($dataContratos = $responseBd->fetch_object()){
-            $contratos [] = $dataContratos;
+
+    if ($responseBd = $conn->mysqli->query($queryAllContratos)) {
+        while ($dataContratos = $responseBd->fetch_object()) {
+            $contratos[] = $dataContratos;
         }
     }
     $conn->desconectar();
     return $contratos;
 }
 
-function addPersonalMasiva($request, $empresaId){
+function addPersonalMasiva($request, $empresaId)
+{
     $conn =  new bd();
     $conn->conectar();
     $today = date('Y-m-d');
 
     $arrayNoCompleteData = [];
     $counterInserted = 0;
-   
 
-    foreach ($request as $key => $value){
-        $excelRow = $key +1;
-        $nombre = $value ->nombre;
-        $apellido = $value ->apellido;
-        $rut = $value ->rut;
+
+    foreach ($request as $key => $value) {
+        $excelRow = $key + 1;
+        $nombre = $value->nombre;
+        $apellido = $value->apellido;
+        $rut = $value->rut;
         $telefono = $value->telefono;
         $correo = $value->correo;
-        $cargo = $value ->cargo;
-        $especialidad = $value ->especialidad;
-        $contrato = $value ->contrato;
-        $neto = 15000;
-        // $neto = $value->neto;
-
-
-
+        $cargo = $value->cargo;
+        $especialidad = $value->especialidad;
+        $contrato = $value->contrato;
+        $neto = $value->neto;
         $idEspecialidad = 0;
         $idCargo = 0;
-        
+
         $queryPersona = "INSERT INTO persona
                         (nombre, apellido, rut, email, telefono)
-                        VALUES('".$nombre." ', '".$apellido."', '".$rut."', '".$correo."', '$telefono')";
+                        VALUES('$nombre','', '$rut', '$correo', '$telefono')";
 
         $resposenBdPersona = $conn->mysqli->query($queryPersona);
         $idPersona = $conn->mysqli->insert_id;
 
-        $queryCargo = $conn->mysqli->query('select id from cargo where cargo = "'.$cargo.'"'); 
-        if($queryCargo->num_rows > 0){
+        if($cargo !== "" ){
 
-            $idCargo = $queryCargo->fetch_object()->id;
-
-        }else{
-            array_push($arrayNoCompleteData, array('row' => $excelRow, 'problem' => "Cargo","data"=>array("nombre"=>$nombre,
-                                                                                                            "apellido"=>$apellido,
-                                                                                                            "rut"=>$rut,
-                                                                                                            "telefono"=>$telefono,
-                                                                                                            "correo"=>$correo,
-                                                                                                            "cargo"=>$cargo,
-                                                                                                            "especialidad"=>$especialidad,
-                                                                                                            "contrato"=>$contrato)));
+            $queryCargo = $conn->mysqli->query("SELECT id from cargo where LOWER(cargo)= LOWER('$cargo')");
+            if ($queryCargo->num_rows > 0) {
+    
+                $idCargo = $queryCargo->fetch_object()->id;
+            } else {
+                array_push($arrayNoCompleteData, array('row' => $excelRow, 'problem' => "Cargo", "data" => array(
+                    "nombre" => $nombre,
+                    "apellido" => $apellido,
+                    "rut" => $rut,
+                    "telefono" => $telefono,
+                    "correo" => $correo,
+                    "cargo" => $cargo,
+                    "especialidad" => $especialidad,
+                    "contrato" => $contrato
+                )));
+            }
         }
 
-        $especialidadq = $conn->mysqli->query('SELECT id from especialidad where LOWER(especialidad) ="' .strtolower($especialidad).'"'); 
-        
-        if($especialidadq->num_rows > 0){
+        $especialidadq = $conn->mysqli->query('SELECT id from especialidad where LOWER(especialidad) ="' . strtolower($especialidad) . '"');
+
+        if ($especialidadq->num_rows > 0) {
             $idEspecialidad = $especialidadq->fetch_object()->id;
-        }else{
-            array_push($arrayNoCompleteData, array('row' => $excelRow, 'problem'=>"Especialidad","data"=>array("nombre"=>$nombre,
-                                                                                                                "apellido"=>$apellido,
-                                                                                                                "rut"=>$rut,
-                                                                                                                "telefono"=>$telefono,
-                                                                                                                "correo"=>$correo,
-                                                                                                                "cargo"=>$cargo,
-                                                                                                                "especialidad"=>$especialidad,
-                                                                                                                "contrato"=>$contrato)));
+        } else {
+            array_push($arrayNoCompleteData, array('row' => $excelRow, 'problem' => "Especialidad", "data" => array(
+                "nombre" => $nombre,
+                "apellido" => $apellido,
+                "rut" => $rut,
+                "telefono" => $telefono,
+                "correo" => $correo,
+                "cargo" => $cargo,
+                "especialidad" => $especialidad,
+                "contrato" => $contrato
+            )));
         }
         // return $arrayNoCompleteData;
 
-        $contratoq = $conn->mysqli->query('SELECT id from tipo_contrato where LOWER(contrato) = "'.strtolower($contrato).'"'); 
+        $contratoq = $conn->mysqli->query('SELECT id from tipo_contrato where LOWER(contrato) = "' . strtolower($contrato) . '"');
 
-        if($contratoq->num_rows > 0){
+        if ($contratoq->num_rows > 0) {
             $value = $contratoq->fetch_object()->id;
             $idContrato = $value;
-        }else{
-            array_push($arrayNoCompleteData, array('row' => $excelRow, 'problem'=>"Contrato","data"=>array("nombre"=>$nombre,
-                                                                                                            "apellido"=>$apellido,
-                                                                                                            "rut"=>$rut,
-                                                                                                            "telefono"=>$telefono,
-                                                                                                            "correo"=>$correo,
-                                                                                                            "cargo"=>$cargo,
-                                                                                                            "especialidad"=>$especialidad,
-                                                                                                            "contrato"=>$contrato)));
+        } else {
+            array_push($arrayNoCompleteData, array('row' => $excelRow, 'problem' => "Contrato", "data" => array(
+                "nombre" => $nombre,
+                "apellido" => $apellido,
+                "rut" => $rut,
+                "telefono" => $telefono,
+                "correo" => $correo,
+                "cargo" => $cargo,
+                "especialidad" => $especialidad,
+                "contrato" => $contrato
+            )));
         }
 
-        if($idEspecialidad === 0 || $idCargo === 0){
+        if ($idEspecialidad === 0){
             $conn->mysqli->query("DELETE FROM persona where id = $idPersona");
-        }else{
+        } else {
             $query = "INSERT INTO personal
                 (persona_id, cargo_id, especialidad_id, tipo_contrato_id, createAt, IsDelete, empresa_id,neto)
-                VALUES(".$idPersona.",".$idCargo.",".$idEspecialidad.",".$idContrato.",'".$today."', 0, $empresaId, $neto)";
+                VALUES($idPersona , $idCargo , $idEspecialidad , $idContrato ,'$today', 0, $empresaId, $neto)";
 
-            if($conn->mysqli->query($query)){
-                $counterInserted ++;
+            if ($conn->mysqli->query($query)) {
+                $counterInserted++;
             }
         }
     }
 
-    if($counterInserted === count($request)){
-        return array("success"=>array("inserted"=>$counterInserted,"total"=>count($request)));
-    }else{
-        return array('error'=>array("inserted"=>$counterInserted,'total'=>count($request),'arrErr'=>$arrayNoCompleteData));
+    if ($counterInserted === count($request)) {
+        return array("success" => array("inserted" => $counterInserted, "total" => count($request)));
+    } else {
+        return array('error' => array("inserted" => $counterInserted, 'total' => count($request), 'arrErr' => $arrayNoCompleteData));
     }
-
 }
 
 
-function GetPersonalByEmpresa($empresa_id){
-    $conn=  new bd();
+function GetPersonalByEmpresa($empresa_id)
+{
+    $conn =  new bd();
     $conn->conectar();
     $personal = [];
 
@@ -655,20 +703,21 @@ function GetPersonalByEmpresa($empresa_id){
     LEFT JOIN usuario u ON u.id = p.usuario_id 
     WHERE u.id is NULL AND p.empresa_id  = $empresa_id";
 
-    if($responseDb = $conn->mysqli->query($queryGetPersonal)){
-        while ( $dataPersonal = $responseDb->fetch_object()) {
+    if ($responseDb = $conn->mysqli->query($queryGetPersonal)) {
+        while ($dataPersonal = $responseDb->fetch_object()) {
             $personal[] = $dataPersonal;
         }
-        return array("success"=>true,"data"=>$personal);
-    }else{
-        return array('error'=>true,"message"=>"No se ha podido completar la solicitud, por favor intente nuevamente");
+        return array("success" => true, "data" => $personal);
+    } else {
+        return array('error' => true, "message" => "No se ha podido completar la solicitud, por favor intente nuevamente");
     }
 }
 
 
 
 
-function getTakenPersonalByDateRange($request,$empresa_id){
+function getTakenPersonalByDateRange($request, $empresa_id)
+{
     $conn = new bd();
     $conn->conectar();
 
@@ -678,7 +727,7 @@ function getTakenPersonalByDateRange($request,$empresa_id){
     $unavailablePersonal = [];
 
 
-    $queryGetUnavailables ="SELECT php.personal_id , php.proyecto_id , php.costo , phe.*
+    $queryGetUnavailables = "SELECT php.personal_id , php.proyecto_id , php.costo , phe.*
     from personal_has_proyecto php 
     INNER JOIN proyecto p ON p.id = php.proyecto_id
     INNER JOIN proyecto_has_estado phe on phe.proyecto_id = p.id
@@ -689,31 +738,30 @@ function getTakenPersonalByDateRange($request,$empresa_id){
 
     // return $queryGetUnavailables;
 
-    if($responseDb = $conn->mysqli->query($queryGetUnavailables)){
+    if ($responseDb = $conn->mysqli->query($queryGetUnavailables)) {
 
-        while($dataDb = $responseDb->fetch_object()){
-            $unavailablePersonal [] = $dataDb;
+        while ($dataDb = $responseDb->fetch_object()) {
+            $unavailablePersonal[] = $dataDb;
         }
         $conn->desconectar();
-        return array("success"=>true,"data"=>$unavailablePersonal);
-
-    }else{
+        return array("success" => true, "data" => $unavailablePersonal);
+    } else {
 
         $conn->desconectar();
-        return array("error"=>true,"data"=>$unavailablePersonal);
+        return array("error" => true, "data" => $unavailablePersonal);
     }
-
 }
 
 
-function insertPersonal($request,$empresa_id){
+function insertPersonal($request, $empresa_id)
+{
     $conn = new bd();
     $conn->conectar();
-    $today= date('Y-m-d');
+    $today = date('Y-m-d');
 
     // return json_encode($request);
 
-    foreach($request as $req){
+    foreach ($request as $req) {
         $nombre = $req->nombre;
         $rut = $req->rut;
         $correo = $req->correo;
@@ -722,17 +770,17 @@ function insertPersonal($request,$empresa_id){
     }
     $queryPersona = "INSERT INTO persona
     (nombre, apellido, rut, telefono, email)
-    VALUES('".$nombre." ', '', '".$rut."', '".$telefono."', '".$correo."')";
+    VALUES('" . $nombre . " ', '', '" . $rut . "', '" . $telefono . "', '" . $correo . "')";
 
     $conn->mysqli->query($queryPersona);
     $idPersona = $conn->mysqli->insert_id;
 
     $queryInsert = "INSERT INTO personal
     (persona_id, especialidad_id, tipo_contrato_id, createAt, IsDelete, empresa_id,neto)
-    VALUES(".$idPersona.",'".$especialidad."', 5 ,'".$today."', 0, $empresa_id, 0)";
+    VALUES(" . $idPersona . ",'" . $especialidad . "', 5 ,'" . $today . "', 0, $empresa_id, 0)";
 
     // return $queryInsert;
-    if($conn->mysqli->query($queryInsert)){
+    if ($conn->mysqli->query($queryInsert)) {
         $idPersonal = $conn->mysqli->insert_id;
         $personal =  [];
         $queryPersonal = "SELECT  p.id, p.cargo_id, CONCAT(per.nombre ,' ',per.apellido) as nombre,
@@ -744,20 +792,239 @@ function insertPersonal($request,$empresa_id){
                             INNER JOIN empresa emp on emp.id = p.empresa_id 
                             INNER JOIN tipo_contrato tc on tc.id = p.tipo_contrato_id 
                             where p.id = $idPersonal";
-    
+
         if ($responseBd = $conn->mysqli->query($queryPersonal)) {
             while ($dataPersonal = $responseBd->fetch_object()) {
                 $personal = $dataPersonal;
             }
         }
         // return $queryPersonal;
-        return array("success"=>array("message"=>"Se ha ingresado a ".$nombre." al sistema"),"personalInserted"=>$personal);
-    }else{
-        return array("error"=>array("message"=>"No se ha podido ingresar a ".$nombre." al sistema"));
+        return array("success" => array("message" => "Se ha ingresado a " . $nombre . " al sistema"), "personalInserted" => $personal);
+    } else {
+        return array("error" => array("message" => "No se ha podido ingresar a " . $nombre . " al sistema"));
+    }
+}
+
+
+function getPersonalByBussiness($empresa_id)
+{
+    $conn  = new bd();
+    $conn->conectar();
+    $personal = [];
+
+    $query = "SELECT *, p.id as personal_id FROM personal p
+    left JOIN tipo_contrato tc on tc.id = p.tipo_contrato_id
+    left join persona per on per.id = p.persona_id
+    left join cargo c on c.id = p.cargo_id 
+    left join especialidad e on e.id = p.especialidad_id 
+    where p.empresa_id = $empresa_id 
+    and p.isDelete = 0";
+
+    if ($response = $conn->mysqli->query($query)) {
+        while ($data = $response->fetch_object()) {
+            $personal[] = $data;
+        }
+        return array("success" => true, "data" => $personal);
+    } else {
+        return array("error" => true);
     }
 }
 
 
 
+function insertPersonalForm($request, $empresa_id)
+{
+    $conn  = new bd();
+    $conn->conectar();
+    $personal = [];
+    $persona_id = 0;
+
+    $today = date('Y-m-d');
 
 
+    if ($request->nombrePersonal === "" || $request->nombrePersonal === null) {
+        $request->nombrePersonal = "NULL";
+    }
+    if ($request->rutPersonal === "" || $request->rutPersonal === null) {
+        $request->rutPersonal = "NULL";
+    }
+    if ($request->especialidadPersonal === "" || $request->especialidadPersonal === null) {
+        $request->especialidadPersonal = "NULL";
+    }
+    if ($request->cargoPersonal === "" || $request->cargoPersonal === null) {
+        $request->cargoPersonal = "NULL";
+    }
+    if ($request->tipoContratoPersonal === "" || $request->tipoContratoPersonal === null) {
+        $request->tipoContratoPersonal = "NULL";
+    }
+    if ($request->costoMensualPersonal === "" || $request->costoMensualPersonal === null) {
+        $request->costoMensualPersonal = 0;
+    }
+    if ($request->correoPersonal === "" || $request->correoPersonal === null) {
+        $request->correoPersonal = "NULL";
+    }
+    if ($request->telefonoPersonal === "" || $request->telefonoPersonal === null) {
+        $request->telefonoPersonal = "NULL";
+    }
+
+    $queryPersona = "INSERT INTO u136839350_intec.persona 
+    ( nombre, apellido, rut, email, telefono) 
+    VALUES('$request->nombrePersonal', '', '$request->rutPersonal', '$request->correoPersonal', $request->telefonoPersonal);";
+
+    if ($response = $conn->mysqli->query($queryPersona)) {
+        $persona_id = $conn->mysqli->insert_id;
+    } else {
+        return array("error" => true, "message" => "Ha ocurrido un error,intente nuevamente");
+    }
+
+    $query = "INSERT INTO u136839350_intec.personal 
+    ( persona_id, usuario_id, neto, cargo_id, especialidad_id, tipo_contrato_id, createAt, IsDelete, empresa_id) 
+    VALUES( $persona_id, NULL, $request->costoMensualPersonal, $request->cargoPersonal, $request->especialidadPersonal,
+    $request->tipoContratoPersonal, '$today', 0,  $empresa_id);";
+
+    if ($conn->mysqli->query($query)) {
+        return array("success" => true, "message" => "Técnico creado exitosamente");
+    } else {
+        $conn->mysqli->query("DELETE FROM persona where id = $persona_id");
+        return array("error" => true);
+    }
+}
+
+function getPersonalById($personal_id, $empresa_id)
+{
+    $conn  = new bd();
+    $conn->conectar();
+    $personalData = [];
+    $personal_events = [];
+
+    $queryPersonalData = "SELECT *,tc.id as tipo_contrato_id from personal p 
+    inner join persona per on per.id = p.persona_id 
+    inner join especialidad e on e.id = p.especialidad_id  
+    left join tipo_contrato tc on tc.id = p.tipo_contrato_id 
+    left join cargo c on c.id = p.cargo_id 
+    where p.id = $personal_id
+    and p.empresa_id  = $empresa_id";
+
+    $queryEventsPersonal = "SELECT * from proyecto p 
+    inner join personal_has_proyecto php on php.proyecto_id  = p.id 
+    inner join personal per on per.id = php.personal_id 
+    inner join estado e on e.id = p.status_id
+    where per.id = $personal_id
+    and p.empresa_id = $empresa_id";
+
+    if ($response = $conn->mysqli->query($queryPersonalData)) {
+        while ($data = $response->fetch_object()) {
+            $personalData = $data;
+        }
+
+        if ($response = $conn->mysqli->query($queryEventsPersonal)) {
+
+            while ($data = $response->fetch_object()) {
+                $personal_events []= $data;
+            }
+            return array("success" => true, "data" => $personalData, "events" => $personal_events);
+        } else {
+            return array("error" => true, "message" => "No se ha podido completar la solicitud,  intente nuevamente");
+        }
+    } else {
+        return array("error" => true, "message" => "No se ha podido completar la solicitud,  intente nuevamente");
+    }
+}
+
+function updatePersonal($request, $empresa_id)
+{
+    $conn  = new bd();
+    $conn->conectar();
+
+    $today = date("Y-m-d");
+
+    if ($request->update_nombrePersonal === "" || $request->update_nombrePersonal === null) {
+        $request->update_nombrePersonal = "";
+    }
+    if ($request->update_rutPersonal === "" || $request->update_rutPersonal === null) {
+        $request->update_rutPersonal = "";
+    }
+    if ($request->update_especialidadPersonal === "" || $request->update_especialidadPersonal === null) {
+        $request->update_especialidadPersonal = "";
+    }
+    if ($request->update_cargoPersonal === "" || $request->update_cargoPersonal === null) {
+        $request->update_cargoPersonal = "";
+    }
+    if ($request->update_tipoContratoPersonal === "" || $request->update_tipoContratoPersonal === null) {
+        $request->update_tipoContratoPersonal = "";
+    }
+    if ($request->update_costoMensualPersonal === "" || $request->update_costoMensualPersonal === null) {
+        $request->update_costoMensualPersonal = "";
+    }
+    if ($request->update_correoPersonal === "" || $request->update_correoPersonal === null) {
+        $request->update_correoPersonal = "";
+    }
+    if ($request->update_telefonoPersonal === "" || $request->update_telefonoPersonal === null) {
+        $request->update_telefonoPersonal = "";
+    }
+
+    $queryUpdatePersona = "UPDATE u136839350_intec.persona 
+    SET nombre='$request->update_nombrePersonal',
+     apellido='',
+     rut='$request->update_rutPersonal',
+     email='$request->update_correoPersonal', 
+     telefono='$request->update_telefonoPersonal' 
+     WHERE id = $request->persona_id;";
+    if (!$conn->mysqli->query($queryUpdatePersona)) {
+        return array("error" => true, "message" => "Intente nuevamente");
+    }
+
+
+    $queryUpdatePersonal = "UPDATE u136839350_intec.personal 
+    SET neto=$request->update_costoMensualPersonal,
+    modifiedAt='$today',
+    tipo_contrato_id = $request->update_tipoContratoPersonal,
+    especialidad_id = $request->update_especialidadPersonal,
+    cargo_id = $request->update_cargoPersonal
+    WHERE id=$request->personal_id 
+    AND persona_id=$request->persona_id
+    AND empresa_id=$empresa_id;";
+
+    if ($conn->mysqli->query($queryUpdatePersonal)) {
+        return array("success" => true, "message" => "Técnico modificado exitosamente");
+    } else {
+        return array("error" => true, "message" => "Intente nuevamente");
+    }
+}
+
+function deleteEspecialidad($especialidad_id, $empresa_id){
+    $conn  = new bd();
+    $conn->conectar();
+
+    $queryUpdateEspecialidad = "UPDATE especialidad set IsDelete = 1 where id = $especialidad_id and empresa_id = $empresa_id";
+
+
+    if($conn->mysqli->query($queryUpdateEspecialidad)){
+        
+        if($conn->mysqli->affected_rows > 0){
+            return array("success"=>true,"message"=>"Especialidad eliminada exitosamente");
+        }else{
+            return array("error"=>true,"message"=>"Ha ocurrido un error, intente nuevamente");
+        }
+    }else{
+        return array("error"=>true,"message"=>"Ha ocurrido un error, intente nuevamente");
+    }
+}
+function deleteCargo($cargo_id, $empresa_id){
+    $conn  = new bd();
+    $conn->conectar();
+
+    $queryUpdateCargo = "UPDATE cargo set IsDelete = 1 where id = $cargo_id and empresa_id = $empresa_id";
+    
+
+    if($conn->mysqli->query($queryUpdateCargo)){
+        
+        if($conn->mysqli->affected_rows > 0){
+            return array("success"=>true,"message"=>"Cargo eliminado exitosamente");
+        }else{
+            return array("error"=>true,"message"=>"Ha ocurrido un error, intente nuevamenteee");
+        }
+    }else{
+        return array("error"=>true,"message"=>"Ha ocurrido un error, intente nuevamente");
+    }
+}

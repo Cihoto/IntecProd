@@ -51,7 +51,6 @@ $('#sideclientForm').validate({
         updatepersona = true;
      }
 
-
      const requestCliente = {
         'empresaId': EMPRESA_ID,
         'clientNameorDesc': $('#clientNameorDesc').val(),
@@ -66,10 +65,6 @@ $('#sideclientForm').validate({
       console.log("requestCliente",requestCliente);
       const response = await addOrUpdateClientData(requestCliente,EMPRESA_ID);
       if(response.success){
-    
-        console.log(response);
-        console.log(response);
-        console.log(response);
         Toastify({
             text: `${response.message}`,
             duration: 3000,
@@ -86,22 +81,22 @@ $('#sideclientForm').validate({
       setSelectedClient(response.client_id)
       resetClientForm()
       $("#clientSideMenu").removeClass('active');
+      cancelEdit()
     }
-  })
-
+  });
 
 async function addOrUpdateClientData(requestCliente,empresa_id){
-return  $.ajax({
-    type: "POST",
-    url: "ws/cliente/cliente.php",
-    dataType: 'json',
-    data: JSON.stringify({
-        "tipo": "AddClientForm",
-        request: requestCliente,
-        empresa_id:empresa_id
-    }),
-    success: function(response) {
-        console.log(response);
-    }
+    return  $.ajax({
+        type: "POST",
+        url: "ws/cliente/cliente.php",
+        dataType: 'json',
+        data: JSON.stringify({
+            "tipo": "AddClientForm",
+            request: requestCliente,
+            empresa_id:empresa_id
+        }),
+        success: function(response) {
+            console.log(response);
+        }
     });
 }
