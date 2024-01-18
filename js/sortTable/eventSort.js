@@ -47,7 +47,6 @@ $(document).ready(function () {
 
     $('#sortDrafEvents').on('click', async function () {
         const ALL_DRAFT_EVENTS = await getEventByStatus_id(EMPRESA_ID, 1);
-
         if (!ALL_DRAFT_EVENTS) {
             return;
         }

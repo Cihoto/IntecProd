@@ -5,7 +5,7 @@
     <div class="float-end">
         <p>
             Creado por
-            <a href="#">Eduardo Aguirrebeña</a>
+            <a href="#">Intec</a>
         </p>
     </div>
 </div>

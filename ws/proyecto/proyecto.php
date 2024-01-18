@@ -848,7 +848,7 @@ function getOperEvents($empresa_id){
     LEFT JOIN comuna co on co.id = d.comuna_id 
     LEFT JOIN region re on re.id = co.region_id 
     WHERE p.empresa_id  = 1
-    AND p.status_id in(1,2)
+    AND p.status_id in(2)
     AND p.fecha_inicio IS NOT NULL
     AND p.fecha_inicio >= '$today' 
     GROUP BY p.id
@@ -915,9 +915,9 @@ function getSellsEvents($empresa_id){
     LEFT JOIN comuna co on co.id = d.comuna_id 
     LEFT JOIN region re on re.id = co.region_id 
     WHERE p.empresa_id  = 1
-    AND p.status_id = 4
+    AND p.status_id  in (2,4)
     AND p.fecha_inicio IS NOT NULL
-    AND p.fecha_inicio >= '$today' 
+    AND p.fecha_inicio >= '$today'
     GROUP BY p.id
 	ORDER BY p.fecha_inicio desc;";
 

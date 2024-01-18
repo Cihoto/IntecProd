@@ -27,17 +27,10 @@ async function printAllProjects(){
     // const table = $('#allProjectTable-list').DataTable();
     
     if ($.fn.DataTable.isDataTable('#allProjectTable-list')) {
-        $('#allProjectTable-list tbody tr').remove();
-
-
-
+        $('#allProjectTable-list').DataTable()
+        .clear()
+        .draw();
         $('#allProjectTable-list').DataTable().destroy();
-
-
-        // $('#allProjectTable-list > tr').each((key, element) => {
-        //     $(element).remove();
-        //   })
-        // table.clear();
     }
     
 
