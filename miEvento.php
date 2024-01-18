@@ -1,6 +1,7 @@
 <?php
 $active = "eventos";
 $title = "Mis Eventos";
+$clientDash  = false;
 require_once('./includes/Constantes/personalIds.php')
 ?>
 <!DOCTYPE html>
