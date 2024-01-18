@@ -12,7 +12,7 @@ $(document).ready(async function(){
     const incomeResumePercentajes = getDifferencePercentajeBetweenData_CurMonth_LastMonth(resumeDataIncome.last_month_income,resumeDataIncome.actual_income_month)
     setIncomeResumePercentaje(incomeResumePercentajes);
     let request = {
-        "status": "all",
+        "status": "2",
         "date":'',
         "type":''
     }
