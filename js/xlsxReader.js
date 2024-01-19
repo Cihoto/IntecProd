@@ -58,7 +58,7 @@ const excelInput = document.getElementById('excel_input');
 async function xlsxReadandWrite(arrayHead){
     // console.log(excelInput)
     // console.log(excelInput)
-    // console.log(excelInput)
+    console.log(excelInput)
     // console.log(excelInput)
     // console.log(excelInput)
     // console.log(excelInput)
