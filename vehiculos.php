@@ -104,7 +104,7 @@ $active = 'vehiculos';
             </div>
 
             
-            <header class="mb-3">
+            <!-- <header class="mb-3">
                 <a href="#" class="burger-btn d-block d-xl-none">
                     <i class="bi bi-justify fs-3"></i>
                 </a>
@@ -116,10 +116,10 @@ $active = 'vehiculos';
                 </div>
             </div>
 
-            <input type="number" class="">
+            <input type="number" class=""> -->
 
-            <?php if (in_array("13", $rol_id) || in_array("1", $rol_id) ||  in_array("2", $rol_id)):?>
-            <div class="col-8 col-lg-3 col-sm-4">
+            <!-- pp  (in_array("13", $rol_id) || in_array("1", $rol_id) ||  in_array("2", $rol_id))? -->
+            <!-- <div class="col-8 col-lg-3 col-sm-4">
                 <div class="card">
                     <div class="row">
                         <div class="col-6">
@@ -135,13 +135,11 @@ $active = 'vehiculos';
                         </div>
                     </div>
                 </div>
-            </div>
-            <?php endif;?>
-            <div class="page-content">
-                <!-- aca va la info de la pagina -->
+            </div> -->
+            <!-- ;?> -->
+            <!-- <div class="page-content">
 
                 <div class="col-12">
-                    <!-- primer  -->
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
@@ -158,7 +156,7 @@ $active = 'vehiculos';
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php
+                                            <
                                             foreach ($vehiculos as $vehiculo) {
                                                 echo '<tr>';
                                                 echo '<td class="id_vehiculo" style="display:none">' . $vehiculo->id . '</td>';
@@ -187,11 +185,10 @@ $active = 'vehiculos';
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
 
-        <!-- Modal agregar personal masiva -->
-        <div class="modal fade" id="masivavehicleCreation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <!-- <div class="modal fade" id="masivavehicleCreation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -220,11 +217,11 @@ $active = 'vehiculos';
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- FIN modal masiva -->
 
         <!-- modal agregar personal -->
-        <div class="modal fade text-left w-100" id="xlarge" tabindex="-1" role="dialog" aria-hidden="true">
+        <!-- <div class="modal fade text-left w-100" id="xlarge" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -267,7 +264,7 @@ $active = 'vehiculos';
                     </form>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- end modal -->
         <?php require_once('./includes/footer.php') ?>
     </div>
