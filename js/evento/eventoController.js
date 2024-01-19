@@ -512,16 +512,13 @@ $('#clienteForm').validate({
     $("#clienteModal ").modal('hide');
   }
 })
-})
-
-
-
-    
+});
 
 //OPEN MODAL DIRECCION
 $('#direccionInput').on('click', function() {
   $('#direccionModal').modal('show');
 })
+
 //OPEN MODAL CLIENTE
 $('#inputNombreCliente').on('click', function() {
   // $('#clienteModal').modal('show');

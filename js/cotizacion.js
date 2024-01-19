@@ -7,9 +7,6 @@ $('#generateQuotes').on('click',async function(){
     $('#footerInformation').addClass('active');
 
     const PROJECT_IS_CREATED = await SaveOrUpdateEvent();
-    console.log("PRIMERA ITERACION",PROJECT_IS_CREATED);
-    console.log("PRIMERA ITERACION",PROJECT_IS_CREATED);
-    console.log("PRIMERA ITERACION",PROJECT_IS_CREATED);
 
     if(PROJECT_IS_CREATED === false){
 
@@ -24,9 +21,7 @@ $('#generateQuotes').on('click',async function(){
     }
     
     setTimeout(() => {
-
         preparingDocumentBottomBar("Generando Cotización");
-        
     }, 1700);
 
     const date =  new Date();
@@ -34,22 +29,12 @@ $('#generateQuotes').on('click',async function(){
     const year = date.getFullYear();
     const day = date.getDay();
 
-    // console.log("date",date);
-    // console.log("date",month);
-    // console.log("date",year);
-    // console.log("date",day);
-
     const fileNameData = {
         'month' :month,
         'year' :year,
         'day' :day
-    }
+    };
 
-
-    // console.log("ESTOY GENERANDO UNA COTIZACIÓN",_categoriesandsubcategories);
-    // console.log("ESTOY GENERANDO UNA COTIZACIÓN",totalPerItem.equipos);
-    // console.log("ESTOY GENERANDO UNA COTIZACIÓN",_selectedProducts);
-    // console.log("ESTOY GENERANDO UNA COTIZACIÓN",_selectedOthersProducts);
 
     let personal = "";
     let tr = "";
@@ -155,22 +140,22 @@ $('#generateQuotes').on('click',async function(){
     const quote_resume =`<table id="invoice-table-resume">
         <thead>
             <tr>
-                <th style="" class="quote-resume-heading p-15"><p>Total neto del servicio:</p></th>
-                <th style="text-align:center;">${CLPFormatter(totalVenta)}</th>
+                <th style="font-family: 'Roboto', sans-serif;" class="quote-resume-heading p-15"><p>Total neto del servicio:</p></th>
+                <th style="font-family: 'Roboto', sans-serif; text-align:center;">${CLPFormatter(totalVenta)}</th>
             </tr>
             <tr>
-                <th style="" class="quote-resume-heading p-15"><p>IVA:</p></th>
-                <th style="text-align:center;">${CLPFormatter(iva)}</th>
+                <th style="font-family: 'Roboto', sans-serif; " class="quote-resume-heading p-15"><p>IVA:</p></th>
+                <th style="font-family: 'Roboto', sans-serif; text-align:center;">${CLPFormatter(iva)}</th>
             </tr>
             <tr class="totalVenta">
-                <th style="" class="quote-resume-heading total-quote p-15"><p>Total:</p></th>
-                <th style="text-align:center;" id="subNTotalResume">${CLPFormatter(totalPlusIva)}</th>
+                <th style="font-family: 'Roboto', sans-serif; " class="quote-resume-heading total-quote p-15"><p>Total:</p></th>
+                <th style="font-family: 'Roboto', sans-serif; text-align:center;" id="subNTotalResume">${CLPFormatter(totalPlusIva)}</th>
             </tr>
         </thead>
     </table>`
 
 
-console.log("_selectedClient",_selectedClient);
+// console.log("_selectedClient",_selectedClient);
     $.ajax({
         type: "POST",
         url: "ws/BussinessDocuments/quotesGenerator.php",
@@ -189,14 +174,14 @@ console.log("_selectedClient",_selectedClient);
             preparingDocumentDownload("Descargando Cotización");
             setTimeout(()=>{
                 $('#downloadPdf a').remove();
-                console.log("response", response);
+                // console.log("response", response);
                 // let a = `<a target="_blank" id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/quotes/${response.name}"></a>`
                 let a = `<a id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/quotes/${response.name}" download></a>`
                 $('#downloadPdf').append(a);
                 $('#dwnload')[0].click();
             },1000)
         },error:  function(error){
-            console.log("error",error.responseText)
+            // console.log("error",error.responseText)
         }
     })
     .then(()=>{

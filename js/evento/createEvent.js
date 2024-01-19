@@ -32,6 +32,12 @@ $('#inputProjectName').on('click', function () {
 
 async function SaveOrUpdateEvent() {
 
+
+  clearBottomBar();
+  initBottomBar();
+  $('#footerInformation').addClass('active');
+  preparingDocumentBottomBar("Guardando cambios");
+
   // SET event_data.event_id = projectDates.project_id
 
   if (projectDates.project_id !== "") {
@@ -195,7 +201,10 @@ const requestRendicion = allRendiciones
   }
   const responseIncomeAndCosts =  await insertOrUpdateIncomeAndCosts(REQUEST_INCOME_COST);
 
-
+  changesCompleted();
+  setTimeout(()=>{
+    closeBottomBar();
+  },1500)
   return true;
 }
 

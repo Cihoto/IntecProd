@@ -2,6 +2,7 @@
 $active = "eventos";
 $title = "Mis Eventos";
 $clientDash  = false;
+$copEvent = true;
 require_once('./includes/Constantes/personalIds.php')
 ?>
 <!DOCTYPE html>
@@ -242,16 +243,7 @@ require_once('./includes/head.php');
             }
         })
 
-        $('.event-status-btn').on('click', function() {
-            const BUTTON_CLASS = $(this).attr('class').split(" ")[1];
-            const ACTUAL_CLASS = $('#status-button').attr('class').split(" ")[1];
-            const STATUS_ID = $(this).attr('status_id');
-            $('#status-button').removeClass(ACTUAL_CLASS);
-            $('#status-button').addClass(BUTTON_CLASS);
-            $('#status-button').find('p').text(BUTTON_CLASS);
-            $('#status-button').attr('status_id', STATUS_ID);
-            console.log($('#status-button').attr('status_id'));
-        });
+
 
         $('.saveDraft').on('click', function() {
             // $('#hiddenAddProject').trigger('click');
@@ -262,6 +254,17 @@ require_once('./includes/head.php');
             SaveOrUpdateEvent();
         });
     })
+
+    $('.event-status-btn').on('click', function() {
+            const BUTTON_CLASS = $(this).attr('class').split(" ")[1];
+            const ACTUAL_CLASS = $('#status-button').attr('class').split(" ")[1];
+            const STATUS_ID = $(this).attr('status_id');
+            $('#status-button').removeClass(ACTUAL_CLASS);
+            $('#status-button').addClass(BUTTON_CLASS);
+            $('#status-button').find('p').text(BUTTON_CLASS);
+            $('#status-button').attr('status_id', STATUS_ID);
+            console.log($('#status-button').attr('status_id'));
+        });
 
     $(document).keydown(function(event) {
         if (event.which === 13) {

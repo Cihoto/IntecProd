@@ -6,7 +6,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
             <circle cx="6" cy="6" r="6" fill="#069B99" />
         </svg>
-        <p class="header-P">Aquí puedes agregar un nuevo cliente</p>
+        <?php if(!isset($copEvent)):?>
+            <p class="header-P">Aquí puedes agregar un nuevo cliente</p>
+        <?php else:?>
+            <p class="header-P">Aquí puedes agregar y/o seleccionar un cliente para el evento</p>
+        <?php endif;?>
     </div>
     <form id="sideclientForm" style="margin: 15px; height: 100%;">
 
@@ -22,45 +26,50 @@
             </div>
         <?php endif;?>
             <hr>
+            <div class="col-12 d-flex justify-content-end" style="height: 24px;display: none;">
+                    <button type="button" id="enableEditCliente" style="border: none;background-color: white;">
+                        <img src="../../assets/svg/edit.svg" alt="">
+                    </button>
+                </div>
             <div style="display: flex;flex-direction: column;justify-content: space-between;">
                 <div class="row" style="margin-bottom: 15px;">
                     <div class="form-group col-7">
                         <label for="clientNameorDesc" class="inputLabel">*Nombre o descripción</label>
-                        <input <?php echo $disabled; ?> id="clientNameorDesc" name="clientNameorDesc" type="text" class="form-control input-lg s-Input" />
+                        <input readonly disabled id="clientNameorDesc" name="clientNameorDesc" type="text" class="form-control input-lg s-Input" />
                     </div>
                     <div class="form-group col-5">
                         <label for="clientRazonSocial" class="inputLabel">*Razón Social</label>
-                        <input <?php echo $disabled; ?> id="clientRazonSocial" name="clientRazonSocial" type="text" class="form-control input-lg s-Input" value="" />
+                        <input readonly disabled id="clientRazonSocial" name="clientRazonSocial" type="text" class="form-control input-lg s-Input" value="" />
                     </div>
                     <div class="form-group col-7" style="margin: 0px !important;">
                         <label for="clientRut" class="inputLabel">*Rut</label>
-                        <input <?php echo $disabled; ?> id="clientRut" name="clientRut" type="text" class="form-control input-lg s-Input" value="" style="margin-right: 0px!important;" />
+                        <input readonly disabled id="clientRut" name="clientRut" type="text" class="form-control input-lg s-Input" value="" style="margin-right: 0px!important;" />
                     </div>
                 </div>
                 <hr />
                 <div class="row" style="margin-top: 10px;">
                     <div class="form-group col-7">
                         <label for="clientContacto" class="inputLabel">*Contacto</label>
-                        <input <?php echo $disabled; ?> id="clientContacto" name="clientContacto" type="text" class="form-control input-lg s-Input" />
+                        <input readonly disabled id="clientContacto" name="clientContacto" type="text" class="form-control input-lg s-Input" />
                     </div>
                     <div class="form-group col-5">
                         <label for="clientCorreo" class="inputLabel">*Correo</label>
-                        <input <?php echo $disabled; ?> id="clientCorreo" name="clientCorreo" type="text" class="form-control input-lg s-Input" value="" />
+                        <input readonly disabled id="clientCorreo" name="clientCorreo" type="text" class="form-control input-lg s-Input" value="" />
                     </div>
                     <div class="form-group col-7" style="margin: 0px !important;">
                         <label for="clientTelefono" class="inputLabel">*Teléfono</label>
-                        <input <?php echo $disabled; ?> id="clientTelefono" name="clientTelefono" type="text" class="form-control input-lg s-Input" value="" style="margin-right: 0px!important;" />
+                        <input readonly disabled id="clientTelefono" name="clientTelefono" type="text" class="form-control input-lg s-Input" value="" style="margin-right: 0px!important;" />
                     </div>
                 </div>
                 <?php if (in_array("7", $rol_id) || in_array("1", $rol_id) || in_array("2", $rol_id)) : ?>
                     <?php if($clientDash === false):?>
-                        <div style="display: flex; margin-top: 250px; justify-content:space-between;">
+                        <div style="display: none; margin-top: 250px; justify-content:space-between;" id="formConfirmSection">
                     <?php else: ?>
                         <div style="display: flex; margin-top: 310px; justify-content:space-between;">
                     <?php endif; ?>
-                        <button type="button" class="s-Button" style="justify-self: start;" onclick="resetClientForm()">
+                        <!-- <button type="button" class="s-Button" style="justify-self: start;" onclick="resetClientForm()">
                             <p class="s-P">Limpiar Formulario</p>
-                        </button>
+                        </button> -->
                         <button type="submit" id="addCliente" class="s-Button">
                             <i class="bx bx-check d-block d-sm-none"></i>
                             <p class="s-P">Guardar</p>

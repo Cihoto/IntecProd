@@ -20,9 +20,6 @@ async function getEvents(empresa_id){
 }
 
 async function printAllProjects(){
-
-    
-
     
     // const table = $('#allProjectTable-list').DataTable();
     
@@ -130,6 +127,7 @@ async function printAllProjects(){
     if (!$.fn.DataTable.isDataTable('#allProjectTable-list')) {
        
         $('#allProjectTable-list').DataTable({
+            order: [[2, 'asc']]
             // fixedHeader: true
         })
     }

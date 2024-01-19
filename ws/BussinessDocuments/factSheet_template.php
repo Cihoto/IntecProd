@@ -316,7 +316,8 @@
                     font-weight: 700;
                     line-height: normal;
                     letter-spacing: 0.6px;">
-                    Cotización </p>
+                    Cotización 
+                </p>
                     <table style="margin-left: 110px;margin-top: -5px;">
                         <thead>
                             <tr>

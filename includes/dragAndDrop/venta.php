@@ -108,7 +108,7 @@
             <p class="s-P-g" style="margin-top: 5px;">Generar cotización</p>
             <img src="../../assets/svg/downloadIcon.svg" alt="">
         </button>
-        <button class="s-Button" id="openCostos" style="width: 170px;margin-top: 10px;">
+        <button class="s-Button createOrContinue" id="" style="width: 170px;margin-top: 10px;">
             <p class="s-P">guardar</p>
         </button>
     </div>

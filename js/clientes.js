@@ -27,71 +27,133 @@ function FillClientes(empresaId) {
 
       $('#clienteSelect').append(new Option("", ""));
       response.forEach(client => {
-
-
         let clientName = client.nombre_fantasia;
-
         if (clientName === "" || clientName === null) {
           clientName = client.nombre_cliente
         }
-
         let opt = $('#clienteSelect').append(new Option(clientName, client.cliente_id))
         opt.addClass()
-      })
+      });
+      if(event_data.client_id.length !== 0){
+        $('#clienteSelect').val(event_data.client_id);
+        $('#clienteSelect').change();
+        
+      }
     }
   })
-
 }
+
+let canModify = true; 
+
+function showEditClientControls(){
+  canModify = true;
+  $('#enableEditCliente').css("display","flex");
+  $('#addCliente p').text("Modificar y seleccionar");
+  $('#formConfirmSection').css("display","none");
+  disableClientEdit();
+}
+function hideEditClientControls(){
+  canModify = false;
+  $('#enableEditCliente').css("display","none");
+  $('#addCliente p').text("Crear y seleccionar");
+  $('#formConfirmSection').css("display","flex");
+  enableClientEdit(); 
+}
+
+function enableClientEdit(){
+  $('#sideclientForm input').attr("readonly",false);
+  $('#sideclientForm input').attr("disabled",false);
+}
+function disableClientEdit(){
+  $('#sideclientForm input').attr("readonly",true);
+  $('#sideclientForm input').attr("disabled",true);
+}
+
+$('#enableEditCliente').on("click",function(){
+
+  if(!canModify){
+    return;
+  }
+  enableClientEdit();
+  $('#formConfirmSection').css("display","flex");
+});
+
+
 
 $('#clienteSelect').on('change', function () {
 
   const CLIENTE_ID = $(this).val();
 
-
-  if (CLIENTE_ID === "") {
+  if (CLIENTE_ID === "" ) {
     resetClientForm();
+    hideEditClientControls();
+    resetClientSelection();
     return;
   }
   console.log(CLIENTE_ID);
+  // $('#addCliente p').text("Seleccionar");
+  showEditClientControls();
+  
+  if (CLIENTE_ID !== "" ) {
 
-  $.ajax({
-    type: "POST",
-    url: "ws/cliente/cliente.php",
-    dataType: 'json',
-    data: JSON.stringify({
-      "tipo": "getClienteById",
-      request: CLIENTE_ID
-    }),
-    success: function (response) {
-
-      // console.log(response);
-      // console.log(response.cliente);
-
-      setSelectedClient(response.cliente);
-      console.log(_selectedClient);
-
-      response.cliente.forEach(cli => {
-        $('#idClienteModalResume').text(cli.id);
-        $('#clientNameorDesc').val(cli.nombre_fantasia);
-        $('#clientRazonSocial').val(cli.razon_social);
-        $('#clientRut').val(cli.rut);
-        $('#clientContacto').val(cli.persona_contacto);
-        $('#clientCorreo').val(cli.email);
-        $('#clientTelefono').val(cli.telefono);
-      })
-
-
-    }
-  })
+    $.ajax({
+      type: "POST",
+      url: "ws/cliente/cliente.php",
+      dataType: 'json',
+      data: JSON.stringify({
+        "tipo": "getClienteById",
+        request: CLIENTE_ID
+      }),
+      success: function (response) {
+  
+        // console.log(response);
+        // console.log(response.cliente);
+        
+        console.log("AJAX",_selectedClient);
+  
+        response.cliente.forEach(cli => {
+          $('#idClienteModalResume').text(cli.id);
+          $('#clientNameorDesc').val(cli.nombre_fantasia);
+          $('#clientRazonSocial').val(cli.razon_social);
+          $('#clientRut').val(cli.rut);
+          $('#clientContacto').val(cli.persona_contacto);
+          $('#clientCorreo').val(cli.email);
+          $('#clientTelefono').val(cli.telefono);
+        })
+  
+        setSelectedClient(response.cliente);
+  
+  
+      }
+    })
+  }else{
+    resetClientSelection();
+  }
 })
 
 function setSelectedClient(selectedClient) {
   _selectedClient = [];
-  if (typeof event_data !== 'undefined') {
 
-    event_data.client_id = selectedClient;
+  if (typeof event_data !== 'undefined') {
+    
+    event_data.client_id = selectedClient[0].id;
   }
   _selectedClient = selectedClient;
+  
+  $('#inputNombreCliente').val(_selectedClient[0].nombre_fantasia);
+  console.log(_selectedClient[0].nombre_fantasia);
+  console.log(_selectedClient);
+
+  console.log("FUNCTION",_selectedClient);
+
+}
+
+function resetClientSelection() {
+  _selectedClient = [];
+  if (typeof event_data !== 'undefined') {
+    event_data.client_id = "";
+  }
+  $('#inputNombreCliente').val("");
 }
 
 function CleanCliente() {

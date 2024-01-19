@@ -35,14 +35,23 @@
     // echo json_encode(dirname($path,2));
     // $dirname = dirname($path,2);
 
-
+    // $fontDirectory = '/Roboto-Medium.ttf';
     $options = new Options();
     // $options->set("chroot",realpath(''));
     $options->setChroot(__DIR__);
+    // $options->setChroot($fontDirectory);
     $options->set("isRemoteEnabled",true);
     $options->set("isPhpEnabled",true);
+    $options->set(array('tempDir'=>'/srv/www/xyz/tmp'));
+
+
+  
 
     $dompdf = new Dompdf($options);
+    // $pdf->getFontMetrics()->registerFont(
+    //     ['family' => 'Roboto', 'style' => 'sans-serif', 'weight' => 'normal'],
+    //     __DIR__ . '/Roboto-Medium.ttf'
+    // );
     ob_start();
     require(__DIR__.'/pdfTemplate-firstPage.php');
     $html = ob_get_contents();

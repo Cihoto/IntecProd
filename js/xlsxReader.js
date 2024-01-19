@@ -56,7 +56,12 @@ function getArrayLength(countableArray){
 
 const excelInput = document.getElementById('excel_input');
 async function xlsxReadandWrite(arrayHead){
-
+    // console.log(excelInput)
+    // console.log(excelInput)
+    // console.log(excelInput)
+    // console.log(excelInput)
+    // console.log(excelInput)
+    // console.log(excelInput)
     // try{
         const content = await readXlsxFile(excelInput.files[0])
         const arrayCount = getArrayLength(arrayHead.xlsxData)

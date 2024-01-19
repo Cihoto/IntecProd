@@ -52,6 +52,14 @@ function eventWasCreatedBottomBar(wasCreated){
     $('#footerInformation').append(SUCCESS);
 }
 
+function changesCompleted(){
+    clearBottomBar();
+    let confirmText = "Cambios confirmados";
+
+    $('#footerInformation p').text(confirmText);
+    $('#footerInformation').append(SUCCESS);
+}
+
 function initBottomBar(){
     let confirmText = "";
     
@@ -62,7 +70,6 @@ function initBottomBar(){
     }
     $('#footerInformation p').text(confirmText);
     $('#footerInformation').append(SPINNER);
-    
 }
 
 function preparingDocumentDownload(downloadText){

@@ -158,10 +158,13 @@ mostrar saldo total en pestaña de dentro del recinto.
 
 
 
-asc en lista dfe eventos
+asc en lista dfe eventos; LISTO
+
+solo confirmados en operaciones; LISTO 
+
+rescatar nombre usuiario en bd para inicio dashboard;  LISTO
+
+fix letras de COTIZACION fix nombre dir de la COTIZACION;
 
 
-
-solo ocnfiurmador en operaciones
-
-rescatar nombr usuiario en bd para inicio dashboard
+fix income de la cotizacion

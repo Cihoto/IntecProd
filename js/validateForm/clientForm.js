@@ -78,10 +78,34 @@ $('#sideclientForm').validate({
           }).showToast();
       }
       
-      setSelectedClient(response.client_id)
+      setSelectedClient(response.client_id);
+
+
+      $.ajax({
+        type: "POST",
+        url: "ws/cliente/cliente.php",
+        dataType: 'json',
+        data: JSON.stringify({
+          "tipo": "getClienteById",
+          request: response.client_id
+        }),
+        success: function (response) {
+        //   console.log("AJAX",_selectedClient);
+          response.cliente.forEach(cli => {
+            $('#idClienteModalResume').text(cli.id);
+            $('#clientNameorDesc').val(cli.nombre_fantasia);
+            $('#clientRazonSocial').val(cli.razon_social);
+            $('#clientRut').val(cli.rut);
+            $('#clientContacto').val(cli.persona_contacto);
+            $('#clientCorreo').val(cli.email);
+            $('#clientTelefono').val(cli.telefono);
+          });
+          setSelectedClient(response.cliente);
+        }
+      })
       resetClientForm()
       $("#clientSideMenu").removeClass('active');
-      cancelEdit()
+      cancelEdit();
     }
   });
 

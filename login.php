@@ -54,6 +54,7 @@
         var regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
         return regex.test(email);
     }
+
     function RemoveClassFromEmailInput(){
         if($('#emailInput').hasClass('success')){
             $('#emailInput').removeClass('success');
@@ -67,8 +68,8 @@
             $('#emailInput').removeClass('warning');
             $('#emailMessage').text('');
         }
-
     }
+
     function RemoveClassFromPassInput(){
         if($('#passInput').hasClass('err')){
             $('#passInput').removeClass('err')
@@ -78,10 +79,11 @@
 
     $('#emailInput').on('click',function(){
         RemoveClassFromEmailInput()
-    })
+    });
+
     $('#passInput').on('click',function(){
         RemoveClassFromPassInput()
-    })
+    });
 
     function SetEmailClass(classNameInput){
         console.log("CLASS TO CHANGE",classNameInput);
@@ -168,7 +170,6 @@
     $('#login').on('click', function() {
         let email = $('#emailInput').val();
         let pass = $('#passInput').val();
-        console.log(checkEmail(email));
 
         if(checkPass(pass) && checkEmail(email)){
             $.ajax({
@@ -184,7 +185,6 @@
                 }),
                 dataType: 'json',
                 success: async function(response){
-                    console.log(response);
                     if(response.success){
                         if(response.ref){
                             Swal.fire({

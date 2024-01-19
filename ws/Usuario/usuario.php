@@ -186,11 +186,7 @@ if ($_POST) {
         $rolesSession = [];
 
         $queryGetLogin = "SELECT * FROM usuario u WHERE LOWER(user) = LOWER('$correo') and LOWER(password)= LOWER('$pass')";
-        // $queryGetLogin = "SELECT u.empresa_id,u.id  as usuario_id, per.email, u.password FROM usuario u 
-        // INNER JOIN personal p on p.usuario_id = u.id 
-        // INNER JOIN persona per on per.id = p.persona_id 
-        // WHERE LOWER(per.email) = LOWER('$correo') and LOWER(u.password) = LOWER('$pass');";
-        // return $queryGetLogin;
+
         if($responseBd = $conn->mysqli->query($queryGetLogin)){
             if($responseBd->num_rows > 0){
 
@@ -199,8 +195,18 @@ if ($_POST) {
                     $empresa_id = $dataReponseUser->empresa_id;
                 }
                 $personalIds = [];
+                $user_name = [];
 
-                $queryGetPersonalId = "SELECT per.id as 'persona_id', u.id as 'usuario_id',p.id as 'personal_id' FROM personal p 
+                $queryGetPersonalId = "SELECT per.id as 'persona_id',
+                 u.id as 'usuario_id',
+                 p.id as 'personal_id',
+                 per.nombre as user_name
+                 FROM personal p 
+                INNER JOIN usuario u on u.id = p.usuario_id 
+                INNER JOIN persona per on per.id = p.persona_id 
+                where u.id = $usuario_id;";
+                $queryGetUserNname = "SELECT per.nombre as user_name
+                 FROM personal p 
                 INNER JOIN usuario u on u.id = p.usuario_id 
                 INNER JOIN persona per on per.id = p.persona_id 
                 where u.id = $usuario_id;";
@@ -211,6 +217,12 @@ if ($_POST) {
                         $personalIds [] = $row; 
                     }
                     $_SESSION['personal_ids'] = $personalIds;
+                }
+                if($responseBd = $conn->mysqli->query($queryGetUserNname)){
+                    while($row = $responseBd->fetch_object()){
+                        $user_name = $row->user_name; 
+                    }
+                    $_SESSION['user_name'] = $user_name;
                 }
 
                 $queryGetRol = "SELECT r.id as rol_id, r.rol, u.id FROM usuario u  

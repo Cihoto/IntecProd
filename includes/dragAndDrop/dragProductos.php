@@ -36,7 +36,7 @@
         </div>
 
         <div class="saveProject">
-            <button class="s-Button" id="openPersonal" style="width: 170px;">
+            <button class="s-Button createOrContinue" id="" style="width: 170px;">
                 <p class="s-P">guardar</p>
             </button>
 

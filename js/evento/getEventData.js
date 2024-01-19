@@ -15,7 +15,7 @@ async function getAllProjectData(event_id, empresa_id) {
         }),
         dataType: 'json',
         success: function (response) {
-            console.log("event_Data", response);
+            // console.log("event_Data", response);
         }
     });
 
@@ -23,12 +23,9 @@ async function getAllProjectData(event_id, empresa_id) {
         window.location.href = "/index.php"
     }
 
-    console.log("response get data", responseGetData);
-
 
     responseGetData.dataProject.forEach(data => {
         let nombre_cliente;
-        console.table("response.asignados.cliente", data);
 
         if (data.nombre_proyecto === "" || data.nombre_proyecto === undefined || data.nombre_proyecto === null) {
             data.nombre_proyecto = "";
@@ -59,11 +56,10 @@ async function getAllProjectData(event_id, empresa_id) {
         $('#commentProjectArea').val(data.comentarios);
         // $('#estadoProyecto').text(data.estado);
 
-        console.log($(`.event-status-btn [event_id=${data.estado}]`), $(`.event-status-btn[status_id='${data.estado}']`))
-        
+
         const button = $(`.event-status-btn[status_id='${data.estado}']`);
 
-        $(button)[0].click()
+        $(button)[0].click();
     });
 
     if(responseGetData.asignados.schedules.length > 0){
@@ -87,13 +83,9 @@ async function getAllProjectData(event_id, empresa_id) {
     }
 
     if (responseGetData.asignados.cliente.length > 0) {
+        // console.log("responseGetData.asignados.cliente",responseGetData.asignados.cliente);
 
-        
-        console.log("responseGetData.asignados.cliente",responseGetData.asignados.cliente);
-        console.log("responseGetData.asignados.cliente",responseGetData.asignados.cliente);
-        console.log("responseGetData.asignados.cliente",responseGetData.asignados.cliente);
         responseGetData.asignados.cliente.forEach(cliente => {
-
             let name = "";
             if(cliente.nombre_persona !== "" || cliente.nombre_persona !==null){
                 name = cliente.persona_contacto
@@ -140,9 +132,9 @@ async function getAllProjectData(event_id, empresa_id) {
 
     if (responseGetData.asignados.assignedPackages.length > 0) {
         
-        console.log("responseGetData.asignados.assignedPackages",responseGetData.asignados.assignedPackages)
+        // console.log("responseGetData.asignados.assignedPackages",responseGetData.asignados.assignedPackages)
         responseGetData.asignados.assignedPackages.forEach(async (package) => {
-            console.log("package",package)
+            // console.log("package",package)
             // const productsOnPackage = await GetPackageDetails(package.paquete_id);
             // const productsToAdd = productsOnPackage.products.map((productsOnPackage)=>{
             //     return{
@@ -239,8 +231,7 @@ async function getAllProjectData(event_id, empresa_id) {
 
     if(responseGetData.asignados.files.length > 0){
         responseGetData.asignados.files.forEach((file)=>{
-            console.log(`../ws/BussinessDocuments/documents/buss${EMPRESA_ID}/Ev${event_data.event_id}/bsd${file.name}`)
-
+            // console.log(`../ws/BussinessDocuments/documents/buss${EMPRESA_ID}/Ev${event_data.event_id}/bsd${file.name}`)
             let fileContainer = `<div class="file-container">
                 <i class="fa-regular fa-file"></i>
                 <a href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/Ev${event_data.event_id}/bsd${file.name}" download>${file.name}</a>

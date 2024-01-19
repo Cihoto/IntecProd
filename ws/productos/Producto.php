@@ -29,6 +29,23 @@ if ($_POST) {
             $productos = getProductos($empresaId);
             echo json_encode($productos);
             break;
+        case 'getAllMyProductsToList':
+            // Recibe el parámetro empresaId
+            $empresaId = $data->empresaId;
+            
+            // Llama a la función getProductos y devuelve el resultado
+            $productos = getAllMyProductsToList($empresaId);
+            echo json_encode($productos);
+            break;
+        case 'customProdSearch':
+            // Recibe el parámetro empresaId
+            $request = $data->request;
+            $empresaId = $data->empresaId;
+            
+            // Llama a la función getProductos y devuelve el resultado
+            $productos = customProdSearch($request, $empresaId);
+            echo json_encode($productos);
+            break;
         
         case 'GetProductDataById':
             // Recibe el parámetro empresaId
@@ -105,6 +122,13 @@ if ($_POST) {
             $request = $data->request;
             // Llama a la función addProd y devuelve el resultado
             $response = assignOtherProdsToEvent($request);
+            echo json_encode($response);
+            break;
+        case 'getCatsAndSubCatsByBussiness':
+            // Recibe el parámetro jsonCreateProd
+            $empresa_id = $data->empresa_id;
+            // Llama a la función addProd y devuelve el resultado
+            $response = getCatsAndSubCatsByBussiness($empresa_id);
             echo json_encode($response);
             break;
         default:
@@ -184,6 +208,79 @@ if ($_POST) {
         }
         $conn->desconectar();
         return $productos;
+    }
+    function getAllMyProductsToList($empresaId){
+        $conn = new bd();
+        $conn->conectar();
+
+        $productos = [];
+        $queryProductos = "SELECT p.nombre as nombre_producto, c.nombre as categoria, 
+        i.item as subcategoria, inv.cantidad as stock, p.precio_arriendo 
+        FROM producto p 
+        INNER JOIN empresa e on e.id = p.empresa_id 
+        INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id 
+        INNER JOIN categoria c on c.id = chi.categoria_id 
+        INNER JOIN item i on i.id  = chi.item_id 
+        INNER JOIN inventario inv on inv.producto_id  = p.id 
+        WHERE e.id = $empresaId";
+
+        if($responseProductos = $conn->mysqli->query($queryProductos)){
+            while($dataProductos = $responseProductos->fetch_object()){
+                $productos[] = $dataProductos;
+            }
+        }
+        $conn->desconectar();
+        return $productos;
+    }
+    function customProdSearch($request, $empresaId){
+        $conn = new bd();
+        $conn->conectar();
+
+        $categoriaWhere = "";
+        $subcategoriaWhere = "";
+
+        if($request->cat !== ""){
+            $categoriaWhere = "AND c.id = $request->cat";
+        }
+        if($request->cat === "all"){
+            $categoriaWhere = "  ";
+        }
+
+        if($request->subcat !== ""){
+            $subcategoriaWhere = "AND i.id = $request->subcat";
+        }
+        if($request->subcat === "all"){
+            $subcategoriaWhere = "  ";
+        }
+
+       
+
+
+        if($request->subcat !== "" || $request->subcat !== null){$request->subcat = "AND i.id = $request->subcat"; }
+
+        $productos = [];
+        $queryProductos = "SELECT p.nombre as nombre_producto, c.nombre as categoria,
+         i.item as subcategoria, inv.cantidad as stock, p.precio_arriendo 
+         FROM producto p INNER JOIN empresa e on e.id = p.empresa_id 
+         INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id 
+         INNER JOIN categoria c on c.id = chi.categoria_id 
+         INNER JOIN item i on i.id  = chi.item_id 
+         INNER JOIN inventario inv on inv.producto_id  = p.id 
+         WHERE e.id = $empresaId  $categoriaWhere $subcategoriaWhere";
+
+        // return array($queryProductos);
+
+        if($responseProductos = $conn->mysqli->query($queryProductos)){
+            while($dataProductos = $responseProductos->fetch_object()){
+                $productos[] = $dataProductos;
+            }
+            $conn->desconectar();
+            return array("success"=>true,"data"=>$productos);
+        }else{
+            $conn->desconectar();
+            return array("error"=>true);
+
+        }
     }
 
     function GetProductDataById($product_id){
@@ -531,6 +628,41 @@ if ($_POST) {
             return array("error"=>true,"message"=>"Others Prods hasn't been assigned");
         }
 
+
+    }
+
+
+    function getCatsAndSubCatsByBussiness($empresa_id){
+        $conn = new bd();
+        $conn->conectar();
+
+        $categorias = [];
+        $subCategorias = [];
+
+
+        $queryCategorias = "SELECT * FROM categoria c WHERE c.empresa_id = $empresa_id";
+
+        $querySubcategorias = "SELECT i.item , c.nombre, i.id subcat_id, c.id as cat_id  from item i 
+        INNER JOIN categoria_has_item chi on chi.item_id = i.id 
+        INNER JOIN categoria c on c.id =chi.categoria_id 
+        INNER JOIN producto p on p.categoria_has_item_id = chi.id
+        where c.empresa_id = $empresa_id
+        group by i.id;";
+
+
+        if($result = $conn->mysqli->query($queryCategorias)){
+            while($data = $result->fetch_object()){
+                $categorias [] =$data;
+            }
+        }
+
+        if($result = $conn->mysqli->query($querySubcategorias)){
+            while($data = $result->fetch_object()){
+                $subCategorias [] = $data;
+            }
+        }
+
+        return array("success"=>true,"cats"=>$categorias, "subcats"=>$subCategorias);
 
     }
 ?>

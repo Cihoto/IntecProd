@@ -1,4 +1,5 @@
 <?php
+session_start();
 $isDetails = true;
 //Variables que manipulan condiciones if en Form proyecto
 $detalle = true;
@@ -38,7 +39,7 @@ $active = 'dashboard';
 
             <div class="welcome-container">
 
-              <p class="user-welcome">Hola, <strong class="user-name">Cote</strong></p>
+              <p class="user-welcome">Hola, <strong class="user-name"><?php echo $_SESSION['user_name']?></strong></p>
             </div>
             <p class="user-tip">Consulta el estado de tus eventos</p>
 
@@ -84,7 +85,6 @@ $active = 'dashboard';
                 <img src="./assets/svg/medal.svg" alt="">
               </div>
             </div>
-
           </div>
 
           <div id="dash-event-housing">

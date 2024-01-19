@@ -7,33 +7,23 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
     <style>
-        /* @page{
-            margin-top: 100px;
-            margin-bottom: 70px; 
-        }
-        header{
-            position: fixed;
-            left: 0px;
-            right: 0px;
-            height: 60px;
-            margin-top: -55px;
-        }
-        footer{
-            height: 50px;
-            margin-bottom: -50px;
-        } */
+          @import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i');
 
 
-        @font-face {
-            font-family:'Roboto',sans-serif;
+        /* @font-face {
+            font-family:'Roboto';
+            src: url("./Roboto-Medium.ttf") format('truetype');
             font-style: normal;
             font-weight: normal;
-            src: url('./PDF_fonts/Roboto-Medium.ttf') format('truetype');
-        }
+            font-variant: normal;
+        } */
 
-        body{
-            font-family: 'Roboto',sans-serif!important;
+        html, body, html * {
+            font-family: 'Roboto', sans-serif;
         }
         .svgLogo {
             position: absolute;
