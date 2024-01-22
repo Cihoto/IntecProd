@@ -170,7 +170,7 @@ require_once('./includes/head.php');
     <script src="./js/cotizacion.js"></script>
     <script src="./js/provider.js"></script>
     <script src="./js/map.js"></script>
-    <script src="./js/evento/createEvent.js?id=1212"> </script>
+    <script src="./js/evento/createEvent.js?version=1.0"> </script>
     <script src="./js/eventSchedule.js"></script>
     <script src="./js/filesUpload.js"></script>
     <script src="./js/evento/getEventData.js"></script>
@@ -192,6 +192,7 @@ require_once('./includes/head.php');
 
 
 <script>
+    
     let isProdQuantitySelected = false;
     let prodQuantityElementSelected = "";
     let is_open = false;
