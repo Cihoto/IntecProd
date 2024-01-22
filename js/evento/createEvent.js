@@ -196,7 +196,7 @@ const requestRendicion = allRendiciones
   // SAVE INCOME AND COSTS
   const REQUEST_INCOME_COST ={
     "event_id":event_data.event_id,
-    "ingreso":_totalIngresos ,
+    "ingreso": _totalIngresos ,
     "costo": _totalEgresos
   }
   const responseIncomeAndCosts =  await insertOrUpdateIncomeAndCosts(REQUEST_INCOME_COST);

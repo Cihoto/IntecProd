@@ -6,11 +6,11 @@ header_remove('Cache-Control');
 header_remove('Last-Modified');
 header_remove('Expires');
 
-// set header
-header('Expires: Thu, 1 Jan 1970 00:00:00 GMT');
-header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-header('Cache-Control: post-check=0, pre-check=0',false);
-header('Pragma: no-cache');
+header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 
 $active = "eventos";
 $title = "Mis Eventos";
@@ -170,7 +170,7 @@ require_once('./includes/head.php');
     <script src="./js/cotizacion.js"></script>
     <script src="./js/provider.js"></script>
     <script src="./js/map.js"></script>
-    <script src="./js/evento/createEvent.js"> </script>
+    <script src="./js/evento/createEvent.js?id=1212"> </script>
     <script src="./js/eventSchedule.js"></script>
     <script src="./js/filesUpload.js"></script>
     <script src="./js/evento/getEventData.js"></script>
