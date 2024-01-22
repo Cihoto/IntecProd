@@ -192,6 +192,7 @@ require_once('./includes/head.php');
 
 
 <script>
+    console.log(caches)
     
     let isProdQuantitySelected = false;
     let prodQuantityElementSelected = "";
