@@ -437,7 +437,7 @@ function setSubarriendoIfReady() {
         }
     });
 
-    console.log("_subRentsToAssign", _subRentsToAssign);
+    // console.log("_subRentsToAssign", _subRentsToAssign);
     setEgresos();
 }
 

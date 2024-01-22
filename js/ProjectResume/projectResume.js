@@ -124,6 +124,8 @@ function setEgresos(){
     $('#totalVehiculosExternos').text(CLPFormatter(totalExternos));
 
     let subArriendototal = 0;
+
+    $('#total-SubArriendosResume tbody tr').remove()
     _subRentsToAssign.forEach((subRent)=>{
         subArriendototal += parseInt(subRent.valor) ;
         let tr = `<tr>
@@ -133,15 +135,22 @@ function setEgresos(){
         </tr>`;
         $('#total-SubArriendosResume tbody').append(tr);
     });
+    _subRentsToAssign.forEach(({valor,detalle})=>{
+        console.log("valor",valor)
+        console.log("detalle",detalle)
+    });
     // section others costs
     $('#total-otherCostsResume tbody tr').remove()
     let totalOthersCosts = 0;
-    _allMyOtherCosts.forEach((cost)=>{
-        totalOthersCosts += parseInt(cost.monto); 
+    console.log("ALL MY OTHER COST")
+    console.log("ALL MY OTHER COST",_allMyOtherCosts)
+    console.log("ALL MY OTHER COST")
+    _allMyOtherCosts.forEach(({name,monto})=>{
+        totalOthersCosts += parseInt(monto); 
         let tr = `<tr>
             <td class="col-4"></td>
-            <td>${cost.detalle}</td>
-            <td>${CLPFormatter(cost.valor)}</td>
+            <td>${name}</td>
+            <td>${CLPFormatter(monto)}</td>
         </tr>`
         $('#total-otherCostsResume tbody').append(tr);
     });

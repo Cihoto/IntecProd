@@ -265,6 +265,7 @@ async function FillClientesTable_dash() {
   dataClientes.data.forEach((cliente, index) => {
 
     let name = "";
+    let correo = cliente.cli_correo;
     if (cliente.nombre_fantasia) {
 
       name = cliente.nombre_fantasia
@@ -277,10 +278,18 @@ async function FillClientesTable_dash() {
       name = '-'
     }
 
+    if(correo === "" || correo === null ){
+      correo = cliente.df_correo;
+    }
+    if(correo === "" || correo === null ){
+      correo = "-";
+    }
+    
+
     let tr = `<tr client_id="${cliente.cliente_id}">
       <td>${name}</td>
       <td>${cliente.rut_df}</td>
-      <td>${cliente.df_correo}</td>
+      <td>${correo}</td>
       <td>${cliente.event_quantity}</td>
       <td>${CLPFormatter(cliente.totalPerClient)}</td>
     </tr>`

@@ -9,16 +9,15 @@ $('#addNewRowOtherCosts').on('click',function(){
 
 
 function appendNewRowOtherCosts(detalle,cantidad,total){
+    
     let tr = `<tr other_cost_id = ${others_costs_temp_id}>
         <td><input type="text" class="nameOtherCost" value="${detalle}"></td>
         <td class=""><input type="text" class="cantidadOtherCost" value="${cantidad}"></td>
-        <td class=""><input type="text" class="totalOtherCost" value="${CLPFormatter(total)}"></td>
+        <td class=""><input type="text" class="totalOtherCost" value="${total === "" ? "":CLPFormatter(total)}"></td>
         <td style="width: 57px;" class="removeOtherCost"><img src="/assets/svg/trashCan.svg" alt=""></td>
     </tr>`;
     $('#otherCosts-table tbody').append(tr);
     others_costs_temp_id ++;
-
-    
 }   
 
 
@@ -31,6 +30,36 @@ $(document).on('blur','.cantidadOtherCost',function(){
 $(document).on('blur','.totalOtherCost',function(){
  checkIfOtherCostsRowIsReady($(this));
 })
+
+let lastOtherCostsValue = 0;
+$(document).on("click",".totalOtherCost",function(){
+    const CURRENT_VALUE = ClpUnformatter($(this).val());
+    lastSubArriendoValue = CURRENT_VALUE;
+    $(this).val("")
+})
+$(document).on("blur",".totalOtherCost",function(){
+    const CURRENT_VALUE = ClpUnformatter($(this).val());
+    if(CURRENT_VALUE === null ||  CURRENT_VALUE === "")
+    {
+        $(this).val(CLPFormatter(lastOtherCostsValue))
+        return
+    }
+    if(!isNumeric(CURRENT_VALUE) ){
+        Swal.fire({
+            "icon":"warning",
+            "title":"Ups!",
+            "text":"Ingrese un número",
+            "timer": 900
+        })
+
+        $(this).val(CLPFormatter(lastOtherCostsValue))
+        return;
+    }
+    
+    $(this).val(CLPFormatter(CURRENT_VALUE))
+
+})
+
 $(document).on('click','.removeOtherCost',function(){
  const OTHER_PROD = $(this).closest('tr').attr('other_cost_id')
  const TR = $(this).closest('tr');
@@ -53,10 +82,10 @@ function checkIfOtherCostsRowIsReady(el) {
             'temp_id':TEMP_ID,
             'name': $(element).find('.nameOtherCost').val(),
             'cantidad': $(element).find('.cantidadOtherCost').val(),
-            'monto': $(element).find('.totalOtherCost').val()
+            'monto': ClpUnformatter($(element).find('.totalOtherCost').val()) 
         });
+        console.log("SE HA PUSHEADO ESTO A LA LISTA",_allMyOtherCosts)
         rendicion_temp_id ++;
-    
     } else{
         const otherCostExistsOnList = _allMyOtherCosts.find((cost)=>{
             return cost.temp_id === TEMP_ID
