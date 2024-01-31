@@ -19,7 +19,6 @@ let _totalEgresos = 0;
 let _totalIngresos = 0;
 
 
-
 function setUtilidad(){
 
     console.log(allSelectedPersonal);

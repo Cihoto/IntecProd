@@ -79,9 +79,9 @@ $active = 'inventario';
                         <button class="s-Button" id="buttonProductosMasiva">
                             <p class="s-P">Agregar producto masivo</p>
                         </button>
-                        <button class="s-Button" id="buttonAddCatItem">
+                        <!-- <button class="s-Button" id="buttonAddCatItem">
                             <p class="s-P">Agregar categorías y subcategorías</p>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
 
@@ -107,212 +107,16 @@ $active = 'inventario';
                         </tr> -->
                     </tbody>
                     <tfoot>
-
                     </tfoot>
                 </table>
             </div>
-            <!-- <nav class="topbar navbar navbar-expand-lg navbar-light">
-                <a class="navbar-brand" href="#">Navbar</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul id="topBar-Content" class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="">Categorías</a>
-                            <ul class="dropdown-menu"> -->
-                                <!-- <php
-                                if (count($categorias) === 0) {
-                                    echo '<li><a href="">Haz click aquí para poder Crear tus categorías</a></li>';
-                                } else {
-                                    foreach ($categorias as $key => $value) {
-                                        $catNombre = $value->nombre;
-
-                                        echo '<li> <a class="' . strtolower($catNombre) . ' categoria dropdown-item">' . ucfirst($catNombre) . ' &raquo</a>';
-
-                                        $queryItems = "SELECT i.item , c.nombre  from item i 
-                                                            INNER JOIN categoria_has_item chi on chi.item_id = i.id 
-                                                            INNER JOIN categoria c on c.id =chi.categoria_id 
-                                                            INNER JOIN producto p on p.categoria_has_item_id = chi.id
-                                                            WHERE LOWER(c.nombre) = '" . $catNombre . "'
-                                                            GROUP BY chi.id ";
-
-                                        $items = [];
-                                        $responseBdItems = $conn->mysqli->query($queryItems);
-                                        while ($dataItems = $responseBdItems->fetch_object()) {
-                                            $items[] = $dataItems;
-                                        }
-
-                                        if (count($items) > 0) {
-                                            echo '<ul class="dropdown-menu submenu">';
-                                            foreach ($items as $key => $item) {
-
-                                                echo '<li><a class="' . $item->item . ' ' . $catNombre . ' item dropdown-item">' . $item->item . ' </a></li>';
-                                            }
-                                            echo '</ul>';
-                                        }
-                                        echo '</li>';
-                                    }
-                                }
-                                ?>
-                            </ul> -->
-                        <!-- </li> -->
-                        <!-- <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="">Items</a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="#">Item 1 &raquo;</a>
-                                    <ul class="dropdown-menu submenu">
-                                        <li><a href="" class="dropdown-item">SubItem</a></li>
-                                        <li><a href="" class="dropdown-item">SubItem 2</a></li>
-                                    </ul>
-                                </li>
-                                <li><a class="dropdown-item" href="">Item 2</a></li>
-                                <li><a class="dropdown-item" href="">Item 3</a></li>
-                            </ul>
-                        </li> -->
-                    <!-- </ul>
-                </div>
-            </nav>
-
-            <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
-                    <i class="bi bi-justify fs-3"></i>
-                </a>
-            </header>
-            <div class="page-header">
-
-                <div style="display:flex; align-items: center; margin-bottom: 30px;">
-                    <h3 style="margin-right: 50px">Inventario</h3>
-                    <a id="download-Excel" style="height: 20px; line-height: 20px;font-size: 30px;" href="./ExcelFiles/ProductosM.xlsx" download="Carga Masiva Equipos"><i class="fa-solid fa-file-excel" style="color: #1D6F42; "></i></a>
-                </div>
-                <php if (in_array("1", $rol_id) || in_array("2", $rol_id) || in_array("6", $rol_id)) : ?>
-                    <div class="row">
-                        <div class="col-8 col-lg-3 col-sm-4">
-                            <div class="card">
-                                <button type="button" id="buttonProductoUnitario" class="btn btn-success">
-                                    Agregar Nuevo Producto
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-8 col-lg-3 col-sm-4">
-                            <div class="card">
-                                <button type="button" class="btn btn-success" id="buttonProductosMasiva" data-bs-toggle="modal" data-bs-target="#masivaProductoCreation">
-                                    Agregar Productos masivo
-                                </button>
-                                <input class="form-control form-control-sm" id="excel_input" type="file" />
-                            </div>
-                        </div>
-                        <div class="col-8 col-lg-3 col-sm-4">
-                            <div class="card">
-                                <button type="button" class="btn btn-success" id="buttonAddCatItem" data-bs-toggle="modal" data-bs-target="#modalCatItemAdd">
-                                    Agregar una nueva categoría o ítem
-                                </button>
-                            </div>
-                        </div>
-                    </div> -->
-                <!-- <php endif; ?> -->
-            <!-- </div> -->
-
-
-            <!-- modal agregar Producto -->
-            <?php include_once('./includes/Modal/productoModal.php') ?>
-            <!-- END MODAL AGREGAR PRODUCTO -->
-
-            <!-- INCLUDE MODAL ACTEGORIA ITEM  -->
-            <?php include_once('./includes/Modal/categoriaItem.php') ?>
-            <!-- END MODAL CATEGORIA ITEM -->
-<!-- 
-            <div class="page-content">
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body px-4 py-4">
-                                    <table class="table" id="tableProductos" class="display" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th style="text-align: center;">Categoría</th>
-                                                <th style="text-align: center;">Sub Categoría</th>
-                                                <th style="text-align: center;">Producto</th>
-                                                <th style="text-align: center;">Modelo</th>
-                                                <th style="text-align: center;">Cantidad total</th>
-                                                <th style="text-align: center;">Cantidad disponible</th>
-                                                <th style="text-align: center;">Precio Arriendo</th>
-                                                <th style="text-align: center;">Estado</th>
-                                                <th style="text-align: center;">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th style="text-align: center;">Categoría</th>
-                                                <th style="text-align: center;">Sub Categoría</th>
-                                                <th style="text-align: center;">Producto</th>
-                                                <th style="text-align: center;">Modelo</th>
-                                                <th style="text-align: center;">Cantidad total</th>
-                                                <th style="text-align: center;">Cantidad disponible</th>
-                                                <th style="text-align: center;">Precio Arriendo</th>
-                                                <th style="text-align: center;">Estado</th>
-                                                <th style="text-align: center;">Acciones</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
-            <!-- Modal agregar productos masiva -->
-            <!-- < include_once('./includes/Modal/productosMasiva.php'); ?> -->
-            <!-- end modal agregar producots masiva -->
-
-            <!-- Modal errores post agregar Masiva -->
-            <!-- <div class="modal fade modal-xl" id="modalErrMasiva" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Desea ingresar esta información</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div style="margin:0px 30px" class="modal-body">
-                            <table class="table" id="errTable">
-                                <thead>
-
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" id="modalClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button class="btn btn-success" id="saveExcelData">Guardar</button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- FIN modal -->
 
             <?php require_once('./includes/footer.php') ?>
-
         </div>
     </div>
 
     <?php require_once('./includes/footerScriptsJs.php') ?>
 
-    <!-- xlsx Reader -->
-    <script src="js/xlsxReader.js"></script>
-    <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
 
     <!-- Validador intec -->
     <script src="./js/valuesValidator/validator.js"></script>
@@ -321,12 +125,18 @@ $active = 'inventario';
     <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
 
     <!-- Side Menu -->
-    <?php require_once('./includes/sidemenu/productoMasivaSideMenu.php')?>
+    <?php require_once('./includes/sidemenu/productoMasivaSideMenu.php') ?>
+
+
+    <!-- xlsx Reader -->
+    <script src="js/xlsxReader.js"></script>
+    <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
     <!-- JS FUNCTIONS REFERENCES -->
     <script src="/js/valuesValidator/validator.js"></script>
     <script src="/js/categorias.js"></script>
     <script src="/js/marca.js"></script>
     <script src="/js/item.js"></script>
+    <script src="/js/bottomBar.js"></script>
 
 </body>
 <script>
@@ -334,29 +144,814 @@ $active = 'inventario';
 
     const EMPRESA_ID = $('#empresaId').text();
 
-
-    $('#buttonProductosMasiva').on('click', function() {
-        // $('#masivaProductoCreation').modal('show');
-
-        $('#masivaProductoSideMenu').addClass('active')
-    })
-    $('#closeMasivaProductos').on('click', function() {
-        // $('#masivaProductoCreation').modal('show');
-
-        $('#masivaProductoSideMenu').removeClass('active')
-    })
-
-    $('#buttonProductoUnitario').on('click', function() {
-        console.log("BOTON UNITARIO");
-        $('#productoUnitarioCreation').modal('show');
-
-        console.log($('#productoUnitarioModal'))
-    });
-
-
     let _allCats = [];
     let _allSubCats_ = [];
     let _allProductsToList = [];
+    let tempCats = [];
+    let tempSubCats = [];
+    const fileInput = document.getElementById('excel_input');
+    const fileNameDisplay = document.getElementById('fileName');
+    const fileLabel = document.getElementById('fileLabel');
+
+
+
+
+    $(document).ready(async function() {
+        const catsSubCats = await getCatsAndSubCatsByBussiness(EMPRESA_ID);
+        const prods = await getAllMyProductsToList(EMPRESA_ID);
+
+        if (catsSubCats.success) {
+            _allCats = catsSubCats.cats
+            _allSubCats_ = catsSubCats.subcats;
+
+            tempCats = catsSubCats.cats;
+            tempSubCats = catsSubCats.allSubCats;
+            printMyCats();
+        }
+        if (prods) {
+            _allProductsToList = prods;
+            printMyProducts();
+        }
+        $('#example').DataTable({
+            fixedHeader: true
+        });
+        GetCategorias();
+        GetMarca();
+        GetItems();
+
+        fileInput.addEventListener('change', function() {
+            const fileName = fileInput.files[0].name;
+            fileNameDisplay.textContent = `Archivo seleccionado: ${fileName}`;
+        });
+    });
+
+    function handleDragOver(event) {
+        event.preventDefault();
+        fileLabel.classList.add('dragover');
+    }
+    // Manejar el evento de soltar archivos en el label
+    function handleDrop(event) {
+        event.preventDefault();
+        fileLabel.classList.remove('dragover');
+        const files = event.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            const fileName = files[0].name;
+            fileNameDisplay.textContent = `Archivo seleccionado: ${fileName}`;
+        }
+    }
+
+    const dataArrayIndex = ['Categoria', 'Sub categoria', 'Nombre producto', 'marca', 'modelo', 'cantidad', 'precio compra', 'precio arriendo']
+    const dataArray = {
+        'xlsxData': [{
+                'name': 'Categoria',
+                'type': 'string',
+                'minlength': 3,
+                'maxlength': 50,
+                'notNull': false
+            },
+
+            {
+                'name': 'Sub categoria',
+                'type': 'string',
+                'minlength': 3,
+                'maxlength': 15,
+                'notNull': true
+            },
+
+            {
+                'name': 'Nombre producto',
+                'type': 'string',
+                'minlength': 3,
+                'maxlength': 50,
+                'notNull': false
+            },
+            {
+                'name': 'marca',
+                'type': 'string',
+                'minlength': 3,
+                'maxlength': 50,
+                'notNull': true
+            },
+
+            {
+                'name': 'modelo',
+                'type': 'string',
+                'minlength': 3,
+                'maxlength': 50,
+                'notNull': true
+            },
+            {
+                'name': 'cantidad',
+                'type': 'string',
+                'minlength': 3,
+                'maxlength': 50,
+                'notNull': false
+            },
+
+            {
+                'name': 'precio compra',
+                'type': 'string',
+                'minlength': 3,
+                'maxlength': 50,
+                'notNull': true
+            },
+
+            {
+                'name': 'precio arriendo',
+                'type': 'string',
+                'minlength': 3,
+                'maxlength': 50,
+                'notNull': true
+            },
+            // {
+            //     'name': 'sku',
+            //     'type': 'string',
+            //     'minlength': 3,
+            //     'maxlength': 50,
+            //     'notNull': true
+            // }
+        ]
+    }
+
+    //Funcion que verifica la extension del archivo ingresado
+    function GetFileExtension() {
+        fileName = $('#excel_input').val();
+        extension = fileName.split('.').pop();
+        return extension;
+    }
+
+    $('#excel_input').on('change', async function() {
+        const exInput = document.getElementById('excel_input');
+
+        console.log($(exInput).files)
+
+        const extension = GetFileExtension()
+        if (extension == "xlsx") {
+            // const tableContent = await xlsxReadandWrite(dataArray);
+            const tableContent = await xlsxReadandWrite(dataArray);
+
+            let tableHead = $('#excelTable>thead');
+            let tableBody = $('#excelTable>tbody');
+            $('#excelTable thead tr').remove();
+            $('#excelTable tbody tr').remove();
+
+            tableHead.append(tableContent.table[0])
+            tableBody.append(tableContent.table[1])
+            $('#fileName').text(tableContent[0]);
+
+
+            orderExcelTable_printErrOnTop();
+            const TABLE_WIDTH = $(tableBody).width();
+            const TABLE_ROWS = $('#excelTable tbody tr').length;
+            console.log(TABLE_ROWS);
+            if (TABLE_ROWS <= 8) {
+                tableBody.css('width', 'calc(100%)');
+            } else {
+                tableBody.css('width', 'calc(100% + 14px)');
+            }
+
+        } else(
+            Swal.fire({
+                icon: 'error',
+                title: 'Ups',
+                text: 'Debes cargar un Excel',
+            })
+        )
+    });
+
+
+    function orderExcelTable_printErrOnTop() {
+        const EXCEL_TABLE = $('#excelTable tr');
+        const EXCEL_TABLE_BODY_FIRST_ROW = $('#excelTable tbody tr:first');
+        EXCEL_TABLE.each((index, row) => {
+            let tempRow = $(row);
+            let cells = $(row).find('td');
+            cells.each((index, cell) => {
+                if ($(cell).hasClass('err')) {
+                    EXCEL_TABLE_BODY_FIRST_ROW.before(tempRow);
+                    return true;
+                }
+            })
+        })
+    }
+
+
+    $('#excelTable>tbody').on('blur', 'td', function() {
+
+        let value = $(this).text()
+
+        //obtencion de las propiedades del TD
+        let tdListClass = $(this).attr("class").split(/\s+/);
+        let tdClass = tdListClass[0].replaceAll("_", " ");
+        let tdPropertiesIndex = dataArrayIndex.indexOf(tdClass)
+        let tdProperties = dataArray.xlsxData[tdPropertiesIndex]
+
+        // SETEO DE PROPIEDADES
+        let type = tdProperties.type
+        let minlength = tdProperties.minlength
+        let maxlength = tdProperties.maxlength
+        let notNull = tdProperties.notNull
+
+        //OBTENCION DE PROPIEDADES DE VALOR DE CELDA
+
+        let tdType = isNumeric(value)
+        let tdMinlength = minLength(value, minlength)
+        let tdMaxlength = maxLength(value, maxlength)
+
+        let tdNull = isNull(value);
+
+        let errorCheck = false
+        let tdTitle = ""
+
+
+
+        //atributos return a td
+        if (!notNull && tdNull) {
+            errorCheck = false
+            tdTitle = "Ingrese un valor"
+
+        } else {
+
+            if (type === "string" && tdType) {
+                errorCheck = true
+            } else if (type === "int" && !tdType) {
+                errorCheck = false
+                tdTitle = "Ingrese un número"
+            } else {
+                errorCheck = true
+            }
+            if (!notNull) {
+                if (!tdMinlength) {
+                    tdTitle = `Debe tener un mínimo de ${minlength} caracteres`
+                    errorCheck = false
+                }
+                if (!tdMaxlength) {
+                    tdTitle = `Debe tener un máximo de ${maxlength} caracteres`
+                    errorCheck = false
+                }
+            } else {}
+        }
+        if (!errorCheck) {
+            $(this).prop('title', tdTitle)
+            $(this).addClass('err')
+        } else {
+            $(this).prop('title', "")
+            $(this).removeClass('err')
+        }
+    })
+
+    //Cerrar Modal
+    $('#modalClose').on('click', function() {
+        $('#masivaProductoCreation').modal('hide')
+    })
+
+
+    let confirmCatsAndSubCats = true;
+    let exp_cats = [];
+    let exp_subcats = [];
+    //GUARDAR REGISTROS MASIVA DENTRO DE MODAL
+    $('#saveExcelData').on('click', async function() {
+        let counterErr = 0;
+
+        $('#excelTable>tbody td').each(function() {
+
+            var cellText = $(this).hasClass('err')
+            if (cellText) {
+                counterErr++
+            }
+
+        });
+
+        if (counterErr > 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Ups',
+                text: 'Debe corregir los datos mal ingresado para continuar'
+            });
+            return;
+        };
+
+        let arrTd = []
+        let preRequest = []
+
+        $('#excelTable>tbody tr').each(function() {
+
+            arrTd = []
+            let td = $(this).find('td')
+
+            td.each(function() {
+                let tdTextValue = $(this).text()
+                arrTd.push(tdTextValue)
+            })
+            preRequest.push(arrTd)
+        });
+
+        const showExceptions = setAndPrintCatsAndSubCatExceptions(preRequest, false, true);
+
+        if (showExceptions && confirmCatsAndSubCats) {
+            setAndPrintCatsAndSubCatExceptions(preRequest, true, false);
+            confirmCatsAndSubCats = false
+            return;
+        }
+
+
+        confirmCatsAndSubCats = true;
+        restoreMasivaSideMenu();
+
+        const catsSubCats = await getCatsAndSubCatsByBussiness(EMPRESA_ID);
+        tempSubCats = [];
+        tempCat = [];
+        if (catsSubCats.success) {
+            tempCat = catsSubCats.cats
+            tempSubCats = catsSubCats.allSubCats;
+        }
+        const arrayRequest = preRequest.map(function(value) {
+
+
+            console.log("value[1]", value[1])
+            console.log("value[0]", value[0])
+
+            const CAT_EXISTS = tempCat.find((cat) => {
+                return cat.nombre.toUpperCase() === value[0].toUpperCase()
+            })
+            const SUBCAT_EXISTS = tempSubCats.find((subCat) => {
+                return subCat.item.toUpperCase() === value[1].toUpperCase()
+            })
+            if (CAT_EXISTS && SUBCAT_EXISTS) {
+                console.log("INSERT");
+
+                // let sku = value[8];
+                // let sku = "";
+                // if (sku === "" || sku === undefined || sku === null) {
+                //     let arrName =  
+                //     value[2]
+                //     .replaceAll(" de ", " ")
+                //      .replaceAll("+","_")
+                //       .split(" ");
+                //     let skuNameFormatt = ""
+                //     arrName.forEach((namePiece) => {
+                //         if (namePiece.length === 1) {
+                //             skuNameFormatt += namePiece.toUpperCase();
+                //         }
+                //         if (namePiece.length === 2) {
+                //             skuNameFormatt += namePiece.toUpperCase();
+                //         }
+                //         if (namePiece.length >= 3) {
+                //             skuNameFormatt += namePiece.slice(0, 3).toUpperCase();
+                //         } 
+                //     })
+                //     let bra_model_str = "";
+                //     marca = value[3];
+                //     modelo = value[4];
+                //     if(marca === "" || marca === null ||marca === undefined){
+                //         marca.slice(0,1).toUpperCase();
+                //     }
+                //     if(modelo === "" || modelo === null ||modelo === undefined){
+                //         modelo.slice(0,1).toUpperCase();
+                //     }
+                //     sku = `${value[0].slice(0,3).toUpperCase()}-${value[1].slice(0,3).toUpperCase()}-${skuNameFormatt}_${marca}-${modelo}`;
+                // }
+
+                let returnArray = {
+                    "categoria": value[0],
+                    "item": value[1],
+                    "categoria_id": CAT_EXISTS.id,
+                    "subCat_id": SUBCAT_EXISTS.id,
+                    "nombre": value[2],
+                    "marca": value[3],
+                    "modelo": value[4],
+                    "stock": value[5],
+                    "precioCompra": value[6] === "" ? 0 : value[6],
+                    "precioArriendo": value[7] === "" ? 0 : value[7],
+                    'sku': ""
+
+                }
+                return returnArray
+            }
+        }).filter((item) => {
+            return item !== undefined
+        });
+        addProdsOnMasiveExcel(arrayRequest);
+    });
+
+
+    async function addProdsOnMasiveExcel(arrayRequest) {
+
+
+        showProductosMasivaTableLoader();
+        setProductosMasivaTableLoader();
+        const RESPONSE_ADD_PRODS = await addProdsMasiva(arrayRequest, EMPRESA_ID);
+
+        if (RESPONSE_ADD_PRODS.success) {
+            Toastify({
+                text: `Se han agregado ${RESPONSE_ADD_PRODS.insert_count} de ${RESPONSE_ADD_PRODS.total} productos`,
+                duration: 5000
+            }).showToast();
+            setProductosMasivaTableSuccess();
+            setTimeout(() => {
+                hideProductosMasivaTableLoader();
+                setTimeout(async () => {
+                    $('#masivaProductoSideMenu').removeClass("active");
+                    $('#excelTable thead tr').remove();
+                    $('#excelTable tbody tr').remove();
+                    const prods = await getAllMyProductsToList(EMPRESA_ID);
+                    if (prods) {
+                        _allProductsToList = prods;
+                        printMyProducts();
+                    }
+                }, 500);
+            }, 1500);
+        } else {
+            hideProductosMasivaTableLoader();
+        }
+
+    };
+
+    function setProductosMasivaTableSuccess() {
+        $('#spinnerProdsMasiva').remove();
+        $('#loader-prods-masiva-content').append(SUCCESS);
+    }
+
+    function showProductosMasivaTableLoader() {
+        $('#loading-section-prods-masiva').addClass("active");
+    }
+
+    function hideProductosMasivaTableLoader() {
+        $('#loading-section-prods-masiva').removeClass("active");
+    }
+
+    function setProductosMasivaTableLoader() {
+        $('#loader-prods-masiva-content div').remove();
+        $('#loader-prods-masiva-content').append(`<div class="loadingio-spinner-rolling-a4dt90r28kv" id="spinnerProdsMasiva">
+            <div class="ldio-r2lhg8dn3dg">
+                <div></div>
+            </div>
+        </div>`);
+    };
+    async function addProdsMasiva(request, empresa_id) {
+        return $.ajax({
+            type: "POST",
+            url: "ws/productos/Producto.php",
+            dataType: 'json',
+            data: JSON.stringify({
+                "action": "addProdsMasiva",
+                'empresa_id': empresa_id,
+                'request': request
+            }),
+            success: function(response) {
+
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
+    }
+
+    function setAndPrintCatsAndSubCatExceptions(preRequest, printData, stopExc) {
+        let excel_cats_name = [];
+        const MY_CATS_NAME = tempCats.map(({
+            nombre
+        }) => {
+            return nombre.toUpperCase()
+        });
+
+        const EXCEL_CATS_NAME = preRequest.map((value) => {
+            return value[0].toUpperCase();
+        });
+
+        const UNIQUE_CATS = [...new Set(EXCEL_CATS_NAME)]
+        const NOT_EXISTING_CATS = UNIQUE_CATS.filter((cat) => {
+            return !MY_CATS_NAME.includes(cat.toUpperCase())
+        });
+
+        const MY_SUBCATS_NAME = tempSubCats.map(({
+            item
+        }) => {
+            return item.toUpperCase()
+        });
+
+        const EXCEL_SUBCATS_NAME = preRequest.map((value) => {
+            return value[1].toUpperCase();
+        });
+
+        const UNIQUE_SUBCATS = [...new Set(EXCEL_SUBCATS_NAME)]
+        const NOT_EXISTING_SUBCATS = UNIQUE_SUBCATS.filter((cat) => {
+            return !MY_SUBCATS_NAME.includes(cat.toUpperCase())
+        });
+
+        exp_cats = NOT_EXISTING_CATS;
+        exp_subcats = NOT_EXISTING_SUBCATS;
+
+        if ((NOT_EXISTING_SUBCATS.length > 0 || NOT_EXISTING_CATS.length > 0) && stopExc) {
+            return true;
+        };
+
+        if (printData) {
+
+            $('#categorie-exp-table tbody tr').remove();
+            $('#subCategorie-exp-table tbody tr').remove();
+            $('.--exp-content').css('display', 'block');
+            $('#exceptionContainer').css('display', 'flex');
+            $('#excelTable').css('display', 'none');
+
+
+
+            $('#cats-exp-card').hide();
+            $('#subCats-exp-card').hide();
+
+            if (NOT_EXISTING_CATS.length > 0) {
+                $('#cats-exp-card').show();
+
+                NOT_EXISTING_CATS.forEach((cat) => {
+                    let tr = `<tr>
+                        <td class="--ds-td" style="width:60%"><p class="--desc">${cat}</p></td>
+                        <td class="--exp-add-cat" style="width:40%"><p class="s-P-g">Agregar</p></td>
+                    </tr>`
+                    $('#categorie-exp-table tbody').append(tr);
+                })
+            }
+
+            if (NOT_EXISTING_CATS.length > 0) {
+                $('#subCats-exp-card').show();
+                NOT_EXISTING_SUBCATS.forEach((subcat) => {
+                    let tr = `<tr>
+                        <td style="width:60%"><p class="--desc">${subcat}</p></td>
+                        <td class="--exp-add-subCat" style="width:40%"><p class="s-P-g">Agregar</p></td>
+                    </tr>`
+                    $('#subCategorie-exp-table tbody').append(tr);
+                });
+            }
+        } else {}
+    }
+
+    function restoreMasivaSideMenu() {
+        $('.--exp-content').css('display', 'none');
+        $('#exceptionContainer').css('display', 'none');
+        $('#excelTable').css('display', 'table');
+    }
+
+
+    $(document).on("click", ".--exp-add-cat", async function() {
+
+        const CAT_NAME = $(this).closest('tr').find('.--desc').text();
+
+        let arrCategories = [{
+            "nombre": CAT_NAME
+        }]
+
+        const CAT_RESPONSE = await addCatsAndGetResponse(arrCategories);
+
+        if (CAT_RESPONSE) {
+            $(this).closest('tr').fadeOut(500, function() {
+                $(this).remove();
+            });
+        }
+    });
+
+
+
+    $(document).on("click", "#addAllCategories", async function() {
+
+        const catTr = $('#categorie-exp-table tbody tr')
+
+        const arrCats = $(catTr).map((index, cat) => {
+                let name = $(cat).find('.--desc').text();
+                return {
+                    "nombre": name
+                }
+            })
+            .toArray();
+        showCatLoader();
+        setCatLoader();
+        const ADD_ALL_CATS = await addCatsAndGetResponse(arrCats);
+
+        if (ADD_ALL_CATS) {
+
+            setCatSuccess();
+            setTimeout(() => {
+                hideCatLoader();
+                setTimeout(() => {
+                    $('#cats-exp-card').hide("slow");
+                }, 500);
+            }, 1500);
+
+        } else {
+            hideCatLoader();
+        }
+
+
+
+    });
+
+
+    function setCatSuccess() {
+        $('#spinnerCats').remove();
+        $('#loader-cat-content').empty();
+        $('#loader-cat-content').append(SUCCESS);
+    }
+
+
+    function showCatLoader() {
+        $('#loading-section').addClass("active");
+    }
+
+    function hideCatLoader() {
+        $('#loading-section').removeClass("active");
+    }
+
+    function setCatLoader() {
+        $('#loader-cat-content').empty();
+        $('#loader-cat-content').append(`<div class="loadingio-spinner-rolling-a4dt90r28kv" id="spinnerCats">
+            <div class="ldio-r2lhg8dn3dg">
+                <div></div>
+            </div>
+        </div>`);
+    };
+
+    $(document).on("click", "#addAllSubCategories", async function() {
+
+        const catTr = $('#subCategorie-exp-table tbody tr')
+
+        const arrSubCats = $(catTr).map((index, cat) => {
+                let name = $(cat).find('.--desc').text();
+                return {
+                    "nombre": name
+                }
+            })
+            .toArray();
+
+        console.log(arrSubCats);
+        showSubCatLoader();
+        setSubCatLoader();
+        const ADD_ALL_CATS = await addSubCatsAndGetResponse(arrSubCats);
+
+        if (ADD_ALL_CATS) {
+            setSubCatSuccess();
+            setTimeout(() => {
+                hideSubCatLoader();
+                setTimeout(() => {
+                    $('#subCats-exp-card').hide("slow");
+                }, 500);
+            }, 1500);
+        } else {
+            hideSubCatLoader();
+        }
+    });
+
+
+
+    function showSubCatLoader() {
+        $('#loader-sub-cat-content').empty();
+        $('#loading-section-subcats').addClass("active");
+    }
+
+    function hideSubCatLoader() {
+        $('#loading-section-subcats').removeClass("active");
+    }
+
+    function setSubCatLoader() {
+        $('#loader-sub-cat-content').empty();
+        // $('#loader-sub-cat-content div').remove();
+        $('#loader-sub-cat-content').append(`<div class="loadingio-spinner-rolling-a4dt90r28kv" id="spinnerSubCats">
+            <div class="ldio-r2lhg8dn3dg">
+                <div></div>
+            </div>
+        </div>`);
+    }
+
+    function setSubCatSuccess() {
+        $('#spinnerSubCats').remove();
+        $('#loader-sub-cat-content').append(SUCCESS);
+    }
+
+
+
+    async function addCatsAndGetResponse(arrCategories) {
+        const CAT_INSERT_RESPONSE = await insertCatsOnArr(arrCategories, EMPRESA_ID);
+        if (CAT_INSERT_RESPONSE.fatalError) {
+            Swal.fire({
+                icon: 'error',
+                title: "Ups!",
+                'text': CAT_INSERT_RESPONSE.message
+            })
+            return;
+        }
+        if (CAT_INSERT_RESPONSE.success) {
+
+            if (arrCategories.length === 1) {
+
+                Toastify({
+                    text: `${arrCategories[0].nombre} agregado`,
+                    duration: 3000
+                }).showToast();
+            } else {
+                Toastify({
+                    text: `Categorías agregadas exitosamente`,
+                    duration: 3000
+                }).showToast();
+
+            }
+            return true;
+        }
+    }
+    async function addSubCatsAndGetResponse(arrSubCats) {
+        const SUBCAT_INSERT_RESPONSE = await insertSubCatOnArr(arrSubCats, EMPRESA_ID);
+        if (SUBCAT_INSERT_RESPONSE.fatalError) {
+            Swal.fire({
+                icon: 'error',
+                title: "Ups!",
+                'text': SUBCAT_INSERT_RESPONSE.message
+            })
+            return;
+        }
+        if (SUBCAT_INSERT_RESPONSE.success) {
+
+            if (arrSubCats.length === 1) {
+
+                Toastify({
+                    text: `${arrSubCats[0].nombre} agregado`,
+                    duration: 3000
+                }).showToast();
+            } else {
+                Toastify({
+                    text: `Subcategorías agregadas exitosamente`,
+                    duration: 3000
+                }).showToast();
+
+            }
+            return true;
+        }
+    }
+
+    $(document).on("click", ".--exp-add-subCat", async function() {
+
+        const SUBCAT_NAME = $(this).closest('tr').find('.--desc').text();
+        let arrSubCategories = [{
+            "nombre": SUBCAT_NAME
+        }];
+        const SUBCAT_INSERT_RESPONSE = await addSubCatsAndGetResponse(arrSubCategories);
+
+
+        if (SUBCAT_INSERT_RESPONSE) {
+            $(this).closest('tr').fadeOut(500, function() {
+                $(this).remove();
+            });
+        }
+    });
+
+    async function insertCatsOnArr(arrCats, empresa_id) {
+        return $.ajax({
+            type: "POST",
+            url: "ws/productos/Producto.php",
+            dataType: 'json',
+            data: JSON.stringify({
+                "action": "insertCatsOnArr",
+                'empresa_id': empresa_id,
+                'arrCats': arrCats
+            }),
+            success: function(response) {
+
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
+    }
+
+
+    async function insertSubCatOnArr(arrCats, empresa_id) {
+        return $.ajax({
+            type: "POST",
+            url: "ws/productos/Producto.php",
+            dataType: 'json',
+            data: JSON.stringify({
+                "action": "insertSubCatOnArr",
+                'empresa_id': empresa_id,
+                'arrCats': arrCats
+            }),
+            success: function(response) {
+
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
+    }
+
+
+
+    $('#buttonProductosMasiva').on('click', function() {
+        $('#masivaProductoSideMenu').addClass('active')
+    })
+    $('#closeMasivaProductos').on('click', function() {
+        $('#masivaProductoSideMenu').removeClass('active')
+    })
+    $('#buttonProductoUnitario').on('click', function() {
+        $('#productoUnitarioCreation').modal('show');
+    });
+
+
 
     function printMyCats() {
         $('#catSelect option').remove();
@@ -364,8 +959,7 @@ $active = 'inventario';
         _allCats.forEach((cat) => {
             let option = new Option(cat.nombre, cat.id);
             $('#catSelect').append(option);
-        })
-
+        });
     }
 
     function printSubCats(filtered) {
@@ -374,8 +968,7 @@ $active = 'inventario';
         filtered.forEach((subcat) => {
             let option = new Option(subcat.item, subcat.subcat_id);
             $('#subcatSelect').append(option);
-        })
-
+        });
     }
 
     function printMyProducts() {
@@ -445,12 +1038,8 @@ $active = 'inventario';
                 "pageLength": 5
 
             });
-
         }
-
-
     }
-
 
 
     async function getCatsAndSubCatsByBussiness(empresa_id) {
@@ -496,8 +1085,6 @@ $active = 'inventario';
             }
         })
     }
-
-
 
     $('#catSelect').on("change", async function() {
         let cat = $('#catSelect').val();
@@ -560,115 +1147,7 @@ $active = 'inventario';
         printMyProducts();
     })
 
-    $(document).ready(async function() {
 
-
-        const catsSubCats = await getCatsAndSubCatsByBussiness(EMPRESA_ID);
-
-        const prods = await getAllMyProductsToList(EMPRESA_ID);
-
-        if (catsSubCats.success) {
-            _allCats = catsSubCats.cats
-            _allSubCats_ = catsSubCats.subcats;
-            printMyCats();
-        }
-        if (prods) {
-            _allProductsToList = prods;
-            printMyProducts();
-        }
-
-
-
-        $('#example').DataTable({
-            fixedHeader: true
-        });
-
-        GetCategorias();
-        GetMarca();
-        GetItems();
-
-        $('#productosCreateUnitario').validate({
-            rules: {
-                txtNombreProducto: {
-                    required: true
-                },
-                categoriaSelect: {
-                    required: false
-                },
-                marcaSelect: {
-                    required: true
-                },
-                itemSelect: {
-                    required: true
-                },
-                txtCantidad: {
-                    required: true
-                },
-                txtPrecioCompra: {
-                    required: false
-                },
-                txtPrecioEstimadoArriendo: {
-                    required: false
-                }
-            },
-            messages: {
-                txtNombreProducto: {
-                    required: "Ingrese un valor"
-                },
-                categoriaSelect: {
-                    required: "Ingrese un valor"
-                },
-                marcaSelect: {
-                    required: "Ingrese un valor"
-                },
-                itemSelect: {
-                    required: "Ingrese un valor"
-                },
-                txtCantidad: {
-                    required: "Ingrese un valor"
-                },
-                txtPrecioCompra: {
-                    required: "Ingrese un valor"
-                },
-                txtPrecioEstimadoArriendo: {
-                    required: "Ingrese un valor"
-                }
-            },
-            submitHandler: function() {
-                event.preventDefault();
-
-                let NombreProducto = $('#inputNombreProducto').val();
-                let categoriaSelect = $('#categoriaSelect selectedIndex').text();
-                let marcaSelect = $('#marcaSelect selectedIndex').text();
-                let itemSelect = $('#itemSelect selectedIndex').text();
-                let cantidad = $('#inputCantidad').val();
-                let precioCompra = $('#inputPrecioCompra').val();
-                let precioEstimadoArriendo = $('#inputPrecioEstimadoArriendo').val();
-
-                let arrayRequest = [{
-                    "nombre": NombreProducto.trim(),
-                    "marca": marcaSelect.trim(),
-                    "modelo": "Generico",
-                    "categoria": categoriaSelect.trim(),
-                    "item": itemSelect.trim(),
-                    "stock": cantidad.trim(),
-                    "precioCompra": precioCompra.trim() === "" ? 0 : precioCompra.trim(),
-                    "precioArriendo": precioEstimadoArriendo.trim() === "" ? 0 : precioCompra.trim()
-                }]
-
-                $.ajax({
-                    type: "POST",
-                    url: "ws/productos/addProductos.php",
-                    data: JSON.stringify(arrayRequest),
-                    dataType: 'json',
-                    success: async function(data) {
-                        console.log(data);
-                    }
-                })
-
-            }
-        })
-    });
 
 
     function AddCategoria() {
@@ -807,280 +1286,6 @@ $active = 'inventario';
                 console.log(data.responseText);
             }
         })
-    })
-
-    const dataArrayIndex = ['Categoria', 'Sub categoria', 'Nombre producto', 'marca', 'modelo', 'cantidad', 'precio compra', 'precio estimado arriendo']
-    const dataArray = {
-        'xlsxData': [{
-                'name': 'Categoria',
-                'type': 'string',
-                'minlength': 3,
-                'maxlength': 50,
-                'notNull': false
-            },
-
-            {
-                'name': 'Sub categoria',
-                'type': 'string',
-                'minlength': 3,
-                'maxlength': 15,
-                'notNull': true
-            },
-
-            {
-                'name': 'Nombre producto',
-                'type': 'string',
-                'minlength': 3,
-                'maxlength': 50,
-                'notNull': false
-            },
-            {
-                'name': 'marca',
-                'type': 'string',
-                'minlength': 3,
-                'maxlength': 50,
-                'notNull': true
-            },
-
-            {
-                'name': 'modelo',
-                'type': 'string',
-                'minlength': 3,
-                'maxlength': 50,
-                'notNull': true
-            },
-            {
-                'name': 'cantidad',
-                'type': 'string',
-                'minlength': 3,
-                'maxlength': 50,
-                'notNull': false
-            },
-
-            {
-                'name': 'precio compra',
-                'type': 'string',
-                'minlength': 3,
-                'maxlength': 50,
-                'notNull': true
-            },
-
-            {
-                'name': 'precio estimado arriendo',
-                'type': 'string',
-                'minlength': 3,
-                'maxlength': 50,
-                'notNull': true
-            }
-        ]
-    }
-    const fileInput = document.getElementById('excel_input');
-    const fileNameDisplay = document.getElementById('fileName');
-    const fileLabel = document.getElementById('fileLabel');
-
-    function handleDragOver(event) {
-        event.preventDefault();
-        fileLabel.classList.add('dragover');
-    }
-    // Manejar el evento de soltar archivos en el label
-    function handleDrop(event) {
-        event.preventDefault();
-        fileLabel.classList.remove('dragover');
-
-        const files = event.dataTransfer.files;
-        if (files.length > 0) {
-            fileInput.files = files;
-            const fileName = files[0].name;
-            fileNameDisplay.textContent = `Archivo seleccionado: ${fileName}`;
-        }
-    }
-
-    //Funcion que verifica la extension del archivo ingresado
-    function GetFileExtension() {
-        fileName = $('#excel_input').val();
-        extension = fileName.split('.').pop();
-        return extension;
-    }
-
-    $('#excel_input').on('change', async function() {
-        const extension = GetFileExtension()
-        if (extension == "xlsx") {
-
-            // const tableContent = await xlsxReadandWrite(dataArray);
-
-
-            
-            const tableContent = await xlsxReadandWrite(dataArray);
-
-            console.log(tableContent)
-            console.log(tableContent)
-            console.log(tableContent)
-            console.log(tableContent)
-
-            let tableHead = $('#excelTable>thead')
-            let tableBody = $('#excelTable>tbody')
-            tableHead.append(tableContent.table[0])
-            tableBody.append(tableContent.table[1])
-            $('#fileName').text(tableContent[0]);
-            // $('#excel_input').val("");
-            
-            
-            // let tableHead = $('#excelTable>thead')
-            // let tableBody = $('#excelTable>tbody')
-            // tableBody.empty()
-            // tableHead.empty()
-            // tableHead.append(tableContent.table[0])
-            // tableBody.append(tableContent.table[1])
-            // $('#fileName').text(tableContent[0]);
-            // $('#excel_input').val("");
-        } else(
-            Swal.fire({
-                icon: 'error',
-                title: 'Ups',
-                text: 'Debes cargar un Excel',
-            })
-        )
-    })
-
-
-    $('#excelTable>tbody').on('blur', 'td', function() {
-
-        let value = $(this).text()
-
-        //obtencion de las propiedades del TD
-        let tdListClass = $(this).attr("class").split(/\s+/);
-        let tdClass = tdListClass[0].replaceAll("_", " ");
-        let tdPropertiesIndex = dataArrayIndex.indexOf(tdClass)
-        let tdProperties = dataArray.xlsxData[tdPropertiesIndex]
-
-        // SETEO DE PROPIEDADES
-        let type = tdProperties.type
-        let minlength = tdProperties.minlength
-        let maxlength = tdProperties.maxlength
-        let notNull = tdProperties.notNull
-
-        //OBTENCION DE PROPIEDADES DE VALOR DE CELDA
-
-        let tdType = isNumeric(value)
-        let tdMinlength = minLength(value, minlength)
-        let tdMaxlength = maxLength(value, maxlength)
-
-        let tdNull = isNull(value);
-
-        let errorCheck = false
-        let tdTitle = ""
-
-
-
-        //atributos return a td
-        if (!notNull && tdNull) {
-            errorCheck = false
-            tdTitle = "Ingrese un valor"
-
-        } else {
-
-            if (type === "string" && tdType) {
-                errorCheck = true
-            } else if (type === "int" && !tdType) {
-                errorCheck = false
-                tdTitle = "Ingrese un número"
-            } else {
-                errorCheck = true
-            }
-            if (!notNull) {
-                if (!tdMinlength) {
-                    tdTitle = `Debe tener un mínimo de ${minlength} caracteres`
-                    errorCheck = false
-                }
-                if (!tdMaxlength) {
-                    tdTitle = `Debe tener un máximo de ${maxlength} caracteres`
-                    errorCheck = false
-                }
-            } else {}
-        }
-        if (!errorCheck) {
-            $(this).prop('title', tdTitle)
-            $(this).addClass('err')
-        } else {
-            $(this).prop('title', "")
-            $(this).removeClass('err')
-        }
-    })
-
-    //Cerrar Modal
-    $('#modalClose').on('click', function() {
-        $('#masivaProductoCreation').modal('hide')
-    })
-
-
-
-    //GUARDAR REGISTROS MASIVA DENTRO DE MODAL
-    $('#saveExcelData').on('click', function() {
-        let counterErr = 0;
-
-        $('#excelTable>tbody td').each(function() {
-
-            var cellText = $(this).hasClass('err')
-            if (cellText) {
-                counterErr++
-            }
-
-        });
-
-        if (counterErr == 0) {
-
-            let arrTd = []
-            let preRequest = []
-
-            $('#excelTable>tbody tr').each(function() {
-
-                arrTd = []
-                let td = $(this).find('td')
-
-                td.each(function() {
-                    let tdTextValue = $(this).text()
-                    arrTd.push(tdTextValue)
-                })
-                preRequest.push(arrTd)
-            });
-
-            const arrayRequest = preRequest.map(function(value) {
-                let returnArray = {
-                    "categoria": value[0],
-                    "item": value[1],
-                    "nombre": value[2],
-                    "marca": value[3],
-                    "modelo": value[4],
-                    "stock": value[5],
-                    "precioCompra": value[6] === "" ? 0 : value[6],
-                    "precioArriendo": value[7] === "" ? 0 : value[7]
-                }
-                return returnArray
-            })
-
-            $.ajax({
-                type: "POST",
-                url: "ws/productos/addProductos.php",
-                data: JSON.stringify({
-                    arrayRequest: arrayRequest,
-                    empresaId: EMPRESA_ID
-                }),
-                dataType: 'json',
-                success: async function(data) {
-                    console.log(data);
-                },
-                error: function(data) {
-                    console.log(data);
-                }
-            })
-
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Ups',
-                text: 'Debe corregir los datos mal ingresado para continuar'
-            })
-        }
     })
 </script>
 

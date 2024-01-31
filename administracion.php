@@ -8,8 +8,6 @@ $active = 'administracion';
 <body>
 
 
-
-
     <?php include_once('./includes/Constantes/empresaId.php') ?>
     <?php include_once('./includes/Constantes/rol.php') ?>
     <script src="./assets/js/initTheme.js"></script>
@@ -17,6 +15,46 @@ $active = 'administracion';
 
         <?php require_once('./includes/sidebar.php') ?>
         <div id="main">
+
+        <div id="clientsContainer">
+                <div class="formHeader" style="align-items: center;align-content:center;margin-left: 14px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <circle cx="6" cy="6" r="6" fill="#069B99" />
+                    </svg>
+                    <p class="header-P">Aquí puedes ver, editar y crear tus usuarios</p>
+                </div>
+
+                <div class="row justify-content-end" style="margin:0px 14px;">
+                    <button class="s-Button" id="openMasivaCliente" style="position: relative; right:-138px ; bottom: 50px;">
+                        <p class="s-P">Agregar clientes masiva</p>
+                    </button>
+                    <button class="s-Button" id="openSideClientForm">
+                        <p class="s-P">Agregar cliente</p>
+                    </button>
+                </div>
+
+                <table class="s-table" id="bussinessUserTable">
+                    <thead>
+                        <tr>
+                            <th>Correo</th>
+                            <th>Nombre</th>
+                            <th>Correo Eléctronico</th>
+                            <th>Eventos</th>
+                            <th>Facturación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <tr>
+                        <td>Correo</td>
+                            <td>Nombre</td>
+                            <td>Correo Eléctronico</td>
+                            <td>Eventos</td>
+                            <td>Facturación</td>
+                        </tr> -->
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
             <header class="mb-3">
                 <a href="#" class="burger-btn d-block d-xl-none">
                     <i class="bi bi-justify fs-3"></i>
@@ -28,6 +66,10 @@ $active = 'administracion';
                 </div>
             </div>
             <div class="page-content">
+
+
+
+                
 
                 <div class="action-container">
                     <div class="action-box" id="CreateUser">

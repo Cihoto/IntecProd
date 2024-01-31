@@ -111,8 +111,6 @@ $active = 'clientes';
     <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
 
     <!-- SCRIPTS FUNCIONES JS -->
-
-
     <script src="./js/clientes.js"></script>
     <script src="./js/valuesValidator/validator.js"></script>
     <script src="./js/ClearData/clearFunctions.js"></script>
@@ -134,7 +132,7 @@ $active = 'clientes';
         // fILL MAIN TABLE ON CLIENT
         FillClientesTable_dash();
         // Fill Clientes ON CLIENTE SELECT AND SIDE MENU
-        FillClientes(EMPRESA_ID);
+        // FillClientes(EMPRESA_ID);
 
         $('#openSideClientForm').on('click', function() {
             $('#clientSideMenu').addClass('active');
@@ -151,7 +149,8 @@ $active = 'clientes';
         $('#closeDashClientSideMenu').on('click', function() {
             $('#clientSideMenu-clientDash').removeClass('active');
         });
-        // Escuchar cambios en el input file y actualizar el nombre del archivo seleccionado
+
+        // Escuchar cambios en el input file y actualizar el nombre del archivo selec cionado
         fileInput.addEventListener('change', function() {
             const fileName = fileInput.files[0].name;
             fileNameDisplay.textContent = `Archivo seleccionado: ${fileName}`;

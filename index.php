@@ -11,9 +11,10 @@ $detalle = true;
 require_once('./includes/head.php');
 $active = 'dashboard';
 
-?>                      
+?>
+
 <body>
-  
+
   <script src="./assets/js/initTheme.js"></script>
   <?php require_once('./includes/Constantes/empresaId.php') ?>
 
@@ -39,7 +40,7 @@ $active = 'dashboard';
 
             <div class="welcome-container">
 
-              <p class="user-welcome">Hola, <strong class="user-name"><?php echo $_SESSION['user_name']?></strong></p>
+              <p class="user-welcome">Hola, <strong class="user-name"><?php echo $_SESSION['user_name'] ?></strong></p>
             </div>
             <p class="user-tip">Consulta el estado de tus eventos</p>
 
@@ -47,114 +48,178 @@ $active = 'dashboard';
         </header>
 
         <div class="page-content page-r-content">
+          <div class="left-side-container">
 
-          <div id="dash-monthResumeContainer">
-            <div id="monthEventsAmount" class="resume-event-container">
-              <div class="detail-month">
-                <p class="month-name">Eventos del mes</p>
-                <div class="d-flex justify-content-start" style="gap: 4px;">
-                  <p class="month-amount" id="eventAmountCurrentMonth"></p>
-                  <p class="month-perc" id="currentMonthEventamountPercentaje"></p>
+            <div id="dash-monthResumeContainer">
+              <div id="monthEventsAmount" class="resume-event-container">
+                <div class="detail-month">
+                  <p class="month-name">Eventos del mes</p>
+                  <div class="d-flex justify-content-start" style="gap: 4px;">
+                    <p class="month-amount" id="eventAmountCurrentMonth"></p>
+                    <p class="month-perc" id="currentMonthEventamountPercentaje"></p>
+                  </div>
+                </div>
+                <div class="img-event-month">
+                  <img src="./assets/svg/dsCalendar.svg" alt="">
                 </div>
               </div>
-              <div class="img-event-month">
-                <img src="./assets/svg/dsCalendar.svg" alt="">
+              <div id="monthEventsAmount" class="resume-event-container">
+                <div class="detail-month">
+                  <p class="month-name">Utilidad mensual</p>
+                  <div class="d-flex justify-content-start" style="gap: 4px;">
+                    <p id="dash-amountIncome" class="month-amount">$12.537.900</p>
+                    <p id="dash-amountIncomePercentaje" class="month-perc neg">-14%</p>
+                  </div>
+                </div>
+                <div class="img-event-month">
+                  <img src="./assets/svg/moneySymbol.svg" alt="">
+                </div>
+              </div>
+              <div id="monthEventsAmount" class="resume-event-container">
+                <div class="detail-month">
+                  <p class="month-name">Eventos por completar</p>
+                  <div class="d-flex justify-content-start" style="gap: 4px;">
+                    <p class="month-amount">+5,4</p>
+                    <p class="month-perc">+14%</p>
+                  </div>
+                </div>
+                <div class="img-event-month">
+                  <img src="./assets/svg/medal.svg" alt="">
+                </div>
               </div>
             </div>
-            <div id="monthEventsAmount" class="resume-event-container">
-              <div class="detail-month">
-                <p class="month-name">Utilidad mensual</p>
-                <div class="d-flex justify-content-start" style="gap: 4px;">
-                  <p id="dash-amountIncome" class="month-amount">$12.537.900</p>
-                  <p id="dash-amountIncomePercentaje" class="month-perc neg">-14%</p>
+            <div id="dash-event-housing">
+              <p class="dstheader">Historial de eventos</p>
+              <form id="dash-event-menu">
+                <div id="dash-event-status">
+                  <label for="" id="dash-searchBy">Buscar por:</label>
+                  <div class="select-status-container">
+                    <input type="radio" class="eventStatusSortDash" value="all" checked>
+                    <label for="">Todos</label>
+                  </div>
+                  <div class="select-status-container">
+                    <input type="radio" class="eventStatusSortDash" value="1">
+                    <label for="">Creados</label>
+                  </div>
+                  <div class="select-status-container">
+                    <input type="radio" class="eventStatusSortDash" value="2">
+                    <label for="">Confirmados</label>
+                  </div>
+                  <div class="select-status-container">
+                    <input type="radio" class="eventStatusSortDash" value="3">
+                    <label for="">Finalizados</label>
+                  </div>
                 </div>
-              </div>
-              <div class="img-event-month">
-                <img src="./assets/svg/moneySymbol.svg" alt="">
-              </div>
-            </div>
-            <div id="monthEventsAmount" class="resume-event-container">
-              <div class="detail-month">
-                <p class="month-name">Eventos por completar</p>
-                <div class="d-flex justify-content-start" style="gap: 4px;">
-                  <p class="month-amount">+5,4</p>
-                  <p class="month-perc">+14%</p>
-                </div>
-              </div>
-              <div class="img-event-month">
-                <img src="./assets/svg/medal.svg" alt="">
-              </div>
-            </div>
-          </div>
-
-          <div id="dash-event-housing">
-            <p class="dstheader">Historial de eventos</p>
-            <form id="dash-event-menu">
-              <div id="dash-event-status">
-                <label for="" id="dash-searchBy">Buscar por:</label>
-                <div class="select-status-container">
-                  <input type="radio" class="eventStatusSortDash" value="all" checked>
-                  <label for="">Todos</label>
-                </div>
-                <div class="select-status-container">
-                  <input type="radio" class="eventStatusSortDash" value="1">
-                  <label for="">Creados</label>
-                </div>
-                <div class="select-status-container">
-                  <input type="radio" class="eventStatusSortDash" value="2">
-                  <label for="">Confirmados</label>
-                </div>
-                <div class="select-status-container">
-                  <input type="radio" class="eventStatusSortDash" value="3">
-                  <label for="">Finalizados</label>
-                </div>
-              </div>
-              <div class="row justify-content-between">
-                <div class="dash-filter-event">
-                  <div class="select-area-dashEvent">
-                    <div class="form-group" style="width: 180px;">
-                      <label for="fechaInicio" class="inputLabel dateLabel">Fecha</label>
-                      <input id="fechaInicio" name="dpInicio" type="date" class="form-control s-Input-g">
+                <div class="row justify-content-between">
+                  <div class="dash-filter-event">
+                    <div class="select-area-dashEvent">
+                      <div class="form-group" style="width: 180px;">
+                        <label for="fechaInicio" class="inputLabel dateLabel">Fecha</label>
+                        <input id="fechaInicio" name="dpInicio" type="date" class="form-control s-Input-g">
+                      </div>
+                    </div>
+                    <div class="form-group" style="width:180px">
+                      <label for="eventTypeSelect" class="inputLabel">Tipo de evento</label>
+                      <select id="eventTypeSelect" name="eventTypeSelect" type="text" class="form-select s-Select-g">
+                        <option value=""></option>
+                        <option value="1">Evento corporativo </option>
+                        <option value="2">Recital o festival </option>
+                        <option value="3">Fiestas</option>
+                        <option value="4">Matrimonio</option>
+                        <option value="5">Seminario, charlas o conferencias</option>
+                        <option value="6">Rental</option>
+                        <option value="7">Otro</option>
+                      </select>
                     </div>
                   </div>
-                  <div class="form-group" style="width:180px">
-                    <label for="eventTypeSelect" class="inputLabel">Tipo de evento</label>
-                    <select id="eventTypeSelect" name="eventTypeSelect" type="text" class="form-select s-Select-g">
-                      <option value=""></option>
-                      <option value="1">Evento corporativo </option>
-                      <option value="2">Recital o festival </option>
-                      <option value="3">Fiestas</option>
-                      <option value="4">Matrimonio</option>
-                      <option value="5">Seminario, charlas o conferencias</option>
-                      <option value="6">Rental</option>
-                      <option value="7">Otro</option>
-                    </select>
-                  </div>
+                  <!-- <button class="s-Button-w" style="margin-top: 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+                      <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <p class="s-P-g">Filtros</p>
+                  </button> -->
                 </div>
-                <!-- <button class="s-Button-w" style="margin-top: 10px;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
-                    <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                  <p class="s-P-g">Filtros</p>
-                </button> -->
+              </form>
+
+              <table class="dashEventsTable" id="dash-event-table">
+                <thead>
+                  <tr>
+                    <th>Evento</th>
+                    <th>Fecha</th>
+                    <th>Ubicación</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+                <tfoot>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="right-side-dash">
+            <div id="calendar-container">
+              <div id="calendar">
+
               </div>
-            </form>
+            </div>
 
-            <table class="dashEventsTable" id="dash-event-table" >
-              <thead>
-                <tr>
-                  <th>Evento</th>
-                  <th>Fecha</th>
-                  <th>Ubicación</th>
-                  <th>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
+            <div id="today-resume">
 
-              </tbody>
-              <tfoot>
-              </tfoot>
-            </table>
+              <p class="today-p"></p>
+
+              <div class="card-days">
+                <div class="day-card" day_sum="-2" id="day-minus-2">
+                  <p class="day-number"></p>
+                  <p class="day-name"></p>
+                </div>
+                <div class="day-card" day_sum="-1" id="day-minus-1">
+                  <p class="day-number"></p>
+                  <p class="day-name"></p>
+                </div>
+                <div class="day-card today" day_sum="0" id="day-today">
+                  <p class="day-number"></p>
+                  <p class="day-name"></p>
+                </div>
+                <div class="day-card" day_sum="1" id="day-plus-1">
+                  <p class="day-number"></p>
+                  <p class="day-name"></p>
+                </div>
+                <div class="day-card" day_sum="2" id="day-plus-2">
+                  <p class="day-number"></p>
+                  <p class="day-name"></p>
+                </div>
+              </div>
+              <div class="blur-line">
+              </div>
+              <div class="daily-events-background">
+                <div class="dl-line"></div>
+                <div class="dl-line"></div>
+                <div class="dl-line"></div>
+                <div class="dl-line"></div>
+                <div class="dl-line"></div>
+                <div class="dl-line"></div>
+                <div class="dl-line"></div>
+                <div class="dl-line"></div>
+                <div class="dl-line"></div>
+                <section id="daily-event-list">
+                  <!-- <div class="event-data-container">
+                    <div class="--dly-ev-data-body">
+                      <div class="--dly-logo"></div>
+                      <div class="--dly-info">
+                          <p class="--dly-info-event-name">Event name</p>
+                          <p class="--dly-info-event-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero esse veniam enim nulla ut. Aut saepe provident culpa nulla, nihil esse voluptatem, magni odio aperiam eos cum omnis cumque accusantium!</p>
+                      </div>
+                    </div>
+                  </div> -->
+                </section>
+              </div>
+            </div>
+
+            <div id="finance-resume">
+
+            </div>
           </div>
         </div>
       </div>
@@ -175,19 +240,25 @@ $active = 'dashboard';
 </script>
 
 <style>
-  table.dataTable thead > tr > th.sorting,
-  table.dataTable thead > tr > th.sorting_asc,
-  table.dataTable thead > tr > th.sorting_desc,
-  table.dataTable thead > tr > th.sorting_asc_disabled,
-  table.dataTable thead > tr > th.sorting_desc_disabled,
-  table.dataTable thead > tr > td.sorting,
-  table.dataTable thead > tr > td.sorting_asc,
-  table.dataTable thead > tr > td.sorting_desc,
-  table.dataTable thead > tr > td.sorting_asc_disabled,
-  table.dataTable thead > tr > td.sorting_desc_disabled {
-    padding-right: 0px!important;
+  table.dataTable thead>tr>th.sorting,
+  table.dataTable thead>tr>th.sorting_asc,
+  table.dataTable thead>tr>th.sorting_desc,
+  table.dataTable thead>tr>th.sorting_asc_disabled,
+  table.dataTable thead>tr>th.sorting_desc_disabled,
+  table.dataTable thead>tr>td.sorting,
+  table.dataTable thead>tr>td.sorting_asc,
+  table.dataTable thead>tr>td.sorting_desc,
+  table.dataTable thead>tr>td.sorting_asc_disabled,
+  table.dataTable thead>tr>td.sorting_desc_disabled {
+    padding-right: 0px !important;
   }
 </style>
+
+
+
+<script>
+
+</script>
 
 <!-- <script src="/js/Cargo_Especialidad/Testing/calendarviewResume.js"></script> -->
 <!-- <script src="/js/calendar.js"></script> -->

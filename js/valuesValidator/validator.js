@@ -55,7 +55,7 @@ function CLPFormatter(value){
 }
 
 function ClpUnformatter(value){
-    console.log("VALUE UNFORMATTER",value);
+    // console.log("VALUE UNFORMATTER",value);
     let newValue = value
     .replaceAll("$", "")
     .replaceAll(".", "");

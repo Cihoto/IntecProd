@@ -155,9 +155,6 @@ mostrar saldo total en pestaña de dentro del recinto.
 
 
 
-
-
-
 asc en lista dfe eventos; LISTO
 
 solo confirmados en operaciones; LISTO 
@@ -166,18 +163,21 @@ rescatar nombre usuiario en bd para inicio dashboard;  LISTO
 
 fix letras de COTIZACION fix nombre dir de la COTIZACION;
 
-
 fix income de la cotizacion
-
 
 
 RESUMEN COSTOS DEL EVENTO UNDEFINED;
 
-
 SUBARRIENDO SDA PROBGLEMAS AL MOMENTO DE PONER EL TOTAL, HAY QUE BUSCAR EL POR QUE
 
 FORMATO DE TELEFONO
-ORDEN DE COMPRA
+ORDEN DE COMPRA;
 
 
-stf19352726 numero de reclamo
+
+
+
+
+
+
+

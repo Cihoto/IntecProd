@@ -1,3 +1,6 @@
+let _allMyUsers = [];
+
+
 async function GetAllUsuariosByEmpresa(empresa_id){
     return $.ajax({
         type: "POST",
@@ -9,6 +12,11 @@ async function GetAllUsuariosByEmpresa(empresa_id){
         }),
         success: function(response){
             console.log(response.data);
+
+            _allMyUsers = response.data;
+
+            printMyUserTable();
+
             const userList = $('#userList');
             if(response.success && response.data.length > 0){
                 response.data.forEach(user=>{
@@ -24,6 +32,23 @@ async function GetAllUsuariosByEmpresa(empresa_id){
             }
         }
     })
+}
+
+function printMyUserTable(){
+
+    $('bussinessUserTable tbody tr').remove();
+
+    _allMyUsers.forEach((user)=>{
+        let tr = `<tr>
+            <td>${user.user_email}</td>
+            <td>${user.nombre} ${user.email}Nombre</td>
+            <td>Correo Eléctronico</td>
+            <td>Eventos</td>
+            <td>Facturación</td>
+        </tr>`;
+        $('#bussinessUserTable').append(tr);
+    });
+
 }
 
 async function DeleteUser(user_id){

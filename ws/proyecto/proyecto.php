@@ -96,6 +96,14 @@ if ($_POST) {
             $empresa_id = $data->empresa_id;
             $result = json_encode(getEventsForDashboard($request,$empresa_id));
             break;
+        case 'getTodayEvent':
+            $result = json_encode(getTodayEvent());
+            break;
+        case 'getEventDay':
+            $date = $data->date;
+            $empresa_id = $data->empresa_id;
+            $result = json_encode(getEventDay($empresa_id,$date));
+            break;
         default:
             $result = false;
             break;
@@ -1229,4 +1237,54 @@ function getEventsForDashboard($request,$empresa_id){
     }
 }
 
+
+function getTodayEvent(){
+
+    try{
+        $conn = new bd();
+        $conn->conectar();
+        $today = date('Y-m-d');
+        $events = [];
+        $query = "SELECT * FROM proyecto p WHERE p.fecha_inicio = '$today'";
+
+        if($response = $conn->mysqli->query($query)){
+            while($data = $response->fetch_object()){
+                $events []= $data;
+            }
+            return array("success"=>true,"data"=>$events);
+        }else{
+            return array("error"=>true);
+        }
+
+    }catch(Exception $e){
+        return array("error"=>$e);
+    }
+
+
+    
+}
+function getEventDay($empresa_id,$date){
+
+    try{
+        $conn = new bd();
+        $conn->conectar();
+        $events = [];
+        $query = "SELECT * FROM proyecto p WHERE p.fecha_inicio = '$date' and p.empresa_id = $empresa_id";
+
+        if($response = $conn->mysqli->query($query)){
+            while($data = $response->fetch_object()){
+                $events []= $data;
+            }
+            return array("success"=>true,"data"=>$events);
+        }else{
+            return array("error"=>true);
+        }
+
+    }catch(Exception $e){
+        return array("error"=>"Intente Nuevamente");
+    }
+
+
+    
+}
 

@@ -2500,6 +2500,7 @@ textarea {
 
 #selected-AllVehiclesResume {
   width: 70%;
+  
 }
 
 #selected-vehiclesSideResume {
@@ -2519,7 +2520,7 @@ textarea {
 
 
 .changeInvertHover {
-  transition: all .4s ease;
+  transition: all .3s ease;
 }
 
 .changeInvertHover:hover {
@@ -3420,6 +3421,9 @@ label.dateLabel {
 .page-r-content {
   margin-top: 10px;
   margin-left: -18px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
 }
 
 
@@ -4358,3 +4362,226 @@ table.dataTable thead th, table.dataTable thead td{
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.right-side-dash{
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+}
+
+#calendar-container{
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  width: 380px;
+  height: 320px;
+  border-radius: 3.689px;
+  background: var(--background-paper-elevation-8, #FFF);
+  /* medium-linear */
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.06), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+}
+
+#today-resume{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 16px;
+  width: 320px;
+  height: 545.014px;
+  border-radius: 3.689px;
+  background: #FFF;
+
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.06), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+}
+
+#today-resume .today-p{
+  color: #000;
+  font-size: 14.755px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0px!important;
+}
+#today-resume .card-days{
+  display:flex;
+  justify-content: space-around;
+  
+}
+
+.blur-line{
+  margin-top: -1px;
+  display: flex;
+  width: 100%;
+  height:1.844px;
+  border-radius: var(--none, 0px);
+  background: #EDEDFF;
+    /* background: red; */
+}
+#today-resume .card-days div{
+  width: 43.343px;
+  height: 62.709px;
+  flex-shrink: 0;
+  border-radius: 3.689px;
+  background: var(--Purple-100, #E8E0F5);
+  text-align: center;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+#today-resume .card-days div p.day-number{
+  color: #000;
+  font-size: 14.755px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.295px;
+}
+#today-resume .card-days div p.day-name{
+  color: #000;
+  font-size: 12.911px;
+  font-style: normal;
+  margin: 0px;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.258px;
+}
+
+#today-resume .card-days div.today{
+  border-radius: 3.689px;
+  background: var(--Secondary-color, #6136AB);
+  box-shadow: 0px 18.444px 50.72px 0px rgba(15, 18, 63, 0.25);
+}
+#today-resume .card-days div.today p{
+  color: #FFF;
+  text-align: center;
+  font-size: 12.911px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.258px;
+
+}
+#today-resume .card-days div.today::after{
+  content: '';
+  width: 45.343px;
+  height: 2px;
+  position: relative;
+  left:-9px;
+  /* background-color: #6136AB; */
+  background-color: #6136AB;
+  top: 25px;
+  /* border-bottom: 5px solid  #6136AB; */
+  /* border-bottom: 5px solid  ; */
+}
+
+#finance-resume{
+  display: flex;
+  width: 492px;
+  height: 360px;
+  padding: var(--1, 8px) var(--2, 16px);
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--1, 8px);
+  border-radius: var(--1, 8px);
+  background: #FFF;
+  /* medium-linear */
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.06), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+}
+
+.daily-events-background{
+  position: relative;
+  margin-top: 25px;
+  display: flex;
+  flex-direction:column;
+  gap: 40px;
+  width: 100%;
+  height: 100%;
+}
+
+.daily-events-background .dl-line{
+  height: 1.844px;
+  width: 100%;
+  background-color:#EDEDFF;
+}
+#daily-event-list{
+  position: absolute;
+  /* padding: px 0px 0px 0px; */
+  top: -30px;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  overflow: auto;
+
+}
+
+#daily-event-list .event-data-container{
+  
+  width: 227.781px;
+  height: auto;
+  flex-shrink: 0;
+  border-radius: var(--borderRadius, 4px);
+  display: flex;
+  align-content: center;
+  padding: 8px 16px;
+  /* medium-s */
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.04), 0px 4px 10px -1px rgba(0, 0, 0, 0.08);
+}
+
+.event-data-container.bg-cyan{
+  
+  background: linear-gradient(90deg, #00B4B0 14.58%, #10E5E1 100%);
+}
+.event-data-container.bg-violet{
+  background: linear-gradient(90deg, #6136AB 36.98%, #B9A2E2 100%);
+}
+
+.--dly-ev-data-body{
+  display: flex;
+  flex-direction: row;
+  align-content: start;
+  align-items: start;
+}
+
+.--dly-ev-data-body .--dly-logo{
+  width: 44.265px;
+  height: 44.265px;
+  border-radius:50% ;
+  background-color: white;
+  margin-right: 16px;
+}
+.--dly-ev-data-body .--dly-info{
+  /* display: flex; */
+  text-align: start;
+  width: 150px;
+  min-height: 10px;
+}
+
+.--dly-info-event-name{
+  color: #FFF;
+  font-size: 12.911px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  
+  
+}
+.--dly-ev-data-body p{
+
+}
+
+
+
+.--dly-info-event-desc{
+  color: #FFF;
+  font-size: 11.066px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130.5%; /* 14.441px */
+}
+
+
