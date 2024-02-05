@@ -99,9 +99,7 @@
                         </div>
                     </div>
 
-
                     <div class="scheduleModule d-flex" style="width: 100%;">
-
                         <div class="d-flex" style="width: 80%;flex-direction: column;">
                             <p class="date-header" style="margin-bottom: 0px!important;overflow-x: hidden;">Horarios del evento</p>
                             <div class="schedulesContainer hiddenScroll" id="schedule-container">

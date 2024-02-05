@@ -42,7 +42,7 @@
             </div>
         </div>
         <button class="login" id="login">Ingresar </button>
-        <div class="footer"><span>Signup</span><span>Forgot Password?</span></div>
+        <div class="footer"><a style="text-decoration: none;color:black;" href="./createAccount.php">Crear cuenta</a><span>¿Olvidaste tú contraseña?</span></div>
     </div>
     <!-- partial -->
 
@@ -86,7 +86,6 @@
     });
 
     function SetEmailClass(classNameInput){
-        console.log("CLASS TO CHANGE",classNameInput);
         if(classNameInput !== ""){
             RemoveClassFromEmailInput();
             $('#emailInput').addClass(classNameInput);

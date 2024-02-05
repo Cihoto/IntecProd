@@ -88,13 +88,13 @@ $active = 'personal';
                 </table>
             </div>
 
-           
-               
-                <!-- < 
+
+
+            <!-- < 
                 if (in_array("11", $rol_id) || in_array("1", $rol_id) ||  in_array("2", $rol_id)) : 
                 > -->
-                <!-- <p endif; > -->
-                    <!-- <div class="row justify-content-center">
+            <!-- <p endif; > -->
+            <!-- <div class="row justify-content-center">
                         <div class="col-8 col-lg-3 col-sm-4">
                             <div class="card">
                                 <button type="button" id="btnPersonalUnitario" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#xlarge">
@@ -121,7 +121,7 @@ $active = 'personal';
                             </div>
                         </div>
                     </div> -->
-           
+
 
             <!-- FIN modal masiva -->
             <?php require_once('./includes/footer.php') ?>
@@ -133,10 +133,10 @@ $active = 'personal';
     <?php require_once('./includes/footerScriptsJs.php') ?>
 
     <!-- REQUIRE SIDEMENU PERSONAL -->
-    <?php require_once('./includes/sidemenu/personalSideMenu.php')?>
-    <?php require_once('./includes/sidemenu/personalSideMenuDash.php')?>
-    <?php require_once('./includes/sidemenu/personalMasivaSideMenu.php')?>
-    <?php require_once('./includes/sidemenu/especialidadCargoCrud.php')?>
+    <?php require_once('./includes/sidemenu/personalSideMenu.php') ?>
+    <?php require_once('./includes/sidemenu/personalSideMenuDash.php') ?>
+    <?php require_once('./includes/sidemenu/personalMasivaSideMenu.php') ?>
+    <?php require_once('./includes/sidemenu/especialidadCargoCrud.php') ?>
     <!-- xlsx Reader -->
     <script src="js/xlsxReader.js"></script>
     <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
@@ -236,46 +236,7 @@ $active = 'personal';
         }
 
         function GetContratos() {
-
-        }
-
-        $('#openSidePersonalForm').on("click",async function(){
-            $('#personaSideMenu').addClass('active'); 
-        })
-        $('#closePersonalSideMenu').on("click",async function(){
-            $('#personaSideMenu').removeClass('active'); 
-        })
-        $('#closeUpdatePersonalSideMenu').on("click",async function(){
-            $('#personalSideMenu-personalDash').removeClass('active'); 
-        })
-
-        $('#openMasivaPersonal').on("click",async function(){
-            $('#masivaPersonalSideMenu').addClass('active'); 
-        })
-        $('#closeMasivaPersonal').on("click",async function(){
-            $('#masivaPersonalSideMenu').removeClass('active'); 
-        })
-
-        $('#openEspCarController').on("click",async function(){
-            const ESPECIALIDADES = await GetEspecialidadByBussiness(EMPRESA_ID);
-            printEspecialidadOnCrud(ESPECIALIDADES);
-            const CARGOS = await GetCargoByBussiness(EMPRESA_ID);
-            printCargosOnCrud(CARGOS);
-            $('#especialidadCargoCrud').addClass('active'); 
-        });
-
-
-        $('#closeEspecialidadCargoCrud').on("click",async function(){
-            $('#especialidadCargoCrud').removeClass('active'); 
-        })
-
-
-        $(document).ready(function() {
-
-            printPersonal();
-
-
-            $.ajax({
+            return $.ajax({
                 type: "POST",
                 url: "ws/personal/Personal.php",
                 data: JSON.stringify({
@@ -284,21 +245,62 @@ $active = 'personal';
                 dataType: 'json',
                 success: function(data) {
                     // console.table(data);
-                    console.log(data);
-                    $('#contrato_Select').empty();
-                    $('#contrato_Select').append(new Option("", ""));
-                    data.forEach(con => {
-                        $('#contrato_Select').append(new Option(`${con.contrato}`, con.id))
-                    })
+                    // console.log(data);
 
                 },
                 error: function(data) {
                     console.log(data.responseText);
                 }
-            })
-            // GetContratos();
+            });
+        }
+
+        function printContratos(contratos) {
+            $('#contrato_Select').empty();
+            $('#contrato_Select').append(new Option("", ""));
+            contratos.forEach(contract => {
+                $('#contrato_Select').append(new Option(`${contract.contrato}`, contract.id))
+            });
+        }
+
+        $('#openSidePersonalForm').on("click", async function() {
+            $('#personaSideMenu').addClass('active');
+        })
+        $('#closePersonalSideMenu').on("click", async function() {
+            $('#personaSideMenu').removeClass('active');
+        })
+        $('#closeUpdatePersonalSideMenu').on("click", async function() {
+            $('#personalSideMenu-personalDash').removeClass('active');
+        })
+
+        $('#openMasivaPersonal').on("click", async function() {
+            $('#masivaPersonalSideMenu').addClass('active');
+        })
+        $('#closeMasivaPersonal').on("click", async function() {
+            $('#masivaPersonalSideMenu').removeClass('active');
+        })
+
+        $('#openEspCarController').on("click", async function() {
+            const ESPECIALIDADES = await GetEspecialidadByBussiness(EMPRESA_ID);
+            printEspecialidadOnCrud(ESPECIALIDADES);
+            const CARGOS = await GetCargoByBussiness(EMPRESA_ID);
+            printCargosOnCrud(CARGOS);
+            $('#especialidadCargoCrud').addClass('active');
+        });
+
+
+        $('#closeEspecialidadCargoCrud').on("click", async function() {
+            $('#especialidadCargoCrud').removeClass('active');
+        })
+
+
+        $(document).ready(async function() {
+
+            printPersonal();
+            const contratos = await GetContratos();
+            printContratos(contratos);
+
             $('#addPersonal').validate({
-                rules: {
+                rules : {
                     nombres: {
                         required: true,
                         minlength: 3
@@ -426,7 +428,7 @@ $active = 'personal';
             })
         });
 
-        const dataArrayIndex = ['Nombre', 'Rut (opcional)','Especialidad', 'Cargo (opcional)','Tipo contrato (opcional)','Costo Mensual (opcional)','Correo (opcional)','Teléfono (opcional)']
+        const dataArrayIndex = ['Nombre', 'Rut (opcional)', 'Especialidad', 'Cargo (opcional)', 'Tipo contrato (opcional)', 'Costo Mensual (opcional)', 'Correo (opcional)', 'Teléfono (opcional)']
         const dataArray = {
             'xlsxData': [{
                     'name': 'Nombre',
@@ -464,7 +466,7 @@ $active = 'personal';
                     'notNull': true
                 },
                 {
-                    'name':'Costo Mensual (opcional)',
+                    'name': 'Costo Mensual (opcional)',
                     'type': 'string',
                     'minlength': 1,
                     'maxlength': 50,
@@ -498,7 +500,7 @@ $active = 'personal';
         $('#excel_input').on('change', async function() {
             const extension = GetFileExtension()
             if (extension == "xlsx") {
-                
+
 
                 const tableContent = await xlsxReadandWrite(dataArray);
 
@@ -622,7 +624,7 @@ $active = 'personal';
                 const arrayRequest = preRequest.map(function(value) {
                     let returnArray = {
                         "nombre": value[0],
-                        "apellido":"",
+                        "apellido": "",
                         "rut": value[1],
                         "especialidad": value[2],
                         "cargo": value[3],
@@ -649,10 +651,10 @@ $active = 'personal';
                         console.log(data);
                         if (data.success) {
                             Swal.fire({
-                                "icon":"success",
-                                "title":"Excelente!",
-                                "text":"Técnicos agregados exitosamente",
-                                "timer":2500
+                                "icon": "success",
+                                "title": "Excelente!",
+                                "text": "Técnicos agregados exitosamente",
+                                "timer": 2500
                             });
                             $('#masivaPersonalSideMenu').removeClass('active');
                             $('#excelTable tr').remove();

@@ -237,14 +237,13 @@ function setviatico($request)
     foreach ($request as $req) {
         $idProject = $req->idProject;
     }
-
+    
     $queryIfAssigned = "SELECT * from personal_has_proyecto php where php.proyecto_id = $idProject";
 
     if ($conn->mysqli->query($queryIfAssigned)->num_rows > 0) {
         $qdelete = "DELETE FROM proyecto_has_viatico WHERE proyecto_id =$idProject";
         $conn->mysqli->query($qdelete);
     }
-
     foreach ($request as $req) {
         $idProject = $req->idProject;
         $valor = $req->valor;
@@ -570,18 +569,25 @@ function dropAssigmentPersonal($idProject)
 
 function getAllContratos()
 {
-    $conn = new bd();
-    $conn->conectar();
-    $contratos = [];
-    $queryAllContratos = "SELECT * FROM tipo_contrato tc";
 
-    if ($responseBd = $conn->mysqli->query($queryAllContratos)) {
-        while ($dataContratos = $responseBd->fetch_object()) {
-            $contratos[] = $dataContratos;
+    try{
+
+        $conn = new bd();
+        $conn->conectar();
+        $contratos = [];
+        $queryAllContratos = "SELECT * FROM tipo_contrato tc";
+    
+        if ($responseBd = $conn->mysqli->query($queryAllContratos)) {
+            while ($dataContratos = $responseBd->fetch_object()) {
+                $contratos[] = $dataContratos;
+            }
         }
+        $conn->desconectar();
+        return $contratos;
+
+    }catch(Exception $e){
+        return array("fatalError"=>true,"code"=>400);
     }
-    $conn->desconectar();
-    return $contratos;
 }
 
 function addPersonalMasiva($request, $empresaId)
@@ -692,24 +698,33 @@ function addPersonalMasiva($request, $empresaId)
 }
 
 
-function GetPersonalByEmpresa($empresa_id)
-{
-    $conn =  new bd();
-    $conn->conectar();
-    $personal = [];
+function GetPersonalByEmpresa($empresa_id){
 
-    $queryGetPersonal = "SELECT CONCAT(per.nombre,' ',per.apellido) as nombre, p.id as personal_id,per.email FROM personal p
-    INNER JOIN persona per ON per.id = p.persona_id 
-    LEFT JOIN usuario u ON u.id = p.usuario_id 
-    WHERE u.id is NULL AND p.empresa_id  = $empresa_id";
 
-    if ($responseDb = $conn->mysqli->query($queryGetPersonal)) {
-        while ($dataPersonal = $responseDb->fetch_object()) {
-            $personal[] = $dataPersonal;
+    try{
+
+        $conn =  new bd();
+        $conn->conectar();
+        $personal = [];
+    
+        $queryGetPersonal = "SELECT CONCAT(per.nombre,' ',per.apellido) as nombre, p.id as personal_id,per.email FROM personal p
+        INNER JOIN persona per ON per.id = p.persona_id 
+        LEFT JOIN usuario u ON u.id = p.usuario_id 
+        WHERE u.id is NULL AND p.empresa_id  = $empresa_id";
+    
+        if ($responseDb = $conn->mysqli->query($queryGetPersonal)) {
+            while ($dataPersonal = $responseDb->fetch_object()) {
+                $personal[] = $dataPersonal;
+            }
+            $conn->desconectar();
+            return array("success" => true, "data" => $personal);
+        } else {
+            $conn->desconectar();
+            return array('error' => true, "message" => "No se ha podido completar la solicitud, por favor intente nuevamente");
         }
-        return array("success" => true, "data" => $personal);
-    } else {
-        return array('error' => true, "message" => "No se ha podido completar la solicitud, por favor intente nuevamente");
+    }catch(Exception $e){
+        return array('datalError' => true, "code" => 400);
+        
     }
 }
 
@@ -808,26 +823,34 @@ function insertPersonal($request, $empresa_id)
 
 function getPersonalByBussiness($empresa_id)
 {
-    $conn  = new bd();
-    $conn->conectar();
-    $personal = [];
+    try{
 
-    $query = "SELECT *, p.id as personal_id FROM personal p
-    left JOIN tipo_contrato tc on tc.id = p.tipo_contrato_id
-    left join persona per on per.id = p.persona_id
-    left join cargo c on c.id = p.cargo_id 
-    left join especialidad e on e.id = p.especialidad_id 
-    where p.empresa_id = $empresa_id 
-    and p.isDelete = 0";
-
-    if ($response = $conn->mysqli->query($query)) {
-        while ($data = $response->fetch_object()) {
-            $personal[] = $data;
+        $conn  = new bd();
+        $conn->conectar();
+        $personal = [];
+    
+        $query = "SELECT *, p.id as personal_id FROM personal p
+        left JOIN tipo_contrato tc on tc.id = p.tipo_contrato_id
+        left join cargo c on c.id = p.cargo_id 
+        left join especialidad e on e.id = p.especialidad_id 
+        INNER JOIN persona per on per.id = p.persona_id
+        where p.empresa_id = $empresa_id 
+        and p.isDelete = 0";
+    
+        if ($response = $conn->mysqli->query($query)) {
+            while ($data = $response->fetch_object()) {
+                $personal[] = $data;
+            }
+            $conn->desconectar();
+            return array("success" => true, "data" => $personal);
+        } else {
+            $conn->desconectar();
+            return array("error" => true);
         }
-        return array("success" => true, "data" => $personal);
-    } else {
-        return array("error" => true);
+    }catch(Exception $e){
+        return array("fataError"=>true,"code"=>400);
     }
+
 }
 
 

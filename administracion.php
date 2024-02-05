@@ -4,6 +4,11 @@
 require_once('./includes/head.php');
 $active = 'administracion';
 ?>
+<style>
+    #bussinessUserTable td {
+        width: 50%;
+    }
+</style>
 
 <body>
 
@@ -16,7 +21,7 @@ $active = 'administracion';
         <?php require_once('./includes/sidebar.php') ?>
         <div id="main">
 
-        <div id="clientsContainer">
+            <div id="userContainer">
                 <div class="formHeader" style="align-items: center;align-content:center;margin-left: 14px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <circle cx="6" cy="6" r="6" fill="#069B99" />
@@ -25,32 +30,20 @@ $active = 'administracion';
                 </div>
 
                 <div class="row justify-content-end" style="margin:0px 14px;">
-                    <button class="s-Button" id="openMasivaCliente" style="position: relative; right:-138px ; bottom: 50px;">
-                        <p class="s-P">Agregar clientes masiva</p>
-                    </button>
-                    <button class="s-Button" id="openSideClientForm">
-                        <p class="s-P">Agregar cliente</p>
+                    <button class="s-Button" id="openSideClientForm" onclick="getAndPrintUnablePersonalForUserCreation()">
+                        <p class="s-P">Agregar usuario</p>
                     </button>
                 </div>
 
-                <table class="s-table" id="bussinessUserTable">
+                <table class="--table-s" style="width:40%" id="bussinessUserTable">
                     <thead>
                         <tr>
-                            <th>Correo</th>
-                            <th>Nombre</th>
-                            <th>Correo Eléctronico</th>
-                            <th>Eventos</th>
-                            <th>Facturación</th>
+                            <th style="width:50%">Correo</th>
+                            <th style="width:50%">Nombre</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- <tr>
-                        <td>Correo</td>
-                            <td>Nombre</td>
-                            <td>Correo Eléctronico</td>
-                            <td>Eventos</td>
-                            <td>Facturación</td>
-                        </tr> -->
+
                     </tbody>
                     <tfoot></tfoot>
                 </table>
@@ -69,14 +62,14 @@ $active = 'administracion';
 
 
 
-                
+
 
                 <div class="action-container">
                     <div class="action-box" id="CreateUser">
                         <i class="fa-solid fa-user-plus"></i>
                     </div>
                 </div>
-                <div class="collapsableFormContainer hidden">
+                <!-- <div class="collapsableFormContainer hidden">
                     <h3>Crea un nuevo usuario</h3>
                     <form id="CreateNewUser">
                         <div class="modal-body">
@@ -119,7 +112,7 @@ $active = 'administracion';
                             </button>
                         </div>
                     </form>
-                </div>
+                </div> -->
 
                 <div id="users" class="hiddesn">
                     <div class="user-container">
@@ -139,7 +132,7 @@ $active = 'administracion';
                         </li> -->
                         </ul>
                     </div>
-                    <div class="user-options hiddenScroll">
+                    <!-- <div class="user-options hiddenScroll">
 
                         <section id="user-options-header" class="sticky-head">
                             <h4 style="text-align: start;">Configuración de usuario</h4>
@@ -320,7 +313,7 @@ $active = 'administracion';
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -349,6 +342,11 @@ $active = 'administracion';
     <script src="/js/usuario.js"></script>
     <script src="/js/personal.js"></script>
 
+
+    <!-- SIDE MENU INCLUDE -->
+    <?php include_once('./includes/sidemenu/admSideMenu.php') ?>
+    <?php include_once('./includes/sidemenu/admUserConfigMenu.php') ?>
+
 </body>
 
 <script>
@@ -372,7 +370,16 @@ $active = 'administracion';
         // GetAllUsuariosByEmpresa(EMPRESA_ID);
         FillUsers();
         // $('#personalSelect').select2();
-    })
+        $('#openSideClientForm').on("click", function() {
+            $('#admUserSideMenu').addClass('active');
+        })
+        $('#closeAdmUserSideMenu').on("click", function() {
+            $('#admUserSideMenu').removeClass('active');
+        })
+    });
+
+
+
 
     // FILTER USER BY NAME
     $('#searchUser').on('keyup', function() {
@@ -468,13 +475,13 @@ $active = 'administracion';
 
                 const isDeleted = await DeleteUser(user_id);
 
-                if(isDeleted.success){
+                if (isDeleted.success) {
                     Swal.fire('Usuario eliminado exitosamente', '', 'success')
-                    .then(()=>{
-                        FillUsers();
-                    })
+                        .then(() => {
+                            FillUsers();
+                        })
                 }
-                if(isDeleted.error){
+                if (isDeleted.error) {
                     Swal.fire('Ha ocurrido un error, por favor intente nuevamente', '', 'error')
                 }
 
@@ -507,6 +514,8 @@ $active = 'administracion';
     // CLICK ON USER TO DISPLAY HIS INFO, ROLES , ETC
 
     $(document).on('click', '.user-element', async function() {
+
+        $('#admConfigUserSideMenu').addClass('active');
         resetAllCheckButtons();
         removeActiveFromUserElement();
 
@@ -519,7 +528,7 @@ $active = 'administracion';
         const user_id = $(this).attr('user_id');
         const roles = await GetUserRol(user_id);
         if (roles.success) {
-            $(admContainer_user_id).attr('user_id',user_id);
+            $(admContainer_user_id).attr('user_id', user_id);
             console.log(roles.user_data);
             $('#clientesEditEmail').val(roles.user_data[0].user);
             const lengthPass = roles.user_data[0].pass_length;
@@ -534,15 +543,15 @@ $active = 'administracion';
             roles.data.forEach(rol => {
                 arrayRolId.push(rol.rol_id);
             });
-                console.log(arrayRolId);
-            if(arrayRolId.includes(1)){
+            console.log(arrayRolId);
+            if (arrayRolId.includes(1)) {
                 // checkAllCheckButtons() 
             }
 
             $('#rol-Container input[type="checkbox"]').each((key, element) => {
-                if(arrayRolId.includes("2") || arrayRolId.includes("1") ){
+                if (arrayRolId.includes("2") || arrayRolId.includes("1")) {
                     checkAllCheckButtons();
-                }else{
+                } else {
 
                     if ($(element).hasClass('rolActivator') && arrayRolId.includes($(element).attr('value'))) {
                         $(element).trigger('click');
@@ -554,7 +563,55 @@ $active = 'administracion';
             })
         }
     })
+    $(document).on('click', '#bussinessUserTable tbody tr', async function() {
+        _selectedUser = "";
+        $('#admConfigUserSideMenu').addClass('active');
+        resetAllCheckButtons();
+        removeActiveFromUserElement();
 
+        const admContainer_user_id = $('.user-options');
+
+        $('#rol-Container').addClass('hidden');
+        const user_id = $(this).attr('user_id');
+
+        _selectedUser = user_id;
+
+        const roles = await GetUserRol(user_id);
+        if (roles.success) {
+            $(admContainer_user_id).attr('user_id', user_id);
+            console.log(roles.user_data);
+            $('#clientesEditEmail').val(roles.user_data[0].user);
+            const lengthPass = roles.user_data[0].pass_length;
+            let secretPass = '';
+            for (let index = 0; index < lengthPass; index++) {
+                secretPass += '*';
+            }
+            $('#txtChangePass').val(secretPass);
+            $('#rol-Container').removeClass('hidden');
+            let arrayRolId = [];
+            roles.data.forEach(rol => {
+                arrayRolId.push(rol.rol_id);
+            });
+            console.log(arrayRolId);
+            if (arrayRolId.includes(1)) {
+                // checkAllCheckButtons() 
+            }
+
+            $('#rol-Container input[type="checkbox"]').each((key, element) => {
+                if (arrayRolId.includes("2") || arrayRolId.includes("1")) {
+                    checkAllCheckButtons();
+                } else {
+
+                    if ($(element).hasClass('rolActivator') && arrayRolId.includes($(element).attr('value'))) {
+                        $(element).trigger('click');
+                    }
+                    if ($(element).hasClass('substituted') && arrayRolId.includes($(element).attr('value'))) {
+                        $(element).trigger('click');
+                    }
+                }
+            })
+        }
+    });
 
     // CHANGE ROLES TO USER
     async function AssignRoles(arrayRoles, user_id) {
@@ -570,19 +627,6 @@ $active = 'administracion';
             success: function(response) {
                 console.log(response);
 
-                if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Excelente!',
-                        text: response.message,
-                        showConfirmButton: false,
-                        timer: 2000
-                    }).then(() => {
-                        $('#rol-Container').addClass('hidden');
-                        const user = $('.user-element').attr("user_id") === user_id;
-                        $(user).removeClass('active');
-                    })
-                }
             }
         })
     }
@@ -621,7 +665,7 @@ $active = 'administracion';
     /*
         PUT VALUE OF <SELECT> ON TXTEMAIL, THEN
         CALL FUNCTION IF EMAIL IS TAKEN FROM OTHER USER ON APP
-    */ 
+    */
     $(document).on('change', '#personalSelect', function() {
         const correo = $(this).val();
         $('#txtemail').val(correo);
@@ -633,7 +677,7 @@ $active = 'administracion';
         CheckIfEmailExist($(this).val());
     })
 
-    
+
     // REMOVE ERR CLASS OR SUCCESS CLASS ON  EMAIL INPUT FOR NEW VALIDATION
     $('#txtemail').on('focus', function() {
         $('#emailMessage').text('')
@@ -651,46 +695,56 @@ $active = 'administracion';
         return regex.test(email);
     }
 
+    async function getAndPrintUnablePersonalForUserCreation() {
+        const PERSONAL_RESPONSE = await GetPersonalByEmpresa(EMPRESA_ID);
+
+        if (!PERSONAL_RESPONSE.success) {
+            return;
+        }
+
+        const PERSONAL = PERSONAL_RESPONSE.data;
+        $("#personalSelect").empty();
+        $("#personalSelect").append(new Option('', ''))
+
+        $('#CreateNewUser input').val("");
+        PERSONAL.forEach(personal => {
+            $("#personalSelect").append(new Option(personal.nombre, personal.email));
+
+            let lastOption = $('#personalSelect option').last();
+            lastOption.attr('personal_id', `${personal.personal_id}`);
+        });
+        // $('.existingPersonal').addClass('greenback');
+        // $('#newUserPersonalExist').prop('disabled', false);
+        // $('#newUserPersonalData').removeClass('hidden');
+    }
+
 
     // CREATE USER FROM EXISTING PERSONAL
     $('#newUserPersonalExist').on('click', async function() {
-        if (!$(this).is(':checked')) {
+        // if (!$(this).is(':checked')) {
 
-            $('#newUserPersonalData').addClass('hidden');
-            $('.existingPersonal').removeClass('greenback');
+        //     $('#newUserPersonalData').addClass('hidden');
+        //     $('.existingPersonal').removeClass('greenback');
 
-        } else {
+        // } else {
 
-            $('#newUserPersonalExist').prop('disabled', true);
-            const personal = await GetPersonalByEmpresa(EMPRESA_ID);
+        //     $('#newUserPersonalExist').prop('disabled', true);
+        //     if (personal.data.length > 0) {
 
-            if (personal.data.length > 0) {
-                $("#personalSelect").empty();
-                $("#personalSelect").append(new Option('', ''))
-                personal.data.forEach(personal => {
-
-                    $("#personalSelect").append(new Option(personal.nombre, personal.email));
-
-                    let lastOption = $('#personalSelect option').last();
-                    lastOption.attr('personal_id', `${personal.personal_id}`);
-                });
-                $('.existingPersonal').addClass('greenback');
-                $('#newUserPersonalExist').prop('disabled', false);
-                $('#newUserPersonalData').removeClass('hidden');
-            } else {
-                $('#newUserPersonalExist').prop('disabled', false);
-                Swal.fire({
-                    title: 'Ups!',
-                    text: "No hay ténicos creados o todos los que posees ya tienen un usuario asociado",
-                    showConfirmButton: false,
-                    timer: 2000
-                })
-            }
-        }
+        //     } else {
+        //         $('#newUserPersonalExist').prop('disabled', false);
+        //         Swal.fire({
+        //             title: 'Ups!',
+        //             text: "No hay ténicos creados o todos los que posees ya tienen un usuario asociado",
+        //             showConfirmButton: false,
+        //             timer: 2000
+        //         })
+        //     }
+        // }
     })
 
     // SAVE CHANGES FROM USER CONFIGURATION 
-    $('#saveRoles').on('click', function() {
+    $('#saveRoles').on('click', async function() {
         // $('#rol-Container').addClass('hidden');
         let arrayRoles = [];
         let user_id = "";
@@ -702,7 +756,7 @@ $active = 'administracion';
             })
         });
 
-        if($('#checkbox-Administrador').is(':checked')){
+        if ($('#checkbox-Administrador').is(':checked')) {
             arrayRoles.push({
                 rol_id: "2"
             })
@@ -715,9 +769,31 @@ $active = 'administracion';
                 user_id = $(element).attr('user_id');
             }
         });
-        AssignRoles(arrayRoles, user_id);
-    })
 
+        if (_selectedUser === "" || _selectedUser === undefined || _selectedUser === null) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'ups!',
+                text: 'Recargue la página e intente nuevamente',
+                showConfirmButton: false,
+                timer: 15000
+            });
+            return;
+        }
+        const RESPONSE_ASSIGN_ROLES = await AssignRoles(arrayRoles, _selectedUser);
+
+        if (RESPONSE_ASSIGN_ROLES.success) {
+            $('#admConfigUserSideMenu').removeClass('active');
+            Toastify({
+                text: "Cambios guardados exitosamente",
+                duration: 3000,
+                style: {
+                    background: "linear-gradient(90deg, #36ABA9 0%, #10E5E1 82.29%)",
+                },
+            }).showToast();
+        }
+    });
 
     // START PASS CODING AND SECURITY
 
@@ -769,8 +845,7 @@ $active = 'administracion';
             return
         }
         $('#txtpass').addClass('success');
-    })
-
+    });
     // END PASS CODING AND SECURITY
 
     // ADD USER TO BUSSINESS
@@ -811,17 +886,14 @@ $active = 'administracion';
                 timer: 2000
             }).then(async function() {
 
-                const fillUsers = await FillUsers();
-                console.log(`FILL USERS ${fillUsers}`);
+                $('#admUserSideMenu').removeClass('active');
+
+                const fillUsers = await GetAllUsuariosByEmpresa(EMPRESA_ID);
                 if (fillUsers) {
                     const users = $('.user-element');
                     console.log("USERS", users);
-                    users.each((key, element) => {
-                        // console.log($(element));
-                        if ($(element).attr('user_id') === `${userWasCreated.user_id}`) {
-                            $(element).closest('li').trigger('click');
-                        }
-                    })
+                    $(`#bussinessUserTable tbody tr[user_id="${userWasCreated.user_id}"]`)[0].click();
+
                     $('#txtemail').val('');
                     $('#txtpass').val('');
                     $('#newUserPersonalExist').trigger('click');

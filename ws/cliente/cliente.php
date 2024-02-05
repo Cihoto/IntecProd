@@ -286,43 +286,51 @@ if ($_POST) {
     }
 
     function getClientData($empresa_id){
-        $conn =  new bd();
-        $conn->conectar();
-        $clientData = [];
 
-        $queryGetClientData = "SELECT 
-        c.id AS cliente_id ,
-        CONCAT(p.nombre,' ',p.apellido) as nombre_persona,
-        p.rut AS rut_persona, 
-        p.email as cli_correo,
-        p.telefono as cli_telefono,
-        df.razon_social,
-        df.nombre_fantasia,
-        df.rut AS rut_df,
-        df.direccion AS df_direccion,
-        df.correo AS df_correo,
-        df.persona_contacto,
-        (SELECT COUNT(p.id) from proyecto p
-		inner join cliente cli on cli.id = p.cliente_id 
-		and p.cliente_id  = c.id) as event_quantity,
-        (SELECT SUM(pfr.income) from project_finance_resume pfr
-		inner join proyecto proy on proy.id = pfr.event_id
-		and proy.cliente_id = c.id ) as totalPerClient
-        FROM cliente c
-        INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
-        INNER JOIN persona p on p.id = c.persona_id_contacto 
-        where c.empresa_id = $empresa_id";
-
-        if($responseDbClient = $conn->mysqli->query($queryGetClientData)){
-            while($dataClient = $responseDbClient->fetch_object()){
-                $clientData [] = $dataClient;
+        try{
+            $conn =  new bd();
+            $conn->conectar();
+            $clientData = [];
+    
+            $queryGetClientData = "SELECT 
+            c.id AS cliente_id ,
+            CONCAT(p.nombre,' ',p.apellido) as nombre_persona,
+            p.rut AS rut_persona, 
+            p.email as cli_correo,
+            p.telefono as cli_telefono,
+            df.razon_social,
+            df.nombre_fantasia,
+            df.rut AS rut_df,
+            df.direccion AS df_direccion,
+            df.correo AS df_correo,
+            df.persona_contacto,
+            (SELECT COUNT(p.id) from proyecto p
+            inner join cliente cli on cli.id = p.cliente_id 
+            and p.cliente_id  = c.id 
+            and p.empresa_id = $empresa_id) as event_quantity,
+            (SELECT SUM(pfr.income) from project_finance_resume pfr
+            inner join proyecto proy on proy.id = pfr.event_id
+            and proy.cliente_id = c.id
+            and proy.empresa_id = $empresa_id ) as totalPerClient
+            FROM cliente c
+            INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
+            INNER JOIN persona p on p.id = c.persona_id_contacto 
+            where c.empresa_id = $empresa_id";
+    
+            if($responseDbClient = $conn->mysqli->query($queryGetClientData)){
+                while($dataClient = $responseDbClient->fetch_object()){
+                    $clientData [] = $dataClient;
+                }
+                $conn->desconectar();
+                return json_encode(array("success"=>true, "data"=>$clientData));
+            }else{
+                $conn->desconectar();
+                return json_encode(array("error"=>true));
             }
-            $conn->desconectar();
-            return json_encode(array("success"=>true, "data"=>$clientData));
-        }else{
-            $conn->desconectar();
-            return json_encode(array("error"=>true));
+        }catch(Exception $e){
+            return array("fatalError"=>true,"message"=>"No se ha podido completar la solicitud, intente nuevamente");
         }
+
 
 
     }

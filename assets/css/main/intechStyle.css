@@ -1568,6 +1568,7 @@ textarea {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
   flex-direction: column;
+  padding: 16px 0px;
 }
 
 .center-element {
@@ -1625,6 +1626,12 @@ textarea {
 
 .user-config-description {
   padding: 15px 30px 0px 10px;
+  color: var(--Text-primary, #2C2D33);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0.46px;
 }
 
 #users {
@@ -1645,14 +1652,8 @@ textarea {
   margin-left: -1000px;
 }
 
-.collapsableFormContainer {
-  transition: all 1s ease;
-}
-
-.collapsableFormContainer.hidden {
-  opacity: 0;
-  visibility: hidden;
-  height: 0px;
+.collapsableFormContainer{
+  padding: 16px;
 }
 
 @media (max-width: 1000px) {
@@ -1757,8 +1758,7 @@ textarea {
   max-height: 100%;
   /* background-color: rgba(0, 0, 255, 0.185); */
   margin: 10px 10px 10px 0px;
-  padding: 30px;
-  border: 2px solid rgba(0, 0, 0, 0.571);
+  padding: 0px 16px;
   border-radius: 10px;
 }
 
@@ -1780,10 +1780,9 @@ textarea {
   align-items: center;
   align-content: center;
   text-align: center;
-  margin: 20px;
+  margin: 12px;
   border: 1.5px solid black;
   border-radius: 10px;
-  height: 80px;
   width: 40%;
   transition: all .5s ease;
 }
@@ -2525,6 +2524,7 @@ textarea {
 
 .changeInvertHover:hover {
   background-color: #069B99 !important;
+  font-weight: 500;
 }
 
 .changeInvertHover:hover p,
@@ -4156,6 +4156,15 @@ button{
   border-radius: var(--1, 8px);
   background: var(--White, #FCFCFC);
 }
+#userContainer{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--2, 16px);
+  gap:  16px;
+  border-radius: var(--1, 8px);
+  background: var(--White, #FCFCFC);
+}
 
 #dashClient-table tbody td{
   display: flex;
@@ -4575,7 +4584,6 @@ table.dataTable thead th, table.dataTable thead td{
 }
 
 
-
 .--dly-info-event-desc{
   color: #FFF;
   font-size: 11.066px;
@@ -4583,5 +4591,92 @@ table.dataTable thead th, table.dataTable thead td{
   font-weight: 500;
   line-height: 130.5%; /* 14.441px */
 }
+
+
+
+#bussinessUserTable tbody tr{
+  display: flex;
+  padding: var(--none, 0px);
+  align-items: center;
+  gap: var(--1, 8px);
+  align-self: stretch;
+
+  border-radius: var(--none, 0px);
+  border-top: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-right: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-bottom: 1px solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-left: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+}
+
+
+
+
+
+.--table-s thead tr{
+  display: flex;
+  padding: var(--none, 0px);
+  align-items: center;
+  gap: var(--1, 8px);
+  align-self: stretch;
+  border-radius: var(--none, 0px);
+  border-top: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-right: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-bottom: 1px solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-left: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  background: var(--Fondo-cyan, #E8F3F3);
+}
+.--table-s tbody tr{
+  display: flex;
+  padding: var(--none, 0px);
+  align-items: center;
+  gap: var(--1, 8px);
+  align-self: stretch;
+  border-radius: var(--none, 0px);
+  border-top: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-right: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-bottom: 1px solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-left: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+}
+
+
+
+.--table-s th{
+  color: var(--Text-primary, #2C2D33);
+  font-feature-settings: 'clig' off, 'liga' off;
+  /* table/header */
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 171.429% */
+  letter-spacing: 0.17px;
+  padding: 16px;
+}
+.--table-s tbody td{
+  color: var(--text-primary, rgba(0, 0, 0, 0.87));
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 143%; /* 20.02px */
+  letter-spacing: 0.17px;
+  padding: 12px 16px;
+}
+.--table-s th, .--table-s td{
+  display: flex;
+  align-items: center;
+}
+.--table-s tbody tr{
+  transition: all .3s ease;
+  cursor: pointer;
+}
+.--table-s tbody tr:hover{
+  border-radius: var(--none, 0px);
+  border: 1px solid var(--Secondary-color, #6136AB);
+  background: var(--Purple-200, #DCD0F1);
+}
+
+
+
+
 
 

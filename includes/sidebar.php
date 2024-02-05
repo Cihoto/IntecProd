@@ -240,7 +240,7 @@
         <?php endif; ?>
 
 
-        <?php if ($empresaId === "1") : ?>
+        <?php if ($empresaId === "2") : ?>
           <?php
 
           if ($active == 'pruebas') {
