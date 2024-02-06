@@ -14,7 +14,7 @@ $(document).ready(function () {
         const allMyEvents = await getAllMyEvents(EMPRESA_ID);
         if (allMyEvents) {
 
-            // console.log(allMyEvents);
+            console.log(allMyEvents);
 
             let mergedArray = [];
             const ordered_events = event_status_order.map((order) => {

@@ -673,13 +673,20 @@ function getAllMyProjects_list_toExecute($empresa_id)
     $queryProyectos = "SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',
     CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
     CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
-    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
-            FROM proyecto p
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf',
+    et.nombre as event_type, pfr.income as income, pfr.cost as cost,(SELECT persona.nombre 
+    FROM personal pers
+    INNER JOIN persona on persona.id = pers.persona_id 
+    INNER JOIN proyecto proye on proye.owner = pers.id
+    WHERE proye.id = p.id AND p.empresa_id = 2) as owner
+        FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
     LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
     LEFT JOIN estado e on e.id = p.status_id
+    LEFT JOIN event_type et on et.id = p.event_type_id
     LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN project_finance_resume pfr on pfr.event_id  = p.id
     LEFT JOIN direccion d on d.id = l.direccion_id 
     LEFT JOIN cliente c on c.id  = p.cliente_id         
     LEFT JOIN persona per on per.id = c.persona_id_contacto
@@ -714,13 +721,20 @@ function getAllMyEvents($empresa_id){
     $queryProyectos_with_date = "SELECT p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
     CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
     CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
-    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf',
+    et.nombre as event_type, pfr.income as income, pfr.cost as cost,(SELECT persona.nombre 
+    FROM personal pers
+    INNER JOIN persona on persona.id = pers.persona_id 
+    INNER JOIN proyecto proye on proye.owner = pers.id
+    WHERE proye.id = p.id AND p.empresa_id = 2) as owner
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
     LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
-    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN estado e on e.id = p.status_id
+    LEFT JOIN event_type et on et.id = p.event_type_id
     LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN project_finance_resume pfr on pfr.event_id  = p.id
     LEFT JOIN direccion d on d.id = l.direccion_id 
     LEFT JOIN cliente c on c.id  = p.cliente_id         
     LEFT JOIN persona per on per.id = c.persona_id_contacto
@@ -735,13 +749,20 @@ function getAllMyEvents($empresa_id){
     $queryProyectos_without_date = "SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',
     CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
     CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
-    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf',
+    et.nombre as event_type, pfr.income as income, pfr.cost as cost,(SELECT persona.nombre 
+    FROM personal pers
+    INNER JOIN persona on persona.id = pers.persona_id 
+    INNER JOIN proyecto proye on proye.owner = pers.id
+    WHERE proye.id = p.id AND p.empresa_id = 2) as owner
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
     LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
-    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN estado e on e.id = p.status_id
+    LEFT JOIN event_type et on et.id = p.event_type_id
     LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN project_finance_resume pfr on pfr.event_id  = p.id
     LEFT JOIN direccion d on d.id = l.direccion_id 
     LEFT JOIN cliente c on c.id  = p.cliente_id         
     LEFT JOIN persona per on per.id = c.persona_id_contacto
@@ -779,13 +800,20 @@ function  getEventByStatus_id($empresa_id,$status_id){
     $queryProyectos_with_date = "SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',
     CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
     CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
-    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf',
+    et.nombre as event_type, pfr.income as income, pfr.cost as cost,(SELECT persona.nombre 
+    FROM personal pers
+    INNER JOIN persona on persona.id = pers.persona_id 
+    INNER JOIN proyecto proye on proye.owner = pers.id
+    WHERE proye.id = p.id AND p.empresa_id = 2) as owner
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
     LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
-    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN estado e on e.id = p.status_id
+    LEFT JOIN event_type et on et.id = p.event_type_id
     LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN project_finance_resume pfr on pfr.event_id  = p.id
     LEFT JOIN direccion d on d.id = l.direccion_id 
     LEFT JOIN cliente c on c.id  = p.cliente_id         
     LEFT JOIN persona per on per.id = c.persona_id_contacto
@@ -800,13 +828,20 @@ function  getEventByStatus_id($empresa_id,$status_id){
     $queryProyectos_without_date = "SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',
     CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
     CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
-    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf',
+    et.nombre as event_type, pfr.income as income, pfr.cost as cost,(SELECT persona.nombre 
+    FROM personal pers
+    INNER JOIN persona on persona.id = pers.persona_id 
+    INNER JOIN proyecto proye on proye.owner = pers.id
+    WHERE proye.id = p.id AND p.empresa_id = 2) as owner
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
     LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
-    LEFT JOIN estado e on e.id = p.status_id  
+    LEFT JOIN estado e on e.id = p.status_id
+    LEFT JOIN event_type et on et.id = p.event_type_id
     LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN project_finance_resume pfr on pfr.event_id  = p.id
     LEFT JOIN direccion d on d.id = l.direccion_id 
     LEFT JOIN cliente c on c.id  = p.cliente_id         
     LEFT JOIN persona per on per.id = c.persona_id_contacto
@@ -843,18 +878,25 @@ function getOperEvents($empresa_id){
     $queryProyectos_with_date = "SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
     CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
     CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
-    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf',
+    et.nombre as event_type, pfr.income as income, pfr.cost as cost,(SELECT persona.nombre 
+    FROM personal pers
+    INNER JOIN persona on persona.id = pers.persona_id 
+    INNER JOIN proyecto proye on proye.owner = pers.id
+    WHERE proye.id = p.id AND p.empresa_id = 2) as owner
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
     LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
-    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN estado e on e.id = p.status_id
+    LEFT JOIN event_type et on et.id = p.event_type_id
     LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN project_finance_resume pfr on pfr.event_id  = p.id
     LEFT JOIN direccion d on d.id = l.direccion_id 
     LEFT JOIN cliente c on c.id  = p.cliente_id         
     LEFT JOIN persona per on per.id = c.persona_id_contacto
     LEFT JOIN comuna co on co.id = d.comuna_id 
-    LEFT JOIN region re on re.id = co.region_id 
+    LEFT JOIN region re on re.id = co.region_id  
     WHERE p.empresa_id  = 1
     AND p.status_id in(2)
     AND p.fecha_inicio IS NOT NULL
@@ -866,18 +908,25 @@ function getOperEvents($empresa_id){
     $queryProyectos_without_date = "SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
     CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
     CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
-    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf',
+    et.nombre as event_type, pfr.income as income, pfr.cost as cost,(SELECT persona.nombre 
+    FROM personal pers
+    INNER JOIN persona on persona.id = pers.persona_id 
+    INNER JOIN proyecto proye on proye.owner = pers.id
+    WHERE proye.id = p.id AND p.empresa_id = 2) as owner
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
     LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
-    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN estado e on e.id = p.status_id
+    LEFT JOIN event_type et on et.id = p.event_type_id
     LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN project_finance_resume pfr on pfr.event_id  = p.id
     LEFT JOIN direccion d on d.id = l.direccion_id 
     LEFT JOIN cliente c on c.id  = p.cliente_id         
     LEFT JOIN persona per on per.id = c.persona_id_contacto
     LEFT JOIN comuna co on co.id = d.comuna_id 
-    LEFT JOIN region re on re.id = co.region_id 
+    LEFT JOIN region re on re.id = co.region_id  
     WHERE p.empresa_id  = 1
     AND p.status_id in(1,2)
     AND p.fecha_inicio IS NULL 
@@ -910,13 +959,20 @@ function getSellsEvents($empresa_id){
     $queryProyectos_with_date = "SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
     CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
     CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
-    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf',
+    et.nombre as event_type, pfr.income as income, pfr.cost as cost,(SELECT persona.nombre 
+    FROM personal pers
+    INNER JOIN persona on persona.id = pers.persona_id 
+    INNER JOIN proyecto proye on proye.owner = pers.id
+    WHERE proye.id = p.id AND p.empresa_id = 2) as owner
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
     LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
-    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN estado e on e.id = p.status_id
+    LEFT JOIN event_type et on et.id = p.event_type_id
     LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN project_finance_resume pfr on pfr.event_id  = p.id
     LEFT JOIN direccion d on d.id = l.direccion_id 
     LEFT JOIN cliente c on c.id  = p.cliente_id         
     LEFT JOIN persona per on per.id = c.persona_id_contacto
@@ -980,13 +1036,20 @@ function getAdmEvents($empresa_id){
     $queryProyectos_with_date = "SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
     CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
     CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
-    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf'
+    p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf',
+    et.nombre as event_type, pfr.income as income, pfr.cost as cost,(SELECT persona.nombre 
+    FROM personal pers
+    INNER JOIN persona on persona.id = pers.persona_id 
+    INNER JOIN proyecto proye on proye.owner = pers.id
+    WHERE proye.id = p.id AND p.empresa_id = 2) as owner
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
     LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
-    LEFT JOIN estado e on e.id = p.status_id 
+    LEFT JOIN estado e on e.id = p.status_id
+    LEFT JOIN event_type et on et.id = p.event_type_id
     LEFT JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN project_finance_resume pfr on pfr.event_id  = p.id
     LEFT JOIN direccion d on d.id = l.direccion_id 
     LEFT JOIN cliente c on c.id  = p.cliente_id         
     LEFT JOIN persona per on per.id = c.persona_id_contacto

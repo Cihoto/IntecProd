@@ -255,6 +255,22 @@
             <span>Pruebas</span>
           </a>
           </li>
+          <?php
+
+          if ($active == 'pruebas2') {
+            echo '<li class="sidebar-item active">';
+          } else {
+            echo '<li class="sidebar-item">';
+          }
+          ?>
+          <a href="/test2.php" class="sidebar-link">
+            <i class="fa-solid fa-infinity"></i>
+            <!-- <i class="bi bi-person-check"></i> -->
+            <span>Pruebas 2</span>
+          </a>
+          </li>
+
+
         <?php endif; ?>
 
       </ul>

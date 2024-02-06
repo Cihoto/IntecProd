@@ -19,6 +19,7 @@ async function getEvents(empresa_id){
     })
 }
 
+
 async function printAllProjects(){
     
     // const table = $('#allProjectTable-list').DataTable();
@@ -96,9 +97,9 @@ async function printAllProjects(){
         <td style="width: 80.7344px;"><p class="event-status ${evento.estado}">${ evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p></td>
         <td style="width: 120px;"> <p>${evento.fecha_inicio == null ? "" : evento.fecha_inicio }</p></td>
         <td style="width: 158.188px;"><p class="event-client-name">${evento.nombreCliente}</p></td>
-        <td style="width: 119px;"><p>Tipo de evento</p></td>
-        <td style="width: 125.406px;"><p>Precio venta</p></td>
-        <td style="width: 125.406px;"><p>Owner</p></td>
+        <td style="width: 119px;"><p class="event-name">${evento.event_type === null ? "" : evento.event_type}</p></td>
+        <td style="width: 125.406px;"><p>${CLPFormatter(evento.income)}</p></td>
+        <td style="width: 125.406px;"><p class="event-name" >${evento.owner === null ? "" :evento.owner }</p></td>
         <td style="width: 164.906px;"">
         <button class="buttonEventList">
             ${phf}
@@ -127,7 +128,27 @@ async function printAllProjects(){
     if (!$.fn.DataTable.isDataTable('#allProjectTable-list')) {
        
         $('#allProjectTable-list').DataTable({
-            order: [[2, 'asc']]
+            order: [[2, 'asc']],
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Eventos",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                  "first": "Primero",
+                  "last": "Ultimo",
+                  "next": "Siguiente",
+                  "previous": "Anterior"
+                }
+              }
             // fixedHeader: true
         })
     }

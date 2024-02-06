@@ -35,7 +35,10 @@
   <link rel="shortcut icon" href="./assets/images/logo/intech_logo.png" type="image/png" />
 
   <!-- FULLCALENDAR -->
-  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+  <!-- FULLCALENDAR ES LANGUAGES -->
+
+
 
   <link rel="stylesheet" href="./assets/css/shared/iconly.css" />
 

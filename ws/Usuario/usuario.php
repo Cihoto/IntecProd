@@ -394,6 +394,9 @@ function DeleteUser($user_id)
 // NEW BUSSINESS CREATION,
 // CREATE A NEW BUSSINESS, THEN HIS FIRST EMPLOYEE
 // AFTER THAT WE HAVE 
+
+
+
 function createNewAccount($request){
     $conn = new bd();
     $conn->conectar();
@@ -413,6 +416,7 @@ function createNewAccount($request){
     $empresa_id = 0;
     $person_id = 0;
     $cargo_id = 0;
+    $user_id = 0;
     $especialidad_id = 0;
 
     $queryInsertDatosFacturacion = "INSERT INTO u136839350_intec.datos_facturacion 
@@ -427,7 +431,9 @@ function createNewAccount($request){
         return array("error"=>true,"message"=>"Intenta nuevamente");
     }
 
-    $queryInsertNewBussiness = "INSERT INTO empresa ( nombre, rut, createdAt, free_trial, start_free, end_free, al_dia, datos_facturacion_id) VALUES('$nombre_fanta', '$rut', '$today', 1, '$today', '$endTrial', 1, $datos_facturacion_id)";
+    $queryInsertNewBussiness = "INSERT INTO empresa 
+    ( nombre, rut, createdAt, free_trial, start_free, end_free, al_dia, datos_facturacion_id) 
+    VALUES('$nombre_fanta', '$rut', '$today', 1, '$today', '$endTrial', 1, $datos_facturacion_id)";
 
 
     try{
@@ -454,7 +460,8 @@ function createNewAccount($request){
 
     try{
         if($conn->mysqli->query($queryCreateUser)){
-            return array("success"=>true,"code"=>200);
+            $user_id = $conn->mysqli->insert_id;
+            // return array("success"=>true,"code"=>200);
         }else{
             deleteDatosFacturacion($datos_facturacion_id);
             deleteEmpresa($empresa_id);
@@ -465,22 +472,44 @@ function createNewAccount($request){
         deleteEmpresa($empresa_id);
         return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
     }
+
+    if($user_id === 0){
+        deleteDatosFacturacion($datos_facturacion_id);
+        deleteEmpresa($empresa_id);
+        return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
+    }
+
+    $tries = 0;
+    $queryRol = "INSERT INTO u136839350_intec.rol_has_usuario 
+    (rol_id, usuario_id) 
+    VALUES(1, $user_id);";
+
+    while($tries < 9){
+        try{
+            if($conn->mysqli->query($queryRol)){
+                $tries = 123321;
+            }else{
+                $tries ++;
+                deleteDatosFacturacion($datos_facturacion_id);
+                deleteEmpresa($empresa_id);
+            }
+        }catch(Exception $e){
+            $tries ++;
+        }
+
+    }
+
+    if($tries === 123321){
+        return array("success"=>true,"message"=>"su cuenta ha sido registrada exsitosamente junto a su organización");
+    }else{
+        deleteDatosFacturacion($datos_facturacion_id);
+        deleteEmpresa($empresa_id);
+        removeuserFromDb($user_id);
+        return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
+    }
    
     
-    // if($response = $conn->mysqli->query($queryInsertPersonal)){
-    //     $person_id =  $response->insert_id;
-    // }else{
-    //     deleteDatosFacturacion($datos_facturacion_id);
-    //     deleteEmpresa($empresa_id);
-    //     return array("error"=>true);
-    // };
-  
-
-    // if($cargo_id === 0  && $especialidad_id === 0){
-    //     deleteDatosFacturacion($datos_facturacion_id);
-    //     deleteEmpresa($empresa_id);
-    //     return array("error"=>true);
-    // };
+    
 
 }
 
@@ -548,13 +577,13 @@ function deletePersona($persona_id){
    
 
 }
-function deletePersonal($personal_id){
+function removeuserFromDb($usuario_id){
 
     try{
         $conn = new bd();
         $conn->conectar();
-        $queryDeletePersonal = "DELETE FROM personal WHERE id = $personal_id ";
-        if($conn->mysqli->query($queryDeletePersonal)){
+        $queryDeleteUser = "DELETE FROM usuario WHERE id = $usuario_id ";
+        if($conn->mysqli->query($queryDeleteUser)){
             return true;
         }else{
             return false;

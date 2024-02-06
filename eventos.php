@@ -27,277 +27,148 @@ require_once('./includes/head.php');
             </header>
 
             <div class="pageContent">
-                <div class="formHeader d-flex justify-content-start" style="margin-top: 8px;">
-                    <svg style="margin-top: 4px;" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        <circle cx="6" cy="6" r="6" fill="#069B99" />
-                    </svg>
-                    <p class="header-P">Aquí puedes ver y editar tus eventos</p>
-                </div>
 
-                <div style="display: flex; justify-content: space-between;margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="listview-tab" data-bs-toggle="tab" href="#listview" role="tab" aria-controls="listview" aria-selected="true">Lista</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="events-tab" data-bs-toggle="tab" href="#events" role="tab" aria-controls="events" aria-selected="false">Calendario</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active tab-data" id="listview" role="tabpanel" aria-labelledby="listview-tab">
+                        <div class="formHeader d-flex justify-content-start" style="margin-top: 8px;">
+                            <svg style="margin-top: 4px;" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <circle cx="6" cy="6" r="6" fill="#069B99" />
+                            </svg>
+                            <p class="header-P">Aquí puedes ver y editar tus eventos</p>
+                        </div>
 
-                    <div class="row" style="margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;">
-    
-                        <!-- <button class="s-Button-w">
+                        <div style="display: flex; justify-content: space-between;margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;">
+
+                            <div class="row" style="margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;">
+
+                                <!-- <button class="s-Button-w">
                             <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
                                 <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                             <p class="s-P-g">Filtros</p>
                         </button> -->
-                        <button class="s-Button-w" id="sortAllMyEvents">
-                            <p class="s-P-g">Todos</p>
-                        </button>
-                        <button class="s-Button-w" id="sortDrafEvents">
-                            <p class="s-P-g">Borradores</p>
-                        </button>
-                        <button class="s-Button-w" id = "sortSells">
-                            <p class="s-P-g">Ventas</p>
-                        </button>
-                        <button class="s-Button-w"  id="sortOperationalEvents">
-                            <p class="s-P-g">Operaciones</p>
-                        </button>
-                        <button class="s-Button-w" style="width: 125px;" id="sortAdmEvents">
-                            <p class="s-P-g">Administración</p>
-                        </button>
+                                <button class="s-Button-w" id="sortAllMyEvents">
+                                    <p class="s-P-g">Todos</p>
+                                </button>
+                                <button class="s-Button-w" id="sortDrafEvents">
+                                    <p class="s-P-g">Borradores</p>
+                                </button>
+                                <button class="s-Button-w" id="sortSells">
+                                    <p class="s-P-g">Ventas</p>
+                                </button>
+                                <button class="s-Button-w" id="sortOperationalEvents">
+                                    <p class="s-P-g">Operaciones</p>
+                                </button>
+                                <button class="s-Button-w" style="width: 125px;" id="sortAdmEvents">
+                                    <p class="s-P-g">Administración</p>
+                                </button>
+                            </div>
+                            <button class="s-Button" id="openModalNewFree">
+                                <p class="s-P"><a href="./miEvento.php" style="color: white;text-decoration: none;">Crear evento</a></p>
+                            </button>
+                        </div>
+
+
+                        <table class="resume-table" id="allProjectTable-list">
+                            <thead>
+                                <tr>
+                                    <th class="_theadth1">
+                                        <p>Evento</p>
+                                    </th>
+                                    <th class="_theadth2">
+                                        <p>Estado</p>
+                                    </th>
+                                    <th class="_theadth3">
+                                        <p>Fecha</p>
+                                        <img src="./assets//svg/calendar.svg" alt="" style="margin-right: 10px;">
+                                    </th>
+                                    <th class="_theadth4">
+                                        <p>Cliente</p>
+                                    </th>
+                                    <th class="_theadth5">
+                                        <p>Tipo de evento</p>
+                                    </th>
+                                    <th class="_theadth6">
+                                        <p>Precio venta</p>
+                                    </th>
+                                    <th class="_theadth7">
+                                        <p>Owner</p>
+                                    </th>
+                                    <th class="_theadth8">
+                                        <p>Asignación</p>
+                                    </th>
+                                    <th class="_theadth9">
+                                        <p>Facturación</p>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
                     </div>
-                    <button class="s-Button" id="openModalNewFree">
-                        <p class="s-P">Crear evento</p>
-                    </button>
+                    <div class="tab-pane fade tab-data" id="events" role="tabpanel" aria-labelledby="events-tab" style="margin: 15px; height: 100%;">
+
+                    <div class="calendar-container">
+
+                        <div id='calendar'></div>
+                        </div>
+
+                    </div>
                 </div>
 
-
-                <table class="resume-table" id="allProjectTable-list">
-                    <thead>
-                        <tr>
-                            <th class="_theadth1" >
-                                <p>Evento</p>
-                            </th>
-                            <th class="_theadth2" >
-                                <p>Estado</p>
-                            </th>
-                            <th class="_theadth3" >
-                                <p>Fecha</p>
-                                <img src="./assets//svg/calendar.svg" alt="" style="margin-right: 10px;">
-                            </th>
-                            <th class="_theadth4" >
-                                <p>Cliente</p>
-                            </th>
-                            <th class="_theadth5" >
-                                <p>Tipo de evento</p>
-                            </th>
-                            <th class="_theadth6" >
-                                <p>Precio venta</p>
-                            </th>
-                            <th class="_theadth7" >
-                                <p>Owner</p>
-                            </th>
-                            <th class="_theadth8" >
-                                <p>Asignación</p> 
-                            </th>
-                            <th class="_theadth9" >
-                                <p>Facturación</p> 
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- <tr>
-                            <td style="width: 17.8226514%;">
-                                <p class="event-name"> Fiesta fin de año </p>
-                                <button class="commentContainer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                        <path d="M15.75 8.62502C15.7526 9.61492 15.5213 10.5914 15.075 11.475C14.5458 12.5338 13.7323 13.4244 12.7256 14.047C11.7189 14.6696 10.5587 14.9996 9.375 15C8.3851 15.0026 7.40859 14.7713 6.525 14.325L2.25 15.75L3.675 11.475C3.2287 10.5914 2.99742 9.61492 3 8.62502C3.00046 7.44134 3.33046 6.28116 3.95304 5.27443C4.57562 4.26771 5.46619 3.4542 6.525 2.92502C7.40859 2.47872 8.3851 2.24744 9.375 2.25002H9.75C11.3133 2.33627 12.7898 2.99609 13.8969 4.10317C15.0039 5.21024 15.6638 6.68676 15.75 8.25002V8.62502Z" stroke="#069B99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-
-                            </td>
-                            <td style="width: 6.67251975%;padding: 10px 16px 10px 8px;">
-                                <p class="event-status confirmado">Confirmado</p>
-                            </td>
-                            <td style="width: 12.6426691%; ">
-                                <p>Fecha</p>
-                            </td>
-                            <td style="width: 13.5355575%;">
-                                <p>Cliente</p>
-                            </td>
-                            <td style="width: 10.5355575%;">
-                                <p>Tipo de evento</p>
-                            </td>
-                            <td style="width: 10.5355575%;">
-                                <p>Precio venta</p>
-                            </td>
-                            <td style="width: 10.5355575%;">
-                                <p>Owner</p>
-                            </td>
-                            <td style="width: 14.15%;">
-                                <button class="buttonEventList">
-                                    <img src="./assets/svg/ArchiveNoActive.svg" alt="">
-                                </button>
-                                <button class="buttonEventList">
-                                    <img src="./assets/svg/PersonalActive.svg" alt="">
-                                </button>
-                                <button class="buttonEventList">
-                                    <img src="./assets/svg/VehicleNoActive.svg" alt="">
-                                </button>
-                            </td>
-                        </tr>  -->
-                        <!-- <tr>
-                            <td style="width: 17.8226514%;">
-                                <p class="event-name"> Fiesta fin de año </p>
-                                <button class="commentContainer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                        <path d="M15.75 8.62502C15.7526 9.61492 15.5213 10.5914 15.075 11.475C14.5458 12.5338 13.7323 13.4244 12.7256 14.047C11.7189 14.6696 10.5587 14.9996 9.375 15C8.3851 15.0026 7.40859 14.7713 6.525 14.325L2.25 15.75L3.675 11.475C3.2287 10.5914 2.99742 9.61492 3 8.62502C3.00046 7.44134 3.33046 6.28116 3.95304 5.27443C4.57562 4.26771 5.46619 3.4542 6.525 2.92502C7.40859 2.47872 8.3851 2.24744 9.375 2.25002H9.75C11.3133 2.33627 12.7898 2.99609 13.8969 4.10317C15.0039 5.21024 15.6638 6.68676 15.75 8.25002V8.62502Z" stroke="#069B99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-
-                            </td>
-                            <td style="width: 6.67251975%;padding: 10px 16px 10px 8px;">
-                                <p class="event-status finalizado">Finalizado</p>
-                            </td>
-                            <td style="width: 12.642669%;">
-                                <p>Fecha</p>
-                            </td>
-                            <td style="width: 13.5355575%;">
-                                <p>Cliente</p>
-                            </td>
-                            <td style="width: 10.5355575%;">
-                                <p>Tipo de evento</p>
-                            </td>
-                            <td style="width: 10.5355575%;">
-                                <p>Precio venta</p>
-                            </td>
-                            <td style="width: 10.5355575%;">
-                                <p>Owner</p>
-                            </td>
-                            <td style="width: 14.15%;">
-                                <button class="buttonEventList">
-                                    <img src="./assets/svg/ArchiveNoActive.svg" alt="">
-                                </button>
-                                <button class="buttonEventList">
-                                    <img src="./assets/svg/PersonalActive.svg" alt="">
-                                </button>
-                                <button class="buttonEventList">
-                                    <img src="./assets/svg/VehicleActive.svg" alt="">
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 17.8226514%;">
-                                <p class="event-name"> Fiesta fin de año </p>
-                                <button class="commentContainer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                        <path d="M15.75 8.62502C15.7526 9.61492 15.5213 10.5914 15.075 11.475C14.5458 12.5338 13.7323 13.4244 12.7256 14.047C11.7189 14.6696 10.5587 14.9996 9.375 15C8.3851 15.0026 7.40859 14.7713 6.525 14.325L2.25 15.75L3.675 11.475C3.2287 10.5914 2.99742 9.61492 3 8.62502C3.00046 7.44134 3.33046 6.28116 3.95304 5.27443C4.57562 4.26771 5.46619 3.4542 6.525 2.92502C7.40859 2.47872 8.3851 2.24744 9.375 2.25002H9.75C11.3133 2.33627 12.7898 2.99609 13.8969 4.10317C15.0039 5.21024 15.6638 6.68676 15.75 8.25002V8.62502Z" stroke="#069B99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-
-                            </td>
-                            <td style="width: 6.67251975%;padding: 10px 16px 10px 8px;">
-                                <p class="event-status cotizado">Cotizado</p>
-                            </td>
-                            <td style="width: 12.642669%;">
-                                <p>Fecha</p>
-                            </td>
-                            <td style="width: 13.5355575%;">
-                                <p>Cliente</p>
-                            </td>
-                            <td style="width: 10.5355575%;">
-                                <p>Tipo de evento</p>
-                            </td>
-                            <td style="width: 10.5355575%;">
-                                <p>Precio venta</p>
-                            </td>
-                            <td style="width: 10.5355575%;">
-                                <p>Owner</p>
-                            </td>
-                            <td style="width: 14.15%;">
-                                <button class="buttonEventList">
-                                    <img src="./assets/svg/ArchiveActive.svg" alt="">
-                                </button>
-                                <button class="buttonEventList">
-                                    <img src="./assets/svg/PersonalActive.svg" alt="">
-                                </button>
-                                <button class="buttonEventList">
-                                    <img src="./assets/svg/VehicleActive.svg" alt="">
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 17.8226514%;">
-                                <p class="event-name"> Fiesta fin de año </p>
-                                <button class="commentContainer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                        <path d="M15.75 8.62502C15.7526 9.61492 15.5213 10.5914 15.075 11.475C14.5458 12.5338 13.7323 13.4244 12.7256 14.047C11.7189 14.6696 10.5587 14.9996 9.375 15C8.3851 15.0026 7.40859 14.7713 6.525 14.325L2.25 15.75L3.675 11.475C3.2287 10.5914 2.99742 9.61492 3 8.62502C3.00046 7.44134 3.33046 6.28116 3.95304 5.27443C4.57562 4.26771 5.46619 3.4542 6.525 2.92502C7.40859 2.47872 8.3851 2.24744 9.375 2.25002H9.75C11.3133 2.33627 12.7898 2.99609 13.8969 4.10317C15.0039 5.21024 15.6638 6.68676 15.75 8.25002V8.62502Z" stroke="#069B99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-
-                            </td>
-                            <td style="width: 6.67251975%;padding: 10px 16px 10px 8px;">
-                                <p class="event-status cerrado">Cerrado</p>
-                            </td>
-                            <td style="width: 12.642669%;">
-                                <p>Fecha</p>
-                            </td>
-                            <td style="width: 13.5355575%;">
-                                <p>Cliente</p>
-                            </td>
-                            <td style="width: 10.5355575%;">
-                                <p>Tipo de evento</p>
-                            </td>
-                            <td style="width: 10.5355575%;">
-                                <p>Precio venta</p>
-                            </td>
-                            <td style="width: 10.5355575%;">
-                                <p>Owner</p>
-                            </td>
-                            <td style="width: 14.15%;">
-                                <button class="buttonEventList">
-                                    <img src="./assets/svg/ArchiveActive.svg" alt="">
-                                </button>
-                                <button class="buttonEventList">
-                                    <img src="./assets/svg/PersonalNoActive.svg" alt="">
-                                </button>
-                                <button class="buttonEventList">
-                                    <img src="./assets/svg/VehicleActive.svg" alt="">
-                                </button>
-                            </td>
-                        </tr>-->
-                    </tbody>
-                    <tfoot>
-                    </tfoot>
-                </table>
             </div>
         </div>
     </div>
     <?php require_once('./includes/footer.php') ?>
-    <?php  require_once('./includes/footerScriptsJs.php') ?>
+    <?php require_once('./includes/footerScriptsJs.php') ?>
 
     </div>
     </div>
 </body>
 
 <script src="/js/eventList.js"></script>
+<script src="/js/calendar.js"></script>
 <script src="./js/const/projectToSearch.js"></script>
 <script src="./js/sortTable/eventSort.js"></script>
+<script src="./js/valuesValidator/validator.js"></script>
 
 <script>
     const EMPRESA_ID = <?php echo $empresaId; ?>;
     const ROL_ID = <?php echo json_encode($rol_id); ?>;
     $(document).ready(function() {
         getEvents(EMPRESA_ID);
+        getCalendarEvents();
     })
 
 
-    $(document).on('click','.eventListRow',function(){
+    $(document).on('click', '.eventListRow', function() {
         const EVENT_ID = $(this).closest('tr').attr('evento_id');
         console.log(EVENT_ID);
         project_id_to_search = EVENT_ID;
         console.log(project_id_to_search)
         window.location = `/miEvento.php?event_id=${EVENT_ID}`
     });
-
-
-
-
-
 </script>
+
+<style>
+    .calendar-container {
+        height: 800px;
+        width: 100%;
+        background-color: white;
+        border-radius: 10px;
+        padding: 45px;
+    }
+</style>
 
 </html>
