@@ -48,6 +48,7 @@ let canModify = true;
 function showEditClientControls(){
   canModify = true;
   $('#enableEditCliente').css("display","flex");
+  $('#enableEditCliente').css('display', 'block');
   $('#addCliente p').text("Modificar y seleccionar");
   $('#formConfirmSection').css("display","none");
   disableClientEdit();
@@ -78,10 +79,55 @@ $('#enableEditCliente').on("click",function(){
   $('#formConfirmSection').css("display","flex");
 });
 
+function selectClientForEvent(){
+  $('#clientSelectController').css('display', 'none');
+  $('#enableEditCliente').css('display', 'none');
+  $('#addClienteController').css('display', 'flex');
+  $('#sideclientForm .form-group').css('display' , 'none')
+}
 
+function showSelectedClientForEvent(){
+  $('#enableEditCliente').css('display', 'block');
+  $('#addClienteController').css('display', 'flex');
+  $('#sideclientForm .form-group').css('display' , 'block')
+}
+function showCreateNewClient(){
+  $('#enableEditCliente').css('display', 'none');
+  $('#addClienteController').css('display', 'flex');
+  $('#sideclientForm .form-group').css('display' , 'block')
+}
+let createNewClient = false;
+$('#addClienteController').on('click',function(){
+  createNewClient = !createNewClient;
+  console.log(createNewClient);
+
+  if(createNewClient){
+    $('#clientSelector').css('display','none');
+    $('#clienteSelect').val('');
+    $('#enableEditCliente').css('display', 'none');
+    $('#formConfirmSection').css("display","flex");
+    $('#addCliente p').text("Guardar y seleccionar");
+    $('#addClienteController p').text("Cancelar");
+    $('#sideclientForm .form-group').css('display' , 'block');
+    $('#sideclientForm input').val('');
+    enableClientEdit()
+  }else{
+    $('#clientSelector').css('display','block');
+    $('#clienteSelect').val('');
+    $('#enableEditCliente').css('display', 'none');
+    $('#formConfirmSection').css("display","none");
+    $('#addClienteController p').text("Crear Nuevo Cliente");
+    $('#addCliente p').text("Guardar y seleccionar");
+    $('#sideclientForm .form-group').css('display' , 'none');
+    $('#sideclientForm input').val('');
+
+
+  }
+})
 
 $('#clienteSelect').on('change', function () {
 
+  
   const CLIENTE_ID = $(this).val();
 
   if (CLIENTE_ID === "" ) {
@@ -93,7 +139,7 @@ $('#clienteSelect').on('change', function () {
   console.log(CLIENTE_ID);
   // $('#addCliente p').text("Seleccionar");
   showEditClientControls();
-  
+  showSelectedClientForEvent();
   if (CLIENTE_ID !== "" ) {
 
     $.ajax({

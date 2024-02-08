@@ -70,6 +70,10 @@ require_once('./includes/head.php');
                                 <button class="s-Button-w" style="width: 125px;" id="sortAdmEvents">
                                     <p class="s-P-g">Administración</p>
                                 </button>
+                                <input readonly type="text" id="calendar-input" style="width: 250px;height: 40px;border-radius: 4px;" placeholder="filtrar por fecha">
+                                <button class="s-Button-w" style="width: 175px;position: absolute;right: 158px;" id="exportToExcel">
+                                    <p class="s-P-g">Exportar Excel</p>
+                                </button>
                             </div>
                             <button class="s-Button" id="openModalNewFree">
                                 <p class="s-P"><a href="./miEvento.php" style="color: white;text-decoration: none;">Crear evento</a></p>
@@ -119,9 +123,9 @@ require_once('./includes/head.php');
                     </div>
                     <div class="tab-pane fade tab-data" id="events" role="tabpanel" aria-labelledby="events-tab" style="margin: 15px; height: 100%;">
 
-                    <div class="calendar-container">
+                        <div class="calendar-container">
 
-                        <div id='calendar'></div>
+                            <div id='calendar'></div>
                         </div>
 
                     </div>
@@ -146,19 +150,154 @@ require_once('./includes/head.php');
 <script>
     const EMPRESA_ID = <?php echo $empresaId; ?>;
     const ROL_ID = <?php echo json_encode($rol_id); ?>;
-    $(document).ready(function() {
-        getEvents(EMPRESA_ID);
-        getCalendarEvents();
-    })
 
+    let init_date = (iDate) => {
+
+        let date = new Date(iDate);
+        date.setDate(date.getDate() + 1);
+        return date;
+    };
+    let end_date = (eDate) => {
+        let date = new Date(eDate);
+        date.setDate(date.getDate() + 1);
+        return date;
+    };
+    $(document).ready(async function() {
+        await getEvents(EMPRESA_ID);
+        await getCalendarEvents();
+
+        createCalendar();
+    });
+
+
+    function generateExcelArray(projectArray) {
+        let excelRowData = projectArray.map((evento) => {
+
+            let phf = "No";
+            let php = "No";
+            let phv = "No";
+
+            if (evento.phf == null) {
+                phf = "No"
+            } else {
+                phf = "Sí"
+            }
+            if (evento.php == null) {
+                php = "No"
+            } else {
+                php = "Sí"
+            }
+            if (evento.phv == null) {
+                phv = "No"
+            } else {
+                phv = "Sí"
+            }
+
+            return [evento.nombre_proyecto,
+                evento.estado,
+                evento.fecha_inicio,
+                evento.fecha_termino,
+                evento.nombreCliente,
+                evento.event_type,
+                evento.income,
+                evento.owner,
+                phf,
+                php,
+                phv
+            ]
+
+        });
+
+        let ws_data = ['Nombre Evento', 'Estado', 'Fecha Inicio', 'Fecha Termino', 'Cliente', 'Tipo Evento', 'Precio Venta', 'Owner', 'Inventario', 'Personal', 'Vehículos'];
+        excelRowData.unshift(ws_data);
+
+        return excelRowData;
+    }
+
+    $('#exportToExcel').on('click', function() {
+
+        var ws_name = "SheetJS";
+        let excelArray = [];
+
+        if(_filteredProjects.length > 0){
+            excelArray = generateExcelArray(_filteredProjects);
+        }else{
+            excelArray = generateExcelArray(_projectsToList);
+        }
+
+        let ws = XLSX.utils.aoa_to_sheet(excelArray);
+        let wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, ws_name);
+        XLSX.writeFile(wb, "SheetJS.xlsx");
+    })
 
     $(document).on('click', '.eventListRow', function() {
         const EVENT_ID = $(this).closest('tr').attr('evento_id');
-        console.log(EVENT_ID);
         project_id_to_search = EVENT_ID;
-        console.log(project_id_to_search)
         window.location = `/miEvento.php?event_id=${EVENT_ID}`
     });
+
+
+    function filtrarPorRangoDeFechas(array, fechaInicio, fechaTermino) {
+        return array.filter(function(item) {
+            let fechaInicioItem = new Date(item.fecha_inicio);
+            let fechaTerminoItem = new Date(item.fecha_termino);
+
+            // Comparar si la fecha de inicio del item está dentro del rango
+            let dentroDelRangoInicio = fechaInicioItem >= fechaInicio && fechaInicioItem <= fechaTermino;
+
+            // Comparar si la fecha de término del item está dentro del rango
+            let dentroDelRangoTermino = fechaTerminoItem >= fechaInicio && fechaTerminoItem <= fechaTermino;
+
+            // Retornar verdadero si alguna de las fechas está dentro del rango
+            return dentroDelRangoInicio || dentroDelRangoTermino;
+        });
+    }
+
+    function createCalendar() {
+
+        const options = {
+            input: true,
+            type: "multiple",
+            settings: {
+                range: {
+                    disablePast: false
+                },
+                selection: {
+                    day: "multiple-ranged"
+                },
+                visibility: {
+                    daysOutside: false,
+                    theme: 'light'
+                }
+            },
+            actions: {
+                changeToInput(e, calendar, self) {
+                    if (!self.HTMLInputElement) return
+                    if (self.selectedDates[1]) {
+                        self.selectedDates.sort((a, b) => +new Date(a) - +new Date(b))
+                        self.HTMLInputElement.value = `${self.selectedDates[0]} — ${self.selectedDates[self.selectedDates.length - 1]}`
+                        let filtered_dates = filtrarPorRangoDeFechas(_projectsToList, init_date(self.selectedDates[0]), end_date(self.selectedDates[self.selectedDates.length - 1]));
+                        _filteredProjects = filtered_dates;
+                        printAllProjects(filtered_dates);
+                    } else if (self.selectedDates[0]) {
+                        self.HTMLInputElement.value = self.selectedDates[0];
+                        let filtered_dates = filtrarPorRangoDeFechas(_projectsToList, init_date(self.selectedDates[0]), init_date(self.selectedDates[0]));
+                        _filteredProjects = filtered_dates;
+                        printAllProjects(filtered_dates);
+                    } else {
+                        self.HTMLInputElement.value = ""
+                        _filteredProjects = [];
+                        printAllProjects(_projectsToList);
+
+                    }
+                }
+            }
+        }
+
+        const calendarInput = new VanillaCalendar("#calendar-input", options)
+        calendarInput.init()
+    }
 </script>
 
 <style>

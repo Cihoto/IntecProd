@@ -67,7 +67,7 @@ $active = 'dashboard';
                 <div class="detail-month">
                   <p class="month-name">Utilidad mensual</p>
                   <div class="d-flex justify-content-start" style="gap: 4px;">
-                    <p id="dash-amountIncome" class="month-amount">$12.537.900</p>
+                    <p id="dash-amountIncome" class="month-amount">$</p>
                     <p id="dash-amountIncomePercentaje" class="month-perc neg">-14%</p>
                   </div>
                 </div>

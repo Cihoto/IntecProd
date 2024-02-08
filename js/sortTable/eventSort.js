@@ -38,9 +38,10 @@ $(document).ready(function () {
             // console.log(mergedArray);
 
             _projectsToList = mergedArray;
+            _projectListBackup = mergedArray;
             future_search = true
             $(this).find('p').text("Futuros")
-            printAllProjects();
+            printAllProjects(_projectsToList);
         }
     });
 
@@ -78,17 +79,20 @@ $(document).ready(function () {
 
 function setEventsAndPrintOnTable(allEventsOnRange) {
     _projectsToList = [];
+    _projectListBackup = [];
 
     allEventsOnRange.wd.forEach((evento) => {
         _projectsToList.push(evento);
+        _projectListBackup.push(evento);
     });
-
+    
     allEventsOnRange.woutd.forEach((evento) => {
         _projectsToList.push(evento);
+        _projectListBackup.push(evento);
     });
 
 
-    printAllProjects();
+    printAllProjects(_projectsToList);
 }
 
 

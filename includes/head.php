@@ -38,7 +38,8 @@
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
   <!-- FULLCALENDAR ES LANGUAGES -->
 
-
+  <!--SHEETS JS  -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 
   <link rel="stylesheet" href="./assets/css/shared/iconly.css" />
 

@@ -523,9 +523,12 @@ $('#direccionInput').on('click', function() {
 $('#inputNombreCliente').on('click', function() {
   // $('#clienteModal').modal('show');
   $('#clientSideMenu').addClass('active');
+  
   FillClientes(EMPRESA_ID);
-
+  selectClientForEvent()
 })
+
+
 
 // GUARDAR CLIENTE EN INPUT CLIENTE
 $('#addCliente').on('click', function() {})

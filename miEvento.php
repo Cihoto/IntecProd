@@ -91,7 +91,6 @@ require_once('./includes/head.php');
                     </div>
                 </section>
                 <div class="d-flex" style="width: 100%;margin:-13px 0px;padding: 0px;">
-
                     <div class="divider">1</div>
                 </div>
                 <section class="statusMenuOptions">
@@ -212,13 +211,14 @@ require_once('./includes/head.php');
         projectDates.finish_date = ""
         projectDates.total_days = ""
         projectDates.selectDates = false
-        projectDates.project_id = ""
+        projectDates.project_id = "";
 
         // SET EVENT_ID
         <?php if (isset($_GET['event_id'])) : ?>
             const EVENT_ID = <?= $_GET['event_id']; ?>;
             event_data.event_id = EVENT_ID;
             projectDates.project_id = EVENT_ID;
+
         <?php endif; ?>
 
         // OBJECT CONTAINS INFO ABOUT START AND FINISH DATE ON EVENT 

@@ -458,28 +458,32 @@ function getCargo($empresaId)
     return array("cargos" => $cargos);
 }
 
-function getPersonal($empresaId)
-{
-    $conn = new bd();
-    $conn->conectar();
-    $personal =  [];
-    $queryPersonal = "SELECT  p.id, p.cargo_id, CONCAT(per.nombre ,' ',per.apellido) as nombre,
-                            c.cargo,per.rut, e.especialidad, p.neto, tc.contrato
-                        FROM personal p
-                        INNER JOIN persona per on per.id = p.persona_id 
-                        INNER JOIN cargo c on c.id  = p.cargo_id 
-                        INNER JOIN especialidad e on e.id  = p.especialidad_id 
-                        INNER JOIN empresa emp on emp.id = p.empresa_id 
-                        INNER JOIN tipo_contrato tc on tc.id = p.tipo_contrato_id 
-                        where emp.id = $empresaId";
-
-    if ($responseBd = $conn->mysqli->query($queryPersonal)) {
-        while ($dataPersonal = $responseBd->fetch_object()) {
-            $personal[] = $dataPersonal;
+function getPersonal($empresaId){
+    try{
+        $conn = new bd();
+        $conn->conectar();
+        $personal =  [];
+        $queryPersonal = "SELECT  p.id, p.cargo_id, CONCAT(per.nombre ,' ',per.apellido) as nombre,
+                                c.cargo,per.rut, e.especialidad, p.neto, tc.contrato
+                            FROM personal p
+                            INNER JOIN persona per on per.id = p.persona_id 
+                            INNER JOIN cargo c on c.id  = p.cargo_id 
+                            INNER JOIN especialidad e on e.id  = p.especialidad_id 
+                            INNER JOIN empresa emp on emp.id = p.empresa_id 
+                            INNER JOIN tipo_contrato tc on tc.id = p.tipo_contrato_id 
+                            where emp.id = $empresaId";
+    
+        if ($responseBd = $conn->mysqli->query($queryPersonal)) {
+            while ($dataPersonal = $responseBd->fetch_object()) {
+                $personal[] = $dataPersonal;
+            }
         }
+        $conn->desconectar();
+        return $personal;
+    }catch(Exception $e){
+        return array("fatalError"=>true,"code"=>404);
     }
-    $conn->desconectar();
-    return $personal;
+
 }
 
 function getAllPersonalData($empresaId)

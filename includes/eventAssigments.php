@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="form-group col-5">
                                     <label for="inputNombreCliente" class="inputLabel">Cliente</label>
-                                    <input readonly id="inputNombreCliente" name="txtCliente" type="text" class="form-control input-lg s-Input" value="" />
+                                    <input readonly id="inputNombreCliente" name="txtCliente" type="text" class="form-control input-lg s-Input" value=""/>
                                 </div>
                             </div>
                             <div class="row">

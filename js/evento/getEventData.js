@@ -24,6 +24,7 @@ async function getAllProjectData(event_id, empresa_id) {
     }
 
 
+
     responseGetData.dataProject.forEach(data => {
         let nombre_cliente;
 
@@ -48,13 +49,23 @@ async function getAllProjectData(event_id, empresa_id) {
         }
 
         $('#inputProjectName').val(data.nombre_proyecto);
-        $('#direccionInput').val('')
+        $('#direccionInput').val('');
         $('#event_type').val(data.event_type_id);
         $('#dirInput').val(data.direccion);
         $('#dirInput').blur();
-        $('#inputNombreCliente').val(data.nombre_cliente)
+        $('#inputNombreCliente').val(data.nombre_cliente);
         $('#commentProjectArea').val(data.comentarios);
         // $('#estadoProyecto').text(data.estado);
+
+        let owner_id = 0;
+
+        if(data.owner === null || data.owner === undefined || data.owner === ""){
+            owner_id = event_data.owner_id;
+        }else{
+            owner_id = data.owner;
+        }
+
+        $('#ownerSelect').val(owner_id).trigger('   ');
 
 
         const button = $(`.event-status-btn[status_id='${data.estado}']`);

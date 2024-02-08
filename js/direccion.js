@@ -28,7 +28,7 @@ function FillDirecciones(){
       request: ""
     }),
     success: function(response) {
-      console.log("DIRECCIONES",response.direcciones);
+      // console.log("DIRECCIONES",response.direcciones);
       $('#dirSelect').empty();
       $('#dirSelect').append(new Option("", ""));
       response.direcciones.forEach(dir => {
@@ -41,7 +41,7 @@ function FillDirecciones(){
 $('#dirSelect').on('change',function(){
 
     let idDireccion = this.value;
-    console.log(idDireccion);
+    // console.log(idDireccion);
 
     $.ajax({
       type: "POST",
@@ -53,7 +53,7 @@ $('#dirSelect').on('change',function(){
       }),
       success: function(response) {
   
-        console.log(response.direcciones);
+        // console.log(response.direcciones);
 
 
         response.direcciones.forEach(dir=>{
@@ -89,7 +89,7 @@ function GetComunas(){
       idRegion: idRegion
     }),
     success: function(response){
-      console.log(response);
+      // console.log(response);
 
       $('#comunaSelect').empty();
       $('#comunaSelect').append(new Option("", ""));

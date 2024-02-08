@@ -1,4 +1,6 @@
 let _projectsToList = [];
+let _projectListBackup = [];
+let _filteredProjects = [];
 
 async function getEvents(empresa_id){
     $.ajax({
@@ -13,14 +15,15 @@ async function getEvents(empresa_id){
         success: function (response) {
             console.log(response)
             _projectsToList = response;
+            _projectListBackup = response;
             // console.log(_projectsToList)
-            printAllProjects();
+            printAllProjects(_projectsToList);
         }
     })
 }
 
 
-async function printAllProjects(){
+async function printAllProjects(_projectList){
     
     // const table = $('#allProjectTable-list').DataTable();
     
@@ -32,7 +35,7 @@ async function printAllProjects(){
     }
     
 
-    _projectsToList.forEach((evento)=>{
+    _projectList.forEach((evento)=>{
         let color = "";
         let phf = "";
         let php = "";
@@ -81,6 +84,12 @@ async function printAllProjects(){
     //     <td>Precio venta</td>
     //     <td>Owner</td>
     //   </tr>`
+    let nombreCliente = '';
+    if(evento.nombre_fantasia !== null){
+        nombreCliente = evento.nombre_fantasia       
+    }else{
+        nombreCliente = evento.nombreCliente
+    }
 
 
 
@@ -96,7 +105,7 @@ async function printAllProjects(){
         </td>
         <td style="width: 80.7344px;"><p class="event-status ${evento.estado}">${ evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p></td>
         <td style="width: 120px;"> <p>${evento.fecha_inicio == null ? "" : evento.fecha_inicio }</p></td>
-        <td style="width: 158.188px;"><p class="event-client-name">${evento.nombreCliente}</p></td>
+        <td style="width: 158.188px;"><p class="event-client-name">${nombreCliente}</p></td>
         <td style="width: 119px;"><p class="event-name">${evento.event_type === null ? "" : evento.event_type}</p></td>
         <td style="width: 125.406px;"><p>${CLPFormatter(evento.income)}</p></td>
         <td style="width: 125.406px;"><p class="event-name" >${evento.owner === null ? "" :evento.owner }</p></td>

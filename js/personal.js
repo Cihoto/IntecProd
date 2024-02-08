@@ -142,8 +142,8 @@ $(document).on("click", "#personalDashTable tbody tr", async function () {
     const cargos = await GetCargo(EMPRESA_ID);
     $('#update_cargoPersonal').val(personalData.data.cargo_id);
 
-    console.log(personalData);
-    console.log(PERSONAL_BY_ID);
+    // console.log(personalData);
+    // console.log(PERSONAL_BY_ID);
 
 
 
@@ -262,7 +262,7 @@ async function getPersonalById(personal_id, empresa_id) {
             'empresa_id': empresa_id
         }),
         success: function (response) {
-            console.log(response);
+            // console.log(response);
         }, error: function (error) {
             console.log(error);
         }
@@ -278,7 +278,7 @@ async function getPersonalByBussiness(empresa_id) {
             'empresa_id': empresa_id
         }),
         success: function (response) {
-            console.log(response);
+            // console.log(response);
         }, error: function (error) {
             console.log(error);
         }
@@ -295,7 +295,7 @@ async function insertPersonal(arrayPersonal, empresa_id) {
             'personalData': arrayPersonal
         }),
         success: function (response) {
-            console.log(response);
+            // console.log(response);
         }, error: function (error) {
             console.log(error);
         }
@@ -349,18 +349,12 @@ function setAllMyOwners() {
 
 function printAllMyOwners() {
     $('#ownerSelect option').remove();
+    // const personal_id = PERSONAL_IDS[0].personal_id;
 
+
+    $('#ownerSelect').append(new Option('', '', false, false));
     allMyOwners.forEach((owner) => {
-
-        const personal_id = PERSONAL_IDS.personal_id;
-
-        if (personal_id === owner.id) {
-
-            $('#ownerSelect').append(new Option(owner.nombre, owner.id, false, true));
-        } else {
-            $('#ownerSelect').append(new Option(owner.nombre, owner.id, false, false));
-
-        }
+        $('#ownerSelect').append(new Option(owner.nombre, owner.id, false, false));
     })
 
     $('#ownerSelect').select2();
@@ -440,7 +434,7 @@ function fillPersonal() {
 
     $('#filterAllPersonal').append(new Option("Todos", "Todos"))
     allTipoContrato.forEach((contrato) => {
-        console.log(contrato);
+        // console.log(contrato);
         $('#filterAllPersonal').append(new Option(contrato, contrato))
     })
 }
@@ -483,7 +477,7 @@ $(document).on('change', '#filterAllPersonal', function () {
             return personal !== undefined
         })
 
-    console.log("PERSONAL CON CONTRATOS", allPersonalFiltered)
+    // console.log("PERSONAL CON CONTRATOS", allPersonalFiltered)
     printFilterDataAllPersonal(allPersonalFiltered)
 
 })
@@ -673,8 +667,8 @@ function RemoveSelectedPersonal(personal_id) {
 }
 
 function printAllSelectedPersonal() {
-    console.log("allSelectedPersonal", allSelectedPersonal)
-    console.log("allPersonal", allPersonal)
+    // console.log("allSelectedPersonal", allSelectedPersonal)
+    // console.log("allPersonal", allPersonal)
     // console.log("projectDates",projectDates);
     $('#personalResumeAssigment tbody tr').remove();
     $('#selectedPersonalSideResume tbody tr').remove();
@@ -911,7 +905,7 @@ function SetResumePersonalValue() {
 
     total = totalPersonalContratado + totalPersonalBHE;
     $('#totalResumePersonal').text(CLPFormatter(total))
-    console.log("totalPersonalContratado", totalPersonalContratado);
+    // console.log("totalPersonalContratado", totalPersonalContratado);
     $('#totalPersonalDes').text(CLPFormatter(totalPersonalContratado));
     $('#totalPersonalBHEDes').text(CLPFormatter(totalPersonalBHE));
 }
@@ -922,7 +916,6 @@ function changePersonalTableResume(tipo) {
     let lStorage = GetPersonalStorage();
     let arrayLength = lStorage.length;
     lStorage = lStorage[arrayLength - 1];
-    console.log(lStorage);
 
     if (tipo === "add") {
         let newTr = `<tr>
@@ -1042,11 +1035,9 @@ async function AddCargoGivenArray(empresaId, valor) {
 
 function AddCargo(empresaId) {
     let string = $('#CargoName').val();
-    console.log("STRINGS", string);
     if (string !== "") {
 
         const arrayCargos = string.split(",")
-        console.log("ARRAY CARGOS", arrayCargos);
         $.ajax({
             type: "POST",
             url: "ws/personal/Personal.php",
@@ -1286,7 +1277,6 @@ async function GetEspecialidad(empresaId){
         }),
         dataType: 'json',
         success: async function (data) {
-            console.log("ESPECIALIDADES", data);
             $('#especialidadPersonal').empty();
             $('#especialidadPersonal').append(new Option("", ""));
             data.especialidades.forEach(esp => {
@@ -1315,7 +1305,7 @@ async function  deleteEspecialidad(especialidad_id, empresa_id){
         success: async function (data) {
            
         },error:function(error){
-            console.log(error)
+            // console.log(error)
         }
     })
 }
@@ -1334,7 +1324,7 @@ async function  deleteCargo(cargo_id, empresa_id){
         success: async function (data) {
            
         },error:function(error){
-            console.log(error)
+            // console.log(error)
         }
     })
 }
@@ -1349,7 +1339,7 @@ function getAllEspecialidades(empresa_id) {
         }),
         dataType: 'json',
         success: async function (data) {
-            console.log("ESPECIALIDADES", data);
+            // console.log("ESPECIALIDADES", data);
         }
     })
 }
@@ -1367,7 +1357,7 @@ async function GetCargoByBussiness(empresaId) {
         success: async function (data) {
             _allCargos = data.cargos;
         },error:function(error){
-            console.log(error)
+            // console.log(error)
         }
     })
 
@@ -1383,7 +1373,7 @@ async function GetCargo(empresaId) {
         }),
         dataType: 'json',
         success: async function (data) {
-            console.log(data);
+            // console.log(data);
             $('#cargoPersonal').empty();
             $('#cargoPersonal').append(new Option("", ""));
             data.cargos.forEach(car => {
@@ -1429,7 +1419,7 @@ function getTakenPersonalByDateRange(data, empresa_id) {
 
         },
         error: function (error) {
-            console.log(error);
+            // console.log(error);
         }
     })
 }
@@ -1456,7 +1446,7 @@ async function setTakenPersonalByRangeDate() {
 function setAllPersonal_DiscountTakenPersonal() {
     // MODIFY ALLPERSONAL ARRAY AND ADD IF IS PICKED
 
-    console.log("selectedPersonal", allSelectedPersonal);
+    // console.log("selectedPersonal", allSelectedPersonal);
 
 
     allPersonal.forEach((personal) => {
@@ -1486,15 +1476,12 @@ let lastFreeLanceValue = 0;
 $(document).on('click', '.freeLanceValue', function () {
     const currentValue = ClpUnformatter($(this).val());
     lastFreeLanceValue = currentValue;
-    console.log("current Value", currentValue);
     $(this).val("")
 })
 $(document).on('blur', '.freeLanceValue', function () {
     const valor = $(this).val();
     const personal_id = $(this).closest('tr').attr('personal_id');
-    console.log("valor", valor);
-    console.log("lastFreeLanceValue", lastFreeLanceValue);
-    console.log("personal_id", personal_id);
+
 
     if (valor === "" || valor === undefined || valor === null) {
         $(this).val(CLPFormatter(parseInt(lastFreeLanceValue)));
@@ -1537,7 +1524,6 @@ $(document).on('blur', '.freeLanceValue', function () {
     $(this).val(CLPFormatter(parseInt(valor)));
 
 
-    console.log("allSelectedPersonal", allSelectedPersonal);
 })
 
 

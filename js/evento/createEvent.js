@@ -1,7 +1,8 @@
 let event_data = {
   address_id: "",
   client_id: "",
-  event_id: ""
+  event_id: "",
+  owner_id: ''
 }
 
 let requestProject = {
