@@ -931,8 +931,7 @@ function getPersonalById_quotes($personal_id, $empresa_id){
     $mysqli = $conn->mysqli;
     $personalData = [];
 
-    return "SELECT p.*, per.*,df.direccion  FROM personal p INNER JOIN persona per ON per.id  = p.persona_id  INNER JOIN empresa e on e.id = p.empresa_id  INNER JOIN datos_facturacion df on df.id = e.datos_facturacion_id  WHERE p.id = $personal_id AND p.empresa_id = $empresa_id;";
-
+    
     try{
         $stmt = $mysqli->prepare("SELECT p.*, per.*,df.direccion 
         FROM personal p
