@@ -162,7 +162,18 @@ function addProject($request)
 
     $query = "INSERT INTO proyecto
             (nombre_proyecto, lugar_id, fecha_inicio, fecha_termino, createAt, IsDelete , cliente_id, empresa_id,comentarios,`owner`,status_id,event_type_id)
-            VALUES('" . $nombre_proyecto . "', $lugar_id,$fecha_inicio, $fecha_termino,'" . $today . "', 0, $cliente_id, $empresa_id,'" . $comentarios . "',$owner,$status_id,$event_type_id)";
+            VALUES('$nombre_proyecto',
+            $lugar_id,
+            $fecha_inicio,
+            $fecha_termino,
+            '$today',
+            0,
+            $cliente_id,
+            $empresa_id,
+            '$comentarios',
+            $owner,
+            $status_id,
+            $event_type_id)";
     // return $query;
     if ($conn->mysqli->query($query)) {
         $id_project = $conn->mysqli->insert_id;

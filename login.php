@@ -140,7 +140,7 @@
             $('#emailMessage').text("Ingrese un correo valido");
             $('#emailInput').addClass('warning');
         }
-    })
+    });
 
     function checkPass(pass){
         if($('#passInput').hasClass('err')){
@@ -154,6 +154,7 @@
             }
         }
     }
+
     function checkEmail(email){
         if($('#emailInput').hasClass('err') ||$('#emailInput').hasClass('warning') ){
             return false;
@@ -166,6 +167,7 @@
             }
         }
     }
+
     $('#login').on('click', function() {
         let email = $('#emailInput').val();
         let pass = $('#passInput').val();
@@ -206,8 +208,7 @@
                 }
             })
         }
-    })
-
+    });
 
     // TRIGGER LOGIN ON ENTER PRESS
     $(document).keypress(function(event){

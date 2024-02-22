@@ -325,9 +325,9 @@
     <div style="float: left;width: 300px; margin-top:200px;">
 
 
-        <div class="contact-container"><p class="contact-quote">Dirección:</p> <p class="contact-data">Gabriel Palma 814 112 A,Recoleta</p></div>
-        <div class="contact-container"><p class="contact-quote">Teléfono:</p> <p class="contact-data">+56953098743</p></div>
-        <div class="contact-container"><p class="contact-quote">Correo:</p> <p class="contact-data">coteloyola@hotmail.com</p></div>
+        <div class="contact-container"><p class="contact-quote">Dirección:</p> <p class="contact-data">{{ bussAddress }}</p></div>
+        <div class="contact-container"><p class="contact-quote">Teléfono:</p> <p class="contact-data">{{ ownerPhone }}</p></div>
+        <div class="contact-container"><p class="contact-quote">Correo:</p> <p class="contact-data">{{ ownerEmail }}</p></div>
         
         
     </div>

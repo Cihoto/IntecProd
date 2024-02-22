@@ -177,6 +177,26 @@ ARREGLAR LLAMADO DE COMENTARIOS EN LA SECCION DE DETALLES DEL EVENTO.
 Costo mensual no frellance quitare ne frelance  cambiar textoa  sueldo liquido.
 5 USUARIOS DE PERSONAL BASE cobrar desde el 6to usuario tarifa fija definida en base de datos.
 
+Facturacion a la derecha de la tabla de las listas;
+CLAY API PARA ESTO, ESTUDIAR API CLAY;
+
+
+
+Boton crear cliente debe estar en el margin bottom 0 en el formulario;
+Modificar campo de texto para los comentarios;
+Cambiar formato de fechas Chile en tabla listado de eventos;
+Ajustar las condiciones de las fechas de la creacion de eventos inicio terminos;
+
+
+padding tablas tr tobdy 3px;
+
+
+
+
+
+
+
+
 
 
 

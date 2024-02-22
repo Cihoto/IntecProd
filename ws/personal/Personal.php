@@ -164,6 +164,12 @@ if ($_POST) {
             $response = getPersonalById($personal_id, $empresa_id);
             echo json_encode($response);
             break;
+        case 'getPersonalById_quotes':
+            $personal_id = $data->personal_id;
+            $empresa_id = $data->empresa_id;
+            $response = getPersonalById_quotes($personal_id, $empresa_id);
+            echo json_encode($response);
+            break;
         case 'updatePersonal':
             $request = $data->request;
             $empresa_id = $data->empresa_id;
@@ -914,6 +920,35 @@ function insertPersonalForm($request, $empresa_id)
     } else {
         $conn->mysqli->query("DELETE FROM persona where id = $persona_id");
         return array("error" => true);
+    }
+}
+
+
+function getPersonalById_quotes($personal_id, $empresa_id){
+
+    $conn = new bd();
+    $conn->conectar();
+    $mysqli = $conn->mysqli;
+    $personalData = [];
+    
+    try{
+        $stmt = $mysqli->prepare("SELECT p.*, per.*,df.direccion 
+        FROM personal p
+        INNER JOIN persona per ON per.id  = p.persona_id 
+        INNER JOIN empresa e on e.id = p.empresa_id 
+        INNER JOIN datos_facturacion df on df.id = e.datos_facturacion_id 
+        WHERE p.id = ?
+        AND p.empresa_id = ?;");    
+        $stmt->bind_param("ii",$personal_id,$empresa_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($data = $result->fetch_object()) {
+            $personalData [] = $data;
+        }
+
+        return $personalData;
+    }catch(Exception $err ){
+        return array("error"=>true);
     }
 }
 

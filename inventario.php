@@ -65,7 +65,7 @@ $active = 'inventario';
                             </select>
                         </div>
                         <div class="form-group" style="width:180px">
-                            <label for="subcatSelect" class="inputLabel">Sub Categoría</label>
+                            <label for="subcatSelect" class="inputLabel subcatSelect">Sub Categoría</label>
                             <select id="subcatSelect" name="subcatSelect" type="text" class="form-select s-Select-g">
                                 <option value=""></option>
                             </select>
@@ -138,12 +138,17 @@ $active = 'inventario';
     <script src="/js/item.js"></script>
     <script src="/js/bottomBar.js"></script>
 
+
+    <!-- PROD GET UPDATE FUNCTIONS -->
+    <script src="./js/products/getProductInfo.js"></script>
+    <!-- PRODS SIDE MENUS -->
+    <?php require_once('./includes/sidemenu/productDataSideMenu.php');?>
+    <!-- UPDATE PRODUCT FORM VALIDATION -->
+    <script src="./js/validateForm/updateProduct.js"></script>
 </body>
 <script>
     const IDEMPRESA = document.getElementById('empresaId').textContent;
-
     const EMPRESA_ID = $('#empresaId').text();
-
     let _allCats = [];
     let _allSubCats_ = [];
     let _allProductsToList = [];
@@ -153,20 +158,23 @@ $active = 'inventario';
     const fileNameDisplay = document.getElementById('fileName');
     const fileLabel = document.getElementById('fileLabel');
 
-
-
-
     $(document).ready(async function() {
+
+        $('#closePordDataSideMenu').on('click',function(){
+            $('#productDataSideMenu').removeClass('active');
+        })
+        
         const catsSubCats = await getCatsAndSubCatsByBussiness(EMPRESA_ID);
         const prods = await getAllMyProductsToList(EMPRESA_ID);
 
         if (catsSubCats.success) {
             _allCats = catsSubCats.cats
             _allSubCats_ = catsSubCats.subcats;
-
             tempCats = catsSubCats.cats;
             tempSubCats = catsSubCats.allSubCats;
+
             printMyCats();
+            
         }
         if (prods) {
             _allProductsToList = prods;
@@ -177,13 +185,16 @@ $active = 'inventario';
         });
         GetCategorias();
         GetMarca();
-        GetItems();
+        const subCats = await GetItems();
+        printAllSubcatsOnProdData(subCats);
 
         fileInput.addEventListener('change', function() {
             const fileName = fileInput.files[0].name;
             fileNameDisplay.textContent = `Archivo seleccionado: ${fileName}`;
         });
     });
+
+
 
     function handleDragOver(event) {
         event.preventDefault();
@@ -956,9 +967,13 @@ $active = 'inventario';
     function printMyCats() {
         $('#catSelect option').remove();
         $('#catSelect').append(new Option("Todas", "all"))
+        // $('#catProd option').remove();
+        // $('#catProd').append(new Option("Todas", "all"))
         _allCats.forEach((cat) => {
             let option = new Option(cat.nombre, cat.id);
             $('#catSelect').append(option);
+            let option2 = new Option(cat.nombre, cat.id);
+            $('#catProd').append(option2);
         });
     }
 
@@ -968,6 +983,16 @@ $active = 'inventario';
         filtered.forEach((subcat) => {
             let option = new Option(subcat.item, subcat.subcat_id);
             $('#subcatSelect').append(option);
+        });
+    }
+
+    function printAllSubcatsOnProdData(){
+        $('#subCatProd option').remove();
+        $('#subCatProd').append(new Option("Todas", "all"))
+        _allSubCategoriesForProdData.forEach((subcat) => {
+
+            let option2 = new Option(subcat.item, subcat.id);
+            $('#subCatProd').append(option2);
         });
     }
 
@@ -981,7 +1006,8 @@ $active = 'inventario';
 
         _allProductsToList.forEach((producto, index) => {
 
-            let tr = `<tr client_id="1">
+            
+            let tr = `<tr product_id="${producto.product_id}">
                 <td>${producto.categoria}</td>
                 <td>${producto.subcategoria}</td>
                 <td>${producto.nombre_producto}</td>
@@ -1200,93 +1226,6 @@ $active = 'inventario';
             console.log("INGRESE UN VALOR");
         }
     }
-
-    $('.categoria').on('click', async function() {
-        let categoria = $(this).text().split(' ')[0];
-        let item = $(this).attr('class').split(' ')[1];
-
-        $.ajax({
-            type: "POST",
-            url: "ws/productos/Producto.php",
-            data: JSON.stringify({
-                action: "sortProducts",
-                requestJson: {
-                    categoria: categoria,
-                    item: item,
-                    tipo: "categoria"
-                }
-            }),
-            dataType: 'json',
-            success: async function(data) {
-                let tr = ''
-                data.forEach(value => {
-                    tr = `<tr class="centerText">
-                                    <td>${value.categoria}</td>
-                                    <td>${value.Item}</td>
-                                    <td>${value.nombre}</td>
-                                    <td></td>
-                                    <td>${value.cantidad}</td>
-                                    <td>Disponibles</td>
-                                    <td>${value.arriendo}</td>
-                                    <td>${value.compra}</td>
-                                    <td>estado</td>
-                                    <td><i class="fa-solid fa-trash"></i></td>
-                                </tr>`
-                    $('#tableProductos>tbody').append(tr);
-                });
-
-
-            },
-            error: function(data) {
-                console.log(data.responseText);
-            }
-        })
-    })
-
-    $('.item').on('click', function() {
-        let categoria = $(this).attr('class').split(' ')[1];
-        let item = $(this).attr('class').split(' ')[0];
-
-        console.log(categoria);
-
-        $.ajax({
-            type: "POST",
-            url: "ws/productos/Producto.php",
-            data: JSON.stringify({
-                action: "sortProducts",
-                requestJson: {
-                    categoria: categoria,
-                    item: item,
-                    tipo: "item"
-                }
-            }),
-            dataType: 'json',
-            success: async function(data) {
-                console.log(data);
-                let tr = ''
-                $('#tableProductos>tbody').empty()
-                data.forEach(value => {
-                    tr = `<tr class="centerText">
-                                <td>${value.categoria}</td>
-                                <td>${value.Item}</td>
-                                <td>${value.nombre}</td>
-                                <td>${value.modelo}</td>
-                                <td>${value.cantidad}</td>
-                                <td>Disponibles</td>
-                                <td>${value.arriendo}</td>
-                                <td>${value.compra}</td>
-                                <td>estado</td>
-                                <td><i class="fa-solid fa-trash"></i></td>
-                            </tr>`
-                    $('#tableProductos>tbody').append(tr);
-                });
-
-            },
-            error: function(data) {
-                console.log(data.responseText);
-            }
-        })
-    })
 </script>
 
 </html>

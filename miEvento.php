@@ -200,6 +200,8 @@ require_once('./includes/head.php');
     let EMPRESA_ID = <?php echo $empresaId; ?>;
     const PERSONAL_IDS = <?php echo $personal_ids; ?>;
 
+
+
     $('#closeThis').on("click", function() {
         $("#clientSideMenu").removeClass("active");
         resetClientForm();
@@ -207,10 +209,10 @@ require_once('./includes/head.php');
 
     $(document).ready(async function() {
 
-        projectDates.start_date = ""
-        projectDates.finish_date = ""
-        projectDates.total_days = ""
-        projectDates.selectDates = false
+        projectDates.start_date = "";
+        projectDates.finish_date = "";
+        projectDates.total_days = "";
+        projectDates.selectDates = false;
         projectDates.project_id = "";
 
         // SET EVENT_ID

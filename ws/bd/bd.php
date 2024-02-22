@@ -51,7 +51,7 @@ class bd{
             echo 'Error en base de datos: '. mysqli_connect_error();
             exit();
         }
-        
+        $this->mysqli->set_charset("utf8");
         $this->mysqli->query("SET NAMES 'utf8'");
         $this->mysqli->query("SET CHARACTER SET utf8");
     }

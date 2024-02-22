@@ -1,5 +1,5 @@
 // const EMPRESA_ID = document.getElementById('empresaId').textContent;
-
+let executeClientAction = true;
 $('#sideclientForm').validate({
     rules: {
         'clientNameorDesc':{
@@ -44,6 +44,10 @@ $('#sideclientForm').validate({
     submitHandler: async function() {
       event.preventDefault();
       //DATOS DE CLIENTE
+
+      if(!executeClientAction){
+        return
+      }
 
      //   const  idClienteReq = "";
      let updatepersona = false;
@@ -106,7 +110,9 @@ $('#sideclientForm').validate({
       resetClientForm()
       $("#clientSideMenu").removeClass('active');
       cancelEdit();
+      executeClientAction = true;
     }
+    
   });
 
 async function addOrUpdateClientData(requestCliente,empresa_id){

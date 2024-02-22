@@ -83,18 +83,18 @@ function selectClientForEvent(){
   $('#clientSelectController').css('display', 'none');
   $('#enableEditCliente').css('display', 'none');
   $('#addClienteController').css('display', 'flex');
-  $('#sideclientForm .form-group').css('display' , 'none')
+  $('#sideclientForm .form-group').css('display' , 'none');
 }
 
 function showSelectedClientForEvent(){
   $('#enableEditCliente').css('display', 'block');
   $('#addClienteController').css('display', 'flex');
-  $('#sideclientForm .form-group').css('display' , 'block')
+  $('#sideclientForm .form-group').css('display' , 'block');
 }
 function showCreateNewClient(){
   $('#enableEditCliente').css('display', 'none');
   $('#addClienteController').css('display', 'flex');
-  $('#sideclientForm .form-group').css('display' , 'block')
+  $('#sideclientForm .form-group').css('display' , 'block');
 }
 let createNewClient = false;
 $('#addClienteController').on('click',function(){
@@ -103,7 +103,7 @@ $('#addClienteController').on('click',function(){
 
   if(createNewClient){
     $('#clientSelector').css('display','none');
-    $('#clienteSelect').val('');
+    // $('#clienteSelect').val('');
     $('#enableEditCliente').css('display', 'none');
     $('#formConfirmSection').css("display","flex");
     $('#addCliente p').text("Guardar y seleccionar");
@@ -113,14 +113,14 @@ $('#addClienteController').on('click',function(){
     enableClientEdit()
   }else{
     $('#clientSelector').css('display','block');
-    $('#clienteSelect').val('');
+    // $('#clienteSelect').val('');
+    $('#clienteSelect').change();
     $('#enableEditCliente').css('display', 'none');
     $('#formConfirmSection').css("display","none");
     $('#addClienteController p').text("Crear Nuevo Cliente");
     $('#addCliente p').text("Guardar y seleccionar");
-    $('#sideclientForm .form-group').css('display' , 'none');
+    $('#sideclientForm .form-group').css('display' , 'block');
     $('#sideclientForm input').val('');
-
 
   }
 })

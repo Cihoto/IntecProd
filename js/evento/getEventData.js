@@ -20,7 +20,7 @@ async function getAllProjectData(event_id, empresa_id) {
     });
 
     if (responseGetData.fatalError) {
-        window.location.href = "/index.php"
+        window.location.href = "/index.php";
     }
 
 
@@ -65,8 +65,8 @@ async function getAllProjectData(event_id, empresa_id) {
             owner_id = data.owner;
         }
 
-        $('#ownerSelect').val(owner_id).trigger('   ');
-
+        $('#ownerSelect').val(owner_id)
+        $('#ownerSelect').change();
 
         const button = $(`.event-status-btn[status_id='${data.estado}']`);
 

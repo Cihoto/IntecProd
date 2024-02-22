@@ -13,7 +13,6 @@
         <?php endif; ?>
     </div>
     <form id="sideclientForm" style="margin: 15px; height: 100%;">
-
         <div class="centered-spaced">
             <?php if ($clientDash === false) : ?>
                 <div class="col-12 mb-4" id="clientSelector">

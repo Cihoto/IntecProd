@@ -143,10 +143,23 @@ if ($_POST) {
             $response = insertSubCatOnArr($empresa_id, $arrCats);
             echo json_encode($response);
             break;
+        case 'getProductById':
+            $empresa_id = $data->empresa_id;
+            $product_id = $data->product_id;
+            $response = getProductById($empresa_id, $product_id);
+            echo json_encode($response);
+            break;
         case 'addProdsMasiva':
             $empresa_id = $data->empresa_id;
             $request = $data->request;
             $response = addProdsMasiva($request, $empresa_id);
+            echo json_encode($response);
+            break;
+        case 'updateProductById':
+            $request = $data->request;
+            $empresa_id = $data->empresa_id;
+            $product_id = $data->product_id;
+            $response = updateProductById($request, $empresa_id, $product_id);
             echo json_encode($response);
             break;
         default:
@@ -235,7 +248,7 @@ function getAllMyProductsToList($empresaId)
     $conn->conectar();
 
     $productos = [];
-    $queryProductos = "SELECT p.nombre as nombre_producto, c.nombre as categoria, 
+    $queryProductos = "SELECT p.id as product_id, p.nombre as nombre_producto, c.nombre as categoria, 
         i.item as subcategoria, inv.cantidad as stock, p.precio_arriendo 
         FROM producto p 
         INNER JOIN empresa e on e.id = p.empresa_id 
@@ -283,16 +296,9 @@ function customProdSearch($request, $empresaId)
     }
 
     $productos = [];
-    $queryProductos = "SELECT p.nombre as nombre_producto, c.nombre as categoria,
-         i.item as subcategoria, inv.cantidad as stock, p.precio_arriendo 
-         FROM producto p INNER JOIN empresa e on e.id = p.empresa_id 
-         INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id 
-         INNER JOIN categoria c on c.id = chi.categoria_id 
-         INNER JOIN item i on i.id  = chi.item_id 
-         INNER JOIN inventario inv on inv.producto_id  = p.id 
-         WHERE e.id = $empresaId  $categoriaWhere $subcategoriaWhere";
+    $queryProductos = "SELECT p.id as product_id, p.nombre as nombre_producto, c.nombre as categoria, i.item as subcategoria, inv.cantidad as stock, p.precio_arriendo  FROM producto p INNER JOIN empresa e on e.id = p.empresa_id  INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id  INNER JOIN categoria c on c.id = chi.categoria_id  INNER JOIN item i on i.id  = chi.item_id  INNER JOIN inventario inv on inv.producto_id  = p.id  WHERE e.id = $empresaId  $categoriaWhere $subcategoriaWhere";
 
-    // return array($queryProductos);
+    return array($queryProductos);
 
     if ($responseProductos = $conn->mysqli->query($queryProductos)) {
         while ($dataProductos = $responseProductos->fetch_object()) {
@@ -837,6 +843,46 @@ function insertCatsOnArr($empresa_id, $arrCats)
         return array("fatalError" => true, "message" => "Tenemos problemas para procesar tu solicitud, intenta nuevamente", "asd" => $error);
     }
 }
+
+
+function getProductById($empresa_id, $product_id){
+    
+    try {
+        $conn = new bd();
+        $conn->conectar();
+
+        $productData = [];
+
+        $queryGetProduct = "SELECT p.*,
+        i.id as subcat_id,
+        c.id as categorie_id,
+        inv.cantidad as stock,
+        c.nombre as categorie,
+        i.item as subcatgeogie,
+        ma.marca as marca FROM producto p 
+        LEFT JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id 
+        LEFT JOIN categoria c on c.id = chi.categoria_id 
+        LEFT JOIN item i on i.id = chi.item_id 
+        LEFT JOIN inventario inv on inv.producto_id = p.id 
+        LEFT JOIN marca ma on ma.id = p.marca_id 
+        WHERE p.id = $product_id 
+        and p.empresa_id = $empresa_id;";
+
+        // return $qu   eryGetProduct;
+
+        if ($response = $conn->mysqli->query($queryGetProduct)) {
+            while($data = $response->fetch_object()){
+                $productData = $data;
+            }   
+            return array("success" => true, "data"=>$productData,"message" => "success");
+        }else{
+            return array("error" => true, "message" => "No se ha podido completar la solicitud, intente nuevamente");
+
+        }
+    } catch (Exception $error) {
+        return array("fatalError" => true, "message" => "Tenemos problemas para procesar tu solicitud, intenta nuevamente", "asd" => $error);
+    }
+}
 function insertSubCatOnArr($empresa_id, $arrCats)
 {
 
@@ -870,6 +916,111 @@ function insertSubCatOnArr($empresa_id, $arrCats)
                 $message = "Subcategorías insertadas";
             }
             return array("success" => true, "message" => $message);
+        }
+    } catch (Exception $error) {
+        return array("fatalError" => true, "message" => "Tenemos problemas para procesar tu solicitud, intenta nuevamente", "asd" => $error);
+    }
+}
+
+function updateProductById($request, $empresa_id, $product_id){
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $today = date('Y-m-d');
+        $insertvalues = "";
+
+        $nomProd = $request->nomProd;
+        $stockProd = $request->stockProd;
+        $catProd = $request->catProd;
+        $subCatProd = $request->subCatProd;
+        $brandProd = $request->brandProd;
+        $priceProd = $request->priceProd;
+        $rentPriceProd = $request->rentPriceProd;
+
+        $chi = 0;
+        $brand_id = 0;
+
+        $queryGetChi = "SELECT * FROM categoria_has_item chi 
+        WHERE chi.categoria_id = $catProd
+        AND chi.item_id = $subCatProd
+        limit 1;";
+
+        if($response = $conn->mysqli->query($queryGetChi)){
+
+            // return $queryGetChi;
+
+            if ($response->num_rows > 0) {
+                // Si hay resultados, extraer el ID
+                $data = $response->fetch_object();
+                $chi = $data->id;
+            } else {
+                // Si no hay resultados, insertar y obtener el nuevo ID
+                $insertChi = "INSERT INTO u136839350_intec.categoria_has_item (categoria_id, item_id)
+                              VALUES ($catProd, $subCatProd)";
+        
+                if ($conn->mysqli->query($insertChi)) {
+                    $chi = $conn->mysqli->insert_id;
+                } else {
+                    return array("error" => true);
+                }
+            }
+            
+        }else{
+            return array("error"=>true);
+        }
+        $queryGetBrand = "SELECT * FROM marca m WHERE LOWER(m.marca) = LOWER('$brandProd')";
+
+        if($response = $conn->mysqli->query($queryGetBrand)){
+            if($response->num_rows > 0){
+                $data = $response->fetch_object();
+                $response = $data->id;
+                
+            }else{
+                $insertBrand = "INSERT INTO u136839350_intec.marca (marca, createAt, modifiedAt, IsDelete, deleteAt) 
+                VALUES('$brandProd', '$today', NULL, NULL, NULL);";
+
+                if($response = $conn->mysqli->query($insertBrand)){
+                    $brand_id = $conn->mysqli->insert_id;
+                }
+            }
+
+        }else{
+            return array("error"=>true);
+        }
+
+        // $queryInsertProd = "INSERT INTO u136839350_intec.producto 
+        // (nombre, marca_id, categoria_has_item_id, codigo_barra, precio_compra, precio_arriendo, createAt, modifiedAt, IsDelete, deleteAt, empresa_id) 
+        // VALUES('', $brand_id, $chi, '', $priceProd, $rentPriceProd, '', NULL, NULL, NULL, 0);";
+
+        $queryUpdateProd = "UPDATE u136839350_intec.producto SET 
+        nombre = '$nomProd',
+        marca_id = $brand_id,
+        categoria_has_item_id = $chi,
+        codigo_barra = '',
+        precio_compra = $priceProd,
+        precio_arriendo = $rentPriceProd,
+        modifiedAt = '$today'
+        WHERE id = $product_id
+        AND empresa_id=$empresa_id;";
+
+
+
+        if ($conn->mysqli->query($queryUpdateProd)) {
+
+            $updateStockQuerry = "UPDATE u136839350_intec.inventario SET 
+            cantidad = $stockProd,
+            modifiedAt='$today'
+            WHERE producto_id = 0;";
+
+            $successStock = false;
+            while(!$successStock){
+                if ($conn->mysqli->query($queryUpdateProd)) {
+                    $successStock = true;
+                }else{
+                    return array("error"=>true);
+                }
+            }
+            return array("success" => true);
         }
     } catch (Exception $error) {
         return array("fatalError" => true, "message" => "Tenemos problemas para procesar tu solicitud, intenta nuevamente", "asd" => $error);

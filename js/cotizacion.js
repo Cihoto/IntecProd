@@ -1,6 +1,10 @@
 
 // NEEDS GLOBAL VARIABLE EMPRESA_ID 
 $('#generateQuotes').on('click',async function(){
+
+
+
+
     clearBottomBar();
     initBottomBar();
 
@@ -155,7 +159,40 @@ $('#generateQuotes').on('click',async function(){
     </table>`
 
 
-// console.log("_selectedClient",_selectedClient);
+    // console.log("_selectedClient",_selectedClient);
+
+    let owner_id = 0;
+    if($('#ownerSelect').val() === "" || $('#ownerSelect').val() === null || $('#ownerSelect').val() === undefined){
+        owner_id = PERSONAL_IDS.personal_id;
+    }else{
+        owner_id = $('#ownerSelect').val();
+    }
+    const OWNERDATA = await getPersonalById_quotes(EMPRESA_ID,owner_id);
+
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+    console.log(OWNERDATA)
+
+    
+
+
+
+
     $.ajax({
         type: "POST",
         url: "ws/BussinessDocuments/quotesGenerator.php",
@@ -167,10 +204,13 @@ $('#generateQuotes').on('click',async function(){
             'table_Content':tableContent,
             'totalQuoteResume':quote_resume,
             'clientData' : _selectedClient,
-            'event_id' : event_data.event_id
+            'event_id' : event_data.event_id,
+            'ownerClient': `${OWNERDATA.nombre} ${OWNERDATA.apellido}`,
+            'phone': OWNERDATA.nombre,
+            'mail': OWNERDATA.email,
+            'address': OWNERDATA.direccion
         }),
         success: function(response){
-
             preparingDocumentDownload("Descargando Cotización");
             setTimeout(()=>{
                 $('#downloadPdf a').remove();
@@ -187,8 +227,30 @@ $('#generateQuotes').on('click',async function(){
     .then(()=>{
         closeBottomBar();
     })
+    
 
 })
+
+
+async function getPersonalById_quotes(empresa_id,personal_id){
+    return $.ajax({
+        type: "POST",
+        url: "ws/personal/Personal.php",
+        dataType: 'json',
+        data:JSON.stringify({
+            'action': 'getPersonalById_quotes',
+            'empresa_id' : empresa_id,
+            'personal_id' : personal_id
+        }),
+        success: function(response){
+            
+        },error:  function(error){
+            // console.log("error",error.responseText)
+        }
+    })
+}
+
+
 
 
 

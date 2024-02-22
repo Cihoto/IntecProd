@@ -15,6 +15,10 @@
     $totalQuoteResume = $data->totalQuoteResume;
     $clientData = $data->clientData;
     $event_id = $data->event_id;
+    $ownerClient = $data->ownerClient;
+    $phone = $data->phone;
+    $mail = $data->mail;
+    $address = $data->address;
 
 
 
@@ -79,8 +83,6 @@
     <img class='fifth-bottom' width='100' src='./PDF_svg/bar5.svg' alt='5d12d12'>
     </footer>";
     $html = str_replace('{{ footer }}',$hfooter,$html);
-
-
    
     $html = str_replace("{{ totalResumeTable }}", $totalQuoteResume, $html);
     
@@ -99,8 +101,12 @@
         $html = str_replace("{{ nombre_fantasia }}", "", $html);
         
     }
-    $html = str_replace("{{ numquote }}", "", $html);
+    $html = str_replace("{{ numquote }}", "$event_id-$month$day$year", $html);
     $html = str_replace("{{ today }}", $today, $html);
+
+    $html = str_replace("{{ bussAddress }}", $address, $html);
+    $html = str_replace("{{ ownerPhone }}", $phone, $html);
+    $html = str_replace("{{ ownerEmail }}", $mail, $html);
 
 
     $dompdf->loadHtml($html);
