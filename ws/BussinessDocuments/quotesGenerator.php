@@ -110,7 +110,6 @@
 
 
     $dompdf->loadHtml($html);
-    
     $dompdf->setPaper("A4","portrait");
 
     // $pdf = $this->pdf->load_view("pdf/comprobanteIngresos", $data, $tamaño, $nombre_archivo);

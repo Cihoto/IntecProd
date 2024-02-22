@@ -64,9 +64,17 @@ async function getAllProjectData(event_id, empresa_id) {
         }else{
             owner_id = data.owner;
         }
+        if(owner_id !== null || owner_id !== undefined || owner_id !== ''){
 
-        $('#ownerSelect').val(owner_id)
-        $('#ownerSelect').change();
+            $('#ownerSelect').val(owner_id);
+            $('#ownerSelect').change();
+            
+        }else{
+
+            $('#ownerSelect').val(PERSONAL_IDS[0]);
+            $('#ownerSelect').change();
+
+        }
 
         const button = $(`.event-status-btn[status_id='${data.estado}']`);
 

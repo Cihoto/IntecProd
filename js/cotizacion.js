@@ -163,34 +163,11 @@ $('#generateQuotes').on('click',async function(){
 
     let owner_id = 0;
     if($('#ownerSelect').val() === "" || $('#ownerSelect').val() === null || $('#ownerSelect').val() === undefined){
-        owner_id = PERSONAL_IDS.personal_id;
+        owner_id = PERSONAL_IDS[0].personal_id;
     }else{
         owner_id = $('#ownerSelect').val();
     }
     const OWNERDATA = await getPersonalById_quotes(EMPRESA_ID,owner_id);
-
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-    console.log(OWNERDATA)
-
-    
-
-
 
 
     $.ajax({
