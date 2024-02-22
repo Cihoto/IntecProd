@@ -169,6 +169,16 @@ $('#generateQuotes').on('click',async function(){
     }
     const OWNERDATA = await getPersonalById_quotes(EMPRESA_ID,owner_id);
 
+    console.log(OWNERDATA);
+    console.log(OWNERDATA);
+    console.log(OWNERDATA);
+    console.log(OWNERDATA);
+    console.log(OWNERDATA);
+    console.log(OWNERDATA);
+    console.log(OWNERDATA);
+    console.log(OWNERDATA);
+    console.log(OWNERDATA);
+
 
     $.ajax({
         type: "POST",

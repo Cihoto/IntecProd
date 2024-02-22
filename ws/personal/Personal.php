@@ -944,7 +944,7 @@ function getPersonalById_quotes($personal_id, $empresa_id){
         $stmt->execute();
         $result = $stmt->get_result();
         while ($data = $result->fetch_object()) {
-            $personalData [] = $data;
+            $personalData = $data;
         }
 
         return $personalData;

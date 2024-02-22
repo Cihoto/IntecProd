@@ -101,6 +101,7 @@
         $html = str_replace("{{ nombre_fantasia }}", "", $html);
         
     }
+    $
     $html = str_replace("{{ numquote }}", "$event_id-$month$day$year", $html);
     $html = str_replace("{{ today }}", $today, $html);
 
