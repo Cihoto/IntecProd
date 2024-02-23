@@ -441,6 +441,7 @@ function getProjectResume($request)
             )
         ));
     } catch (Exception $e) {
+        $conn->desconectar();
         return array('fatalError' => true, 'code' => 400);
     }
 }

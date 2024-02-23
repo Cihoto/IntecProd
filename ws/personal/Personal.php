@@ -907,6 +907,7 @@ function insertPersonalForm($request, $empresa_id)
     if ($response = $conn->mysqli->query($queryPersona)) {
         $persona_id = $conn->mysqli->insert_id;
     } else {
+        $conn->desconectar();
         return array("error" => true, "message" => "Ha ocurrido un error,intente nuevamente");
     }
 
@@ -916,9 +917,11 @@ function insertPersonalForm($request, $empresa_id)
     $request->tipoContratoPersonal, '$today', 0,  $empresa_id);";
 
     if ($conn->mysqli->query($query)) {
+        $conn->desconectar();
         return array("success" => true, "message" => "Técnico creado exitosamente");
     } else {
         $conn->mysqli->query("DELETE FROM persona where id = $persona_id");
+        $conn->desconectar();
         return array("error" => true);
     }
 }
@@ -946,9 +949,10 @@ function getPersonalById_quotes($personal_id, $empresa_id){
         while ($data = $result->fetch_object()) {
             $personalData = $data;
         }
-
+        $conn->desconectar();
         return $personalData;
     }catch(Exception $err ){
+        $conn->desconectar();
         return array("error"=>true);
     }
 }
