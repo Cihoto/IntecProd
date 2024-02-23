@@ -1,146 +1,146 @@
 <?php
     // require_once('../bd/bd.php');
-    echo "exito";
+    // echo "exito";
     
-    // require "../../vendor/autoload.php";
+    require "../../vendor/autoload.php";
     
-    // use Dompdf\Dompdf;
-    // use Dompdf\Options;
+    use Dompdf\Dompdf;
+    use Dompdf\Options;
 
-    // $json = file_get_contents('php://input');
-    // $data = json_decode($json);
+    $json = file_get_contents('php://input');
+    $data = json_decode($json);
 
-    // $empresa_id = $data->empresa_id;
-    // $table = $data->table;
-    // $fileNameData = $data->fileNameData;
-    // $table_Content = $data->table_Content;
-    // $totalQuoteResume = $data->totalQuoteResume;
-    // $clientData = $data->clientData;
-    // $event_id = $data->event_id;
-    // $ownerClient = $data->ownerClient;
-    // $phone = $data->phone;
-    // $mail = $data->mail;
-    // $address = $data->address;
+    $empresa_id = $data->empresa_id;
+    $table = $data->table;
+    $fileNameData = $data->fileNameData;
+    $table_Content = $data->table_Content;
+    $totalQuoteResume = $data->totalQuoteResume;
+    $clientData = $data->clientData;
+    $event_id = $data->event_id;
+    $ownerClient = $data->ownerClient;
+    $phone = $data->phone;
+    $mail = $data->mail;
+    $address = $data->address;
 
 
-    // try{
-    //     if(isset($clientData->nombre)){
+    try{
+        if(isset($clientData->nombre)){
 
-    //         $client_name = ucfirst($clientData->nombre);
+            $client_name = ucfirst($clientData->nombre);
             
-    //         if(isset($clientData->apellido)){
-    //             $client_name = ucfirst($clientData->nombre)." ".ucfirst($clientData->apellido);
-    //         }
+            if(isset($clientData->apellido)){
+                $client_name = ucfirst($clientData->nombre)." ".ucfirst($clientData->apellido);
+            }
             
-    //     }   
-    //     if(isset($clientData->nombre_fantasia)){
-    //         $nombre_fantasia = ucfirst($clientData->nombre_fantasia);
-    //     }
+        }   
+        if(isset($clientData->nombre_fantasia)){
+            $nombre_fantasia = ucfirst($clientData->nombre_fantasia);
+        }
         
     
-        // $month = $fileNameData->month;
-        // $year = $fileNameData->year;
-        // $day = $fileNameData->day;
-        // $today = date('d/m/Y');
+        $month = $fileNameData->month;
+        $year = $fileNameData->year;
+        $day = $fileNameData->day;
+        $today = date('d/m/Y');
     
-        // // $fileName = "\Cotización-$month$month$month-$day-$year.pdf";
-        // $fileName = "/Cotización-$event_id$month-$day-$year.pdf";
-        // // $path = getcwd();
-        // // echo json_encode($path);
-        // // echo json_encode(dirname($path,2));
-        // // $dirname = dirname($path,2);
+        // $fileName = "\Cotización-$month$month$month-$day-$year.pdf";
+        $fileName = "/Cotización-$event_id$month-$day-$year.pdf";
+        // $path = getcwd();
+        // echo json_encode($path);
+        // echo json_encode(dirname($path,2));
+        // $dirname = dirname($path,2);
     
-        // // $fontDirectory = '/Roboto-Medium.ttf';
-        // $options = new Options();
-        // // $options->set("chroot",realpath(''));
-        // $options->setChroot(__DIR__);
-        // // $options->setChroot($fontDirectory);
-        // $options->set("isRemoteEnabled",true);
-        // $options->set("isPhpEnabled",true);
-        // $options->set(array('tempDir'=>'/srv/www/xyz/tmp'));
+        // $fontDirectory = '/Roboto-Medium.ttf';
+        $options = new Options();
+        // $options->set("chroot",realpath(''));
+        $options->setChroot(__DIR__);
+        // $options->setChroot($fontDirectory);
+        $options->set("isRemoteEnabled",true);
+        $options->set("isPhpEnabled",true);
+        $options->set(array('tempDir'=>'/srv/www/xyz/tmp'));
     
     
       
     
-        // $dompdf = new Dompdf($options);
-        // // $pdf->getFontMetrics()->registerFont(
-        // //     ['family' => 'Roboto', 'style' => 'sans-serif', 'weight' => 'normal'],
-        // //     __DIR__ . '/Roboto-Medium.ttf'
-        // // );
-        // ob_start();
-        // require(__DIR__.'/pdfTemplate-firstPage.php');
-        // $html = ob_get_contents();
-        // ob_get_clean();
+        $dompdf = new Dompdf($options);
+        // $pdf->getFontMetrics()->registerFont(
+        //     ['family' => 'Roboto', 'style' => 'sans-serif', 'weight' => 'normal'],
+        //     __DIR__ . '/Roboto-Medium.ttf'
+        // );
+        ob_start();
+        require(__DIR__.'/pdfTemplate-firstPage.php');
+        $html = ob_get_contents();
+        ob_get_clean();
     
-        // $hfooter = "<footer>
-        // <div style='display:inline-block;'>
-        //     <div class='wspSection'>
-        //         <img  src='./PDF_svg/whatsApp.svg' alt='WhatsApp Main Logo' style='margin-right: 5px;'>
-        //         <p style='float:inline-start; margin-left:20px; font-size: 10px; font-style: normal; font-weight: 400; letter-spacing: 0.17px;margin-top:2px'>+56982726543</p>
-        //     </div>
-        //     <div class='locationSection'>
-        //         <img  src='./PDF_svg/location.svg' alt='Google Map Location Icon' style='margin-right: 5px;'>
-        //         <p style='float:inline-start; margin-left:20px; font-size: 10px; font-style: normal; font-weight: 400; letter-spacing: 0.17px;margin-top:2px;'>DIR, NUM, COMUNA</p>
-        //     </div>
-        //     <div class='netWorldSection'>
-        //         <img  src='./PDF_svg/webWorldNet.svg' alt='Web World Net Icon' style='margin-right: 5px;'>
-        //         <p style='float:inline-start;margin-left: 20px; font-size: 10px;margin-top:2px;  font-style: normal; font-weight: 400; letter-spacing: 0.17px;'>www.Intec.cl</p>
-        //     </div>
-        // </div>
-        // <img class='first-bottom' src='./PDF_svg/bar1.svg' alt='1asdasd'>
-        // <img class='second-bottom' src='./PDF_svg/bar2.svg' alt='2asdasdasd'>
-        // <img class='third-bottom' src='./PDF_svg/bar3.svg' alt='3asdqw2e12ed'>
-        // <img class='fourt-bottom' src='./PDF_svg/bar4.svg' alt='4d1d12'>
-        // <img class='fifth-bottom' width='100' src='./PDF_svg/bar5.svg' alt='5d12d12'>
-        // </footer>";
-        // $html = str_replace('{{ footer }}',$hfooter,$html);
+        $hfooter = "<footer>
+        <div style='display:inline-block;'>
+            <div class='wspSection'>
+                <img  src='./PDF_svg/whatsApp.svg' alt='WhatsApp Main Logo' style='margin-right: 5px;'>
+                <p style='float:inline-start; margin-left:20px; font-size: 10px; font-style: normal; font-weight: 400; letter-spacing: 0.17px;margin-top:2px'>+56982726543</p>
+            </div>
+            <div class='locationSection'>
+                <img  src='./PDF_svg/location.svg' alt='Google Map Location Icon' style='margin-right: 5px;'>
+                <p style='float:inline-start; margin-left:20px; font-size: 10px; font-style: normal; font-weight: 400; letter-spacing: 0.17px;margin-top:2px;'>DIR, NUM, COMUNA</p>
+            </div>
+            <div class='netWorldSection'>
+                <img  src='./PDF_svg/webWorldNet.svg' alt='Web World Net Icon' style='margin-right: 5px;'>
+                <p style='float:inline-start;margin-left: 20px; font-size: 10px;margin-top:2px;  font-style: normal; font-weight: 400; letter-spacing: 0.17px;'>www.Intec.cl</p>
+            </div>
+        </div>
+        <img class='first-bottom' src='./PDF_svg/bar1.svg' alt='1asdasd'>
+        <img class='second-bottom' src='./PDF_svg/bar2.svg' alt='2asdasdasd'>
+        <img class='third-bottom' src='./PDF_svg/bar3.svg' alt='3asdqw2e12ed'>
+        <img class='fourt-bottom' src='./PDF_svg/bar4.svg' alt='4d1d12'>
+        <img class='fifth-bottom' width='100' src='./PDF_svg/bar5.svg' alt='5d12d12'>
+        </footer>";
+        $html = str_replace('{{ footer }}',$hfooter,$html);
        
-        // $html = str_replace("{{ totalResumeTable }}", $totalQuoteResume, $html);
+        $html = str_replace("{{ totalResumeTable }}", $totalQuoteResume, $html);
         
-        // if(isset($client_name)){
+        if(isset($client_name)){
             
-        //     $html = str_replace("{{ client_name }}", $client_name, $html);
-        // }else{
-        //     $html = str_replace("{{ client_name }}", "", $html);
+            $html = str_replace("{{ client_name }}", $client_name, $html);
+        }else{
+            $html = str_replace("{{ client_name }}", "", $html);
     
-        // }
-        // if(isset($nombre_fantasia)){
+        }
+        if(isset($nombre_fantasia)){
     
-        //     $html = str_replace("{{ nombre_fantasia }}", $nombre_fantasia, $html);
+            $html = str_replace("{{ nombre_fantasia }}", $nombre_fantasia, $html);
             
-        // }else{
-        //     $html = str_replace("{{ nombre_fantasia }}", "", $html);
+        }else{
+            $html = str_replace("{{ nombre_fantasia }}", "", $html);
             
-        // }
-        // $quoteNumber = "$event_id-$month$day$year";
-        // $html = str_replace("{{ numquote }}",$quoteNumber , $html);
-        // $html = str_replace("{{ today }}", $today, $html);
+        }
+        $quoteNumber = "$event_id-$month$day$year";
+        $html = str_replace("{{ numquote }}",$quoteNumber , $html);
+        $html = str_replace("{{ today }}", $today, $html);
     
-        // $html = str_replace("{{ bussAddress }}", $address, $html);
-        // $html = str_replace("{{ ownerPhone }}", $phone, $html);
-        // $html = str_replace("{{ ownerEmail }}", $mail, $html);
+        $html = str_replace("{{ bussAddress }}", $address, $html);
+        $html = str_replace("{{ ownerPhone }}", $phone, $html);
+        $html = str_replace("{{ ownerEmail }}", $mail, $html);
     
     
-        // $dompdf->loadHtml($html);
-        // $dompdf->setPaper("A4","portrait");
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper("A4","portrait");
     
-        // // $pdf = $this->pdf->load_view("pdf/comprobanteIngresos", $data, $tamaño, $nombre_archivo);
+        // $pdf = $this->pdf->load_view("pdf/comprobanteIngresos", $data, $tamaño, $nombre_archivo);
         
-        // $dompdf->render();
+        $dompdf->render();
         
-        // // $dompdf->stream("$month-$day-$year.pdf");
+        // $dompdf->stream("$month-$day-$year.pdf");
         
-        // $output = $dompdf->output();
-        // $pdfRoot = __DIR__."/documents/buss1/quotes$fileName";
-        // // $pdfAdm = __DIR__."\documents\buss1\quotes";
-        // file_put_contents($pdfRoot, $output);
+        $output = $dompdf->output();
+        $pdfRoot = __DIR__."/documents/buss1/quotes$fileName";
+        // $pdfAdm = __DIR__."\documents\buss1\quotes";
+        file_put_contents($pdfRoot, $output);
     
-        // // $data["nombre_archivo"] = "Cotización-$month$month$month-$day-$year.pdf";
+        // $data["nombre_archivo"] = "Cotización-$month$month$month-$day-$year.pdf";
         
-        // echo json_encode(array("name"=> "Cotización-$event_id$month-$day-$year.pdf","path"=>$pdfRoot));
-    // }catch(Exception $e){
-    //     echo $e;
-    // }
+        echo json_encode(array("name"=> "Cotización-$event_id$month-$day-$year.pdf","path"=>$pdfRoot));
+    }catch(Exception $e){
+        echo $e;
+    }
     
 
     // $html = file_get_contents("pdfTemplate-firstPage.php");
