@@ -71,7 +71,7 @@ $('#generateQuotes').on('click',async function(){
     });
     let totalOtros = 0;
     const otherProdsFormatted = _selectedOthersProducts.map((other)=>{
-        totalOtros += other.total;
+        totalOtros += parseInt(other.total) ;
 
         return {
             'nombre':other.detalle,
@@ -169,8 +169,25 @@ $('#generateQuotes').on('click',async function(){
     }
     const OWNERDATA = await getPersonalById_quotes(EMPRESA_ID,owner_id);
 
-
-
+   
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
+    console.log("_selectedClient",_selectedClient)
     $.ajax({
         type: "POST",
         url: "ws/BussinessDocuments/quotesGenerator.php",
@@ -184,7 +201,7 @@ $('#generateQuotes').on('click',async function(){
             'clientData' : _selectedClient,
             'event_id' : event_data.event_id,
             'ownerClient': `${OWNERDATA.nombre} ${OWNERDATA.apellido}`,
-            'phone': OWNERDATA.nombre,
+            'phone': OWNERDATA.telefono,
             'mail': OWNERDATA.email,
             'address': OWNERDATA.direccion
         }),

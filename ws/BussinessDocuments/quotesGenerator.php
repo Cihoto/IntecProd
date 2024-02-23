@@ -21,11 +21,20 @@
     $address = $data->address;
 
 
+    
+    if(isset($clientData->nombre)){
 
-    if(count($clientData) > 0){
-        $client_name = ucfirst($clientData[0]->nombre)." ".ucfirst($clientData[0]->apellido) ;
-        $nombre_fantasia = ucfirst($clientData[0]->nombre_fantasia);
+        $client_name = ucfirst($clientData->nombre);
+        
+        if(isset($clientData->apellido)){
+            $client_name = ucfirst($clientData->nombre)." ".ucfirst($clientData->apellido);
+        }
+        
+    }   
+    if(isset($clientData->nombre_fantasia)){
+        $nombre_fantasia = ucfirst($clientData->nombre_fantasia);
     }
+    
 
     $month = $fileNameData->month;
     $year = $fileNameData->year;
