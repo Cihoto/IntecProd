@@ -71,7 +71,7 @@ $('#generateQuotes').on('click',async function(){
     });
     let totalOtros = 0;
     const otherProdsFormatted = _selectedOthersProducts.map((other)=>{
-        totalOtros += parseInt(other.total) ;
+        totalOtros += parseInt(other.total);
 
         return {
             'nombre':other.detalle,
@@ -180,7 +180,7 @@ $('#generateQuotes').on('click',async function(){
             'fileNameData' : fileNameData,
             'table_Content':tableContent,
             'totalQuoteResume':quote_resume,
-            // 'clientData' : _selectedClient,
+            'clientData' : _selectedClient,
             'event_id' : event_data.event_id,
             'ownerClient': `${OWNERDATA.nombre} ${OWNERDATA.apellido}`,
             'phone': OWNERDATA.telefono,
@@ -188,7 +188,7 @@ $('#generateQuotes').on('click',async function(){
             'address': OWNERDATA.direccion
         }),
         success: function(response){
-            console.log("response",response)
+            // console.log("response",response)
             preparingDocumentDownload("Descargando Cotización");
             setTimeout(()=>{
                 $('#downloadPdf a').remove();
