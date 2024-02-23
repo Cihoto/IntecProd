@@ -141,11 +141,7 @@
     // }catch(Exception $e){
     //     echo $e;
     // }
-
-
     
-    
-
 
     // $html = file_get_contents("pdfTemplate-firstPage.php");
     // $html = str_replace('{{ table }}',$table,$html);
