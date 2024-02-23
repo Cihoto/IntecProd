@@ -188,6 +188,7 @@ $('#generateQuotes').on('click',async function(){
             'address': OWNERDATA.direccion
         }),
         success: function(response){
+            console.log("response",response)
             preparingDocumentDownload("Descargando Cotización");
             setTimeout(()=>{
                 $('#downloadPdf a').remove();
@@ -198,7 +199,7 @@ $('#generateQuotes').on('click',async function(){
                 $('#dwnload')[0].click();
             },1000)
         },error:  function(error){
-            // console.log("error",error.responseText)
+            console.log("error",error.responseText)
         }
     })
     .then(()=>{
