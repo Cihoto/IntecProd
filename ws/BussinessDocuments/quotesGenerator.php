@@ -1,39 +1,41 @@
 <?php
     // require_once('../bd/bd.php');
-    require "../../vendor/autoload.php";
+    echo "exito";
     
-    use Dompdf\Dompdf;
-    use Dompdf\Options;
+    // require "../../vendor/autoload.php";
+    
+    // use Dompdf\Dompdf;
+    // use Dompdf\Options;
 
-    $json = file_get_contents('php://input');
-    $data = json_decode($json);
+    // $json = file_get_contents('php://input');
+    // $data = json_decode($json);
 
-    $empresa_id = $data->empresa_id;
-    $table = $data->table;
-    $fileNameData = $data->fileNameData;
-    $table_Content = $data->table_Content;
-    $totalQuoteResume = $data->totalQuoteResume;
-    $clientData = $data->clientData;
-    $event_id = $data->event_id;
-    $ownerClient = $data->ownerClient;
-    $phone = $data->phone;
-    $mail = $data->mail;
-    $address = $data->address;
+    // $empresa_id = $data->empresa_id;
+    // $table = $data->table;
+    // $fileNameData = $data->fileNameData;
+    // $table_Content = $data->table_Content;
+    // $totalQuoteResume = $data->totalQuoteResume;
+    // $clientData = $data->clientData;
+    // $event_id = $data->event_id;
+    // $ownerClient = $data->ownerClient;
+    // $phone = $data->phone;
+    // $mail = $data->mail;
+    // $address = $data->address;
 
 
-    try{
-        if(isset($clientData->nombre)){
+    // try{
+    //     if(isset($clientData->nombre)){
 
-            $client_name = ucfirst($clientData->nombre);
+    //         $client_name = ucfirst($clientData->nombre);
             
-            if(isset($clientData->apellido)){
-                $client_name = ucfirst($clientData->nombre)." ".ucfirst($clientData->apellido);
-            }
+    //         if(isset($clientData->apellido)){
+    //             $client_name = ucfirst($clientData->nombre)." ".ucfirst($clientData->apellido);
+    //         }
             
-        }   
-        if(isset($clientData->nombre_fantasia)){
-            $nombre_fantasia = ucfirst($clientData->nombre_fantasia);
-        }
+    //     }   
+    //     if(isset($clientData->nombre_fantasia)){
+    //         $nombre_fantasia = ucfirst($clientData->nombre_fantasia);
+    //     }
         
     
         // $month = $fileNameData->month;
@@ -136,9 +138,9 @@
         // // $data["nombre_archivo"] = "Cotización-$month$month$month-$day-$year.pdf";
         
         // echo json_encode(array("name"=> "Cotización-$event_id$month-$day-$year.pdf","path"=>$pdfRoot));
-    }catch(Exception $e){
-        echo $e;
-    }
+    // }catch(Exception $e){
+    //     echo $e;
+    // }
 
 
     

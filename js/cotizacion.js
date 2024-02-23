@@ -180,7 +180,7 @@ $('#generateQuotes').on('click',async function(){
             'fileNameData' : fileNameData,
             'table_Content':tableContent,
             'totalQuoteResume':quote_resume,
-            'clientData' : _selectedClient,
+            // 'clientData' : _selectedClient,
             'event_id' : event_data.event_id,
             'ownerClient': `${OWNERDATA.nombre} ${OWNERDATA.apellido}`,
             'phone': OWNERDATA.telefono,
