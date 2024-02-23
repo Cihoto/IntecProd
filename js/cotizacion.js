@@ -170,24 +170,6 @@ $('#generateQuotes').on('click',async function(){
     const OWNERDATA = await getPersonalById_quotes(EMPRESA_ID,owner_id);
 
    
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
-    console.log("_selectedClient",_selectedClient)
     $.ajax({
         type: "POST",
         url: "ws/BussinessDocuments/quotesGenerator.php",
