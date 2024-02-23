@@ -8,7 +8,11 @@ if ($_POST) {
     $action = $data->tipo;
 
     // Realiza la acción correspondiente según el valor de 'action'
-    switch($action) {
+    switch ($action) {
+        case 'insertNewClient':
+            $request = $data->request;
+            $result = insertNewClient($request);
+            break;
         case 'addCliente':
             $request = $data->request;
             $result = addCliente($request);
@@ -16,7 +20,7 @@ if ($_POST) {
         case 'AddClientForm':
             $request = $data->request;
             $empresa_id = $data->empresa_id;
-            $result = AddClientForm($request,$empresa_id);
+            $result = AddClientForm($request, $empresa_id);
             break;
         case 'getCliente':
             $request = $data->request;
@@ -41,16 +45,16 @@ if ($_POST) {
         case 'AddClientMasiva':
             $request = $data->request;
             $empresa_id = $data->empresa_id;
-            $result = AddClientMasiva($request,$empresa_id);
+            $result = AddClientMasiva($request, $empresa_id);
             break;
         case 'getClientInformation':
             $cliente_id = $data->cliente_id;
-            $result = getClientInformation($cliente_id,$empresa_id);
+            $result = getClientInformation($cliente_id, $empresa_id);
             break;
         case 'getClienteById_dataAndEvents':
             $cliente_id = $data->cliente_id;
             $empresa_id = $data->empresa_id;
-            $result = getClienteById_dataAndEvents($cliente_id,$empresa_id);
+            $result = getClienteById_dataAndEvents($cliente_id, $empresa_id);
             break;
         default:
             $result = false;
@@ -64,86 +68,15 @@ if ($_POST) {
     require_once('./ws/bd/bd.php');
 }
 
-    function addCliente($request){
-
-        $conn = new bd();
-        $conn ->conectar();
-        $clienteExist = "";
-        // return json_encode($request);
-        
-        foreach($request as $req){
-            if (isset($req->idCliente) && isset($req->idProject)) {
-                $idCliente = $req->idCliente;
-                $idProject = $req->idProject;
-                $responseBdClienteId = $conn->mysqli->query("SELECT id FROM cliente c where c.id = $idCliente");
-                $clienteExist = $responseBdClienteId->fetch_object()->id;
-                if($clienteExist !== ""){
-                    $conn->mysqli->query("UPDATE proyecto
-                    SET cliente_id = $clienteExist
-                    WHERE id = $idProject");
-                    return json_encode(array("idCliente"=>$clienteExist));
-                }
-            }if(isset($req->idCliente) && !isset($req->idProject)){
-                $idCliente = $req->idCliente;
-                $responseBdClienteId = $conn->mysqli->query("SELECT id FROM cliente c where c.id = $idCliente");
-                $clienteExist = $responseBdClienteId->fetch_object()->id;
-                if($clienteExist !== ""){
-                    return json_encode(array("idCliente"=>$clienteExist));
-                }
-            }   
-        }
-
-        foreach($request as $req){
-
-            $empresaId = $req->empresaId; 
-            $nombreCliente = $req->nombreCliente;
-            $apellidos = $req->apellidos;
-            $rutCliente = $req->rutCliente;
-            $correoCliente = $req->correoCliente;
-            $telefono = $req->telefono;
-            $rut = $req->rut;
-            $razonSocial = $req->razonSocial;
-            $nombreFantasia = $req->nombreFantasia;
-            $direccionDatosFacturacion = $req->direccionDatosFacturacion;
-            $correoDatosFacturacion = $req->correoDatosFacturacion;
-
-            $queryInsertPersona = "INSERT INTO persona
-            (nombre, apellido, rut, email, telefono)
-            VALUES('".$nombreCliente."', '".$apellidos."', '".$rutCliente."', '".$correoCliente."', '".$telefono."')";
-            
-            $conn->mysqli->query($queryInsertPersona);
-            $idPer = $conn->mysqli->insert_id;
-            
-            $queryInsertDatosFacturacion = "INSERT INTO datos_facturacion
-            (razon_social, nombre_fantasia, rut, direccion, correo)
-            VALUES('".$razonSocial."', '".$nombreFantasia."', '".$rut."', '".$direccionDatosFacturacion."', '".$correoDatosFacturacion."');";
-            $conn->mysqli->query($queryInsertDatosFacturacion);
-            $idDf = $conn->mysqli->insert_id;
-
-            $queryCliente = "INSERT INTO cliente
-            (datos_facturacion_id, persona_id_contacto, empresa_id)
-            VALUES($idDf, $idPer, $empresaId);";
-
-            if($conn->mysqli->query($queryCliente)){
-                $idCliente = $conn->mysqli->insert_id;
-                return json_encode(array("idCliente"=>$idCliente));
-            }else{
-                return false;
-            }
-        }
-    }
 
 
+function insertNewClient($request){
+    
 
+    $conn = new bd();
+    $conn->conectar();
 
-    function AddClientForm($request,$empresa_id){
-        $conn =  new bd();
-        $conn->conectar();
-
-        $clientData = [];
-        $persona_id = 0;
-        $df_id = 0;
-        
+    try{
         $empresaId = $request->empresaId;
         $clientNameorDesc = $request->clientNameorDesc;
         $clientRazonSocial = $request->clientRazonSocial;
@@ -151,148 +84,266 @@ if ($_POST) {
         $clientContacto = $request->clientContacto;
         $clientCorreo = $request->clientCorreo;
         $clientTelefono = $request->clientTelefono;
-        $clienteId = $request->clienteId;
-        $updatepersona = $request->updatepersona;
+    
+    
+        $queryInsertPersona = "INSERT INTO u136839350_intec.persona 
+            (nombre,apellido, rut, email, telefono) 
+            VALUES( '$clientContacto','','$clientRut','$clientCorreo','$clientTelefono');";
+    
+        $conn->mysqli->query($queryInsertPersona);
+        $persona_id = $conn->mysqli->insert_id;
+        $queryInsertDF = "INSERT INTO u136839350_intec.datos_facturacion 
+            (razon_social,nombre_fantasia ,persona_contacto,rut) 
+            VALUES('$clientRazonSocial','$clientNameorDesc','$clientContacto','$clientRut');";
+    
+        $conn->mysqli->query($queryInsertDF);
+        $df_id = $conn->mysqli->insert_id;
+    
+        $queryCliente = "INSERT INTO cliente
+            (datos_facturacion_id, persona_id_contacto, empresa_id)
+            VALUES($df_id, $persona_id, $empresaId);";
+    
+        if ($conn->mysqli->query($queryCliente)) {
+            $conn->desconectar();
+            return json_encode(array("success" => true, "created" => true, "message" => "Cliente creado exitosamente"));
+        } else {
+            $conn->desconectar();
+            return false;
+        }
+    }catch(Exception $err){
+        $conn->desconectar();
+        return array('error'=>true);
+    }
 
-        if($updatepersona){
+   
+}
 
-            $querySelect = "SELECT p.id as persona_id, df.id as df_id FROM cliente c
+function addCliente($request)
+{
+
+    $conn = new bd();
+    $conn->conectar();
+    $clienteExist = "";
+    // return json_encode($request);
+
+    foreach ($request as $req) {
+        if (isset($req->idCliente) && isset($req->idProject)) {
+            $idCliente = $req->idCliente;
+            $idProject = $req->idProject;
+            $responseBdClienteId = $conn->mysqli->query("SELECT id FROM cliente c where c.id = $idCliente");
+            $clienteExist = $responseBdClienteId->fetch_object()->id;
+            if ($clienteExist !== "") {
+                $conn->mysqli->query("UPDATE proyecto
+                    SET cliente_id = $clienteExist
+                    WHERE id = $idProject");
+                return json_encode(array("idCliente" => $clienteExist));
+            }
+        }
+        if (isset($req->idCliente) && !isset($req->idProject)) {
+            $idCliente = $req->idCliente;
+            $responseBdClienteId = $conn->mysqli->query("SELECT id FROM cliente c where c.id = $idCliente");
+            $clienteExist = $responseBdClienteId->fetch_object()->id;
+            if ($clienteExist !== "") {
+                return json_encode(array("idCliente" => $clienteExist));
+            }
+        }
+    }
+
+    foreach ($request as $req) {
+
+        $empresaId = $req->empresaId;
+        $nombreCliente = $req->nombreCliente;
+        $apellidos = $req->apellidos;
+        $rutCliente = $req->rutCliente;
+        $correoCliente = $req->correoCliente;
+        $telefono = $req->telefono;
+        $rut = $req->rut;
+        $razonSocial = $req->razonSocial;
+        $nombreFantasia = $req->nombreFantasia;
+        $direccionDatosFacturacion = $req->direccionDatosFacturacion;
+        $correoDatosFacturacion = $req->correoDatosFacturacion;
+
+        $queryInsertPersona = "INSERT INTO persona
+            (nombre, apellido, rut, email, telefono)
+            VALUES('" . $nombreCliente . "', '" . $apellidos . "', '" . $rutCliente . "', '" . $correoCliente . "', '" . $telefono . "')";
+
+        $conn->mysqli->query($queryInsertPersona);
+        $idPer = $conn->mysqli->insert_id;
+
+        $queryInsertDatosFacturacion = "INSERT INTO datos_facturacion
+            (razon_social, nombre_fantasia, rut, direccion, correo)
+            VALUES('" . $razonSocial . "', '" . $nombreFantasia . "', '" . $rut . "', '" . $direccionDatosFacturacion . "', '" . $correoDatosFacturacion . "');";
+        $conn->mysqli->query($queryInsertDatosFacturacion);
+        $idDf = $conn->mysqli->insert_id;
+
+        $queryCliente = "INSERT INTO cliente
+            (datos_facturacion_id, persona_id_contacto, empresa_id)
+            VALUES($idDf, $idPer, $empresaId);";
+
+        if ($conn->mysqli->query($queryCliente)) {
+            $idCliente = $conn->mysqli->insert_id;
+            return json_encode(array("idCliente" => $idCliente));
+        } else {
+            return false;
+        }
+    }
+}
+
+
+
+
+function AddClientForm($request, $empresa_id)
+{
+    $conn =  new bd();
+    $conn->conectar();
+
+    $clientData = [];
+    $persona_id = 0;
+    $df_id = 0;
+
+    $empresaId = $request->empresaId;
+    $clientNameorDesc = $request->clientNameorDesc;
+    $clientRazonSocial = $request->clientRazonSocial;
+    $clientRut = $request->clientRut;
+    $clientContacto = $request->clientContacto;
+    $clientCorreo = $request->clientCorreo;
+    $clientTelefono = $request->clientTelefono;
+    $clienteId = $request->clienteId;
+    $updatepersona = $request->updatepersona;
+
+    if ($updatepersona) {
+
+        $querySelect = "SELECT p.id as persona_id, df.id as df_id FROM cliente c
             INNER JOIN persona p on p.id = c.persona_id_contacto 
             INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
             where c.id = $clienteId; ";
 
 
-            if($response = $conn->mysqli->query($querySelect)){
-                while($data = $response->fetch_object()){
-                    $clientData = $data;
-                }
+        if ($response = $conn->mysqli->query($querySelect)) {
+            while ($data = $response->fetch_object()) {
+                $clientData = $data;
             }
+        }
 
 
-            if(!isset($clientData->persona_id) || !isset($clientData->df_id)){
-                $queryInsertPersona = "INSERT INTO u136839350_intec.persona 
+        if (!isset($clientData->persona_id) || !isset($clientData->df_id)) {
+            $queryInsertPersona = "INSERT INTO u136839350_intec.persona 
                 (nombre,apellido, rut, email, telefono) 
                 VALUES( '$clientContacto','','$clientRut','$clientCorreo','$clientTelefono');";
-    
-                 $conn->mysqli->query($queryInsertPersona);
-                 $persona_id = $conn->mysqli->insert_id;
-                $queryInsertDF = "INSERT INTO u136839350_intec.datos_facturacion 
+
+            $conn->mysqli->query($queryInsertPersona);
+            $persona_id = $conn->mysqli->insert_id;
+            $queryInsertDF = "INSERT INTO u136839350_intec.datos_facturacion 
                 (razon_social,nombre_fantasia ,persona_contacto,rut) 
                 VALUES('$clientRazonSocial','$clientNameorDesc','$clientContacto','$clientRut');";
-    
-                 $conn->mysqli->query($queryInsertDF);
-                 $df_id = $conn->mysqli->insert_id;
-    
-                $queryCliente = "UPDATE cliente 
+
+            $conn->mysqli->query($queryInsertDF);
+            $df_id = $conn->mysqli->insert_id;
+
+            $queryCliente = "UPDATE cliente 
                 SET datos_facturacion_id = $df_id, persona_id_contacto =$persona_id  WHERE id = $clienteId;";
-        
-                if($conn->mysqli->query($queryCliente)){
-                    $idCliente = $conn->mysqli->insert_id;
-                    $conn->desconectar();
-    
-                    return json_encode(array("success"=>true,"created"=>false,"message"=>"Cliente modificado exitosamente","client_id"=>$clienteId));
-                }else{
-                    $conn->desconectar();
-                    return false;
-                }
+
+            if ($conn->mysqli->query($queryCliente)) {
+                $idCliente = $conn->mysqli->insert_id;
+                $conn->desconectar();
+
+                return json_encode(array("success" => true, "created" => false, "message" => "Cliente modificado exitosamente", "client_id" => $clienteId));
+            } else {
+                $conn->desconectar();
+                return false;
             }
-            
-            
-
-            $persona_id = $clientData->persona_id;
-            $df_id = $clientData->df_id;
-
-            $queryUpdatePersona = "UPDATE persona SET nombre='$clientContacto',
+        }
+        
+        $persona_id = $clientData->persona_id;
+        $df_id = $clientData->df_id;
+        $queryUpdatePersona = "UPDATE persona SET nombre='$clientContacto',
              rut='$clientRut', email='$clientCorreo', telefono='$clientTelefono' WHERE id=$persona_id;";
-
-            $conn->mysqli->query($queryUpdatePersona);
-
-            $queryUpdateDatosFacturacion = "UPDATE datos_facturacion
+        $conn->mysqli->query($queryUpdatePersona);
+        $queryUpdateDatosFacturacion = "UPDATE datos_facturacion
             set razon_social = '$clientRazonSocial',
              persona_contacto =  '$clientContacto',
              nombre_fantasia = '$clientNameorDesc',
              rut = '$clientRut'
             WHERE id = $df_id;";
+        $conn->mysqli->query($queryUpdateDatosFacturacion);
+        $conn->desconectar();
 
-            $conn->mysqli->query($queryUpdateDatosFacturacion);
-
-            $conn->desconectar();
-
-            return json_encode(array("success"=>true,"created"=>false,"message"=>"Cliente modificado exitosamente","client_id"=>$clienteId));
-        }else{
-            $queryInsertPersona = "INSERT INTO u136839350_intec.persona 
+        return json_encode(array("success" => true, "created" => false, "message" => "Cliente modificado exitosamente", "client_id" => $clienteId));
+    } else {
+        $queryInsertPersona = "INSERT INTO u136839350_intec.persona 
             (nombre,apellido, rut, email, telefono) 
             VALUES( '$clientContacto','','$clientRut','$clientCorreo','$clientTelefono');";
 
-            $conn->mysqli->query($queryInsertPersona);
-            $persona_id = $conn->mysqli->insert_id;
-            $queryInsertDF = "INSERT INTO u136839350_intec.datos_facturacion 
+        $conn->mysqli->query($queryInsertPersona);
+        $persona_id = $conn->mysqli->insert_id;
+        $queryInsertDF = "INSERT INTO u136839350_intec.datos_facturacion 
             (razon_social,nombre_fantasia ,persona_contacto,rut) 
             VALUES('$clientRazonSocial','$clientNameorDesc','$clientContacto','$clientRut');";
 
-            $conn->mysqli->query($queryInsertDF);
-            $df_id = $conn->mysqli->insert_id;
+        $conn->mysqli->query($queryInsertDF);
+        $df_id = $conn->mysqli->insert_id;
 
-            $queryCliente = "INSERT INTO cliente
+        $queryCliente = "INSERT INTO cliente
             (datos_facturacion_id, persona_id_contacto, empresa_id)
             VALUES($df_id, $persona_id, $empresaId);";
-    
-            if($conn->mysqli->query($queryCliente)){
-                $idCliente = $conn->mysqli->insert_id;
-                $conn->desconectar();
 
-                return json_encode(array("success"=>true,"created"=>true,"message"=>"Cliente creado exitosamente","client_id"=>$clienteId));
-            }else{
-                $conn->desconectar();
-                return false;
-            }
+        if ($conn->mysqli->query($queryCliente)) {
+            $idCliente = $conn->mysqli->insert_id;
+            $conn->desconectar();
+
+            return json_encode(array("success" => true, "created" => true, "message" => "Cliente creado exitosamente", "client_id" => $idCliente));
+        } else {
+            $conn->desconectar();
+            return false;
         }
-
     }
+}
 
-    function AddClientMasiva($request,$empresa_id){
-        $conn =  new bd();
-        $conn->conectar();
+function AddClientMasiva($request, $empresa_id)
+{
+    $conn =  new bd();
+    $conn->conectar();
 
-        $regex = '/[^a-zA-Z0-9]/';
-        foreach ($request as $key => $req) {
-            # code...
-            $nombre = preg_replace($regex, '', $req->nombre);
-            $razonSocial = preg_replace($regex, '', $req->razonSocial);
-            $rut = preg_replace($regex, '', $req->rut);
-            $contacto = preg_replace($regex, '', $req->contacto);
-            $correo = preg_replace($regex, '', $req->correo);
-            $telefono = preg_replace($regex, '', $req->telefono);
-    
-            $queryInsertPersona = "INSERT INTO u136839350_intec.persona 
+    $regex = '/[^a-zA-Z0-9]/';
+    foreach ($request as $key => $req) {
+        # code...
+        $nombre = preg_replace($regex, '', $req->nombre);
+        $razonSocial = preg_replace($regex, '', $req->razonSocial);
+        $rut = preg_replace($regex, '', $req->rut);
+        $contacto = preg_replace($regex, '', $req->contacto);
+        $correo = preg_replace($regex, '', $req->correo);
+        $telefono = preg_replace($regex, '', $req->telefono);
+
+        $queryInsertPersona = "INSERT INTO u136839350_intec.persona 
             (nombre,apellido, rut, email, telefono) 
             VALUES( '$contacto','','$rut','$correo','$telefono');";
-            $conn->mysqli->query($queryInsertPersona);
-            $persona_id = $conn->mysqli->insert_id;
+        $conn->mysqli->query($queryInsertPersona);
+        $persona_id = $conn->mysqli->insert_id;
 
-            $queryInsertDF = "INSERT INTO u136839350_intec.datos_facturacion 
+        $queryInsertDF = "INSERT INTO u136839350_intec.datos_facturacion 
             (razon_social,nombre_fantasia ,persona_contacto,rut) 
             VALUES('$razonSocial','$nombre','$contacto','$rut');";
-            $conn->mysqli->query($queryInsertDF);
-            $df_id = $conn->mysqli->insert_id;
+        $conn->mysqli->query($queryInsertDF);
+        $df_id = $conn->mysqli->insert_id;
 
-            $queryCliente = "INSERT INTO cliente
+        $queryCliente = "INSERT INTO cliente
             (datos_facturacion_id, persona_id_contacto, empresa_id)
             VALUES($df_id, $persona_id, $empresa_id);";
-            $conn->mysqli->query($queryCliente);
-        }
-
-        return json_encode(array("success"=>true,"message"=>"clients inserted succesfully"));
+        $conn->mysqli->query($queryCliente);
     }
 
-    function getClientData($empresa_id){
+    return json_encode(array("success" => true, "message" => "clients inserted succesfully"));
+}
 
-        try{
-            $conn =  new bd();
-            $conn->conectar();
-            $clientData = [];
-    
-            $queryGetClientData = "SELECT 
+function getClientData($empresa_id)
+{
+
+    try {
+        $conn =  new bd();
+        $conn->conectar();
+        $clientData = [];
+
+        $queryGetClientData = "SELECT 
             c.id AS cliente_id ,
             CONCAT(p.nombre,' ',p.apellido) as nombre_persona,
             p.rut AS rut_persona, 
@@ -316,33 +367,31 @@ if ($_POST) {
             INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
             INNER JOIN persona p on p.id = c.persona_id_contacto 
             where c.empresa_id = $empresa_id";
-    
-            if($responseDbClient = $conn->mysqli->query($queryGetClientData)){
-                while($dataClient = $responseDbClient->fetch_object()){
-                    $clientData [] = $dataClient;
-                }
-                $conn->desconectar();
-                return json_encode(array("success"=>true, "data"=>$clientData));
-            }else{
-                $conn->desconectar();
-                return json_encode(array("error"=>true));
+
+        if ($responseDbClient = $conn->mysqli->query($queryGetClientData)) {
+            while ($dataClient = $responseDbClient->fetch_object()) {
+                $clientData[] = $dataClient;
             }
-        }catch(Exception $e){
-            return array("fatalError"=>true,"message"=>"No se ha podido completar la solicitud, intente nuevamente");
+            $conn->desconectar();
+            return json_encode(array("success" => true, "data" => $clientData));
+        } else {
+            $conn->desconectar();
+            return json_encode(array("error" => true));
         }
-
-
-
+    } catch (Exception $e) {
+        return array("fatalError" => true, "message" => "No se ha podido completar la solicitud, intente nuevamente");
     }
-    function getClientesByEmpresa($request){
+}
+function getClientesByEmpresa($request)
+{
 
-        $conn = new bd();
-        $conn ->conectar();
-        $clientes = [];
-        $empresaId = $request;
+    $conn = new bd();
+    $conn->conectar();
+    $clientes = [];
+    $empresaId = $request;
 
 
-        $query = "SELECT CONCAT(p.nombre ,' ',p.apellido) as nombre_cliente ,c.id as cliente_id ,
+    $query = "SELECT CONCAT(p.nombre ,' ',p.apellido) as nombre_cliente ,c.id as cliente_id ,
         df.*    
         from cliente c 
         INNER JOIN persona p on p.id = c.persona_id_contacto 
@@ -350,27 +399,27 @@ if ($_POST) {
         INNER JOIN empresa e on e.id = c.empresa_id 
         where e.id =  $empresaId";
 
-        // return $query;
+    // return $query;
 
 
-        if($responseBd = $conn->mysqli->query($query)){
-            while($dataResponse =$responseBd->fetch_object()){
-                $clientes [] = $dataResponse;
-            }
-        }else{
-            return false;
+    if ($responseBd = $conn->mysqli->query($query)) {
+        while ($dataResponse = $responseBd->fetch_object()) {
+            $clientes[] = $dataResponse;
         }
-        return $clientes;
-        
+    } else {
+        return false;
     }
-    function getClienteById($request){
+    return $clientes;
+}
+function getClienteById($request)
+{
 
-        $conn = new bd();
-        $conn ->conectar();
-        $clientes = [];
-        $clienteId = $request;
+    $conn = new bd();
+    $conn->conectar();
+    $clientes = [];
+    $clienteId = $request;
 
-        $query = "SELECT c.id,
+    $query = "SELECT c.id,
         df.nombre_fantasia,
         df.razon_social,
         df.rut,
@@ -384,90 +433,91 @@ if ($_POST) {
             INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
             where c.id = $clienteId";
 
-        if($responseBd = $conn->mysqli->query($query)){
-            while($dataResponse =$responseBd->fetch_object()){
-                $clientes [] = $dataResponse;
-            }
-        }else{
-            return false;
+    if ($responseBd = $conn->mysqli->query($query)) {
+        while ($dataResponse = $responseBd->fetch_object()) {
+            $clientes[] = $dataResponse;
         }
-        return json_encode(array("cliente"=>$clientes));
-        
+    } else {
+        return false;
+    }
+    return json_encode(array("cliente" => $clientes));
+}
+
+function UpdateCliente($request)
+{
+    $conn =  new bd();
+    $conn->conectar();
+
+    foreach ($request as $key => $req) {
+        $idCliente = $req->idCliente;
+        $nombreCliente = $req->nombreCliente;
+        $apellidos = $req->apellidos;
+        $rutCliente = $req->rutCliente;
+        $correo = $req->correo;
+        $telefono = $req->telefono;
+        $rut = $req->rut;
+        $razonSocial = $req->razonSocial;
+        $nombreFantasia = $req->nombreFantasia;
+        $direccionDatosFacturacion = $req->direccionDatosFacturacion;
+        $correoDatosFacturacion = $req->correoDatosFacturacion;
     }
 
-    function UpdateCliente($request){
-        $conn =  new bd();
-        $conn->conectar();
+    $queryCliente = "SELECT * FROM cliente c where c.id = $idCliente";
 
-        foreach ($request as $key => $req) {
-            $idCliente = $req->idCliente;
-            $nombreCliente = $req->nombreCliente;
-            $apellidos = $req->apellidos;
-            $rutCliente = $req->rutCliente;
-            $correo = $req->correo;
-            $telefono = $req->telefono;
-            $rut = $req->rut;
-            $razonSocial = $req->razonSocial;
-            $nombreFantasia = $req->nombreFantasia;
-            $direccionDatosFacturacion = $req->direccionDatosFacturacion;
-            $correoDatosFacturacion = $req->correoDatosFacturacion;
-        }
-        
-        $queryCliente = "SELECT * FROM cliente c where c.id = $idCliente";
+    $responseBd = $conn->mysqli->query($queryCliente);
 
-        $responseBd = $conn->mysqli->query($queryCliente);
+    while ($dataCliente = $responseBd->fetch_object()) {
+        $idDatosFacturacion = $dataCliente->datos_facturacion_id;
+        $idPersona = $dataCliente->persona_id_contacto;
+    }
 
-        while($dataCliente = $responseBd->fetch_object()){
-            $idDatosFacturacion = $dataCliente->datos_facturacion_id;
-            $idPersona = $dataCliente->persona_id_contacto;
-        }
-
-        $queryUpdateDatosFacturacion = "UPDATE datos_facturacion
-        SET razon_social='".$razonSocial."', nombre_fantasia='".$nombreFantasia."', rut='".$rut."',
-        direccion='".$direccionDatosFacturacion."', correo='".$correoDatosFacturacion."'
+    $queryUpdateDatosFacturacion = "UPDATE datos_facturacion
+        SET razon_social='" . $razonSocial . "', nombre_fantasia='" . $nombreFantasia . "', rut='" . $rut . "',
+        direccion='" . $direccionDatosFacturacion . "', correo='" . $correoDatosFacturacion . "'
         WHERE id= $idDatosFacturacion";
 
-        $queryUpdatePersona = "UPDATE persona
-        SET nombre='".$nombreCliente."', apellido='".$apellidos."', rut='".$rutCliente."', email='".$correo."', telefono='".$telefono."'
+    $queryUpdatePersona = "UPDATE persona
+        SET nombre='" . $nombreCliente . "', apellido='" . $apellidos . "', rut='" . $rutCliente . "', email='" . $correo . "', telefono='" . $telefono . "'
         WHERE id= $idPersona";
 
-        $conn->mysqli->query($queryUpdateDatosFacturacion);
-        $conn->mysqli->query($queryUpdatePersona);
+    $conn->mysqli->query($queryUpdateDatosFacturacion);
+    $conn->mysqli->query($queryUpdatePersona);
+}
 
-    }
+function getClientInformation($cliente_id)
+{
+    $conn =  new bd();
+    $conn->conectar();
+    $clientInfo = [];
+    $events = [];
 
-    function getClientInformation($cliente_id){
-        $conn =  new bd();
-        $conn->conectar();
-        $clientInfo = [];
-        $events = [];
-
-        $queryGetClientData = "SELECT  per.nombre, per.apellido, per.rut as rut_persona, per.email  as email_persona , per.telefono,
+    $queryGetClientData = "SELECT  per.nombre, per.apellido, per.rut as rut_persona, per.email  as email_persona , per.telefono,
         df.rut as rut_razon_social, df.razon_social, df.nombre_fantasia, df.direccion,df.correo 
         FROM cliente c
         INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
         INNER JOIN persona per on per.id = c.persona_id_contacto 
         where c.id = $cliente_id";
 
-        if($responseDbClientInfo = $conn->mysqli->query($queryGetClientData)){
-            while($dataCliente = $responseDbClientInfo->fetch_object()){
-                $clienteInfo [] = $dataCliente;
-            }
-            $conn->desconectar();
-            return json_encode(array("success"=>true, "data"=>$clienteInfo));
-        }else{
-            $conn->desconectar();
-            return json_encode(array("error"=>true, "message"=>"Ha ocurrido un error, por favor intente nuevamente"));
+    if ($responseDbClientInfo = $conn->mysqli->query($queryGetClientData)) {
+        while ($dataCliente = $responseDbClientInfo->fetch_object()) {
+            $clienteInfo[] = $dataCliente;
         }
+        $conn->desconectar();
+        return json_encode(array("success" => true, "data" => $clienteInfo));
+    } else {
+        $conn->desconectar();
+        return json_encode(array("error" => true, "message" => "Ha ocurrido un error, por favor intente nuevamente"));
     }
+}
 
-    function getClienteById_dataAndEvents($cliente_id,$empresa_id){
-        $conn =  new bd();
-        $conn->conectar();
-        $clientInfo = [];
-        $events = [];
+function getClienteById_dataAndEvents($cliente_id, $empresa_id)
+{
+    $conn =  new bd();
+    $conn->conectar();
+    $clientInfo = [];
+    $events = [];
 
-        $queryGetClientData = "SELECT c.id as client_id, per.nombre, per.apellido, per.rut as rut_persona, per.email  as email_persona , per.telefono,
+    $queryGetClientData = "SELECT c.id as client_id, per.nombre, per.apellido, per.rut as rut_persona, per.email  as email_persona , per.telefono,
         df.rut as rut_razon_social, df.razon_social, df.nombre_fantasia, df.direccion,df.correo 
         FROM cliente c
         INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
@@ -475,7 +525,7 @@ if ($_POST) {
         where c.id = $cliente_id
         and c.empresa_id = $empresa_id";
 
-        $queryGetEventsByCliente = "SELECT * , p.id as event_id FROM proyecto p
+    $queryGetEventsByCliente = "SELECT * , p.id as event_id FROM proyecto p
         inner join cliente c on c.id = p.cliente_id
         left join project_finance_resume pfr on pfr.event_id  = p.id
         inner join estado e on e.id = p.status_id  
@@ -484,22 +534,19 @@ if ($_POST) {
         and c.empresa_id  = $empresa_id";
 
 
-        if($responseDbClientInfo = $conn->mysqli->query($queryGetClientData)){
-            while($dataCliente = $responseDbClientInfo->fetch_object()){
-                $clienteInfo [] = $dataCliente;
-            }
-            if($responseEventsClient = $conn->mysqli->query($queryGetEventsByCliente)){
-                while($dataEventsClient = $responseEventsClient->fetch_object()){
-                    $events [] = $dataEventsClient;
-                }
-            }
-            $conn->desconectar();
-            return json_encode(array("success"=>true, "data"=>$clienteInfo,"events"=>$events));
-        }else{
-            $conn->desconectar();
-            return json_encode(array("error"=>true, "message"=>"Ha ocurrido un error, por favor intente nuevamente"));
+    if ($responseDbClientInfo = $conn->mysqli->query($queryGetClientData)) {
+        while ($dataCliente = $responseDbClientInfo->fetch_object()) {
+            $clienteInfo[] = $dataCliente;
         }
+        if ($responseEventsClient = $conn->mysqli->query($queryGetEventsByCliente)) {
+            while ($dataEventsClient = $responseEventsClient->fetch_object()) {
+                $events[] = $dataEventsClient;
+            }
+        }
+        $conn->desconectar();
+        return json_encode(array("success" => true, "data" => $clienteInfo, "events" => $events));
+    } else {
+        $conn->desconectar();
+        return json_encode(array("error" => true, "message" => "Ha ocurrido un error, por favor intente nuevamente"));
     }
-
-
-?>
+}

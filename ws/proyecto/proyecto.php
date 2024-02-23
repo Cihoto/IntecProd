@@ -122,6 +122,8 @@ function addProject($request)
     $conn->conectar();
     $today = date('Y-m-d');
 
+
+
     foreach ($request as $req) {
 
         $nombre_proyecto = $req->nombre_proyecto;
@@ -158,6 +160,9 @@ function addProject($request)
 
     if ($event_type_id === "") {
         $event_type_id = "NULL";
+    }
+    if ($owner === "" || $owner === null) {
+        $owner = "NULL";
     }
 
     $query = "INSERT INTO proyecto
@@ -1152,9 +1157,10 @@ function updateProject($empresa_id, $request, $event_id)
     if ($request->empresa_id === "") {
         $request->empresa_id = "NULL";
     }
-    if ($request->owner === "") {
+    if ($request->owner === "" || $request->owner === null) {
         $request->owner = "NULL";
     }
+
     if ($request->status_id === "") {
         $request->status_id = "NULL";
     }
@@ -1166,11 +1172,20 @@ function updateProject($empresa_id, $request, $event_id)
         return array("error" => true, "message" => "Debes ingresar un nombre para tu evento");
     }
 
-    $queryUpdate = "UPDATE proyecto
-    SET nombre_proyecto='$request->nombre_proyecto', fecha_inicio='$request->fecha_inicio', 
-    fecha_termino='$request->fecha_termino', comentarios='$request->comentarios', 
-    IsDelete=0, cliente_id=$request->cliente_id,owner=$request->owner, status_id=$request->status_id,event_type_id=$request->event_type_id
+    $queryUpdate = "UPDATE proyecto SET 
+    nombre_proyecto='$request->nombre_proyecto',  
+    fecha_inicio='$request->fecha_inicio',  
+    fecha_termino='$request->fecha_termino',  
+    comentarios='$request->comentarios',  
+    IsDelete=0, cliente_id=$request->cliente_id, 
+    owner=$request->owner,  
+    status_id=$request->status_id, 
+    event_type_id=$request->event_type_id
     WHERE id=$event_id AND empresa_id = $empresa_id;";
+ 
+
+
+
 
     if ($conn->mysqli->query($queryUpdate)) {
         return array("success" => true, "message" => "Detalles del evento actualizados con exito");

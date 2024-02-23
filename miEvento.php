@@ -200,20 +200,6 @@ require_once('./includes/head.php');
     let EMPRESA_ID = <?php echo $empresaId; ?>;
     const PERSONAL_IDS = <?php echo $personal_ids; ?>;
 
-    console.log(PERSONAL_IDS[0]);
-    console.log(PERSONAL_IDS[0]);
-    console.log(PERSONAL_IDS[0]);
-    console.log(PERSONAL_IDS[0]);
-    console.log(PERSONAL_IDS[0]);
-    console.log(PERSONAL_IDS[0]);
-    console.log(PERSONAL_IDS[0]);
-    console.log(PERSONAL_IDS[0]);
-    console.log(PERSONAL_IDS[0]);
-    console.log(PERSONAL_IDS[0]);
-    console.log(PERSONAL_IDS[0]);
-
-
-
     $('#closeThis').on("click", function() {
         $("#clientSideMenu").removeClass("active");
         resetClientForm();

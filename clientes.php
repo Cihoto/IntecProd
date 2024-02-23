@@ -1,4 +1,15 @@
 <?php 
+header_remove('ETag');
+header_remove('Pragma');
+header_remove('Cache-Control');
+header_remove('Last-Modified');
+header_remove('Expires');
+
+header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 $clientDash = true;
 ?>
 
@@ -14,7 +25,6 @@ $active = 'clientes';
     <?php include_once('./includes/Constantes/rol.php') ?>
     <script src="./assets/js/initTheme.js"></script>
     <div id="app">
-
         <?php require_once('./includes/sidebar.php') ?>
         <div id="main">
             <header class="mb-3">
@@ -28,7 +38,7 @@ $active = 'clientes';
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <circle cx="6" cy="6" r="6" fill="#069B99" />
                     </svg>
-                    <p class="header-P">Aquí puedes ver, editar y crear los vehículos para tus eventos</p>
+                    <p class="header-P">Aquí puedes ver, editar y crear los clientes para tus eventos</p>
                 </div>
 
                 <div class="row justify-content-end" style="margin:0px 14px;">
@@ -95,7 +105,7 @@ $active = 'clientes';
     </div>
     </div>
     
-    <?php require_once('./includes/sidemenu/clientSideMenu.php') ?>
+    <?php require_once('./includes/sidemenu/insertNewClientSideMenu.php') ?>
     <?php require_once('./includes/sidemenu/clientSideMenuDash.php') ?>
     <?php require_once('./includes/sidemenu/clienteMasivaSideMenu.php') ?>
     <?php require_once('./includes/footerScriptsJs.php') ?>
@@ -115,7 +125,7 @@ $active = 'clientes';
     <script src="./js/valuesValidator/validator.js"></script>
     <script src="./js/ClearData/clearFunctions.js"></script>
     <script src="./js/ProjectResume/viatico.js"></script>
-    <script src="./js/validateForm/clientForm.js"></script>
+    <script src="./js/validateForm/insertNewClient.js"></script>
     <script src="./js/validateForm/updateClient.js"></script>
 
 </body>
@@ -135,10 +145,10 @@ $active = 'clientes';
         // FillClientes(EMPRESA_ID);
 
         $('#openSideClientForm').on('click', function() {
-            $('#clientSideMenu').addClass('active');
+            $('#createNewClientSideMenu').addClass('active');
         })
-        $('#closeThis').on('click', function() {
-            $('#clientSideMenu').removeClass('active');
+        $('#closeCreateNewClientSideMenu').on('click', function() {
+            $('#createNewClientSideMenu').removeClass('active');
         })
         $('#openMasivaCliente').on('click', function() {
             $('#masivaClienteSideMenu').addClass('active');

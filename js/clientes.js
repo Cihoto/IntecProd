@@ -23,7 +23,7 @@ function FillClientes(empresaId) {
 
       $('#clienteSelect option').remove();
 
-      // console.log("RESPONSE clientes",response)
+      console.log("RESPONSE clientes",response)
 
       $('#clienteSelect').append(new Option("", ""));
       response.forEach(client => {
@@ -34,7 +34,15 @@ function FillClientes(empresaId) {
         let opt = $('#clienteSelect').append(new Option(clientName, client.cliente_id))
         opt.addClass()
       });
-      if(event_data.client_id.length !== 0){
+      console.log("event_data.client_id",event_data.client_id);
+      console.log("event_data.client_id",event_data.client_id);
+      console.log("event_data.client_id",event_data.client_id);
+      console.log("event_data.client_id",event_data.client_id);
+      console.log("event_data.client_id",event_data.client_id);
+      console.log("event_data.client_id",event_data.client_id);
+      console.log("event_data.client_id",event_data.client_id);
+      console.log("event_data.client_id",event_data.client_id);
+      if(event_data.client_id !== ""){
         $('#clienteSelect').val(event_data.client_id);
         $('#clienteSelect').change();
         
@@ -91,15 +99,17 @@ function showSelectedClientForEvent(){
   $('#addClienteController').css('display', 'flex');
   $('#sideclientForm .form-group').css('display' , 'block');
 }
+
 function showCreateNewClient(){
   $('#enableEditCliente').css('display', 'none');
   $('#addClienteController').css('display', 'flex');
   $('#sideclientForm .form-group').css('display' , 'block');
 }
+
 let createNewClient = false;
+
 $('#addClienteController').on('click',function(){
   createNewClient = !createNewClient;
-  console.log(createNewClient);
 
   if(createNewClient){
     $('#clientSelector').css('display','none');
@@ -115,7 +125,7 @@ $('#addClienteController').on('click',function(){
     $('#clientSelector').css('display','block');
     // $('#clienteSelect').val('');
     $('#clienteSelect').change();
-    $('#enableEditCliente').css('display', 'none');
+    $('#enableEditCliente').css('display', 'block');
     $('#formConfirmSection').css("display","none");
     $('#addClienteController p').text("Crear Nuevo Cliente");
     $('#addCliente p').text("Guardar y seleccionar");
@@ -167,7 +177,7 @@ $('#clienteSelect').on('change', function () {
           $('#clientTelefono').val(cli.telefono);
         })
   
-        setSelectedClient(response.cliente);
+        setSelectedClient(response.cliente[0]);
   
   
       }
@@ -180,14 +190,13 @@ $('#clienteSelect').on('change', function () {
 function setSelectedClient(selectedClient) {
   _selectedClient = [];
 
-  if (typeof event_data !== 'undefined') {
-    
-    event_data.client_id = selectedClient[0].id;
+  if (typeof event_data !== 'undefined'){
+    event_data.client_id = selectedClient.id;
   }
   _selectedClient = selectedClient;
   
-  $('#inputNombreCliente').val(_selectedClient[0].nombre_fantasia);
-  console.log(_selectedClient[0].nombre_fantasia);
+  $('#inputNombreCliente').val(_selectedClient.nombre_fantasia);
+  console.log(_selectedClient.nombre_fantasia);
   console.log(_selectedClient);
 
   console.log("FUNCTION",_selectedClient);
