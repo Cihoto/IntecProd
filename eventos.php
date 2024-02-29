@@ -1,16 +1,16 @@
 <?php
-    $active = "eventos";
-    $title = "Mis Eventos";
-    header_remove('ETag');
-    header_remove('Pragma');
-    header_remove('Cache-Control');
-    header_remove('Last-Modified');
-    header_remove('Expires');
-    header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
-    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-    header("Cache-Control: post-check=0, pre-check=0", false);
-    header("Pragma: no-cache");
+$active = "eventos";
+$title = "Mis Eventos";
+header_remove('ETag');
+header_remove('Pragma');
+header_remove('Cache-Control');
+header_remove('Last-Modified');
+header_remove('Expires');
+header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,6 +44,9 @@ require_once('./includes/head.php');
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="events-tab" data-bs-toggle="tab" href="#events" role="tab" aria-controls="events" aria-selected="false">Calendario</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="deletedEv-tab" data-bs-toggle="tab" href="#deletedEv" role="tab" aria-controls="deletedEv" aria-selected="false">Eliminados</a>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
@@ -90,54 +93,102 @@ require_once('./includes/head.php');
                             </button>
                         </div>
 
+                        <div style="display: block;overflow-x: auto;">
+                            <table class="" id="allProjectTable-list">
+                                <thead>
+                                    <tr>
+                                        <th>
 
-                        <table class="resume-table" id="allProjectTable-list">
-                            <thead>
-                                <tr>
-                                    <th class="_theadth1">
-                                        <p>Evento</p>
-                                    </th>
-                                    <th class="_theadth2">
-                                        <p>Estado</p>
-                                    </th>
-                                    <th class="_theadth3">
-                                        <p>Fecha</p>
-                                        <img src="./assets//svg/calendar.svg" alt="" style="margin-right: 10px;">
-                                    </th>
-                                    <th class="_theadth4">
-                                        <p>Cliente</p>
-                                    </th>
-                                    <th class="_theadth5">
-                                        <p>Tipo de evento</p>
-                                    </th>
-                                    <th class="_theadth6">
-                                        <p>Precio venta</p>
-                                    </th>
-                                    <th class="_theadth7">
-                                        <p>Owner</p>
-                                    </th>
-                                    <th class="_theadth8">
-                                        <p>Asignación</p>
-                                    </th>
-                                    <th class="_theadth9">
-                                        <p>Facturación</p>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                                        </th>
+                                        <th>
+                                            <p>Evento</p>
+                                        </th>
+                                        <th>
+                                            <p>Estado</p>
+                                        </th>
+                                        <th>
+                                            <p>Fecha</p>
+                                            <!-- <img src="./assets//svg/calendar.svg" alt="" style="margin-right: 10px;"> -->
+                                        </th>
+                                        <th>
+                                            <p>Cliente</p>
+                                        </th>
+                                        <th>
+                                            <p>Tipo de evento</p>
+                                        </th>
+                                        <th>
+                                            <p>Precio venta</p>
+                                        </th>
+                                        <th>
+                                            <p>Owner</p>
+                                        </th>
+                                        <th>
+                                            <p>Asignación</p>
+                                        </th>
+                                        <th>
+                                            <p>Facturación</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                            </tbody>
-                            <tfoot>
-                            </tfoot>
-                        </table>
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                     <div class="tab-pane fade tab-data" id="events" role="tabpanel" aria-labelledby="events-tab" style="margin: 15px; height: 100%;">
-
                         <div class="calendar-container">
-
                             <div id='calendar'></div>
                         </div>
+                    </div>
+                    <div class="tab-pane fade tab-data" id="deletedEv" role="tabpanel" aria-labelledby="deletedEv-tab" style="margin: 15px; height: 100%;">
+                        <div style="display: block;overflow-x: auto;">
 
+                            <table class="" id="deletedEventsTable-list">
+                                <thead>
+                                    <tr>
+                                        <th>
+
+                                        </th>
+                                        <th>
+                                            <p>Evento</p>
+                                        </th>
+                                        <th>
+                                            <p>Estado</p>
+                                        </th>
+                                        <th>
+                                            <p>Fecha</p>
+                                            <!-- <img src="./assets//svg/calendar.svg" alt="" style="margin-right: 10px;"> -->
+                                        </th>
+                                        <th>
+                                            <p>Cliente</p>
+                                        </th>
+                                        <th>
+                                            <p>Tipo de evento</p>
+                                        </th>
+                                        <th>
+                                            <p>Precio venta</p>
+                                        </th>
+                                        <th>
+                                            <p>Owner</p>
+                                        </th>
+                                        <th>
+                                            <p>Asignación</p>
+                                        </th>
+                                        <th>
+                                            <p>Facturación</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -161,6 +212,8 @@ require_once('./includes/head.php');
     const EMPRESA_ID = <?php echo $empresaId; ?>;
     const ROL_ID = <?php echo json_encode($rol_id); ?>;
 
+
+
     let init_date = (iDate) => {
 
         let date = new Date(iDate);
@@ -178,6 +231,8 @@ require_once('./includes/head.php');
 
         createCalendar();
     });
+
+
 
 
     function generateExcelArray(projectArray) {
@@ -224,14 +279,18 @@ require_once('./includes/head.php');
         return excelRowData;
     }
 
+    $('#deletedEv-tab').on('click', function() {
+        getDeletedEvents(EMPRESA_ID);
+    });
+
     $('#exportToExcel').on('click', function() {
 
         var ws_name = "SheetJS";
         let excelArray = [];
 
-        if(_filteredProjects.length > 0){
+        if (_filteredProjects.length > 0) {
             excelArray = generateExcelArray(_filteredProjects);
-        }else{
+        } else {
             excelArray = generateExcelArray(_projectsToList);
         }
 
@@ -241,12 +300,107 @@ require_once('./includes/head.php');
         XLSX.writeFile(wb, "SheetJS.xlsx");
     })
 
-    $(document).on('click', '.eventListRow', function() {
+    $(document).on('click', '.eventListRow td', function() {
+
+        let closestTd = $(this).closest('td');
+
         const EVENT_ID = $(this).closest('tr').attr('evento_id');
+
+        if (closestTd.hasClass('deleteEv-container')) {
+            const EV_DATA = _projectsToList.find((event) => {
+                return event.id === EVENT_ID
+            })
+
+            if (!EV_DATA) {
+                return;
+            }
+            Swal.fire({
+                icon: 'question',
+                title: `¿Deseas eliminar el evento ${EV_DATA.nombre_proyecto}?`,
+                text: 'Podrás ver, modificar y restaurar este evento por los proximos 30 días antes de que se elimine permanentemente',
+                showCancelButton: false,
+                showDenyButton:true,
+                confirmButtonText: "Eliminar",
+                denyButtonText: 'Conservar'
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    deleteEvent(EMPRESA_ID,EVENT_ID);
+                } else if (result.isDenied) {
+                }
+            })
+            return
+        }
+
         project_id_to_search = EVENT_ID;
-        window.location = `/miEvento.php?event_id=${EVENT_ID}`
+        window.location = `/miEvento.php?event_id=${EVENT_ID}`;
+    });
+    $(document).on('click', '.deletedEvent td', function() {
+
+        let closestTd = $(this).closest('td');
+
+        const EVENT_ID = $(this).closest('tr').attr('evento_id');
+
+        if (closestTd.hasClass('deleteEv-container')) {
+            const EV_DATA = _projectsToList.find((event) => {
+                return event.id === EVENT_ID
+            })
+
+            if (!EV_DATA) {
+                return;
+            }
+            Swal.fire({
+                icon: 'question',
+                title: `¿Deseas conservar el evento ${EV_DATA.nombre_proyecto}?`,
+                text: 'Este evento dejará de estar en tú lista de eliminados',
+                showCancelButton: false,
+                showDenyButton:true,
+                confirmButtonText: "Devolver",
+                denyButtonText: 'Cancelar'
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    returnEventToList(EMPRESA_ID,EVENT_ID);
+                } else if (result.isDenied) {
+                }
+            })
+            return
+        }
+
+        project_id_to_search = EVENT_ID;
+        window.location = `/miEvento.php?event_id=${EVENT_ID}`;
     });
 
+    async function deleteEvent(empresa_id,event_id) {
+        $.ajax({
+            type: "POST",
+            url: "ws/proyecto/proyecto.php",
+            dataType: 'json',
+            data: JSON.stringify({
+                "action": "deleteEvent",
+                "empresa_id": empresa_id,
+                "event_id": event_id
+            }),
+            success: function (response) {
+                console.log(response)
+            }
+        })
+    }
+    async function returnEventToList(empresa_id,event_id) {
+        $.ajax({
+            type: "POST",
+            url: "ws/proyecto/proyecto.php",
+            dataType: 'json',
+            data: JSON.stringify({
+                "action": "returnEventToList",
+                "empresa_id": empresa_id,
+                "event_id": event_id
+            }),
+            success: function (response) {
+                console.log(response)
+            }
+        })
+    }
 
     function filtrarPorRangoDeFechas(array, fechaInicio, fechaTermino) {
         return array.filter(function(item) {

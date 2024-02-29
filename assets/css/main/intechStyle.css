@@ -16,6 +16,10 @@ body {
   font-family: 'Roboto', sans-serif !important;
 }
 
+.pd-tr-3px tbody td{
+  padding: 3px 16px!important;
+}
+
 
 .c-pointer {
   cursor: pointer;
@@ -2704,13 +2708,14 @@ textarea {
 
 .pageContent {
   display: flex;
-  padding: var(--2, 16px);
   flex-direction: column;
   align-items: start;
   gap: var(--3, 24px);
   border-radius: var(--1, 8px);
   background: var(--White, #FCFCFC);
+  /* padding: var(--2, 16px); */
   margin: 18px -18px 8px -18px;
+  width: 100%;
 }
 
 .commentContainer {
@@ -2867,14 +2872,26 @@ textarea {
   background: var(--Purple-200, #DCD0F1);
 }
 
+.-eve-list-inf-ctn{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 99%;
+}
+
+
+
+
+
 .event-name {
-  width: 90%;
+  width: 95%;
   height: 23px !important;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
   -ms-text-overflow: ellipsis;
+  margin: 0px!important;
 }
 
 .event-client-name {
@@ -2890,6 +2907,8 @@ textarea {
   display: flex;
   padding: 6px;
   align-items: center;
+  text-align: center;
+  justify-content: center;
   border-radius: 100px;
   color: var(--warning-contrast, #FFF);
   font-feature-settings: 'clig' off, 'liga' off;
@@ -3969,10 +3988,27 @@ label.dateLabel {
 }
 
 #allProjectTable-list_wrapper{
-  margin-top: 30px;
-  margin-bottom: 15px;
+  margin: 32px 16px!important;
 }
 
+.checkbox-sq {
+  width: 15px; /* ajusta el ancho del checkbox */
+  height: 15px; /* ajusta la altura del checkbox */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 1px solid #999; /* borde del checkbox */
+  border-radius: 0; /* elimina el borde redondeado */
+  outline: none;
+  cursor: pointer;
+}
+
+.checkbox-sq:checked {
+  background-color: #007bff; /* color de fondo cuando está seleccionado */
+}
+
+
+/*
 #allProjectTable-list{
  table-layout: fixed;
  margin-top: 45px!important;
@@ -3982,7 +4018,6 @@ label.dateLabel {
 }
 
 #allProjectTable-list tr{
-  display: flex;
   padding: var(--none, 0px);
   align-items: center;
 }
@@ -4010,8 +4045,6 @@ button{
 }
 #allProjectTable-list tr:hover svg,
 #allProjectTable-list tr:hover button {
-  /* transition: all 0s!important; */
-  /* transition: none !important; */
   background: var(--Purple-200, #DCD0F1);
 }
 
@@ -4032,10 +4065,8 @@ button{
 
 #allProjectTable-list tbody td{
   display: flex!important;
-  /* padding: 16px!important; */
   align-items: center!important;
   flex-shrink: 0!important;
-  /* border-right: 1px solid var(--Line-table, #DDDDE1); */
   background: rgba(0, 0, 0, 0.00)!important;
 }
 
@@ -4044,9 +4075,82 @@ button{
   border-right: 1px solid var(--Line-table, #DDDDE1)!important;
 }
 #allProjectTable-list tbody td{
-  padding: 10px 16px!important;
   border-right: 1px solid var(--Line-table, #DDDDE1)!important;
+} */
+
+/* padding: 10px 16px!important; */
+
+#allProjectTable-list {
+  margin-top: 50px!important;
 }
+#allProjectTable-list td ,#allProjectTable-list th{
+  padding: 3px 16px!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+}
+#allProjectTable-list th{
+  padding: 16px 16px!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+}
+#allProjectTable-list thead tr{
+  border-radius: var(--none, 0px);
+  border: 1px solid var(--Line-table, #DDDDE1);
+  background: var(--Fondo-cyan, #E8F3F3);
+}
+#allProjectTable-list tbody tr:hover {
+  scale: 1.0075;
+  cursor: pointer;
+  border: 1px solid var(--Secondary-color, #6136AB);
+  background: var(--Purple-200, #DCD0F1);
+  button{
+    background-color: var(--Purple-200, #DCD0F1);
+  }
+  svg{
+    background-color: var(--Purple-200, #DCD0F1);
+  }
+  .deleteEv-container{
+    background-color: white!important;
+  }
+}
+
+
+#deletedEventsTable-list {
+  margin-top: 50px!important;
+}
+#deletedEventsTable-list td ,#deletedEventsTable-list th{
+  padding: 3px 16px!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+}
+#deletedEventsTable-list th{
+  padding: 16px 16px!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+}
+#deletedEventsTable-list thead tr{
+  border-radius: var(--none, 0px);
+  border: 1px solid var(--Line-table, #DDDDE1);
+  background: var(--Fondo-cyan, #E8F3F3);
+}
+#deletedEventsTable-list tbody tr:hover {
+  scale: 1.0075;
+  cursor: pointer;
+  border: 1px solid var(--Secondary-color, #6136AB);
+  background: var(--Purple-200, #DCD0F1);
+  button{
+    background-color: var(--Purple-200, #DCD0F1);
+  }
+  svg{
+    background-color: var(--Purple-200, #DCD0F1);
+  }
+  .deleteEv-container{
+    background-color: white!important;
+  }
+}
+
+
+.evDate{
+  text-align: center;
+}
+
+
 
 
 ._theadth1{
@@ -4146,9 +4250,9 @@ button{
 
 #dash-event-status{
   margin: 10px 0px;
- display: flex;
- flex-direction: row;
- gap: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 #clientsContainer{
@@ -4580,8 +4684,6 @@ table.dataTable thead th, table.dataTable thead td{
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  
-  
 }
 .--dly-ev-data-body p{
 

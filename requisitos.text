@@ -181,26 +181,39 @@ Facturacion a la derecha de la tabla de las listas;
 CLAY API PARA ESTO, ESTUDIAR API CLAY;
 
 
+Boton crear cliente debe estar en el margin bottom 0 en el formulario;->DONE
 
-Boton crear cliente debe estar en el margin bottom 0 en el formulario;
-Modificar campo de texto para los comentarios;
+Modificar campo de texto para los comentarios;->DONE
+
 Cambiar formato de fechas Chile en tabla listado de eventos;
-Ajustar las condiciones de las fechas de la creacion de eventos inicio terminos;
+
+Ajustar las condiciones de las fechas de la creacion de eventos inicio terminos(FORMATO MONDAY);
+
+ELIMINAR EVENTOS Y MANDAR A LISTA DE ELIMINADOS (30 DIAS); 
+ELIMINAR O QUITAR ADJUNTOS;
+POR DEFECTO A;ADIR UNA FILA PARA OTROS EN VENTA;
 
 
 padding tablas tr tobdy 3px;
+LISTA DE EVENTOS;
+LISTA DE VEHICULOS;
+LISTA DE PERSONAL;
+LISTA DE INVENTARIO;
 
 
 
 
 
 
+PROBLEMAS ENCONTRADOS
 
+1.-REVISAR POR QUE LOS PRODUCTOS DE LA EMPRESA 2 NO SE VISUALIZAN A LA HORA DE MOSTRARLOS EN LA LISTA DE LA VENTA
+REVISAR CARGA MASIVA DE PRODUCTOS EN CASO DE NO TENER RESPUESTA
 
+2.-SECCION INVENTARIO AL HACER MODIFICACIONES EN UN PRODUCTO, 
+NO SE RECARGA LA PAGINA Y LA MARCA A PENSAR DE QUE LA EXIJA NO LA GUARDA
 
-
-
-
+3.-
 
 
 

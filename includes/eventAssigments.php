@@ -128,6 +128,11 @@
                         <label for="commentProjectArea">Comentarios</label>
                     </div>
 
+                    <div class="form-group">
+                        <label for="commentProjectArea">Comentarios</label>
+                        <textarea class="form-control" id="commentProjectArea" name="txtAreaComments" rows="5" cols="5"></textarea>
+                    </div>
+
                     <!-- <form id="addFilesToEvent" enctype="multipart/form-data" action="#" method="post"> -->
 
                     <div class="row justify-content-between">

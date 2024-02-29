@@ -104,6 +104,20 @@ if ($_POST) {
             $empresa_id = $data->empresa_id;
             $result = json_encode(getEventDay($empresa_id, $date));
             break;
+        case 'getDeletedEvents':
+            $empresa_id = $data->empresa_id;
+            $result = json_encode(getDeletedEvents($empresa_id));
+            break;
+        case 'deleteEvent':
+            $event_id = $data->event_id;
+            $empresa_id = $data->empresa_id;
+            $result = json_encode(deleteEvent($empresa_id, $event_id));
+            break;
+        case 'returnEventToList':
+            $event_id = $data->event_id;
+            $empresa_id = $data->empresa_id;
+            $result = json_encode(returnEventToList($empresa_id, $event_id));
+            break;
         default:
             $result = false;
             break;
@@ -1183,7 +1197,7 @@ function updateProject($empresa_id, $request, $event_id)
     status_id=$request->status_id, 
     event_type_id=$request->event_type_id
     WHERE id=$event_id AND empresa_id = $empresa_id;";
- 
+
 
 
 
@@ -1404,5 +1418,104 @@ function getEventDay($empresa_id, $date)
         }
     } catch (Exception $e) {
         return array("error" => "Intente Nuevamente");
+    }
+}
+
+function getDeletedEvents($empresa_id)
+{
+    $deleteEvents = [];
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+        try {
+
+            $stmt = $mysqli->prepare("SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',
+            CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
+            df.nombre_fantasia as nombre_fantasia ,
+            CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
+            p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf',
+            et.nombre as event_type, pfr.income as income, pfr.cost as cost,(SELECT persona.nombre 
+            FROM personal pers
+            INNER JOIN persona on persona.id = pers.persona_id 
+            INNER JOIN proyecto proye on proye.owner = pers.id
+            WHERE proye.id = p.id AND p.empresa_id = $empresa_id) as owner
+                FROM proyecto p
+            LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
+            LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
+            LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
+            LEFT JOIN estado e on e.id = p.status_id
+            LEFT JOIN event_type et on et.id = p.event_type_id
+            LEFT JOIN lugar l on l.id = p.lugar_id 
+            LEFT JOIN project_finance_resume pfr on pfr.event_id  = p.id
+            LEFT JOIN direccion d on d.id = l.direccion_id 
+            LEFT JOIN cliente c on c.id  = p.cliente_id
+            LEFT JOIN datos_facturacion df on df.id = c.datos_facturacion_id          
+            LEFT JOIN persona per on per.id = c.persona_id_contacto
+            LEFT JOIN comuna co on co.id = d.comuna_id 
+            LEFT JOIN region re on re.id = co.region_id 
+            WHERE p.empresa_id = ? 
+            AND DATEDIFF(CURDATE() , p.deleteAt) < 30
+            AND p.IsDelete = 1
+            group by p.id
+            ORDER BY p.deleteAt asc;");
+
+            $stmt->bind_param("i", $empresa_id);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            while ($data = $result->fetch_object()) {
+                $deleteEvents[] = $data;
+            }
+            return $deleteEvents;
+        } catch (Exception $err) {
+            $conn->desconectar();
+            return false;
+        }
+    } catch (Exception $e) {
+        $conn->desconectar();
+        return array("error" => true);
+    }
+}
+
+
+function deleteEvent($empresa_id, $event_id){
+
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+
+        $stmt = $mysqli->prepare("UPDATE proyecto set IsDelete = 1, deleteAt = CURDATE() WHERE empresa_id = ? and id = ? ;");
+
+        $stmt->bind_param("ii", $empresa_id, $event_id);
+        $stmt->execute();
+
+        $conn->desconectar();
+        return true;
+    } catch (Exception $err) {
+        $conn->desconectar();
+        return false;
+    }
+}
+
+function returnEventToList($empresa_id, $event_id){
+
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+
+        $stmt = $mysqli->prepare("UPDATE proyecto set IsDelete = 0, deleteAt = NULL  WHERE empresa_id = ? and id = ? ;");
+
+        $stmt->bind_param("ii", $empresa_id, $event_id);
+        $stmt->execute();
+
+        $conn->desconectar();
+        return true;
+    } catch (Exception $err) {
+        $conn->desconectar();
+        return false;
     }
 }

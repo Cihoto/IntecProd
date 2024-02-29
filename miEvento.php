@@ -202,7 +202,7 @@ require_once('./includes/head.php');
 
     $('#closeThis').on("click", function() {
         $("#clientSideMenu").removeClass("active");
-        resetClientForm();
+        resetClientForm(); 
     })
 
     $(document).ready(async function() {
@@ -282,8 +282,8 @@ require_once('./includes/head.php');
         });
 
     $(document).keydown(function(event) {
+        console.log('asdasd')
         if (event.which === 13) {
-            event.preventDefault();
             // console.log("isProdQuantitySelected",isProdQuantitySelected);
             // console.log("prodQuantityElementSelected",prodQuantityElementSelected);
             if (isProdQuantitySelected === true) {

@@ -329,24 +329,24 @@ function GetAvailableProducts()
 
 
     $queryGetAvailable = "SELECT  p.id, 
-                                p.nombre, 
-                                cat.nombre as categoria,
-                                it.item,
-                                p.precio_arriendo,
-                                i.cantidad as stock,
-                                php.cantidad as assigned,
-                                pro.fecha_inicio,
-                                pro.fecha_termino,
-                                phe.estado_id  as estado
-                                FROM proyecto_has_producto php 
-                                RIGHT JOIN proyecto_has_estado phe on phe.proyecto_id = php.proyecto_id 
-                                RIGHT JOIN producto p on p.id = php.producto_id
-                                INNER JOIN inventario i on i.producto_id  = p.id
-                                INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id 
-                                INNER JOIN categoria cat on cat.id = chi.categoria_id
-                                INNER JOIN item it on it.id = chi.item_id 
-                                LEFT join proyecto pro on pro.id = php.proyecto_id
-                                WHERE p.empresa_id = 1";
+        p.nombre, 
+        cat.nombre as categoria,
+        it.item,
+        p.precio_arriendo,
+        i.cantidad as stock,
+        php.cantidad as assigned,
+        pro.fecha_inicio,
+        pro.fecha_termino,
+        phe.estado_id  as estado
+        FROM proyecto_has_producto php 
+        RIGHT JOIN proyecto_has_estado phe on phe.proyecto_id = php.proyecto_id 
+        RIGHT JOIN producto p on p.id = php.producto_id
+        INNER JOIN inventario i on i.producto_id  = p.id
+        INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id 
+        INNER JOIN categoria cat on cat.id = chi.categoria_id
+        INNER JOIN item it on it.id = chi.item_id 
+        LEFT join proyecto pro on pro.id = php.proyecto_id
+        WHERE p.empresa_id = 1";
 
     $responseDB = $conn->mysqli->query($queryGetAvailable);
     while ($dataResponseBd = $responseDB->fetch_object()) {
