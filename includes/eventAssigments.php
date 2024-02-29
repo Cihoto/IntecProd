@@ -123,10 +123,10 @@
                         </div>
                     </div>
 
-                    <div class="form-floating mt-3">
+                    <!-- <div class="form-floating mt-3">
                         <textarea class="form-control" style="min-height: 150px;" placeholder="" id="commentProjectArea" name="txtAreaComments"></textarea>
                         <label for="commentProjectArea">Comentarios</label>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label for="commentProjectArea">Comentarios</label>

@@ -138,11 +138,6 @@ require_once('./includes/head.php');
 
     </div>
     </div>
-
-
-
-
-
     <!-- REQUIRE DE FUNCIONES JS -->
 
     <!-- <script src="/js/evento/getEventData.js"></script>
