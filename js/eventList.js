@@ -1,6 +1,7 @@
 let _projectsToList = [];
 let _projectListBackup = [];
 let _filteredProjects = [];
+let _allProjectsToSearch = [];
 
 async function getEvents(empresa_id) {
     $.ajax({
@@ -22,18 +23,16 @@ async function getEvents(empresa_id) {
     })
 }
 
+
 let tableEventList;
 async function printAllProjects(_projectList) {
 
     // const table = $('#allProjectTable-list').DataTable();
 
     if ($.fn.DataTable.isDataTable('#allProjectTable-list')) {
-        // $('#allProjectTable-list').DataTable()
-        //     .clear()
-        //     .draw();
         $('#allProjectTable-list').DataTable()
-        .clear()
-        .draw();
+            .clear()
+            .draw();
         $('#allProjectTable-list').DataTable().destroy();
     }
 
@@ -95,14 +94,11 @@ async function printAllProjects(_projectList) {
             nombreCliente = evento.nombreCliente
         }
         let dateToFormatt = new Date(evento.fecha_inicio);
-        let timeStamp = dateToFormatt.getTime()/1000 
+        let timeStamp = dateToFormatt.getTime() / 1000
         // console.log(dateToFormatt.getTime()/1000)
         // console.log(dateToFormatt.getTime()/1000)
 
         let tr = `<tr evento_id="${evento.id}" class="eventListRow">
-            <td class="deleteEv-container">
-                <img src="./assets/svg/trashCan.svg" alt="">
-            </td>
             <td>
                 <div class="-eve-list-inf-ctn">
                     <p class="event-name"> ${evento.nombre_proyecto} </p>
@@ -114,7 +110,7 @@ async function printAllProjects(_projectList) {
                 </div>
             </td>
             <td> <p class="event-status ${evento.estado}">${evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p> </td>
-            <td data-order="${timeStamp}"> <p>${getEventListDate(evento.fecha_inicio,evento.fecha_termino)}</p> </td>
+            <td data-order="${timeStamp}"> <p>${getEventListDate(evento.fecha_inicio, evento.fecha_termino)}</p> </td>
             <td> <p class="event-client-name">${nombreCliente}</p> </td>
             <td> <p class="event-name">${evento.event_type === null ? "" : evento.event_type}</p> </td>
             <td> <p>${CLPFormatter(evento.income)}</p> </td>
@@ -141,6 +137,9 @@ async function printAllProjects(_projectList) {
                     <img src="./assets/svg/paperclip.svg" alt="">
                 </button>
             </td> 
+            <td class="deleteEv-container">
+                <img src="./assets/svg/trashCan.svg" alt="">
+            </td>
         </tr>`
 
         $('#allProjectTable-list tbody').append(tr);
@@ -148,50 +147,54 @@ async function printAllProjects(_projectList) {
     });
 
 
-    
-    tableEventList = $('#allProjectTable-list').DataTable({
-        responsive: true,
-        sort:true,
-        columnDefs: [
-        {width: '2%', targets: [0]},
-        {width: '10%', targets: [1] },
-        {width: '15%', targets: [3]},
-        {width: '10%', targets: [4]},
-        { width: '15%', targets: [7] },
-        {width: '1%', targets: [9]},
-    ]
-    });
-    // if (!$.n.DataTable.isDataTable('#allProjectTable-list')){
 
-    // }
+    if (!$.fn.DataTable.isDataTable('#allProjectTable-list')) {
+        tableEventList = $('#allProjectTable-list').DataTable({
+            sort: true,
+            responsive: true
+            // columnDefs: [
+            //     {width: '10%', targets: [0]},
+            //     {width: '10%', targets: [1]},
+            //     {width: '10%', targets: [2]},
+            //     {width: '10%', targets: [3]},
+            //     {width: '10%', targets: [4]},
+            //     {width: '10%', targets: [5]},
+            //     {width: '10%', targets: [6]},
+            //     {width: '10%', targets: [7]},
+            //     {width: '10%', targets: [8]},
+            //     {width: '10%', targets: [9]}
+            // ]
+        });
 
-        // $('#allProjectTable-list').DataTable({
-        //     responsive: true,
-        //     columnDefs: [{ width: '10%', targets: 0 }]
-        // })
-        // $('#allProjectTable-list').DataTable({
-        //     order: [[2, 'asc']],
-        //     language: {
-        //         "decimal": "",
-        //         "emptyTable": "No hay información",
-        //         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-        //         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-        //         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-        //         "infoPostFix": "",
-        //         "thousands": ",",
-        //         "lengthMenu": "Mostrar _MENU_ Eventos",
-        //         "loadingRecords": "Cargando...",
-        //         "processing": "Procesando...",
-        //         "search": "Buscar:",
-        //         "zeroRecords": "Sin resultados encontrados",
-        //         "paginate": {
-        //           "first": "Primero",
-        //           "last": "Ultimo",
-        //           "next": "Siguiente",
-        //           "previous": "Anterior"
-        //         }
-        //     }
-        // })
+    }
+
+    // $('#allProjectTable-list').DataTable({
+    //     responsive: true,
+    //     columnDefs: [{ width: '10%', targets: 0 }]
+    // })
+    // $('#allProjectTable-list').DataTable({
+    //     order: [[2, 'asc']],
+    //     language: {
+    //         "decimal": "",
+    //         "emptyTable": "No hay información",
+    //         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+    //         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+    //         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+    //         "infoPostFix": "",
+    //         "thousands": ",",
+    //         "lengthMenu": "Mostrar _MENU_ Eventos",
+    //         "loadingRecords": "Cargando...",
+    //         "processing": "Procesando...",
+    //         "search": "Buscar:",
+    //         "zeroRecords": "Sin resultados encontrados",
+    //         "paginate": {
+    //           "first": "Primero",
+    //           "last": "Ultimo",
+    //           "next": "Siguiente",
+    //           "previous": "Anterior"
+    //         }
+    //     }
+    // })
     // }
 
     // $("#allProjectTable-list_length select").change();
@@ -201,7 +204,7 @@ async function printAllProjects(_projectList) {
 
 
 
-function subDayToDate(date,daysToSub){
+function subDayToDate(date, daysToSub) {
 
     let tempday = new Date(date);
     tempday.setDate(tempday.getDate() - daysToSub);
@@ -209,11 +212,11 @@ function subDayToDate(date,daysToSub){
 
 };
 
-function getEventListDate(initDate,finishDate){
+function getEventListDate(initDate, finishDate) {
 
 
 
-    if(initDate === '' || initDate === null){
+    if (initDate === '' || initDate === null) {
         return '';
     }
     const EVENT_DATE_INIT = new Date(initDate);
@@ -225,7 +228,7 @@ function getEventListDate(initDate,finishDate){
     const DATE_OPTIONS_DAY = {
         day: "numeric"
     }
-    const MONTH_OPTIONS = { 
+    const MONTH_OPTIONS = {
         month: 'short'
     };
 
@@ -234,7 +237,7 @@ function getEventListDate(initDate,finishDate){
     let month_init = EVENT_DATE_INIT.toLocaleDateString("es-Cl", MONTH_OPTIONS);
     dateNumber_init = parseInt(dateNumber_init) + 1;
 
-    if(finishDate === '' || finishDate === null){
+    if (finishDate === '' || finishDate === null) {
         return `${dateNumber_init} ${month_init}`;
     }
 
@@ -243,13 +246,13 @@ function getEventListDate(initDate,finishDate){
 
     dateNumber_finish = parseInt(dateNumber_finish) + 1;
 
-    if(initDate === finishDate){
+    if (initDate === finishDate) {
         return `${dateNumber_init} ${month_init}`;
     }
-    if(month_init === month_finish){
+    if (month_init === month_finish) {
         return `${dateNumber_init}, ${dateNumber_finish} ${month_init}`;
     }
-    if(initDate !== finishDate){
+    if (initDate !== finishDate) {
         return `${dateNumber_init} ${month_init}, ${dateNumber_finish} ${month_finish}`;
     }
 }
@@ -313,17 +316,14 @@ async function printDeletedEvents(_DeletedprojectList) {
 
     // const table = $('#allProjectTable-list').DataTable();
 
+
     if ($.fn.DataTable.isDataTable('#deletedEventsTable-list')) {
         $('#deletedEventsTable-list').DataTable()
             .clear()
             .draw();
-        // $('#allProjectTable-list').DataTable()
-        // .clear()
-        // .draw();
-        // $('#allProjectTable-list').DataTable().destroy();
-    } else {
-
+        $('#deletedEventsTable-list').DataTable().destroy();
     }
+
 
 
     _DeletedprojectList.forEach((evento) => {
@@ -365,16 +365,7 @@ async function printDeletedEvents(_DeletedprojectList) {
             evento.nombreCliente = ""
         }
 
-        // let estadoStyle = '<p style =""></p>'
-        //     let trs = `<tr project_id=${evento.id}>
-        //     <td><p> ${evento.nombre_proyecto}</p></td>
-        //     <td><p class="p-estado" style="border-radius:10px; background-color:${color};">${evento.estado}</p></td>
-        //     <td><p>${evento.fecha_inicio}</p></td>
-        //     <td><p >${evento.nombreCliente}</p></td>
-        //     <td>Tipo de evento</td>
-        //     <td>Precio venta</td>
-        //     <td>Owner</td>
-        //   </tr>`
+
 
         let nombreCliente = '';
         if (evento.nombre_fantasia !== null) {
@@ -383,9 +374,8 @@ async function printDeletedEvents(_DeletedprojectList) {
             nombreCliente = evento.nombreCliente
         }
         let dateToFormatt = new Date(evento.fecha_inicio);
-        let timeStamp = dateToFormatt.getTime()/1000 
-        // console.log(dateToFormatt.getTime()/1000)
-        // console.log(dateToFormatt.getTime()/1000)
+        let timeStamp = dateToFormatt.getTime() / 1000
+
 
         let tr = `<tr evento_id="${evento.id}" class="deletedEvent">
             <td class="deleteEv-container">
@@ -402,7 +392,7 @@ async function printDeletedEvents(_DeletedprojectList) {
                 </div>
             </td>
             <td> <p class="event-status ${evento.estado}">${evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p> </td>
-            <td data-order="${timeStamp}"> <p>${getEventListDate(evento.fecha_inicio,evento.fecha_termino)}</p> </td>
+            <td data-order="${timeStamp}"> <p>${getEventListDate(evento.fecha_inicio, evento.fecha_termino)}</p> </td>
             <td> <p class="event-client-name">${nombreCliente}</p> </td>
             <td> <p class="event-name">${evento.event_type === null ? "" : evento.event_type}</p> </td>
             <td> <p>${CLPFormatter(evento.income)}</p> </td>
@@ -436,49 +426,71 @@ async function printDeletedEvents(_DeletedprojectList) {
     });
 
 
-    
-    tableEventList = $('#deletedEventsTable-list').DataTable({
-        responsive: true,
-        sort:true,
-        columnDefs: [
-        {width: '2%', targets: [0]},
-        {width: '10%', targets: [1] },
-        {width: '15%', targets: [3]},
-        {width: '10%', targets: [4]},
-        { width: '15%', targets: [7] },
-        {width: '1%', targets: [9]},
-    ]
-    });
-    // if (!$.fn.DataTable.isDataTable('#allProjectTable-list')) {
-    // }
 
-        // $('#allProjectTable-list').DataTable({
-        //     responsive: true,
-        //     columnDefs: [{ width: '10%', targets: 0 }]
-        // })
-        // $('#allProjectTable-list').DataTable({
-        //     order: [[2, 'asc']],
-        //     language: {
-        //         "decimal": "",
-        //         "emptyTable": "No hay información",
-        //         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-        //         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-        //         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-        //         "infoPostFix": "",
-        //         "thousands": ",",
-        //         "lengthMenu": "Mostrar _MENU_ Eventos",
-        //         "loadingRecords": "Cargando...",
-        //         "processing": "Procesando...",
-        //         "search": "Buscar:",
-        //         "zeroRecords": "Sin resultados encontrados",
-        //         "paginate": {
-        //           "first": "Primero",
-        //           "last": "Ultimo",
-        //           "next": "Siguiente",
-        //           "previous": "Anterior"
-        //         }
-        //     }
-        // })
+    if (!$.fn.DataTable.isDataTable('#deletedEventsTable-list')) {
+
+        tableEventList = $('#deletedEventsTable-list').DataTable({
+            responsive: true,
+            sort: true,
+            columnDefs: [
+                { width: '2%', targets: [0] },
+                { width: '10%', targets: [1] },
+                { width: '15%', targets: [3] },
+                { width: '10%', targets: [4] },
+                { width: '15%', targets: [7] },
+                { width: '1%', targets: [9] },
+            ],
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Eventos",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+
+    }
+
+    // $('#allProjectTable-list').DataTable({
+    //     responsive: true,
+    //     columnDefs: [{ width: '10%', targets: 0 }]
+    // })
+    // $('#allProjectTable-list').DataTable({
+    //     order: [[2, 'asc']],
+    //     language: {
+    //         "decimal": "",
+    //         "emptyTable": "No hay información",
+    //         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+    //         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+    //         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+    //         "infoPostFix": "",
+    //         "thousands": ",",
+    //         "lengthMenu": "Mostrar _MENU_ Eventos",
+    //         "loadingRecords": "Cargando...",
+    //         "processing": "Procesando...",
+    //         "search": "Buscar:",
+    //         "zeroRecords": "Sin resultados encontrados",
+    //         "paginate": {
+    //           "first": "Primero",
+    //           "last": "Ultimo",
+    //           "next": "Siguiente",
+    //           "previous": "Anterior"
+    //         }
+    //     }
+    // })
     // }
 
     // $("#allProjectTable-list_length select").change();

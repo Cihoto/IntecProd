@@ -1,7 +1,8 @@
 let _allCalendarEvents = [];
+
 async function getCalendarEvents(){
-  const EVENTS = await getAllMyEvents(EMPRESA_ID);
-  _allCalendarEvents = EVENTS.wd.map(event => {
+  const EVENTS = await getAllMyEvents_notDeleted(EMPRESA_ID);
+  _allCalendarEvents = EVENTS.events.map(event => {
       return {
           title: event.nombre_proyecto,
           start: event.fecha_inicio,
@@ -9,12 +10,14 @@ async function getCalendarEvents(){
           url: `https://intecsoftware.tech/miEvento.php?event_id=${event.id}`
       }
   });
-  renderCalendar(_allCalendarEvents);
+  
 }
 
 
 function renderCalendar(_calendarEvents){
   let calendarEl = document.getElementById('calendar');
+
+
   let calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       events: _calendarEvents,

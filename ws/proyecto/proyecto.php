@@ -34,6 +34,10 @@ if ($_POST) {
             $empresa_id = $data->empresaId;
             $result = json_encode(GetAllMyProjects($empresa_id));
             break;
+        case 'getAllMyEvents_notDeleted':
+            $empresa_id = $data->empresa_id;
+            $result = json_encode(getAllMyEvents_notDeleted($empresa_id));
+            break;
         case 'GetAllProjects':
             $empresa_id = $data->empresaId;
             $result = json_encode(GetAllProjects($empresa_id));
@@ -460,8 +464,7 @@ function getProjectResume($request)
     }
 }
 
-function getMyProjects($request)
-{
+function getMyProjects($request){
     $conn = new bd();
     $conn->conectar();
     $empresaId = $request->empresaId;
@@ -469,18 +472,18 @@ function getMyProjects($request)
 
     $projects = [];
     $queryProyectos = "SELECT p.id, p.nombre_proyecto, 
-                            CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
-                            CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
-                            p.fecha_inicio ,p.fecha_termino
-                                    FROM proyecto p
-                            INNER JOIN proyecto_has_estado phe ON  phe.proyecto_id  = p.id 
-                            LEFT  JOIN lugar l on l.id = p.lugar_id 
-                            LEFT JOIN direccion d on d.id = l.direccion_id 
-                            LEFT JOIN cliente c on c.id  = p.cliente_id         
-                            LEFT JOIN persona per on per.id = c.persona_id_contacto
-                            LEFT JOIN comuna co on co.id = d.comuna_id 
-                            LEFT JOIN region re on re.id = co.region_id 
-                            where phe.estado_id = $status and p.empresa_id = $empresaId";
+    CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
+    CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
+    p.fecha_inicio ,p.fecha_termino
+            FROM proyecto p
+    INNER JOIN proyecto_has_estado phe ON  phe.proyecto_id  = p.id 
+    LEFT  JOIN lugar l on l.id = p.lugar_id 
+    LEFT JOIN direccion d on d.id = l.direccion_id 
+    LEFT JOIN cliente c on c.id  = p.cliente_id         
+    LEFT JOIN persona per on per.id = c.persona_id_contacto
+    LEFT JOIN comuna co on co.id = d.comuna_id 
+    LEFT JOIN region re on re.id = co.region_id 
+    where phe.estado_id = $status and p.empresa_id = $empresaId";
     if ($responseBd = $conn->mysqli->query($queryProyectos)) {
         while ($dataProject = $responseBd->fetch_object()) {
             $projects[] = $dataProject;
@@ -705,6 +708,9 @@ function GetEventsByClient($cliente_id)
 }
 
 
+
+
+
 function getAllMyProjects_list_toExecute($empresa_id)
 {
     $conn = new bd();
@@ -741,6 +747,7 @@ function getAllMyProjects_list_toExecute($empresa_id)
     WHERE p.empresa_id = $empresa_id 
     AND p.status_id IN (2,4)
     AND p.fecha_inicio >= '$today'
+    AND p.isDelete = 0
     group by p.id
 	ORDER BY p.fecha_inicio asc;";
     // -- where p.empresa_id = 1 and p.fecha_inicio >= '2023-11-23'
@@ -754,6 +761,66 @@ function getAllMyProjects_list_toExecute($empresa_id)
 
     // return $queryProyectos;
     return $projects;
+}
+
+
+
+function getAllMyEvents_notDeleted($empresa_id){
+
+    try{
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+        $projects_with_Date = [];
+
+        $stmt = $mysqli->prepare("SELECT p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
+        CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
+        df.nombre_fantasia as nombre_fantasia ,
+        CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
+        p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf',
+        et.nombre as event_type, pfr.income as income, pfr.cost as cost,(SELECT persona.nombre 
+        FROM personal pers
+        INNER JOIN persona on persona.id = pers.persona_id 
+        INNER JOIN proyecto proye on proye.owner = pers.id
+        WHERE proye.id = p.id AND p.empresa_id = ?) as owner
+         FROM proyecto p
+        LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
+        LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
+        LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
+        LEFT JOIN estado e on e.id = p.status_id
+        LEFT JOIN event_type et on et.id = p.event_type_id
+        LEFT JOIN lugar l on l.id = p.lugar_id 
+        LEFT JOIN project_finance_resume pfr on pfr.event_id  = p.id
+        LEFT JOIN direccion d on d.id = l.direccion_id 
+        LEFT JOIN cliente c on c.id  = p.cliente_id 
+        LEFT JOIN datos_facturacion df on df.id = c.datos_facturacion_id        
+        LEFT JOIN persona per on per.id = c.persona_id_contacto
+        LEFT JOIN comuna co on co.id = d.comuna_id 
+        LEFT JOIN region re on re.id = co.region_id 
+        WHERE p.empresa_id = ?
+        AND p.isDelete = 0
+        AND p.fecha_inicio IS NOT NULL
+        group by p.id
+        ORDER BY p.fecha_inicio desc;");
+
+        $stmt->bind_param("ii", $empresa_id, $empresa_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        while ($dataProject = $result->fetch_object()) {
+            $projects_with_Date[] = $dataProject;
+        }
+        $conn->desconectar();
+        return array("events"=>$projects_with_Date);
+        
+    }
+    catch(Exception $e){
+        $conn->desconectar();
+        return array("error"=>true);
+
+    }
+
+
 }
 
 
@@ -960,6 +1027,7 @@ function getOperEvents($empresa_id)
     AND p.status_id in(2)
     AND p.fecha_inicio IS NOT NULL
     AND p.fecha_inicio >= '$today' 
+    AND p.isDelete = 0
     GROUP BY p.id
 	ORDER BY p.fecha_inicio desc;";
 
@@ -990,6 +1058,7 @@ function getOperEvents($empresa_id)
     LEFT JOIN region re on re.id = co.region_id  
     WHERE p.empresa_id = $empresa_id
     AND p.status_id in(1,2)
+    AND p.isDelete = 0
     AND p.fecha_inicio IS NULL 
     GROUP BY p.id
 	ORDER BY p.createAt desc;";
@@ -1046,6 +1115,7 @@ function getSellsEvents($empresa_id)
     AND p.status_id  in (2,4)
     AND p.fecha_inicio IS NOT NULL
     AND p.fecha_inicio >= '$today'
+    AND p.isDelete = 0
     GROUP BY p.id
 	ORDER BY p.fecha_inicio desc;";
 
@@ -1125,6 +1195,7 @@ function getAdmEvents($empresa_id)
     WHERE p.empresa_id = $empresa_id
     AND p.status_id in(3,5)
     AND p.fecha_termino <= '$today' 
+    AND p.isDelete = 0
     GROUP BY p.id
 	ORDER BY p.fecha_termino desc;";
 
@@ -1198,10 +1269,6 @@ function updateProject($empresa_id, $request, $event_id)
     event_type_id=$request->event_type_id
     WHERE id=$event_id AND empresa_id = $empresa_id;";
 
-
-
-
-
     if ($conn->mysqli->query($queryUpdate)) {
         return array("success" => true, "message" => "Detalles del evento actualizados con exito");
     } else {
@@ -1260,13 +1327,14 @@ function getDashResume($empresa_id)
     FROM project_finance_resume pfr
     INNER JOIN proyecto p on p.id = pfr.event_id
     where p.fecha_inicio >=  DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE())  , '01')),INTERVAL 1 MONTH) 
-    and p.fecha_inicio <=LAST_DAY(DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE())  , '01')),INTERVAL 1 MONTH))
-    and p.empresa_id = $empresa_id) AS last_month_income
+    AND p.fecha_inicio <=LAST_DAY(DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE())  , '01')),INTERVAL 1 MONTH))
+    AND p.empresa_id = $empresa_id) AS last_month_income
     FROM project_finance_resume pfr 
     INNER JOIN proyecto p on p.id = pfr.event_id
     where p.fecha_inicio >=    DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE()) , '01'))
-    and  p.fecha_inicio >=  LAST_DAY(CURDATE())
-    and p.empresa_id = $empresa_id;";
+    AND  p.fecha_inicio >=  LAST_DAY(CURDATE())
+    AND p.empresa_id = $empresa_id
+    AND p.isDelete = 0;";
 
 
 
@@ -1364,7 +1432,8 @@ function getEventsForDashboard($request, $empresa_id)
     LEFT join event_type et on et.id = p.event_type_id  
     LEFT join direccion d on d.id = p.address_id  
     LEFT JOIN estado e on e.id = p.status_id  where p.empresa_id = $empresa_id 
-    $status $date $type";
+    $status $date $type 
+    AND p.isDelete = 0;";
 
     if ($response = $conn->mysqli->query($query)) {
         while ($data = $response->fetch_object()) {

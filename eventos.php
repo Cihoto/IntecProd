@@ -43,7 +43,7 @@ require_once('./includes/head.php');
                         <a class="nav-link active" id="listview-tab" data-bs-toggle="tab" href="#listview" role="tab" aria-controls="listview" aria-selected="true">Lista</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="events-tab" data-bs-toggle="tab" href="#events" role="tab" aria-controls="events" aria-selected="false">Calendario</a>
+                        <a class="nav-link" id="calendar-tab" data-bs-toggle="tab" href="#calendar" role="tab" aria-controls="calendar" aria-selected="false">Calendario</a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="deletedEv-tab" data-bs-toggle="tab" href="#deletedEv" role="tab" aria-controls="deletedEv" aria-selected="false">Eliminados</a>
@@ -63,11 +63,11 @@ require_once('./includes/head.php');
                             <div class="row" style="margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;">
 
                                 <!-- <button class="s-Button-w">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
-                                <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            <p class="s-P-g">Filtros</p>
-                        </button> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+                                        <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <p class="s-P-g">Filtros</p>
+                                </button> -->
                                 <button class="s-Button-w" id="sortAllMyEvents">
                                     <p class="s-P-g">Todos</p>
                                 </button>
@@ -84,22 +84,27 @@ require_once('./includes/head.php');
                                     <p class="s-P-g">Administración</p>
                                 </button>
                                 <input readonly type="text" id="calendar-input" style="width: 250px;height: 40px;border-radius: 4px;" placeholder="filtrar por fecha">
-                                <button class="s-Button-w" style="width: 175px;position: absolute;right: 158px;" id="exportToExcel">
+                            </div>
+
+                            <div style="display: flex;gap: 16px;flex-direction: column;margin-top: -55px;">
+                                <!-- <button class="s-Button-w" style="width: 175px;position: absolute;right: 158px;" id="exportToExcel">
+                                    <p class="s-P-g">Exportar Excel</p>
+                                </button> -->
+
+                                <button class="s-Button-w" id="exportToExcel" style="width: 140px;">
                                     <p class="s-P-g">Exportar Excel</p>
                                 </button>
+                                <button class="s-Button" id="openModalNewFree" style="width: 140px;">
+                                    <p class="s-P"><a href="./miEvento.php" style="color: white;text-decoration: none;">Crear evento</a></p>
+                                </button>
                             </div>
-                            <button class="s-Button" id="openModalNewFree">
-                                <p class="s-P"><a href="./miEvento.php" style="color: white;text-decoration: none;">Crear evento</a></p>
-                            </button>
                         </div>
 
                         <div style="display: block;overflow-x: auto;">
                             <table class="" id="allProjectTable-list">
                                 <thead>
                                     <tr>
-                                        <th>
 
-                                        </th>
                                         <th>
                                             <p>Evento</p>
                                         </th>
@@ -128,6 +133,9 @@ require_once('./includes/head.php');
                                         <th>
                                             <p>Facturación</p>
                                         </th>
+                                        <th>
+
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -138,7 +146,7 @@ require_once('./includes/head.php');
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade tab-data" id="events" role="tabpanel" aria-labelledby="events-tab" style="margin: 15px; height: 100%;">
+                    <div class="tab-pane fade tab-data" id="calendar" role="tabpanel" aria-labelledby="calendar-tab" style="margin: 15px; height: 100%;">
                         <div class="calendar-container">
                             <div id='calendar'></div>
                         </div>
@@ -209,6 +217,7 @@ require_once('./includes/head.php');
 <script src="./js/valuesValidator/validator.js"></script>
 
 <script>
+    caches.keys().then((keyList) => Promise.all(keyList.map((key) => caches.delete(key))));
     const EMPRESA_ID = <?php echo $empresaId; ?>;
     const ROL_ID = <?php echo json_encode($rol_id); ?>;
 
@@ -228,6 +237,19 @@ require_once('./includes/head.php');
     $(document).ready(async function() {
         await getEvents(EMPRESA_ID);
         await getCalendarEvents();
+
+        const ALL_MY_EVENTS = await getAllMyEvents(EMPRESA_ID);
+
+        if (ALL_MY_EVENTS) {
+
+
+            ALL_MY_EVENTS.wd.map((ev) => {
+                _allProjectsToSearch.push(ev)
+            })
+            ALL_MY_EVENTS.woutd.map((ev) => {
+                _allProjectsToSearch.push(ev)
+            })
+        }
 
         createCalendar();
     });
@@ -279,8 +301,14 @@ require_once('./includes/head.php');
         return excelRowData;
     }
 
+    $('#listview-tab').on('click', function() {
+        getEvents(EMPRESA_ID);
+    });
     $('#deletedEv-tab').on('click', function() {
         getDeletedEvents(EMPRESA_ID);
+    });
+    $('#calendar-tab').on('click', function() {
+        renderCalendar(_allCalendarEvents);
     });
 
     $('#exportToExcel').on('click', function() {
@@ -307,7 +335,7 @@ require_once('./includes/head.php');
         const EVENT_ID = $(this).closest('tr').attr('evento_id');
 
         if (closestTd.hasClass('deleteEv-container')) {
-            const EV_DATA = _projectsToList.find((event) => {
+            const EV_DATA = _allProjectsToSearch.find((event) => {
                 return event.id === EVENT_ID
             })
 
@@ -319,15 +347,15 @@ require_once('./includes/head.php');
                 title: `¿Deseas eliminar el evento ${EV_DATA.nombre_proyecto}?`,
                 text: 'Podrás ver, modificar y restaurar este evento por los proximos 30 días antes de que se elimine permanentemente',
                 showCancelButton: false,
-                showDenyButton:true,
+                showDenyButton: true,
                 confirmButtonText: "Eliminar",
                 denyButtonText: 'Conservar'
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    deleteEvent(EMPRESA_ID,EVENT_ID);
-                } else if (result.isDenied) {
-                }
+                    deleteEvent(EMPRESA_ID, EVENT_ID);
+                    $(this).closest('tr').remove();
+                } else if (result.isDenied) {}
             })
             return
         }
@@ -335,16 +363,20 @@ require_once('./includes/head.php');
         project_id_to_search = EVENT_ID;
         window.location = `/miEvento.php?event_id=${EVENT_ID}`;
     });
+
     $(document).on('click', '.deletedEvent td', function() {
 
         let closestTd = $(this).closest('td');
 
         const EVENT_ID = $(this).closest('tr').attr('evento_id');
 
+        console.log(closestTd);
+
         if (closestTd.hasClass('deleteEv-container')) {
-            const EV_DATA = _projectsToList.find((event) => {
+
+            const EV_DATA = _allProjectsToSearch.find((event) => {
                 return event.id === EVENT_ID
-            })
+            });
 
             if (!EV_DATA) {
                 return;
@@ -354,24 +386,24 @@ require_once('./includes/head.php');
                 title: `¿Deseas conservar el evento ${EV_DATA.nombre_proyecto}?`,
                 text: 'Este evento dejará de estar en tú lista de eliminados',
                 showCancelButton: false,
-                showDenyButton:true,
+                showDenyButton: true,
                 confirmButtonText: "Devolver",
                 denyButtonText: 'Cancelar'
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    returnEventToList(EMPRESA_ID,EVENT_ID);
-                } else if (result.isDenied) {
-                }
+                    returnEventToList(EMPRESA_ID, EVENT_ID);
+                    $(this).closest('tr').remove();
+                } else if (result.isDenied) {}
             })
             return
         }
 
-        project_id_to_search = EVENT_ID;
-        window.location = `/miEvento.php?event_id=${EVENT_ID}`;
+        // project_id_to_search = EVENT_ID;
+        // window.location = `/miEvento.php?event_id=${EVENT_ID}`;
     });
 
-    async function deleteEvent(empresa_id,event_id) {
+    async function deleteEvent(empresa_id, event_id) {
         $.ajax({
             type: "POST",
             url: "ws/proyecto/proyecto.php",
@@ -381,12 +413,12 @@ require_once('./includes/head.php');
                 "empresa_id": empresa_id,
                 "event_id": event_id
             }),
-            success: function (response) {
+            success: function(response) {
                 console.log(response)
             }
         })
     }
-    async function returnEventToList(empresa_id,event_id) {
+    async function returnEventToList(empresa_id, event_id) {
         $.ajax({
             type: "POST",
             url: "ws/proyecto/proyecto.php",
@@ -396,7 +428,7 @@ require_once('./includes/head.php');
                 "empresa_id": empresa_id,
                 "event_id": event_id
             }),
-            success: function (response) {
+            success: function(response) {
                 console.log(response)
             }
         })
@@ -460,7 +492,7 @@ require_once('./includes/head.php');
         }
 
         const calendarInput = new VanillaCalendar("#calendar-input", options)
-        calendarInput.init()
+        calendarInput.init();
     }
 </script>
 
