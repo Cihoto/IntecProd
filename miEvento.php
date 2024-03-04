@@ -174,6 +174,7 @@ require_once('./includes/head.php');
     <script src="./js/otherCosts.js"></script>
     <script src="/js/bottomBar.js"></script>
     <script src="/js/factSheet.js"></script>
+    <script src="/js/evento/viewUploadedFiles.js"></script>
 
 
     <!-- VALIDATE FORM -->
@@ -181,6 +182,8 @@ require_once('./includes/head.php');
     <script src="./js/validateForm/addNewProvider.js"></script>
     <script src="./js/validateForm/clientForm.js"></script>
 
+    <!-- SIDEMENUS -->
+    <?php require_once('./includes/sidemenu/viewUploadedFiles.php')?>
 
 </body>
 
@@ -219,6 +222,14 @@ require_once('./includes/head.php');
         // OBJECT CONTAINS INFO ABOUT START AND FINISH DATE ON EVENT 
         // TO SHOW PERSONAL, VEHICLES AND PERSONAL ON LIVE AVAILABILITY 
         // ON TABLES
+
+        $('#openViewUploadedFiles').on('click',function(){
+            openViewUploadedFileDieMenu();
+        });
+
+        $('#closeViewUploadedFiles').on('click',function(){
+            closeViewUploadedFileDieMenu();
+        });
 
         $('#inputProjectName').on('change', function() {
             $('#projectNameResume').text($(this).val());
@@ -263,6 +274,9 @@ require_once('./includes/head.php');
             // $('#hiddenAddProject').trigger('click');
             SaveOrUpdateEvent();
         });
+
+
+        console.log('_uploadesFiles',_uploadesFiles)
     })
 
     $('.event-status-btn').on('click', function() {

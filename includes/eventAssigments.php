@@ -132,9 +132,11 @@
                         <label for="commentProjectArea">Comentarios</label>
                         <textarea class="form-control" id="commentProjectArea" name="txtAreaComments" rows="5" cols="5"></textarea>
                     </div>
-
+                    <!-- <button type="button" class="s-Button" id="openViewUploadedFiles" style="width: 170px;">
+                        <p class="s-P">ver archivos  cargados</p>
+                    </button> -->
                     <!-- <form id="addFilesToEvent" enctype="multipart/form-data" action="#" method="post"> -->
-
+    
                     <div class="row justify-content-between">
                         <div class="d-flex col-5" style="flex-direction: column;margin-top: 10px;">
                             <p class="date-header" style="margin: 0px!important;">Cargar archivos</p>
@@ -149,7 +151,10 @@
                                 <a href="../ws/BussinessDocuments/documents/buss1/Ev61/bsdComprobantePago (9).pdf" download>bsdComprobantePago (9).pdf</a>
                             </div> -->
                         </div>
+
+
                     </div>
+
                     <!-- <input type="submit" style="display: none;" value="addDocuments" id="addDocuments"> -->
                     </form> 
                     <button type="submit" style="display: none;" id="hiddenAddProject" class="btn btn-success ml-1 col-4">

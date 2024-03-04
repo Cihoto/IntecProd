@@ -249,13 +249,23 @@ async function getAllProjectData(event_id, empresa_id) {
     });
 
     if(responseGetData.asignados.files.length > 0){
+        // FILL VARIABLE FROM evento/viewUploadesFiles.js
+        _uploadesFiles = responseGetData.asignados.files; 
+
+        
         responseGetData.asignados.files.forEach((file)=>{
             // console.log(`../ws/BussinessDocuments/documents/buss${EMPRESA_ID}/Ev${event_data.event_id}/bsd${file.name}`)
             let fileContainer = `<div class="file-container">
                 <i class="fa-regular fa-file"></i>
                 <a href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/Ev${event_data.event_id}/bsd${file.name}" download>${file.name}</a>
             </div>`
-            $('#fileListContainer').append(fileContainer)
+            $('#fileListContainer').append(fileContainer);
+            
+            
+            // let iFrame = `<iframe src='./ws/BussinessDocuments/documents/buss1/Ev61/Estado de cuenta_1709071812088.pdf'></iframe>`;
+            // let iFrame2 = `<iframe src='./ws/BussinessDocuments/documents/buss1/Ev61/Educación y Formación – Cultura Cerrillos - Opera 2024-02-19 13-30-54.mp4' frameborder="0"></iframe>`;
+            // $('#fileListContainer').append(iFrame);
+            // $('#fileListContainer').append(iFrame2);
         });
         printOthersProds();;
         setIngresos();
