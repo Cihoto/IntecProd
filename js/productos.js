@@ -159,8 +159,6 @@ function AddProduct(el) {
     });
 
 
-    console.log('PROD_EXIST',PROD_EXIST);
-    console.log('_productos',_productos);
     if (!PROD_EXIST) {
       Swal.fire(
         'Lo sentimos!',
@@ -188,13 +186,14 @@ function AddProduct(el) {
     }]
 
     const addProd = setSelectedProduct_AddNewProducts(prodsToAdd);
-
     _searchProductValue = $('#tableProducts_filter').find('input[type="search"]').val();
-
     let indexTab = $("#tableProducts").DataTable().page();
     printAllProductsOnTableFromPrevSearch(_searchProductValue,indexTab);
+
     setCategoriesAndSubCategories();
+
     printAllSelectedProducts();
+
     setIngresos();
 
     // $('#tableProducts_filter').find('input').val(_searchProductValue);
@@ -301,7 +300,7 @@ function AppendProductosTableResumeArray(arrayProductos) {
     TotalCosts(arrayProductos[i].totalPrice)
   }
   SetResumeProductsValue();
-  console.log(GetTotalCosts());
+  // console.log(GetTotalCosts());
   $('#totalCostProject').text(CLPFormatter(parseInt(GetTotalCosts())));
 }
 
@@ -311,7 +310,6 @@ function AppendProductosTableResumeArray(arrayProductos) {
 let lastValue = 0;
 $(document).on('click', '.addProdInputResume', async function () {
   lastValue = $(this).val();
-  console.log("lastValue", lastValue);
 })
 $(document).on('blur', '.addProdInputResume', async function () {
   const currentValue = $(this).val();
@@ -399,14 +397,11 @@ $(document).on('blur', '.addProdInputResume', async function () {
     // SUMAR DIFERENCIA EN CASO DE QUE LOS SELECCIONADOS DE DISTINTOS ORIGENES(PACQUETES , SELECCION MANUAL PRODUCTOS RESERVADOS DESDE OTROS EVENTOS)
     if (parseInt(currentValue) > parseInt(totalToRemove.quantityToAdd)) {
       let quantityToAdd = parseInt(currentValue) - parseInt(totalToRemove.quantityToAdd);
-      console.log("SUMANDO LA DIFERENCIA", quantityToAdd);
       const productsToAdd = [{
         'id': totalToRemove.id,
         'quantityToAdd': quantityToAdd
       }]
       const removedProducts = setSelectedProduct_AddNewProducts(productsToAdd);
-      // console.log("CATSANDSUBCATS", _categoriesandsubcategories);
-      // console.log("selectedprods", _selectedProducts);
       setCategoriesAndSubCategories();
       printAllProductsOnTable();
       printAllSelectedProducts();
@@ -417,14 +412,11 @@ $(document).on('blur', '.addProdInputResume', async function () {
     if (parseInt(currentValue) < parseInt(totalToRemove.quantityToAdd)){
 
       let quantityToRemove = parseInt(totalToRemove.quantityToAdd) - parseInt(currentValue);
-      console.log("RESTAR LA DIFERENCIA", quantityToRemove);
       const productsToRemove = [{
         'id': totalToRemove.id,
         'quantity': quantityToRemove
       }]
       const removedProducts = setSelectedProduct_RemoveProducts(productsToRemove);
-      // console.log("CATSANDSUBCATS", _categoriesandsubcategories);
-      // console.log("selectedprods", _selectedProducts);
       setCategoriesAndSubCategories();
       printAllProductsOnTable();
       printAllSelectedProducts();
@@ -465,7 +457,6 @@ $(document).on('blur', '.addProdInputResume', async function () {
     }
   }
 })
-
 
 async function GetAllProductsByBussiness(empresa_id) {
   return $.ajax({
@@ -551,7 +542,6 @@ async function FillAllAvailableProducts(dates) {
   if (responseUnavailableProducts.success && responseAllProducts.success) {
     allMyProducts = responseAllProducts.data;
     allMyTakenPoducts = responseUnavailableProducts.data;
-    // console.log(allMyProducts);
     if (allMyTakenPoducts.length === 0) {
 
       // listProductArray = allMyProducts
@@ -815,6 +805,7 @@ function setSelectedProduct_AddNewProducts(prodsToAdd) {
       const actualProdStatus = _productos.find((producto) => {
         return producto.id === prodToAdd.id
       })
+
       _selectedProducts.push({
         'id': actualProdStatus.id,
         'categoria': actualProdStatus.categoria,
@@ -825,7 +816,8 @@ function setSelectedProduct_AddNewProducts(prodsToAdd) {
         'disponibles': parseInt(actualProdStatus.disponibles),
         'faltantes': actualProdStatus.faltantes,
         'quantityToAdd': prodToAdd.quantityToAdd
-      })
+      });
+
     } else {
       const actualProdStatus = _productos.find((producto) => {
         return producto.id === prodToAdd.id
@@ -901,6 +893,7 @@ function setCategoriesAndSubCategories() {
   })
 
   _categoriesandsubcategories = catAndSubcats;
+
 }
 
 function printAllProductsOnTable(searchValue,indexTab){
@@ -965,16 +958,19 @@ function printAllSelectedProducts() {
   $('#projectResumeFilter-products').append(`<option value="all">Todos</option>`);
 
   // THIS IS FOR PROJECT RESUME  
+
   _categoriesandsubcategories.forEach((categoria) => {
 
-    $('#projectResumeFilter-products').append(`<option value="${categoria.categoria}">${categoria.categoria}</option>`);
 
-    const tableId = `projectResumeProduct-${categoria.categoria}`;
+    $('#projectResumeFilter-products')
+    .append(`<option value="${categoria.categoria}">${categoria.categoria}</option>`);
+    
+    const tableId = `projectResumeProduct-${categoria.categoria.replaceAll(' ','_')}`;
     const subCategorias = categoria.subcategorias;
 
     $('#ventaEventos').append(
       `<div class="row categorieSubTotal">
-        <p class = "categorieHeaderTitle"  >${categoria.categoria[0].toUpperCase() + categoria.categoria.substring(1)}</p>
+        <p class = "categorieHeaderTitle">${categoria.categoria[0].toUpperCase() + categoria.categoria.substring(1)}</p>
         
         
       </div>
@@ -1064,7 +1060,6 @@ $(document).on('blur', '.product-price', async function (){
     return;
   }
   // FIND PRODUCT ON ARRYA AND SELECT 
-  console.log("_categoriesandsubcategories", _categoriesandsubcategories);
   _categoriesandsubcategories.forEach(categorie => {
     categorie.subcategorias[0].productos.forEach((prod) => {
       if (prod.id === producto_id) {
@@ -1198,8 +1193,6 @@ $(document).on('blur', '.relativeCategorieValue', function () {
 //})
 
 $(document).on('click', '.hide-cu', function () {
-  console.log($(this).closest('table'))
-  console.log("ESTE ES EL; LCIK DEL OJO");
   if ($(this).closest('th').hasClass('tempHidden')) {
     $(this).closest('th').removeClass('tempHidden');
     $(this).closest('table').find('tbody').find('.cuTd').removeClass('tempHidden')
@@ -1283,7 +1276,6 @@ $(document).on('blur', '.totalProdInputResume', function () {
   printAllSelectedProducts();
   setIngresos();
   $(this).val(CLPFormatter(valor));
-  console.log("_selectedProducts", _selectedProducts);
 })
 
 
@@ -1418,7 +1410,6 @@ function printOthersProds(){
   $('#others-table tbody tr').remove();
 
   _selectedOthersProducts.forEach((other) => {
-    console.log("NOMBRE other product",other);
     let tr = `<tr>
       <td><input type="text" class="nameOthers" value="${other.detalle}"></td>
       <td class="cantTd"><input type="text" class="cantidadOthers" value="${other.cantidad}"></td>
@@ -1448,7 +1439,6 @@ function setOtherIfReady() {
       $(element).addClass('notCompletedSubArriendo');
     }
   });
-  console.log("_subRentsToAssign", _selectedOthersProducts);
   setIngresos();
 }
 
