@@ -116,9 +116,9 @@
             </li>
             <!-- < -->
             <!-- php if (in_array("7", $rol_id) || in_array("1", $rol_id) || in_array("2", $rol_id)) : ?> -->
-              <li class="submenu-item">
+              <!-- <li class="submenu-item">
                 <a href="projectPackages.php">Crear paquetes de recursos</a>
-              </li>
+              </li> -->
             <!-- < -->
             <!-- php endif; ?> -->
             <li class="submenu-item">
@@ -267,6 +267,21 @@
             <i class="fa-solid fa-infinity"></i>
             <!-- <i class="bi bi-person-check"></i> -->
             <span>Pruebas 2</span>
+          </a>
+          </li>
+
+          <?php
+
+          if ($active == 'pruebas3') {
+            echo '<li class="sidebar-item active">';
+          } else {
+            echo '<li class="sidebar-item">';
+          }
+          ?>
+          <a href="/test3.php" class="sidebar-link">
+            <i class="fa-solid fa-infinity"></i>
+            <!-- <i class="bi bi-person-check"></i> -->
+            <span>Pruebas 3</span>
           </a>
           </li>
 

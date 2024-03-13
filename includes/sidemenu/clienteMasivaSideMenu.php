@@ -93,6 +93,9 @@
         /* 28px */
         letter-spacing: 0.15px;
     }
+
+
+    
     #excelTable{
         width: 100%;
         max-height: 400px;

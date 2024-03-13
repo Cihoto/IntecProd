@@ -23,6 +23,11 @@ const ACCEPTED_MIME_TYPES = ["application/zip",
     "video/mpeg"];
 let _allmyUploadedFiles = [];
 
+let _tempFiles = [];
+let _temp_file_id = 0;
+
+
+
 $('#createProject').on('click', function () {
     // $('#addDocuments').trigger('click');
 })
@@ -78,7 +83,8 @@ $('#addDocuments').on('click', async function (e) {
     // $('#archivo').val("");
 });
 
-async function saveSelectedFilesInServer(){
+
+async function saveSelectedFilesInServer() {
     // e.preventDefault();
     var formData = new FormData();
     const FILES = $('#archivo')[0].files;
@@ -89,12 +95,12 @@ async function saveSelectedFilesInServer(){
         formData.append('files', FILES[i]);
 
         if (ACCEPTED_MIME_TYPES.includes(FILES[i].type)) {
-            const fileExists = _allmyUploadedFiles.find((file)=>{
+            const fileExists = _allmyUploadedFiles.find((file) => {
                 return file.name === FILES[i].name;
             });
-            if(fileExists){
+            if (fileExists) {
                 const responseReplaceFile = await getReplaceFileResponse(FILES[i]);
-                if(!responseReplaceFile){
+                if (!responseReplaceFile) {
                     continue
                 }
             }
@@ -105,12 +111,12 @@ async function saveSelectedFilesInServer(){
                 contentType: false,
                 processData: false,
                 success: function (response) {
-                    console.log("SERVER FILE UPLOAD RESPONSE",response)
+
                     _allmyUploadedFiles.push({
-                        'name':FILES[i].name,
-                        'size':FILES[i].size,
-                        'type':FILES[i].type
-                    })       
+                        'name': FILES[i].name,
+                        'size': FILES[i].size,
+                        'type': FILES[i].type
+                    })
                 },
                 error: function (xhr, status, error) {
                     alert(xhr.responseText);
@@ -129,18 +135,145 @@ async function saveSelectedFilesInServer(){
     console.log("TERMINE DE GUYARDAR LOS ARCHIBVOS EN EL SERVIDOR")
 }
 
-async function getReplaceFileResponse(file){
- return await Swal.fire({
-    title: `El archivo ${file.name} ya existe en este evento, ¿Deseas reemplazarlo?`,
-    showDenyButton : true,
-    showCancelButton: false,
-    confirmButtonText: "Reemplazar archivo",
-    denyButtonText: `Omitir este archivo`
-    }).then(async(result) => {
-    if (result.isConfirmed) {
-       return true
-    } else if (result.isDenied) {
-        return false
+
+async function saveTempFileOnServer() {
+    
+    var formData = new FormData();
+    const FILES = $('#excel_input')[0].files;
+    for (let i = 0; i < FILES.length; i++) {
+        formData.delete('files');
+        formData.append('files', FILES[i]);
+
+        if (ACCEPTED_MIME_TYPES.includes(FILES[i].type)) {
+            if (_uploadedFiles.length > 0) {
+
+                const FILE_IS_ASSIGNED = _uploadedFiles.find((file) => {
+                    return file.name === FILES[i].name;
+                });
+
+                if (FILE_IS_ASSIGNED) {
+                    const responseReplaceFile = await getReplaceFileResponse(FILES[i]);
+                    if (!responseReplaceFile) {
+                        continue;
+                    }
+                    await $.ajax({
+                        url: "ws/BussinessDocuments/files.php",
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+
+                        }
+                    })
+
+                    await $.ajax({
+                        url: "ws/BussinessDocuments/replaceUploadedFile.php",
+                        type: 'POST',
+                        data: JSON.stringify({
+                            "file_name": FILE_IS_ASSIGNED.name,
+                            "empresa_id": EMPRESA_ID,
+                            "event_id": FILE_IS_ASSIGNED.event_id,
+                        }),
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+
+                        }
+                    });
+                    continue;
+                }
+            }
+
+            const fileExists = _tempFiles.find((file) => {
+                return file.name === FILES[i].name;
+            });
+
+            if (fileExists) {
+                const responseReplaceFile = await getReplaceFileResponse(FILES[i]);
+                if (!responseReplaceFile) {
+                    continue
+                }
+                await $.ajax({
+                    url: "ws/BussinessDocuments/files.php",
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+
+                        _tempFiles.push({
+                            'name': FILES[i].name,
+                            'size': FILES[i].size,
+                            'type': FILES[i].type,
+                            'temp_file_id': _tempFiles.length + 1
+                        });
+
+                        let newDroppedFileRowData = {
+                            'name': FILES[i].name,
+                            'temp_file_id': _tempFiles.length
+                        }
+
+                        // printDroppedFiles(newDroppedFileRowData);
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr.responseText);
+                    }
+                });
+
+                continue;
+            } else {
+                await $.ajax({
+                    url: "ws/BussinessDocuments/files.php",
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+
+                        _tempFiles.push({
+                            'name': FILES[i].name,
+                            'size': FILES[i].size,
+                            'type': FILES[i].type,
+                            'temp_file_id': _tempFiles.length + 1
+                        });
+
+                        let newDroppedFileRowData = {
+                            'name': FILES[i].name,
+                            'temp_file_id': _tempFiles.length
+                        }
+
+                        printDroppedFiles(newDroppedFileRowData);
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr.responseText);
+                    }
+                });
+
+                continue;
+            }
+        } else {
+            Toastify({
+                text: `El archivo ${FILES[i].name} no es admitido por el sistema, su extensión está restringida`,
+                duration: 4000
+            }).showToast();
+        }
     }
+    $('#excel_input').val("");
+}
+
+async function getReplaceFileResponse(file) {
+    return await Swal.fire({
+        title: `El archivo ${file.name} ya existe en este evento, ¿Deseas reemplazarlo?`,
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Reemplazar archivo",
+        denyButtonText: `Omitir este archivo`
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            return true
+        } else if (result.isDenied) {
+            return false
+        }
     });
 }

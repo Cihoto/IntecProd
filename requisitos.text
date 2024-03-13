@@ -194,33 +194,75 @@ ELIMINAR O QUITAR ADJUNTOS;
 
 POR DEFECTO A;ADIR UNA FILA PARA OTROS EN VENTA;
 
-
 padding tablas tr tobdy 3px;
 LISTA DE EVENTOS;
 LISTA DE VEHICULOS;
 LISTA DE PERSONAL;
 LISTA DE INVENTARIO;
 
-FICHA TECNICA NOMINA 
+FICHA TECNICA NOMINA
 
-
-
-
-
-
-PROBLEMAS ENCONTRADOS
+PROBLEMAS ENCONTRADOS:
 
 1.-REVISAR POR QUE LOS PRODUCTOS DE LA EMPRESA 2 NO SE VISUALIZAN A LA HORA DE MOSTRARLOS EN LA LISTA DE LA VENTA
 REVISAR CARGA MASIVA DE PRODUCTOS EN CASO DE NO TENER RESPUESTA
-
 2.-SECCION INVENTARIO AL HACER MODIFICACIONES EN UN PRODUCTO, 
 NO SE RECARGA LA PAGINA Y LA MARCA A PENSAR DE QUE LA EXIJA NO LA GUARDA
-
 3.-ACTUALIZAR TABLA EN VEHICULO DASH Y MOVER BOTON DE FORMULARIOS
-
 4.-LEVANTAR ALERTA DE INVENTARIO Y NO DE ARCHIVO
 
-5.-
+
+Te dejo algunos comentarios para hacer:
+
+- Cambiar a color rojo el basurero de eliminar evento =======>>> DONE;
+
+- Que las fechas se vean en una sola linea  =====> REVISAR CSS DE LA TABLA DE EVENT LIST
+
+- Eliminar "ojitos" de ventana venta, y agregar las opciones que vimos a la cotización. ===> FALTA AGREGAR FUNCIONES DE PDF;
+
+- Ventana inventario muestre equipos que se agregaron al evento. ==> FALTA SABER FORMATO DE AGREGADO
+
+- Que no se muestren los paquetes de momento=>LISTO
+
+- No se están borrando eventos al eliminarlos.=>LISTO
+
+- Borrar los archivos adjuntos de un evento=>LISTO
+
+- Que el listado de eventos por defecto muestre 100 eventos.=>LISTO
+
+- Mostrar eventos filtrados desde "HOY" en adelante, filtrado por fecha desde el hoy hasta el más futuro=>LISTO
+
+- Arreglar tabla vehículos que está muy gruesa =====>LISTO
+
+- Arregla tabla clientes está muy gruesa =====>LISTO==>>cambiar thead tr padding 10px vertical
+
+- En owner poner un circulito con la foto del usuario o sus iniciales en el caso de no tener foto subida.
+Así ahorramos espacio en la tabla. =====>LISTO
+
+- Boton crear vehículo en pestaña vehículos de crear evento. =====> PENDIENTE 
+
+- Todavía hay que agregar fila en pestaña "Venta" para ingresar un item. 
+Debería mostrarse por defecto el espacio para escribir ===> REVISAR CUALES APARTADOS DEBEN TENER UNA FILA POR DEFECTO
 
 
 
+
+
+
+todo :
+
+
+PROCESO AUTOMATICO APRA FINALIZAR EVENTOS DESPUESD E SU FECHA DE TERMINO
+
+
+en adm desde hoy hacia atras el filtro de fechas enm lista de eventos
+
+
+padding 10 px parta thead tr all tables
+
+comentar rendiciones
+
+datos en resumen no se cargan 
+
+
+rsumen nombre y especialidad ne resumen 

@@ -25,6 +25,10 @@ require_once('./includes/head.php');
 ?>
 
 <body>
+    <div id='file-frame-top-menu' class="">
+
+
+    </div>
     <?php require_once('./includes/Constantes/empresaId.php') ?>
     <?php require_once('./includes/Constantes/rol.php') ?>
 
@@ -116,7 +120,7 @@ require_once('./includes/head.php');
 
 
 
-<?php require_once('./includes/sidemenu/clientSideMenu.php')?>
+    <?php require_once('./includes/sidemenu/clientSideMenu.php') ?>
 
     <div style="display: none;" id="downloadPdf">
     </div>
@@ -175,6 +179,7 @@ require_once('./includes/head.php');
     <script src="/js/bottomBar.js"></script>
     <script src="/js/factSheet.js"></script>
     <script src="/js/evento/viewUploadedFiles.js"></script>
+    <script src="/js/evento/eventComments.js"></script>
 
 
     <!-- VALIDATE FORM -->
@@ -183,14 +188,15 @@ require_once('./includes/head.php');
     <script src="./js/validateForm/clientForm.js"></script>
 
     <!-- SIDEMENUS -->
-    <?php require_once('./includes/sidemenu/viewUploadedFiles.php')?>
+    <?php require_once('./includes/sidemenu/viewUploadedFiles.php') ?>
+    <?php require_once('./includes/sidemenu/eventComments.php') ?>
 
 </body>
 
 
 <script>
     caches.keys().then((keyList) => Promise.all(keyList.map((key) => caches.delete(key))));
-    
+
     let isProdQuantitySelected = false;
     let prodQuantityElementSelected = "";
     let is_open = false;
@@ -198,10 +204,52 @@ require_once('./includes/head.php');
     let EMPRESA_ID = <?php echo $empresaId; ?>;
     const PERSONAL_IDS = <?php echo $personal_ids; ?>;
 
+    console.log(PERSONAL_IDS)
+    console.log(PERSONAL_IDS)
+    console.log(PERSONAL_IDS)
+    console.log(PERSONAL_IDS)
+    console.log(PERSONAL_IDS)
+    console.log(PERSONAL_IDS)
+    console.log(PERSONAL_IDS)
+    console.log(PERSONAL_IDS)
+    console.log(PERSONAL_IDS)
+    let eventIsCreated = false;
+
     $('#closeThis').on("click", function() {
         $("#clientSideMenu").removeClass("active");
-        resetClientForm(); 
+        resetClientForm();
     })
+
+    // Obtener el elemento de input file y el elemento de visualización del nombre del archivo
+    const fileInput = document.getElementById('excel_input');
+    const fileNameDisplay = document.getElementById('fileName');
+    const fileLabel = document.getElementById('fileLabel');
+
+    window.addEventListener('DOMContentLoaded', function() {
+        fileInput.addEventListener('change', function(event){
+            const fileName = fileInput.files[0].name;
+            const path = fileInput.files[0];
+            let tmppath = this.value
+            saveTempFileOnServer();
+        });
+    });
+
+    function handleDragOver(event) {
+        event.preventDefault();
+        fileLabel.classList.add('dragover');
+    }
+    // Manejar el evento de soltar archivos en el label
+    function handleDrop(event) {
+        event.preventDefault();
+        fileLabel.classList.remove('dragover');
+
+        const files = event.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            const fileName = files[0].name;
+            fileNameDisplay.textContent = `Archivo seleccionado: ${fileName}`;
+        }
+    }
 
     $(document).ready(async function() {
 
@@ -216,6 +264,7 @@ require_once('./includes/head.php');
             const EVENT_ID = <?= $_GET['event_id']; ?>;
             event_data.event_id = EVENT_ID;
             projectDates.project_id = EVENT_ID;
+            eventIsCreated = true;
 
         <?php endif; ?>
 
@@ -223,11 +272,11 @@ require_once('./includes/head.php');
         // TO SHOW PERSONAL, VEHICLES AND PERSONAL ON LIVE AVAILABILITY 
         // ON TABLES
 
-        $('#openViewUploadedFiles').on('click',function(){
+        $('#openViewUploadedFiles').on('click', function() {
             openViewUploadedFileDieMenu();
         });
 
-        $('#closeViewUploadedFiles').on('click',function(){
+        $('#closeViewUploadedFiles').on('click', function() {
             closeViewUploadedFileDieMenu();
         });
 
@@ -276,22 +325,53 @@ require_once('./includes/head.php');
         });
 
 
-        console.log('_uploadesFiles',_uploadesFiles)
+        console.log('_uploadedFiles', _uploadedFiles)
+
+        printUploadedFiles();
     })
 
     $('.event-status-btn').on('click', function() {
-            const BUTTON_CLASS = $(this).attr('class').split(" ")[1];
-            const ACTUAL_CLASS = $('#status-button').attr('class').split(" ")[1];
-            const STATUS_ID = $(this).attr('status_id');
-            $('#status-button').removeClass(ACTUAL_CLASS);
-            $('#status-button').addClass(BUTTON_CLASS);
-            $('#status-button').find('p').text(BUTTON_CLASS);
-            $('#status-button').attr('status_id', STATUS_ID);
-            console.log($('#status-button').attr('status_id'));
-        });
+        const BUTTON_CLASS = $(this).attr('class').split(" ")[1];
+        const ACTUAL_CLASS = $('#status-button').attr('class').split(" ")[1];
+        const STATUS_ID = $(this).attr('status_id');
+        $('#status-button').removeClass(ACTUAL_CLASS);
+        $('#status-button').addClass(BUTTON_CLASS);
+        $('#status-button').find('p').text(BUTTON_CLASS);
+        $('#status-button').attr('status_id', STATUS_ID);
+        console.log($('#status-button').attr('status_id'));
+    });
+
+    $('#postComment').on('click',async function(){
+
+        // a;; variables are declared in evnets/comments
+        const COMMENT_TEXT = $('#postCommentArea').val();
+
+
+        if(COMMENT_TEXT === ''){
+            return
+        }
+        
+        _tempCommentIdCounter ++;
+
+        let commentData =         
+            {
+                temp_comment_id: _tempCommentIdCounter,
+                post_user_id: PERSONAL_IDS[0].usuario_id,
+                user_name: PERSONAL_IDS[0].user_name,
+                comment_text: COMMENT_TEXT,
+                files:[],
+                replies:[]
+            }
+        $('.--comments-container').append(createComment(commentData));
+
+        if(eventIsCreated){
+            addAndAssignCommentsToCreatedEvent([commentData], EMPRESA_ID, event_data.event_id);
+            return 
+        }
+        _tempCommentList.push(commentData);
+    })      
 
     $(document).keydown(function(event) {
-        console.log('asdasd')
         if (event.which === 13) {
             // console.log("isProdQuantitySelected",isProdQuantitySelected);
             // console.log("prodQuantityElementSelected",prodQuantityElementSelected);
@@ -301,6 +381,9 @@ require_once('./includes/head.php');
             }
         }
     });
+
+
+
 </script>
 
 </html>

@@ -1,3 +1,6 @@
+
+
+
 async function getAllProjectData(event_id, empresa_id) {
     const projectRequest = {
         'idProject': event_id,
@@ -22,6 +25,8 @@ async function getAllProjectData(event_id, empresa_id) {
     if (responseGetData.fatalError) {
         window.location.href = "/index.php";
     }
+
+    console.log('EVENT DATA',responseGetData);
 
 
 
@@ -81,23 +86,65 @@ async function getAllProjectData(event_id, empresa_id) {
         $(button)[0].click();
     });
 
+    console.log('responseGetData.asignados.comments',responseGetData.asignados.comments)
+    console.log('responseGetData.asignados.comment_replies',responseGetData.asignados.comment_replies)
+
+
+
+    _assignedComments = responseGetData.asignados.comments;
+    _assignedCommentsReplies = responseGetData.asignados.comment_replies.map((reply)=>{
+        return {
+            'comment_id' : reply.comment_id,
+            'reply_id' : reply.reply_id,
+            'post_user_id' : reply.post_user_id,
+            'reply_text' : reply.text,
+            'user_name' : reply.user_name ,
+            'post_date': reply.post_date
+        }
+    });
+
+    responseGetData.asignados.comments.forEach((comment)=>{
+        // createComment(comment.text);
+        $('.--comments-container').append(createAssignedComment(comment))
+
+    });
+
+    $('.--comment-wrapper').each((index,element)=>{
+
+        let comment_id = $(element).find('.assignedComment').attr('comment_id');
+        
+        const COMMENT_REPLIES = _assignedCommentsReplies.filter((replyData)=>{
+            return replyData.comment_id == comment_id
+        });
+
+        if(COMMENT_REPLIES){
+
+            COMMENT_REPLIES.forEach((reply)=>{
+
+                $(element).find('.--comment-reply-wrapper').append(createAssiReply(reply));
+            })
+        }
+
+    })
+
     if(responseGetData.asignados.schedules.length > 0){
+        
         $('#schedule-container .schedule-item').remove();
         responseGetData.asignados.schedules.forEach((schedule)=>{
             let scheduleContainer = `<div class="schedule-item" schedule_id="${schedule_id}">
                 <div class="schedule-data">
-                    <img src="../assets/svg/editPencil.svg" alt="">
+                    <img class="delete-schedule" src="../assets/svg/trashCan-red.svg" alt="">
                     <input type="text" class="detail" placeholder="desc" value="${schedule.schedule_detail}">
                     <input type="time" class="hour" name="appt" value="${schedule.schedule_hour}"/>
                 </div>
             </div>`;
             $('#schedule-container').append(scheduleContainer);
-            schedule_id ++;
             _all_my_selected_schedules.push({
                 'schedule_id' : schedule_id,
                 'schedule_detail' : schedule.schedule_detail,
                 'schedule_hour' : schedule.schedule_hour
             });
+            schedule_id ++;
         })
     }
 
@@ -230,9 +277,9 @@ async function getAllProjectData(event_id, empresa_id) {
                 'valor': subRent.valor
             })
         });
-        printNewRow_subRent();
         setEgresos();
     } else { }
+    printNewRow_subRent();
 
     responseGetData.dataProject.forEach(data => {
         if (data.fecha_inicio === "" || data.fecha_inicio === undefined || data.fecha_inicio === null) {
@@ -250,8 +297,7 @@ async function getAllProjectData(event_id, empresa_id) {
 
     if(responseGetData.asignados.files.length > 0){
         // FILL VARIABLE FROM evento/viewUploadesFiles.js
-        _uploadesFiles = responseGetData.asignados.files; 
-
+        _uploadedFiles = responseGetData.asignados.files;
         
         responseGetData.asignados.files.forEach((file)=>{
             // console.log(`../ws/BussinessDocuments/documents/buss${EMPRESA_ID}/Ev${event_data.event_id}/bsd${file.name}`)
@@ -260,12 +306,6 @@ async function getAllProjectData(event_id, empresa_id) {
                 <a href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/Ev${event_data.event_id}/bsd${file.name}" download>${file.name}</a>
             </div>`
             $('#fileListContainer').append(fileContainer);
-            
-            
-            // let iFrame = `<iframe src='./ws/BussinessDocuments/documents/buss1/Ev61/Estado de cuenta_1709071812088.pdf'></iframe>`;
-            // let iFrame2 = `<iframe src='./ws/BussinessDocuments/documents/buss1/Ev61/Educación y Formación – Cultura Cerrillos - Opera 2024-02-19 13-30-54.mp4' frameborder="0"></iframe>`;
-            // $('#fileListContainer').append(iFrame);
-            // $('#fileListContainer').append(iFrame2);
         });
         printOthersProds();;
         setIngresos();

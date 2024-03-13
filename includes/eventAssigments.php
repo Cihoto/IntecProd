@@ -105,7 +105,7 @@
                             <div class="schedulesContainer hiddenScroll" id="schedule-container">
                                 <div class="schedule-item" schedule_id="1" >
                                     <div class="schedule-data">
-                                        <img src="../assets/svg/editPencil.svg" alt="">
+                                    <img class="delete-schedule" src="../assets/svg/trashCan-red.svg" alt="">
                                         <input type="text" class="detail" placeholder="desc">
                                         <input type="time" class="hour" name="appt"/>
                                     </div>
@@ -123,37 +123,37 @@
                         </div>
                     </div>
 
+
+                    
+                    
+                    <!-- <img src="../assets/svg/fileExtensions/Adobe PDF.svg" alt="">
+                    <img src="../assets/svg/fileExtensions/Microsoft-Excel.svg" alt="">
+                    <img src="../assets/svg/fileExtensions/Microsoft-Word.svg" alt=""> -->
+
+
+
+                    
                     <!-- <div class="form-floating mt-3">
                         <textarea class="form-control" style="min-height: 150px;" placeholder="" id="commentProjectArea" name="txtAreaComments"></textarea>
                         <label for="commentProjectArea">Comentarios</label>
                     </div> -->
 
                     <div class="form-group">
-                        <label for="commentProjectArea">Comentarios</label>
+                        <label for="commentProjectArea">Descripción del evento</label>
                         <textarea class="form-control" id="commentProjectArea" name="txtAreaComments" rows="5" cols="5"></textarea>
                     </div>
-                    <!-- <button type="button" class="s-Button" id="openViewUploadedFiles" style="width: 170px;">
-                        <p class="s-P">ver archivos  cargados</p>
-                    </button> -->
+
+                    <div class='row' style="gap: 16px;">
+                        <button type="button" class="s-Button" id="openEventComments" style="width: 240px;">
+                            <p class="s-P">Comentarios</p>
+                        </button>
+                        <button type="button" class="s-Button" id="openViewUploadedFiles" style="width: 240px;">
+                            <p class="s-P">Archivos</p>
+                        </button>
+                    </div>
                     <!-- <form id="addFilesToEvent" enctype="multipart/form-data" action="#" method="post"> -->
     
-                    <div class="row justify-content-between">
-                        <div class="d-flex col-5" style="flex-direction: column;margin-top: 10px;">
-                            <p class="date-header" style="margin: 0px!important;">Cargar archivos</p>
-                            <input type="file" name="archivo[]" id="archivo" class="file-uploader" multiple style="border: 1px dashed var(--black-grey-100, #BEC0CA)!important;">
-                        </div>
-                        <div id="fileListContainer"  class="col-6 ">
-                            <!-- <div class="file-container">
-                                <i class="fa-regular fa-file"></i>
-                            </div>
-                            <div class="file-container">
-                                <i class="fa-regular fa-file"></i>
-                                <a href="../ws/BussinessDocuments/documents/buss1/Ev61/bsdComprobantePago (9).pdf" download>bsdComprobantePago (9).pdf</a>
-                            </div> -->
-                        </div>
-
-
-                    </div>
+                  
 
                     <!-- <input type="submit" style="display: none;" value="addDocuments" id="addDocuments"> -->
                     </form> 

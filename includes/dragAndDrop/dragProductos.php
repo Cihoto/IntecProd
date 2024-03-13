@@ -1,7 +1,7 @@
 <div class="dragableItems">
     <div class="row">
         <div class="notSelectedProd moveProd" id="selectableProducts">
-            <div class="row" style="min-height: 150px; max-height: 150px; overflow: scroll;width: 100%; margin: 20px 0px;overflow-x: hidden;">
+            <!-- <div class="row" style="min-height: 150px; max-height: 150px; overflow: scroll;width: 100%; margin: 20px 0px;overflow-x: hidden;">
                 <table id="standardPackagesList">
                     <thead>
                         <th>Nombre</th>
@@ -11,7 +11,7 @@
 
                     </tbody>
                 </table>
-            </div>
+            </div> -->
             <div id="itemList">
                 <table id="tableProducts">
                     <thead>

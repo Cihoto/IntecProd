@@ -32,8 +32,7 @@ $('#inputProjectName').on('click', function () {
 })
 
 async function SaveOrUpdateEvent() {
-
-
+  
   clearBottomBar();
   initBottomBar();
   $('#footerInformation').addClass('active');
@@ -81,6 +80,14 @@ async function SaveOrUpdateEvent() {
     const RESPONSE_UPDATE_EVENT = await updateEvent(requestProject, event_data.event_id, EMPRESA_ID);
   }
 
+  if(_tempCommentList.length > 0){
+    const COMMENT_RESPONSE = await addAndAssignCommentsToEvent(_tempCommentList, EMPRESA_ID, event_data.event_id);
+
+    if(COMMENT_RESPONSE.error){
+      console.log('fallo la carga de los comentarios');
+    }
+  }
+
   // CREATE AND ASSIGN EVENT ADDRESS 
   if ($('#dirInput').val() !== "") {
     const REQUEST_ASSIGN_ADDRESS = {
@@ -102,8 +109,8 @@ async function SaveOrUpdateEvent() {
   }
 
   //CREATE AND ASSIGN DOCUMENTS TO EVENT
-  await saveSelectedFilesInServer();
-  await assignFilesToEvent(_allmyUploadedFiles, event_data.event_id, EMPRESA_ID, PERSONAL_IDS);
+  // await saveSelectedFilesInServer();
+  await assignFilesToEvent(_tempFiles, event_data.event_id, EMPRESA_ID, PERSONAL_IDS);
 
 
   // SAVE ALL SELECTED PRODUCTS
@@ -272,6 +279,26 @@ async function insertAddressAndAssignToProject(address, empresa_id, event_id) {
     error: function (response) {
       console.log("ERROR insertAddressAndAssignToProject",error.responseText);
       console.log(error.responseText);
+    }
+  });
+}
+
+async function addAndAssignCommentsToEvent(tempCommentsData, empresa_id, event_id){
+  return $.ajax({
+    type: "POST",
+    url: 'ws/comments/comments.php',
+    data: JSON.stringify({
+      'action': 'addAndAssignCommentsToEvent',
+      'empresa_id': empresa_id,
+      'event_id': event_id,
+      'temp_comments': tempCommentsData
+    }),
+    dataType: 'json',
+    success: function (response) {
+      console.log('REPONSE COMENTARIOS',response)
+    },
+    error: function (error) {
+      console.log("ERROR addAndAssignCommentsToEvent",error.responseText);
     }
   });
 }

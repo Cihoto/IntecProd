@@ -5,6 +5,7 @@
 /vendor
 *inserttest.sql
 *test2.php
+*test3.php
 # the fuelphp document
 # you may install these packages with `oil package`.
 # http://fuelphp.com/docs/packages/oil/package.html

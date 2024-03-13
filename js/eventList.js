@@ -30,10 +30,15 @@ async function printAllProjects(_projectList) {
     // const table = $('#allProjectTable-list').DataTable();
 
     if ($.fn.DataTable.isDataTable('#allProjectTable-list')) {
+
+        $('#allProjectTable-list tbody tr').remove();
         $('#allProjectTable-list').DataTable()
             .clear()
             .draw();
-        $('#allProjectTable-list').DataTable().destroy();
+
+        $('#allProjectTable-list')
+            .DataTable()
+            .destroy();
     }
 
 
@@ -42,6 +47,30 @@ async function printAllProjects(_projectList) {
         let phf = "";
         let php = "";
         let phv = "";
+        let ehc = "";
+
+        console.log('evento',evento)
+        console.log('evento',evento.owner)
+
+        let eventOwner = "";
+        if(evento.owner !== null){
+
+            let eventOwnerArray = evento.owner.split(' ');
+            console.log(eventOwnerArray)
+            console.log(eventOwnerArray)
+            console.log(eventOwnerArray)
+            console.log(eventOwnerArray)
+
+            if(eventOwnerArray.length > 1){
+                eventOwner = `${eventOwnerArray[0][0].toUpperCase()}${eventOwnerArray[1][0].toUpperCase()}`
+            }else{
+                eventOwner = `${eventOwnerArray[0][0].toUpperCase()}`
+            }
+        }
+
+
+
+        "Jose Miguel"
 
         if (evento.phf == null) {
             phf = `<img src="./assets/svg/ArchiveNoActive.svg" alt="">`;
@@ -57,6 +86,12 @@ async function printAllProjects(_projectList) {
             phv = `<img src="./assets/svg/VehicleNoActive.svg" alt="">`;
         } else {
             phv = `<img src="./assets/svg/VehicleActive.svg" alt="">`
+        }
+
+        if(evento.event_has_comment == null){
+            ehc = `<img src="./assets/svg/paperclip.svg" alt="">`
+        }else{
+            ehc = `<img src="./assets/svg/paperclip-active.svg" alt="">`
         }
 
         if (evento.estado == null) {
@@ -101,22 +136,24 @@ async function printAllProjects(_projectList) {
         let tr = `<tr evento_id="${evento.id}" class="eventListRow">
             <td>
                 <div class="-eve-list-inf-ctn">
-                    <p class="event-name"> ${evento.nombre_proyecto} </p>
+                    <p class="event-cell-hide-text"> ${evento.nombre_proyecto} </p>
+                    <div class="--ev-assigments-container">
+
                     <button class="commentContainer">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                             <path d="M15.75 8.62502C15.7526 9.61492 15.5213 10.5914 15.075 11.475C14.5458 12.5338 13.7323 13.4244 12.7256 14.047C11.7189 14.6696 10.5587 14.9996 9.375 15C8.3851 15.0026 7.40859 14.7713 6.525 14.325L2.25 15.75L3.675 11.475C3.2287 10.5914 2.99742 9.61492 3 8.62502C3.00046 7.44134 3.33046 6.28116 3.95304 5.27443C4.57562 4.26771 5.46619 3.4542 6.525 2.92502C7.40859 2.47872 8.3851 2.24744 9.375 2.25002H9.75C11.3133 2.33627 12.7898 2.99609 13.8969 4.10317C15.0039 5.21024 15.6638 6.68676 15.75 8.25002V8.62502Z" stroke="#069B99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
+                    <button class="buttonEventList">
+                        ${ehc}
+                    </button>
+                    </div>
                 </div>
             </td>
+            <td data-order="${timeStamp}"><p style="text-align:center;">${getEventListDate(evento.fecha_inicio, evento.fecha_termino)}</p> </td>
             <td> <p class="event-status ${evento.estado}">${evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p> </td>
-            <td data-order="${timeStamp}"> <p>${getEventListDate(evento.fecha_inicio, evento.fecha_termino)}</p> </td>
-            <td> <p class="event-client-name">${nombreCliente}</p> </td>
-            <td> <p class="event-name">${evento.event_type === null ? "" : evento.event_type}</p> </td>
-            <td> <p>${CLPFormatter(evento.income)}</p> </td>
-            <td> <p class="event-name" >${evento.owner === null ? "" : evento.owner}</p> </td>
+            <td class="ownerCircleContainer"> <div class="ownerCircle"> <p>${eventOwner}</p> </div> </td>
             <td>
-
                 <div class="-eve-list-inf-ctn">
                     <button class="buttonEventList">
                         ${phf}
@@ -129,41 +166,59 @@ async function printAllProjects(_projectList) {
                     </button>
                 </div>
             </td>
-            <td style="display:flex;justify-content:space-between;">            
-                <button class="buttonEventList">
-                    <img src="./assets/svg/dollar-sign-inactive.svg" alt="">
-                </button>
-                <button class="buttonEventList">
-                    <img src="./assets/svg/paperclip.svg" alt="">
-                </button>
-            </td> 
+           
+            <td><p class="">$10.000.000</p> </td>
+            <td> <p class="event-client-name">${nombreCliente}</p> </td>
+            <td> <p >${evento.event_type === null ? "" : evento.event_type}</p> </td>
+         
             <td class="deleteEv-container">
-                <img src="./assets/svg/trashCan.svg" alt="">
+                <img src="./assets/svg/trashCan-red.svg" alt="">
             </td>
         </tr>`
 
         $('#allProjectTable-list tbody').append(tr);
         // tableEventList.row.add($(tr)).draw();
     });
-
-
-
     if (!$.fn.DataTable.isDataTable('#allProjectTable-list')) {
+
+        console.log('1233333333333333333333');
+
         tableEventList = $('#allProjectTable-list').DataTable({
             sort: true,
-            responsive: true
-            // columnDefs: [
-            //     {width: '10%', targets: [0]},
-            //     {width: '10%', targets: [1]},
-            //     {width: '10%', targets: [2]},
-            //     {width: '10%', targets: [3]},
-            //     {width: '10%', targets: [4]},
-            //     {width: '10%', targets: [5]},
-            //     {width: '10%', targets: [6]},
-            //     {width: '10%', targets: [7]},
-            //     {width: '10%', targets: [8]},
-            //     {width: '10%', targets: [9]}
-            // ]
+            responsive: true,
+            pageLength: 100,
+            order: [1,'asc'],
+            columnDefs: [
+                {width: '20%', targets: [0]},
+                {width: '10%', targets: [1]},
+                {width: '10%', targets: [2]},
+                {width: '6%', targets: [3]},
+                {width: '10%', targets: [4]},
+                {width: '5%', targets: [5]},
+                {width: '4%', targets: [6]},
+                {width: '8%', targets: [7]},
+                // {width: '8%', targets: [8]},
+                {width: '1%', targets: [8]}
+            ],language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Eventos",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+                }
+            }
         });
 
     }
@@ -201,8 +256,16 @@ async function printAllProjects(_projectList) {
     // $("#allProjectTable-list_length select option[value=25]").attr('selected','selected');
 
 }
+{/* <td> <p class="event-name" >${evento.owner === null ? "" : evento.owner}</p> </td> */}
+ // <td style="width: 15%;">  <p class="event-cell-hide-text">${CLPFormatter(evento.income)}000000</p> </td>
 
 
+//  <td style="display:flex;justify-content:space-between;">            
+//  <button class="buttonEventList">
+//      <img src="./assets/svg/dollar-sign-inactive.svg" alt="">
+//  </button>
+
+// </td> 
 
 function subDayToDate(date, daysToSub) {
 
@@ -217,6 +280,9 @@ function getEventListDate(initDate, finishDate) {
 
 
     if (initDate === '' || initDate === null) {
+        return '';
+    }
+    if (initDate === '0000-00-00' || initDate === '0000-00-00') {
         return '';
     }
     const EVENT_DATE_INIT = new Date(initDate);
@@ -293,7 +359,7 @@ function getEventListDate(initDate, finishDate) {
 
 // });
 
-
+let deletedEvents = [];
 async function getDeletedEvents(empresa_id) {
     $.ajax({
         type: "POST",
@@ -305,7 +371,7 @@ async function getDeletedEvents(empresa_id) {
         }),
         success: function (response) {
             console.log(response)
-
+            deletedEvents = response;
             // console.log(_projectsToList)
             printDeletedEvents(response);
         }
@@ -327,10 +393,16 @@ async function printDeletedEvents(_DeletedprojectList) {
 
 
     _DeletedprojectList.forEach((evento) => {
+
         let color = "";
+
         let phf = "";
+
         let php = "";
+
         let phv = "";
+
+        let ehc = "";
 
         if (evento.phf == null) {
             phf = `<img src="./assets/svg/ArchiveNoActive.svg" alt="">`;
@@ -346,6 +418,12 @@ async function printDeletedEvents(_DeletedprojectList) {
             phv = `<img src="./assets/svg/VehicleNoActive.svg" alt="">`;
         } else {
             phv = `<img src="./assets/svg/VehicleActive.svg" alt="">`
+        }
+
+        if(evento.event_has_comments == null){
+            ehc = `<img src="./assets/svg/paperclip.svg" alt="">`
+        }else{
+            ehc = `<img src="./assets/svg/paperclip-active.svg" alt="">`
         }
 
         if (evento.estado == null) {
@@ -416,7 +494,7 @@ async function printDeletedEvents(_DeletedprojectList) {
                     <img src="./assets/svg/dollar-sign-inactive.svg" alt="">
                 </button>
                 <button class="buttonEventList">
-                    <img src="./assets/svg/paperclip.svg" alt="">
+                    ${ehc}
                 </button>
             </td> 
         </tr>`

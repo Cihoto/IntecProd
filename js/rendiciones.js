@@ -26,9 +26,7 @@ if ($(element).find('.rendDetalle').val() !== "" &&
     $(element).find('.renFecha').val() !== "" &&
     $(element).find('.renComercio').val() !== "") 
 {
-
-
-
+    
     $(element).removeClass("incomplete");
     allRendiciones.push({
         'temp_id':rendicion_temp_id,
