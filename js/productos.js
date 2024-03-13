@@ -152,12 +152,16 @@ function AddProduct(el) {
     let quantityToAdd = $(el).closest("td").find('.quantityToAdd').val();
 
 
-    const productExist = _productos.find((producto) => {
+    const PROD_EXIST = _productos.find((producto) => {
       if (producto.id === product_id) {
         return producto
       }
-    })
-    if (!productExist) {
+    });
+
+
+    console.log('PROD_EXIST',PROD_EXIST);
+    console.log('_productos',_productos);
+    if (!PROD_EXIST) {
       Swal.fire(
         'Lo sentimos!',
         'Ha ocurrido un error, intente nuevamente',
@@ -203,7 +207,7 @@ function AddProduct(el) {
 
     if (addProd) {
       Toastify({
-        text: `Se han agregado ${quantityToAdd} ${productExist.nombre}`,
+        text: `Se han agregado ${quantityToAdd} ${PROD_EXIST.nombre}`,
         duration: 2000,
         close: true
       }).showToast();

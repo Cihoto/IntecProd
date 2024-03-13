@@ -167,7 +167,7 @@ async function printAllProjects(_projectList) {
                 </div>
             </td>
            
-            <td><p class="">$10.000.000</p> </td>
+            <td><p class="">${CLPFormatter(evento.income)}</p> </td>
             <td> <p class="event-client-name">${nombreCliente}</p> </td>
             <td> <p >${evento.event_type === null ? "" : evento.event_type}</p> </td>
          
