@@ -10,6 +10,8 @@ async function getCalendarEvents(){
           url: `https://intecsoftware.tech/miEvento.php?event_id=${event.id}`
       }
   });
+
+  console.log(_allCalendarEvents);
   
 }
 

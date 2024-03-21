@@ -166,6 +166,7 @@ $('#clienteSelect').on('change', function () {
         // console.log(response.cliente);
         
         console.log("AJAX",_selectedClient);
+        console.log("AJAX response",response);
   
         response.cliente.forEach(cli => {
           $('#idClienteModalResume').text(cli.id);
@@ -178,7 +179,7 @@ $('#clienteSelect').on('change', function () {
         })
   
         setSelectedClient(response.cliente[0]);
-  
+        $('#clienteProjectResume').text(response.cliente[0].nombre_fantasia)
   
       }
     })

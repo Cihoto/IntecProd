@@ -3,9 +3,8 @@
 function FillProductos(empresaId) {
   if ($.fn.DataTable.isDataTable('#tableProducts')) {
     $('#tableProducts').DataTable().destroy();
-    $('#tableDrop > tr').each((key, element) => {
-      $(element).remove();
-    })
+    $('#tableProducts tbody tr').remove();
+
   }
   $.ajax({
     type: "POST",
@@ -25,7 +24,7 @@ function FillProductos(empresaId) {
               <td class="productPrice"> ${producto.precio_arriendo} </td>
               <td class="productStock" >${producto.cantidad}</td>
               <td><input style="margin-right:8px" class="addProdInput quantityToAdd" id="" type="number" min="1" max="${producto.cantidad}"/><i class="fa-solid fa-plus addItem" onclick="AddProduct(this)"></i></td>`
-        $('#tableDrop').append(`<tr id="${producto.id}">${td}</tr>`)
+        $('#tableProducts tbody').append(`<tr id="${producto.id}">${td}</tr>`)
       });
 
       $('#tableProducts').DataTable({
@@ -94,7 +93,6 @@ function removeProduct(idProduct) {
 }
 
 function RemoveProductFromResume(id) {
-
 
   if (ROL_ID.includes("1") || ROL_ID.includes("2") || ROL_ID.includes("7")) {
 
@@ -186,14 +184,13 @@ function AddProduct(el) {
     }]
 
     const addProd = setSelectedProduct_AddNewProducts(prodsToAdd);
+
     _searchProductValue = $('#tableProducts_filter').find('input[type="search"]').val();
     let indexTab = $("#tableProducts").DataTable().page();
-    printAllProductsOnTableFromPrevSearch(_searchProductValue,indexTab);
 
+    printAllProductsOnTableFromPrevSearch(_searchProductValue, indexTab);
     setCategoriesAndSubCategories();
-
     printAllSelectedProducts();
-
     setIngresos();
 
     // $('#tableProducts_filter').find('input').val(_searchProductValue);
@@ -304,6 +301,35 @@ function AppendProductosTableResumeArray(arrayProductos) {
   $('#totalCostProject').text(CLPFormatter(parseInt(GetTotalCosts())));
 }
 
+let lastSelProdQty = 0;
+
+$(document).on('click', '.selProdQty', async function () {
+  lastSelProdQty = $(this).val();
+})
+
+$(document).on('blur','.selProdQty',function(){
+  const currentValue = $(this).val();
+  if (currentValue === "" || currentValue === null || currentValue === undefined) {
+    $(this).val(lastValue)
+    return;
+  }
+  if (!isNumeric(currentValue)) {
+    Swal.fire(
+      'Ups!',
+      'Debes ingresar un número',
+      'error'
+    );
+    $(this).val(lastSelProdQty)
+    return
+  }
+
+  const PRODUCT_ID = $(this).closest('tr').attr('product_id');
+
+
+  changeSelectedProductQuantity(PRODUCT_ID,currentValue);
+})
+
+
 
 
 //ASIGNACION DE PRODUCTOS Y PAQUETES DATOS TOMADOS DESDE EL DOM, FUNCIONES DE MODULO PRODUCTOS
@@ -323,10 +349,16 @@ $(document).on('blur', '.addProdInputResume', async function () {
       'Debes ingresar un número',
       'error'
     );
+    $(this).val(lastValue);
     return
   }
 
-  let product_id = $(this).closest('tr').attr('product_id');
+  const PRODUCT_ID = $(this).closest('tr').attr('product_id');
+  changeSelectedProductQuantity(PRODUCT_ID,currentValue);
+})
+
+
+function changeSelectedProductQuantity(product_id,currentValue){
   let minProducts = [];
   let minvalue = 0;
 
@@ -409,7 +441,7 @@ $(document).on('blur', '.addProdInputResume', async function () {
       return;
     }
 
-    if (parseInt(currentValue) < parseInt(totalToRemove.quantityToAdd)){
+    if (parseInt(currentValue) < parseInt(totalToRemove.quantityToAdd)) {
 
       let quantityToRemove = parseInt(totalToRemove.quantityToAdd) - parseInt(currentValue);
       const productsToRemove = [{
@@ -423,15 +455,15 @@ $(document).on('blur', '.addProdInputResume', async function () {
       setIngresos();
       return;
     }
-  }else{
+  } else {
 
-    if(parseInt(currentValue) > 0)  {
-      product_id
+    if (parseInt(currentValue) > 0) {
+      // product_id
 
-      const prodToUpdate = _selectedProducts.find((prod)=>{
+      const prodToUpdate = _selectedProducts.find((prod) => {
         return prod.id === product_id;
       });
-      if(prodToUpdate){
+      if (prodToUpdate) {
         prodToUpdate.quantityToAdd = currentValue;
       }
       setCategoriesAndSubCategories();
@@ -440,14 +472,14 @@ $(document).on('blur', '.addProdInputResume', async function () {
       setIngresos();
       return;
 
-    }else{
-      const prodToUpdate = _selectedProducts.find((prod)=>{
+    } else {
+      const prodToUpdate = _selectedProducts.find((prod) => {
         return prod.id === product_id;
       });
-      if(prodToUpdate){
-        const indexof = _selectedProducts.indexOf(prodToUpdate); 
-        let newarray = _selectedProducts.splice(indexof,0);
-      
+      if (prodToUpdate) {
+        const indexof = _selectedProducts.indexOf(prodToUpdate);
+        let newarray = _selectedProducts.splice(indexof, 0);
+
       }
       setCategoriesAndSubCategories();
       printAllProductsOnTable();
@@ -456,7 +488,7 @@ $(document).on('blur', '.addProdInputResume', async function () {
       return;
     }
   }
-})
+}
 
 async function GetAllProductsByBussiness(empresa_id) {
   return $.ajax({
@@ -688,11 +720,13 @@ GET ALL SELECTED AND TAKEN PRODUCTS AND DISCOUNT FROM */
 function setAllProducts_DiscountTakenProd() {
   // RETURN STOCK FROM LAST TAKEN PRODS
   _lastTakenProducts.forEach((takenProd) => {
+
     const productoE = _productos.find((prod) => {
       if (prod.id === takenProd.producto_id) {
         return true;
       }
-    })
+    });
+
     if (productoE) {
       productoE.disponibles = parseInt(productoE.disponibles) + parseInt(takenProd.cantidad);
       if (productoE.disponibles < 0) {
@@ -849,6 +883,8 @@ function setCategoriesAndSubCategories() {
 
   _selectedProducts.forEach((selectedProd) => {
 
+
+
     const subCatExists = _allMySubCats.find((subcat) => {
       if (subcat.subcategoria === selectedProd.item && subcat.categoria === selectedProd.categoria) {
         return subcat
@@ -861,23 +897,30 @@ function setCategoriesAndSubCategories() {
         'subcategoria': selectedProd.item
       });
     }
-  })
+  });
+
+
 
   const catAndSubcats = _allMycats.map((categoria) => {
     // search categorie on selectedProducts
     const subcats = _allMySubCats.map((subcat) => {
       if (subcat.categoria === categoria) {
-        const productosSubCat = _selectedProducts.map((selectedProd) => {
-          if (selectedProd.item === subcat.subcategoria) {
-            return selectedProd
-          }
+
+        const productosSubCat = _selectedProducts.filter((selectedProd) => {
+          return selectedProd.item === subcat.subcategoria && selectedProd.categoria === subcat.categoria
         });
+
+        console.log('____subcat.categorie', subcat.categoria)
+        console.log('____productosSubCat', productosSubCat)
+
         return {
           'nombre': subcat.subcategoria,
           'productos': productosSubCat
         }
       }
-    })
+    });
+
+
     return {
       'categoria': categoria,
       'subcategorias': subcats
@@ -896,54 +939,97 @@ function setCategoriesAndSubCategories() {
 
 }
 
-function printAllProductsOnTable(searchValue,indexTab){
+function printAllProductsOnTable(searchValue, indexTab) {
+
+  // if ($.fn.DataTable.isDataTable('#tableProducts')) {
+  //   $('#tableProducts').DataTable().destroy();
+  //   $('#tableProducts tbody tr').remove();
+  // }
+
+
 
   if ($.fn.DataTable.isDataTable('#tableProducts')) {
-    $('#tableProducts').DataTable().destroy();
-    $('#tableDrop > tr').each((key, element) => {
-      $(element).remove();
-    })
+
+    $('#tableProducts tbody tr').remove();
+
+    $('#tableProducts').DataTable()
+      .clear()
+      .draw();
+
+    $('#tableProducts')
+      .DataTable()
+      .destroy();
   }
+
+
   _productos.forEach((producto) => {
-    let td = `
-        <td class="catProd"> ${producto.categoria}</td>
-        <td class="itemProd"> ${producto.item}</td>
-        <td style="width:25%" class="productName">${producto.nombre}</td>
-        <td class="productStock" >${producto.cantidad}</td>
-        <td class="productAvailable">${(producto.disponibles) < 0 ? 0 : producto.disponibles}</td>
-        <td><input style="margin-right:8px" class="addProdInput quantityToAdd quantityProductInput" id="" type="number" min="1"/><i class="fa-solid fa-plus addItem" onclick="AddProduct(this)"></i></td>`
-    $('#tableDrop').append(`<tr product_id="${producto.id}">${td}</tr>`);
+    let tr = `<tr product_id="${producto.id}">
+          <td class="catProd"> ${producto.categoria}</td>
+          <td class="itemProd"> ${producto.item}</td>
+          <td style="" class="productName">${producto.nombre}</td>
+          <td class="productStock" >${producto.cantidad}</td>
+          <td class="productAvailable">${(producto.disponibles) < 0 ? 0 : producto.disponibles}</td>
+          <td><input style="margin-right:8px" class="addProdInput quantityToAdd quantityProductInput" id="" type="number" min="1"/><i class="fa-solid fa-plus addItem" onclick="AddProduct(this)"></i></td>
+        </tr>`
+    $('#tableProducts tbody').append(tr);
   });
 
-  $('#tableProducts').dataTable();
+  if (!$.fn.DataTable.isDataTable('#tableProducts')) {
+    $('#tableProducts').dataTable(
+      {
+        columDefs: [{ width: '10%', targets: 5 }]
+      }
+    );
+
+  }
+
 }
 
-function printAllProductsOnTableFromPrevSearch(searchValue,indexTab){
+function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
+
+  // if ($.fn.DataTable.isDataTable('#tableProducts')) {
+  //   $('#tableProducts').DataTable().destroy();
+  //   $('#tableProducts tbody tr').remove();
+  // }
 
   if ($.fn.DataTable.isDataTable('#tableProducts')) {
-    $('#tableProducts').DataTable().destroy();
-    $('#tableDrop > tr').each((key, element) => {
-      $(element).remove();
-    })
+
+    $('#tableProducts tbody tr').remove();
+
+    $('#tableProducts').DataTable()
+      .clear()
+      .draw();
+
+    $('#tableProducts')
+      .DataTable()
+      .destroy();
   }
   _productos.forEach((producto) => {
-    let td = `
-        <td class="catProd"> ${producto.categoria}</td>
-        <td class="itemProd"> ${producto.item}</td>
-        <td style="width:25%" class="productName">${producto.nombre}</td>
-        <td class="productStock" >${producto.cantidad}</td>
-        <td class="productAvailable">${(producto.disponibles) < 0 ? 0 : producto.disponibles}</td>
-        <td><input style="margin-right:8px" class="addProdInput quantityToAdd quantityProductInput" id="" type="number" min="1"/><i class="fa-solid fa-plus addItem" onclick="AddProduct(this)"></i></td>`
-    $('#tableDrop').append(`<tr product_id="${producto.id}">${td}</tr>`);
+    let tr = `<tr product_id="${producto.id}">
+          <td class="catProd"> ${producto.categoria}</td>
+          <td class="itemProd"> ${producto.item}</td>
+          <td style="width:25%" class="productName">${producto.nombre}</td>
+          <td class="productStock" >${producto.cantidad}</td>
+          <td class="productAvailable">${(producto.disponibles) < 0 ? 0 : producto.disponibles}</td>
+          <td style="display:flex"><input style="margin-right:8px" class="addProdInput quantityToAdd quantityProductInput" id="" type="number" min="1"/><i class="fa-solid fa-plus addItem addI-20" onclick="AddProduct(this)"></i></td>
+        </tr>`
+    $('#tableProducts tbody').append(tr);
   });
 
-  $('#tableProducts').dataTable();
+  if (!$.fn.DataTable.isDataTable('#tableProducts')) {
+
+    $('#tableProducts').dataTable();
+
+  }
   $("#tableProducts").DataTable().page(indexTab).draw(false)
   $('#tableProducts_filter').find('input[type="search"]').val(searchValue);
 }
 
 
 function printAllSelectedProducts() {
+  $('.-t-container').remove();
+
+  $('#selectedProdsPreview .prod-item').remove();
   $('#productResume-tables h3').remove();
   $('#productResume-tables table').remove();
   $('#filterSelectedProducts option').remove();
@@ -961,18 +1047,16 @@ function printAllSelectedProducts() {
 
   _categoriesandsubcategories.forEach((categoria) => {
 
-
     $('#projectResumeFilter-products')
-    .append(`<option value="${categoria.categoria}">${categoria.categoria}</option>`);
-    
-    const tableId = `projectResumeProduct-${categoria.categoria.replaceAll(' ','_')}`;
+      .append(`<option value="${categoria.categoria}">${categoria.categoria}</option>`);
+
+    const tableId = `projectResumeProduct-${categoria.categoria.replaceAll(' ', '_')}`;
+    let selectedProdTableId = `eventSelectedProduct-${categoria.categoria.replaceAll(' ', '_')}`;
     const subCategorias = categoria.subcategorias;
 
     $('#ventaEventos').append(
       `<div class="row categorieSubTotal">
         <p class = "categorieHeaderTitle">${categoria.categoria[0].toUpperCase() + categoria.categoria.substring(1)}</p>
-        
-        
       </div>
       <table id="${tableId}" class="tableCatsAnsResume" style="margin-bottom:20px;">
           <thead>
@@ -998,11 +1082,30 @@ function printAllSelectedProducts() {
               <td></td>
               <td></td>
               <td><p class="col-lg-5  col-6" style="text-align:end;">Subtotal</p></td>
-              <td><input type="text" categorie_name="${categoria.categoria}" class="col-lg-4 col-6 relativeCategorieValue" id="subtotalCategoria-${categoria.categoria}"></td>
+              <td><input type="text" categorie_name="${categoria.categoria.replaceAll(' ', '_')}" class="col-lg-4 col-6 relativeCategorieValue" id="subtotalCategoria-${categoria.categoria.replaceAll(' ', '_')}"></td>
             </tr>
           </tfoot>
       </table>`
     );
+
+
+    // SELECTEDPRODS PRINT
+
+    let catSelectedProd = `<div class="-t-container">
+      <p class="--catName-SelProd">${categoria.categoria[0].toUpperCase() + categoria.categoria.substring(1)}</p>
+      <table class="--t-sel-prod" id="${selectedProdTableId}">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Cant.</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>`;
+    $('#selectedProdsPreview').append(catSelectedProd);
     // console.table(subCategorias);
     subCategorias.forEach((subcategoria) => {
       const productos = subcategoria.productos;
@@ -1016,6 +1119,20 @@ function printAllSelectedProducts() {
           <td class="totalTd"><input type="text" class="totalProdInputResume" min="1" max="" value="${CLPFormatter(total)}"/></td>
           <td style="color:red;cursor:pointer;"><i class="fa-solid fa-trash removePrd"></i></td>
         </tr>`)
+
+      //   <div class="col-lg-2 col-md-4 col-sm-5 col-12 prod-item">
+      //   <p>${prod.nombre}</p>
+      //   <img src="../../assets/svg/trashCan-red.svg" alt="">
+      // </div>
+        let selectedProd = `
+        <tr product_id="${prod.id}">
+          <td>
+            <p>${prod.nombre}</p>
+          </td>
+          <td><input type="number" name="" id="" class="selProdQty" value="${prod.quantityToAdd}"></td>
+          <td><img src="../../assets/svg/trashCan-red.svg" alt="" min="1" class="rmv-sel-prod"></td>
+        </tr>`
+        $(`#${selectedProdTableId} tbody`).append(selectedProd);
       })
     })
   })
@@ -1028,7 +1145,7 @@ $(document).on('click', '.product-price', async function () {
   $(this).val("");
 })
 
-$(document).on('blur', '.product-price', async function (){
+$(document).on('blur', '.product-price', async function () {
 
   const newRentPrice = ClpUnformatter($(this).val());
   if (newRentPrice === "" || newRentPrice === null || newRentPrice === undefined) {
@@ -1162,14 +1279,16 @@ $(document).on('blur', '.relativeCategorieValue', function () {
     return;
   }
 
-  const categorie = $(this).attr('categorie_name');
+  const categorie = $(this).attr('categorie_name').replaceAll('_', ' ');
   const categoriaTotal = totalPerItem.equipos.find((categoria) => {
     if (categoria.categorie === categorie) {
       categoria.value = parseInt(valor);
       categoria.isEdited = true
       return categoria;
     }
-  })
+  });
+
+
 
 
   // let totalOp = 0;
@@ -1342,7 +1461,7 @@ $(document).on('blur', '.cantidadOthers', function () {
 
 
 $(document).on('click', '.totalOthers', function () {
-  if($(this).val() !== ""){
+  if ($(this).val() !== "") {
     lastTotalOthers = parseInt(ClpUnformatter($(this).val()));
   }
   $(this).val("")
@@ -1383,7 +1502,7 @@ function printAllSelectedOthers() {
   $('#others-table tbody tr').remove();
 
   _selectedOthersProducts.forEach((other) => {
-    console.log("NOMBRE other product",other);
+    console.log("NOMBRE other product", other);
     let tr = `<tr>
       <td><input type="text" class="nameOthers" value="${other.detalle}"></td>
       <td class="cantTd"><input type="text" class="cantidadOthers" value="${other.cantidad}"></td>
@@ -1405,7 +1524,7 @@ function printAllSelectedOthers() {
     animation: 'perspective'
   });
 }
-function printOthersProds(){
+function printOthersProds() {
 
   $('#others-table tbody tr').remove();
 

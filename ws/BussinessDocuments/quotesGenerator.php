@@ -131,7 +131,11 @@
         // $dompdf->stream("$month-$day-$year.pdf");
         
         $output = $dompdf->output();
-        $pdfRoot = __DIR__."/documents/buss1/quotes$fileName";
+        $pdfRoot = __DIR__."/documents/buss$empresa_id/quotes$fileName";
+
+        if(!is_dir($pdfRoot)){
+            mkdir(__DIR__."/documents/buss$empresa_id/quotes");
+        }
         // $pdfAdm = __DIR__."\documents\buss1\quotes";
         file_put_contents($pdfRoot, $output);
     

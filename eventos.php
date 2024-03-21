@@ -139,7 +139,7 @@ require_once('./includes/head.php');
                                     </tr>
                                 </thead>
                                 <tbody>
-                                
+
                                 </tbody>
                                 <tfoot>
                                 </tfoot>
@@ -160,24 +160,15 @@ require_once('./includes/head.php');
                                         <th>
 
                                         </th>
+
                                         <th>
                                             <p>Evento</p>
                                         </th>
                                         <th>
-                                            <p>Estado</p>
-                                        </th>
-                                        <th>
                                             <p>Fecha</p>
-                                            <!-- <img src="./assets//svg/calendar.svg" alt="" style="margin-right: 10px;"> -->
                                         </th>
                                         <th>
-                                            <p>Cliente</p>
-                                        </th>
-                                        <th>
-                                            <p>Tipo de evento</p>
-                                        </th>
-                                        <th>
-                                            <p>Precio venta</p>
+                                            <p>Estado</p>
                                         </th>
                                         <th>
                                             <p>Owner</p>
@@ -186,8 +177,15 @@ require_once('./includes/head.php');
                                             <p>Asignación</p>
                                         </th>
                                         <th>
-                                            <p>Facturación</p>
+                                            <p>Precio venta</p>
                                         </th>
+                                        <th>
+                                            <p>Cliente</p>
+                                        </th>
+                                        <th>
+                                            <p>Tipo de evento</p>
+                                        </th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -208,7 +206,7 @@ require_once('./includes/head.php');
 
     </div>
     </div>
-    
+
 </body>
 
 <script src="/js/eventList.js"></script>

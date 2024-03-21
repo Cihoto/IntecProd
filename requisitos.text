@@ -247,22 +247,29 @@ Debería mostrarse por defecto el espacio para escribir ===> REVISAR CUALES AP
 
 
 
+TODO:
+
+PROCESO AUTOMATICO PARA FINALIZAR EVENTOS DESPUES DE SU FECHA DE TERMINO ===> pendiente
+
+en adm desde hoy hacia atras el filtro de fechas en lista de eventos ===> LISTO
+
+padding 10 px parta thead tr all tables ===> 
+
+comentar rendiciones ===> LISTO
+
+datos en resumen no se cargan  ===> LISTO
+
+CONTRATO, NOMBRE Y ESPECIALIDAD en resumen personas ---> DONE
+
+cotizacion debe aparecer en los adjuntos del evento como archivo descargable;
 
 
-todo :
+MOSTRAR SI O SI LOS PRODUCTOS SELECCIONADOS --- falta scroll-x y tr height 
 
 
-PROCESO AUTOMATICO APRA FINALIZAR EVENTOS DESPUESD E SU FECHA DE TERMINO
+DETALLES ===>>>> DETALLES DEL EVENTO CON HORARIOS
+COMENTARIOS Y ARCHIVOS;
+
+NOMINA ES PERSONALY VEHICULOS;
 
 
-en adm desde hoy hacia atras el filtro de fechas enm lista de eventos
-
-
-padding 10 px parta thead tr all tables
-
-comentar rendiciones
-
-datos en resumen no se cargan 
-
-
-rsumen nombre y especialidad ne resumen 

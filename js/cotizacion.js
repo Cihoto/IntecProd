@@ -168,7 +168,7 @@ $('#generateQuotes').on('click',async function(){
         owner_id = $('#ownerSelect').val();
     }
     const OWNERDATA = await getPersonalById_quotes(EMPRESA_ID,owner_id);
-
+    let fileName = ""
    
     $.ajax({
         type: "POST",
@@ -194,16 +194,28 @@ $('#generateQuotes').on('click',async function(){
                 $('#downloadPdf a').remove();
                 // console.log("response", response);
                 // let a = `<a target="_blank" id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/quotes/${response.name}"></a>`
+                fileName = response.name;
                 let a = `<a id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/quotes/${response.name}" download></a>`
                 $('#downloadPdf').append(a);
                 $('#dwnload')[0].click();
+                $('#downloadPdf a').remove();
             },1000)
         },error:  function(error){
             console.log("error",error.responseText)
         }
     })
-    .then(()=>{
+    .then(async ()=>{
         closeBottomBar();
+
+        // let fileInsertRequest = {
+        //     'fileName' : fileName,
+        //     'size': 0,
+        //     'type': 'application/pdf',
+        //     'uploader_user_id' :  PERSONAL_IDS[0].usuario_id,
+        //     'empresa_id' : EMPRESA_ID
+        // }
+
+        // console.log(await insertQuoteOnBdd(fileInsertRequest));
     })
     
 
@@ -221,12 +233,30 @@ async function getPersonalById_quotes(empresa_id,personal_id){
             'personal_id' : personal_id
         }),
         success: function(response){
-            
+
         },error:  function(error){
+
             // console.log("error",error.responseText)
         }
     })
 }
+
+
+// function insertQuoteOnBdd(request){
+//     return $.ajax({
+//         type: "POST",
+//         url: "ws/personal/Personal.php",
+//         dataType: 'json',
+//         data:JSON.stringify({
+//             'request': request
+//         }),
+//         success: function(response){
+            
+//         },error:  function(error){
+//             // console.log("error",error.responseText)
+//         }
+//     })
+// }
 
 
 

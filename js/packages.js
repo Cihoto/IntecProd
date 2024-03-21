@@ -312,16 +312,14 @@ function printAllMySelectedProds(){
 
     setIngresos();
 }
+
 $(document).on('click','.removePrd',async function(){
     // FIND PRODUCT_ID ON TR ATTR 
     const product_id = $(this).closest('tr').attr('product_id');
 
     // CHECK IF PRODUCT_ID EXISTS ON SELECTED PRODS
-    const idExists = _selectedProducts.find((selectedProduct)=>{
-        if(selectedProduct.id === product_id){
-            return true;
-        }
-    })
+    const idExists = _selectedProducts.find((selectedProduct)=>{return selectedProduct.id === product_id})
+
     if(!idExists){
         Swal.fire({
             'icon':'error',
@@ -332,7 +330,30 @@ $(document).on('click','.removePrd',async function(){
         })
         return;
     }
-    
+    removeSelectedProduct(product_id);
+})
+$(document).on('click','.rmv-sel-prod',async function(){
+    // FIND PRODUCT_ID ON TR ATTR 
+    const product_id = $(this).closest('tr').attr('product_id');
+
+    // CHECK IF PRODUCT_ID EXISTS ON SELECTED PRODS
+    const idExists = _selectedProducts.find((selectedProduct)=>{return selectedProduct.id === product_id})
+
+    if(!idExists){
+        Swal.fire({
+            'icon':'error',
+            'title':'Ups!',
+            'text':'Ha ocurrido un error',
+            'showConfirmButton':false,
+            'timer':2000
+        })
+        return;
+    }
+    removeSelectedProduct(product_id);
+})
+
+
+function removeSelectedProduct(product_id){
     const totalToRemove = _selectedProducts.find((product)=>{
         if(product.id === product_id){
             return product.quantityToAdd
@@ -445,9 +466,10 @@ $(document).on('click','.removePrd',async function(){
     setCategoriesAndSubCategories();
     printAllSelectedProducts();
     setIngresos();
-    
-    
-})
+}
+
+
+
 async function getAllProdsOnPackages(product_id){
     let packageContainsProduct = [];
 

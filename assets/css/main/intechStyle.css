@@ -198,8 +198,13 @@ textarea {
   overflow-x: hidden;
 }
 
+.addI-20{
+  width: 20%;
+}
+
 .addProdInput {
-  max-width: 150px;
+  width: 80%;
+  /* max-width: 150px; */
 }
 
 
@@ -2742,10 +2747,12 @@ textarea {
   border: none;
   background-color: #FCFCFC;
 }
-
+/* #tableProducts{
+  display: table;
+} */
 
 /* resume-table s-table */
-#tableProducts tbody tr:hover {
+/* #tableProducts tbody tr:hover {
   border: 1px solid var(--Secondary-color, #6136AB) !important;
   background: var(--Purple-200, #DCD0F1) !important;
 }
@@ -2795,11 +2802,11 @@ textarea {
   border-right: 1px solid var(--Line-table, #DDDDE1);
   background: rgba(0, 0, 0, 0.00);
   width: 13.97% !important;
-}
+} */
 
 .quantityProductInput {
   border-radius: 10px;
-  width: 200pxpx;
+  width: 200px;
   border: 1px solid rgba(0, 0, 0, 0.356);
   padding: 3px;
 }
@@ -2953,6 +2960,119 @@ textarea {
 }
 .delete-schedule{
   cursor: pointer;
+}
+
+
+ #selectedProdsPreview{
+ 
+  display: flex;
+  padding: var(--none, 0px);
+  gap: 8px;
+  border-radius: var(--none, 0px);
+  width: 100%;
+  overflow-x: scroll; 
+
+  .-t-container{
+
+    width: 400px;
+    height: 200px;
+    overflow-y: scroll;
+    /* overflow-x: hidden; */
+  
+    .--catName-SelProd{
+      position: sticky;
+      top: 0px;
+      width: 100%;
+      background-color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    table{
+      border: 1px solid #00b4b119;
+      width: 100%;
+      height: 100%;
+      min-height: 10%;
+  
+      thead {
+        tr {
+          position: sticky;
+          top: 24px;
+          align-items: center;
+          gap: var(--1, 8px);
+          border-radius: var(--none, 0px);
+          border-top: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+          border-right: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+          border-bottom: 1px solid var(--divider, rgba(0, 0, 0, 0.12));
+          border-left: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+          background: var(--Fondo-cyan, #E8F3F3);
+        }
+        th{
+          padding: 6px 3px;
+        }
+      }
+  
+      tbody{
+        td{
+          padding: 3px;
+          p{
+            max-width: 200px;
+            background-color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0px!important;
+            transition: all .2s ease;
+          }
+
+          .selProdQty{
+            width: 40px;
+          }
+        }
+  
+        tr{
+          transition: all .2s ease;
+  
+        }
+  
+        tr:hover{
+          cursor: pointer;
+          border: 1px solid var(--Secondary-color, #6136AB);
+          background: var(--Purple-200, #DCD0F1);
+  
+          p{
+            background: var(--Purple-200, #DCD0F1);
+          }
+  
+        }
+      }
+  
+      
+    }
+  }
+}
+
+.prod-item{ 
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 12px;
+  height: 24px;
+
+  p{
+    margin: 0px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
+.--h-text{
+  margin: 0px!important;
+  width: 110px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .event-status.confirmado {
@@ -4130,6 +4250,41 @@ button{
   background: var(--Fondo-cyan, #E8F3F3);
 }
 #allProjectTable-list tbody tr:hover {
+  scale: 1.0075;
+  cursor: pointer;
+  border: 1px solid var(--Secondary-color, #6136AB);
+  background: var(--Purple-200, #DCD0F1);
+  button{
+    background-color: var(--Purple-200, #DCD0F1);
+  }
+  svg{
+    background-color: var(--Purple-200, #DCD0F1);
+  }
+  .deleteEv-container{
+    background-color: white!important;
+  }
+}
+
+
+
+#tableProducts {
+  margin-top: 50px!important;
+  width: 100%;
+}
+#tableProducts td ,#tableProducts th{
+  padding: 3px 12px!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+}
+#tableProducts th{
+  padding: 16px 16px!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+}
+#tableProducts thead tr{
+  border-radius: var(--none, 0px);
+  border: 1px solid var(--Line-table, #DDDDE1);
+  background: var(--Fondo-cyan, #E8F3F3);
+}
+#tableProducts tbody tr:hover {
   scale: 1.0075;
   cursor: pointer;
   border: 1px solid var(--Secondary-color, #6136AB);

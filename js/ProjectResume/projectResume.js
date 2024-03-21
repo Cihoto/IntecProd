@@ -29,8 +29,11 @@ function setUtilidad(){
         return personal.contrato !== "Freelance";
     })  
 
-    allHiredPersonal.forEach((hired)=>{
-        total_contratados +=  parseInt(hired.neto);
+    allHiredPersonal.forEach((personal)=>{
+
+        let totalPers = (parseInt(personal.neto) / 180) * personal.horasTrabajadas;
+
+        total_contratados +=   totalPers
     })
 
     let utilidad = _totalIngresos - _totalEgresos;
@@ -87,19 +90,32 @@ function setEgresos(){
     })
 
     // console.log("totalPerItem",totalPerItem)
-    $('#totalCostProject').text(CLPFormatter(allSelectedPersonalCost));
-    let totalpersonal = 0;
-    $('#total-personalResume tbody tr').remove();
-    totalPerItem.personal.forEach((personal)=>{
 
-      totalpersonal += parseInt(personal.value);  
+    $('#totalCostProject').text(CLPFormatter(allSelectedPersonalCost));
+    $('#total-personalResume tbody tr').remove();
+
+    let totalPersonal = 0;
+    allSelectedPersonal.forEach((personal)=>{
+        console.log('personal',personal)
+        console.log('personal',personal)
+        let totalPers = (parseInt(personal.neto) / 180) * personal.horasTrabajadas
+        
+        if( personal.contrato.toUpperCase() === 'FREELANCE'){
+            totalPers = parseInt(personal.neto);
+        }
+        totalPersonal += totalPers;  
       let tr = `<tr>
-        <td class="col-4"></td>
-        <td>${personal.contract}</td>
-        <td>${CLPFormatter(parseInt(personal.value))}</td>
+        <td class="col-4" style="text-align:end;padding-right:20px">${personal.nombre}</td>
+        <td>${personal.especialidad}</td>
+        <td>${personal.contrato}</td>
+        <td>${CLPFormatter(parseInt(totalPers))}</td>
       </tr>`;
       $('#total-personalResume tbody').append(tr);
     })
+
+    // print TOTAL PERSONAL ON RESUME EVENT TABLE
+
+    $('#totalPersonal-resumeProject').text(CLPFormatter(totalPersonal));
 
     // Calculate all VehicleCosts
     // totalVehiculosPropios
@@ -141,9 +157,9 @@ function setEgresos(){
     // section others costs
     $('#total-otherCostsResume tbody tr').remove()
     let totalOthersCosts = 0;
-    console.log("ALL MY OTHER COST")
-    console.log("ALL MY OTHER COST",_allMyOtherCosts)
-    console.log("ALL MY OTHER COST")
+    // console.log("ALL MY OTHER COST")
+    // console.log("ALL MY OTHER COST",_allMyOtherCosts)
+    // console.log("ALL MY OTHER COST")
     _allMyOtherCosts.forEach(({name,monto})=>{
         totalOthersCosts += parseInt(monto); 
         let tr = `<tr>
@@ -154,7 +170,8 @@ function setEgresos(){
         $('#total-otherCostsResume tbody').append(tr);
     });
 
-    let totalCosts = totalpersonal + totalExternos + totalPropios + subArriendototal + totalOthersCosts;
+    let totalCosts = totalPersonal + totalExternos + totalPropios + subArriendototal + totalOthersCosts;
+
 
     _totalEgresos = totalCosts;
 
@@ -191,6 +208,15 @@ function setIngresos(){
 
         
         // console.log("TOTALPERITEM.EQUIPOS FILTERED",totalPerItem.equipos);
+        console.log('totalPerItem.equipos',totalPerItem.equipos);
+        console.log('totalPerItem.equipos',totalPerItem.equipos);
+        console.log('totalPerItem.equipos',totalPerItem.equipos);
+        console.log('totalPerItem.equipos',totalPerItem.equipos);
+        console.log('totalPerItem.equipos',totalPerItem.equipos);
+        console.log('totalPerItem.equipos',totalPerItem.equipos);
+        console.log('totalPerItem.equipos',totalPerItem.equipos);
+        console.log('totalPerItem.equipos',totalPerItem.equipos);
+        
         totalPerItem.equipos.forEach((totalPerItem)=>{
             if(totalPerItem.isEdited === false){
                 totalPerItem.value = 0;
@@ -241,8 +267,16 @@ function setIngresos(){
         }
     })
 
-    setUtilidad()
-    printAllResumeIncome()
+    setUtilidad();
+    printAllResumeIncome();
+    printAllSelectedProductsSubTotals();
+}
+
+function printAllSelectedProductsSubTotals(){
+    totalPerItem.equipos.forEach((categoria)=>{
+        let catFormatted = categoria.categorie.replaceAll(' ','_');
+        $(`#subtotalCategoria-${catFormatted}`).val(CLPFormatter(categoria.value))
+    })
 }
 
 function printAllResumeIncome(){
@@ -250,8 +284,10 @@ function printAllResumeIncome(){
     // console.log("ESTO ES LO  QUE SSE VA A IMPRIMIIR", totalPerItem.equipos)
     $('#total-productResume > tbody tr').remove();
     $('#total-othersResume > tbody tr').remove();
+
     let totalEquipos = 0;
     let totalOthers = 0;
+
     totalPerItem.equipos.forEach((equipos)=>{
         totalEquipos +=  parseInt(equipos.value);
         let tr = `<tr>

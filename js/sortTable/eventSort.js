@@ -72,12 +72,12 @@ $(document).ready(function () {
         if (!ALL_DRAFT_EVENTS) {
             return;
         }
-        setEventsAndPrintOnTable(ALL_DRAFT_EVENTS);
+        setEventsAndPrintOnTable(ALL_DRAFT_EVENTS,true);
     })
 })
 
 
-function setEventsAndPrintOnTable(allEventsOnRange) {
+function setEventsAndPrintOnTable(allEventsOnRange,isAdmSort) {
     _projectsToList = [];
     _projectListBackup = [];
 
@@ -91,8 +91,11 @@ function setEventsAndPrintOnTable(allEventsOnRange) {
         _projectListBackup.push(evento);
     });
 
-
-    printAllProjects(_projectsToList);
+    if(isAdmSort !== undefined){
+        printAllProjects(_projectsToList,true);
+    }else{
+        printAllProjects(_projectsToList);
+    }
 }
 
 

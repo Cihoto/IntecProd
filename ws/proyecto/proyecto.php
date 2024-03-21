@@ -14,6 +14,12 @@ if ($_POST) {
             $request = $data->request;
             $result = addProject($request);
             break;
+        case 'insertOrUpdateEventData_json':
+            $event_id = $data->event_id;
+            $totalPerItem = $data->totalPerItem; 
+            $selectedProducts = $data->selectedProducts;
+            $result = json_encode(insertOrUpdateEventData_json($event_id ,$totalPerItem ,$selectedProducts));
+            break;
         case 'getProjectResume':
             $request = $data->request;
             $result = getProjectResume($request);
@@ -140,8 +146,6 @@ function addProject($request)
     $conn->conectar();
     $today = date('Y-m-d');
 
-
-
     foreach ($request as $req) {
 
         $nombre_proyecto = $req->nombre_proyecto;
@@ -154,6 +158,7 @@ function addProject($request)
         $owner = $req->owner;
         $status_id = $req->status_id;
         $event_type_id = $req->event_type_id;
+
     }
     if ($lugar_id === "") {
         $lugar_id = "null";
@@ -214,15 +219,79 @@ function addProject($request)
     }
 }
 
+
+function insertOrUpdateEventData_json($event_id ,$totalPerItem ,$selectedProducts){
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+
+        $stmt = $mysqli->prepare("SELECT id FROM event_data ed where ed.event_id = ?");
+        $stmt->bind_param("i", $event_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if($result->num_rows === 0){
+            return insertEventData_json($event_id ,$totalPerItem ,$selectedProducts);
+        }
+
+        $conn->desconectar();
+        return updateEvent_json($event_id ,$totalPerItem ,$selectedProducts);
+    } catch (Exception $e) {
+        $conn->desconectar();
+        return false;
+    }
+
+}
+
+
+function insertEventData_json($event_id ,$totalPerItem ,$selectedProducts){
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+        $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.event_data 
+        (event_id, selected_prods_json, totalPerItem_json) VALUES
+        (?, ?, ?);");
+
+        $totalPerItem = json_encode($totalPerItem);
+        $selectedProducts = json_encode($selectedProducts);
+        $stmt->bind_param("iss",  $event_id,$selectedProducts,$totalPerItem);
+        $stmt->execute();
+        $conn->desconectar();
+        return true;
+    } catch (Exception $e) {
+        $conn->desconectar();
+        return false;
+    }
+}
+
+function updateEvent_json($event_id ,$totalPerItem ,$selectedProducts){
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+        $stmt = $mysqli->prepare("UPDATE u136839350_intec.event_data 
+        SET selected_prods_json= ? , totalPerItem_json= ?  WHERE event_id= ?;");
+
+        $totalPerItem = json_encode($totalPerItem);
+        $selectedProducts = json_encode($selectedProducts);
+
+        $stmt->bind_param("ssi",$selectedProducts, $totalPerItem,$event_id);
+        $stmt->execute();
+        $conn->desconectar();
+        return true;
+    } catch (Exception $e) {
+        $conn->desconectar();
+        return false;
+    }
+}
+
 function getProjectResume($request)
 {
 
 
     try {
-
-
-
-
 
         $conn = new bd();
         $conn->conectar();
@@ -260,6 +329,8 @@ function getProjectResume($request)
         $files = [];
         $comments = [];
         $comment_replies = [];
+        $eventData_json = [];
+        $event_quote = [];;
         $accountables = [];
         $otherCosts = [];
         $viewasignados = false;
@@ -378,6 +449,10 @@ function getProjectResume($request)
             WHERE ehc.event_id = $event_id
             AND c.isDelete = 0
             ORDER BY chr.comment_id , c.post_date ASC ";
+
+
+            $queryEventData_json = "SELECT * FROM event_data ed where ed.event_id = $event_id ";
+            // $queryEventData_json = "SELECT * FROM event_data ed where ed.event_id = $event_id ";
         }
 
         $queryProject = "   SELECT  p.nombre_proyecto, p.fecha_inicio, p.fecha_termino,p.comentarios,
@@ -472,6 +547,11 @@ function getProjectResume($request)
                     $comment_replies[] = $dataComment_replies;
                 }
             }
+            if ($responseBd = $conn->mysqli->query($queryEventData_json)) {
+                while ($dataEvent_json  = $responseBd->fetch_object()) {
+                    $eventData_json [] = $dataEvent_json;
+                }
+            }
         }
         $conn->desconectar();
         return json_encode(array(
@@ -492,6 +572,8 @@ function getProjectResume($request)
                 "files" => $files,
                 "comments" => $comments,
                 "comment_replies" => $comment_replies,
+                "eventData_json" => $eventData_json,
+                "event_quote" => $event_quote
             )
         ));
     } catch (Exception $e) {
@@ -766,7 +848,8 @@ function getAllMyProjects_list_toExecute($empresa_id)
     INNER JOIN persona on persona.id = pers.persona_id 
     INNER JOIN proyecto proye on proye.owner = pers.id
     WHERE proye.id = p.id AND p.empresa_id = $empresa_id) as owner,
-    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment
+    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment,
+    (SELECT prohp.proyecto_id FROM proyecto_has_producto prohp WHERE prohp.proyecto_id = p.id LIMIT 1) as event_has_inventory
         FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
@@ -789,7 +872,6 @@ function getAllMyProjects_list_toExecute($empresa_id)
 	ORDER BY p.fecha_inicio asc;";
     // -- where p.empresa_id = 1 and p.fecha_inicio >= '2023-11-23'
 
-    // return $queryProyectos;
     if ($responseBd = $conn->mysqli->query($queryProyectos)) {
         while ($dataProject = $responseBd->fetch_object()) {
             $projects[] = $dataProject;
@@ -820,7 +902,8 @@ function getAllMyEvents_notDeleted($empresa_id){
         INNER JOIN persona on persona.id = pers.persona_id 
         INNER JOIN proyecto proye on proye.owner = pers.id
         WHERE proye.id = p.id AND p.empresa_id = ?) as owner,
-        (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment
+        (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment,
+        (SELECT prohp.proyecto_id FROM proyecto_has_producto prohp WHERE prohp.proyecto_id = p.id LIMIT 1) as event_has_inventory
          FROM proyecto p
         LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
         LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
@@ -880,7 +963,8 @@ function getAllMyEvents($empresa_id)
     INNER JOIN persona on persona.id = pers.persona_id 
     INNER JOIN proyecto proye on proye.owner = pers.id
     WHERE proye.id = p.id AND p.empresa_id = $empresa_id) as owner,
-    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment
+    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment,
+    (SELECT prohp.proyecto_id FROM proyecto_has_producto prohp WHERE prohp.proyecto_id = p.id LIMIT 1) as event_has_inventory
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
@@ -912,7 +996,8 @@ function getAllMyEvents($empresa_id)
     INNER JOIN persona on persona.id = pers.persona_id 
     INNER JOIN proyecto proye on proye.owner = pers.id
     WHERE proye.id = p.id AND p.empresa_id = $empresa_id) as owner,
-    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment
+    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment,
+    (SELECT prohp.proyecto_id FROM proyecto_has_producto prohp WHERE prohp.proyecto_id = p.id LIMIT 1) as event_has_inventory
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
@@ -968,7 +1053,8 @@ function  getEventByStatus_id($empresa_id, $status_id)
     INNER JOIN persona on persona.id = pers.persona_id 
     INNER JOIN proyecto proye on proye.owner = pers.id
     WHERE proye.id = p.id AND p.empresa_id = $empresa_id) as owner,
-    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment
+    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment,
+    (SELECT prohp.proyecto_id FROM proyecto_has_producto prohp WHERE prohp.proyecto_id = p.id LIMIT 1) as event_has_inventory
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
@@ -1000,7 +1086,8 @@ function  getEventByStatus_id($empresa_id, $status_id)
     INNER JOIN persona on persona.id = pers.persona_id 
     INNER JOIN proyecto proye on proye.owner = pers.id
     WHERE proye.id = p.id AND p.empresa_id = $empresa_id) as owner,
-    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment
+    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment,
+    (SELECT prohp.proyecto_id FROM proyecto_has_producto prohp WHERE prohp.proyecto_id = p.id LIMIT 1) as event_has_inventory
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
@@ -1055,7 +1142,8 @@ function getOperEvents($empresa_id)
     INNER JOIN persona on persona.id = pers.persona_id 
     INNER JOIN proyecto proye on proye.owner = pers.id
     WHERE proye.id = p.id AND p.empresa_id = $empresa_id) as owner,
-    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment
+    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment,
+    (SELECT prohp.proyecto_id FROM proyecto_has_producto prohp WHERE prohp.proyecto_id = p.id LIMIT 1) as event_has_inventory
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
@@ -1089,7 +1177,8 @@ function getOperEvents($empresa_id)
     INNER JOIN persona on persona.id = pers.persona_id 
     INNER JOIN proyecto proye on proye.owner = pers.id
     WHERE proye.id = p.id AND p.empresa_id = $empresa_id) as owner,
-    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment
+    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment,
+    (SELECT prohp.proyecto_id FROM proyecto_has_producto prohp WHERE prohp.proyecto_id = p.id LIMIT 1) as event_has_inventory
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
@@ -1145,7 +1234,8 @@ function getSellsEvents($empresa_id)
     INNER JOIN persona on persona.id = pers.persona_id 
     INNER JOIN proyecto proye on proye.owner = pers.id
     WHERE proye.id = p.id AND p.empresa_id = $empresa_id) as owner,
-    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment
+    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment,
+    (SELECT prohp.proyecto_id FROM proyecto_has_producto prohp WHERE prohp.proyecto_id = p.id LIMIT 1) as event_has_inventory
             FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
@@ -1226,9 +1316,10 @@ function getAdmEvents($empresa_id)
     FROM personal pers
     INNER JOIN persona on persona.id = pers.persona_id 
     INNER JOIN proyecto proye on proye.owner = pers.id
-    WHERE proye.id = p.id AND p.empresa_id = $empresa_id) as ,
-    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment
-            FROM proyecto p
+    WHERE proye.id = p.id AND p.empresa_id = $empresa_id) as owner,
+    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment,
+    (SELECT prohp.proyecto_id FROM proyecto_has_producto prohp WHERE prohp.proyecto_id = p.id LIMIT 1) as event_has_inventory
+        FROM proyecto p
     LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
     LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
     LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
@@ -1548,8 +1639,7 @@ function getDeletedEvents($empresa_id)
         $conn->conectar();
         $mysqli = $conn->mysqli;
         try {
-
-            $stmt = $mysqli->prepare("SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',
+            $stmt = $mysqli->prepare("SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
             CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
             df.nombre_fantasia as nombre_fantasia ,
             CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
@@ -1558,7 +1648,9 @@ function getDeletedEvents($empresa_id)
             FROM personal pers
             INNER JOIN persona on persona.id = pers.persona_id 
             INNER JOIN proyecto proye on proye.owner = pers.id
-            WHERE proye.id = p.id AND p.empresa_id = $empresa_id) as owner
+            WHERE proye.id = p.id AND p.empresa_id = ?) as owner,
+            (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment,
+            (SELECT prohp.proyecto_id FROM proyecto_has_producto prohp WHERE prohp.proyecto_id = p.id LIMIT 1) as event_has_inventory
                 FROM proyecto p
             LEFT JOIN proyecto_has_vehiculo phv on phv.proyecto_id  = p.id
             LEFT JOIN personal_has_proyecto php ON php.proyecto_id = p.id
@@ -1568,8 +1660,8 @@ function getDeletedEvents($empresa_id)
             LEFT JOIN lugar l on l.id = p.lugar_id 
             LEFT JOIN project_finance_resume pfr on pfr.event_id  = p.id
             LEFT JOIN direccion d on d.id = l.direccion_id 
-            LEFT JOIN cliente c on c.id  = p.cliente_id
-            LEFT JOIN datos_facturacion df on df.id = c.datos_facturacion_id          
+            LEFT JOIN cliente c on c.id  = p.cliente_id  
+            LEFT JOIN datos_facturacion df on df.id = c.datos_facturacion_id       
             LEFT JOIN persona per on per.id = c.persona_id_contacto
             LEFT JOIN comuna co on co.id = d.comuna_id 
             LEFT JOIN region re on re.id = co.region_id 
@@ -1579,7 +1671,7 @@ function getDeletedEvents($empresa_id)
             group by p.id
             ORDER BY p.deleteAt asc;");
 
-            $stmt->bind_param("i", $empresa_id);
+            $stmt->bind_param("ii", $empresa_id,$empresa_id);
             $stmt->execute();
 
             $result = $stmt->get_result();

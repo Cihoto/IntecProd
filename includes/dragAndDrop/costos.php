@@ -100,7 +100,7 @@
                 </div>
             </div>
         </div>
-        <div class="card collapse-header c0mb">
+        <!-- <div class="card collapse-header c0mb">
             <div class="card-top-acordion" id="subArriendo-Heading" data-bs-toggle="collapse" data-bs-target="#rendicionesAcordion" aria-expanded="false" aria-controls="rendicionesAcordion" role="button">
                 <p class="s-P s-P-Acordion">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -111,10 +111,10 @@
             </div>
             <div id="rendicionesAcordion" class="collapse pt-1" aria-labelledby="subArriendo-Heading" data-parent="#cardAccordion">
                 <div class="card-body">
-                    <?php require_once('./includes/dragAndDrop/dragRendiciones.php')?>
+                    < require_once('./includes/dragAndDrop/dragRendiciones.php')?>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 <div class="projectSave-footer">

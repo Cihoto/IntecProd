@@ -80,6 +80,9 @@ async function SaveOrUpdateEvent() {
     const RESPONSE_UPDATE_EVENT = await updateEvent(requestProject, event_data.event_id, EMPRESA_ID);
   }
 
+
+  await insertOrUpdateEventData_json(event_data.event_id,totalPerItem,_selectedProducts);
+
   if(_tempCommentList.length > 0){
     const COMMENT_RESPONSE = await addAndAssignCommentsToEvent(_tempCommentList, EMPRESA_ID, event_data.event_id);
 
@@ -216,7 +219,7 @@ const requestRendicion = allRendiciones
   return true;
 }
 
-function createNewEvent(requestProject) {
+function createNewEvent(requestProject){
   return $.ajax({
     type: "POST",
     url: 'ws/proyecto/proyecto.php',
@@ -224,7 +227,28 @@ function createNewEvent(requestProject) {
       request: {
         requestProject
       },
-      action: "addProject"
+      action: "addProject",
+    }),
+    dataType: 'json',
+    success: function (data) {
+      console.log("RESPONSE CREATE PROYECTO", data);
+
+    },
+    error: function (response) {
+      console.log(response.responseText);
+    }
+  })
+}
+
+function insertOrUpdateEventData_json(event_id, totalPerItem,selectedProducts){
+  return $.ajax({
+    type: "POST",
+    url: 'ws/proyecto/proyecto.php',
+    data: JSON.stringify({
+      'event_id': event_id,
+      'totalPerItem': totalPerItem,
+      'selectedProducts': selectedProducts,
+      'action': "insertOrUpdateEventData_json",
     }),
     dataType: 'json',
     success: function (data) {

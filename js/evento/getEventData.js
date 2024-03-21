@@ -170,7 +170,24 @@ async function getAllProjectData(event_id, empresa_id) {
         });
     }
 
-    if (responseGetData.asignados.productos.length > 0) {
+    if (responseGetData.asignados.eventData_json.length > 0) {
+        const EVENT_JSON = responseGetData.asignados.eventData_json[0];
+        const SELECTED_PRODUCTS = JSON.parse(EVENT_JSON.selected_prods_json);
+
+        const RESPONSE_TOTAL_PER_ITEM = JSON.parse(EVENT_JSON.totalPerItem_json)
+        const TOTAL_PER_ITEM_PRODUCTOS = RESPONSE_TOTAL_PER_ITEM.equipos;
+
+        _selectedProducts = SELECTED_PRODUCTS; 
+        totalPerItem.equipos = TOTAL_PER_ITEM_PRODUCTOS
+
+
+
+        printAllProductsOnTable();
+        printAllSelectedProducts();
+        setIngresos();
+        
+    }else{
+
         responseGetData.asignados.productos.forEach(producto => {
             const productsToAdd = [{
                 'id': producto.id,
@@ -178,15 +195,17 @@ async function getAllProjectData(event_id, empresa_id) {
             }];
             setSelectedProduct_AddNewProducts(productsToAdd);
             printAllProductsOnTable();
-            setCategoriesAndSubCategories();
             printAllSelectedProducts();
             setIngresos();
         });
+        // if (responseGetData.asignados.productos.length > 0) {
+      
+        // }
     }
     if(responseGetData.asignados.otherProds.length > 0){
         responseGetData.asignados.otherProds.forEach(otherProd => {
             _selectedOthersProducts.push({
-                'detalle': otherProd.detalle,
+            'detalle': otherProd.detalle,
                 'cantidad': otherProd.cantidad,
                 'total': otherProd.valor
             })

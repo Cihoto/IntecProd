@@ -93,6 +93,9 @@ $('#fechaInicio').on('change', async function() {
   $('#commentProjectArea').on('change', function() {
     $('.comentariosProjectResume').text($(this).val())
   })
+  $('#dirInput').on('change', function() {
+    $('#lugarProjectResume').text($(this).val())
+  })
 
 
   function getDiffBtwDays() {

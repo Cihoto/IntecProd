@@ -41,12 +41,10 @@
             align-items: flex-start;
             margin-right: 400px;
             gap: var(--1, 8px);">
-                    <p class="resumeDescription" style="margin-right: 500px; width: 250px;">Dirección:</p>
+                    <p class="resumeDescription" style="margin-right: 500px; width: 75px;">Dirección:</p>
                     <p id="lugarProjectResume" class="resumeDetail"></p>
                 </div>
             </div>
-
-
 
             <div style="display: flex;
             width: 100%;
@@ -60,13 +58,13 @@
                     <p class="resumeDescription" style="margin-right: 500px;">Fecha:</p>
                     <p id="fechaProjectResume" class="resumeDetail"></p>
                 </div>
-                <div style="display: flex;
+                <!-- <div style="display: flex;
                 padding: var(--none, 0px);
                 align-items: flex-start;
                 gap: var(--1, 8px);">
                     <p class="resumeDescription" style="margin-right: 500px;">Horario:</p>
                     <p id="" class="resumeDetail"></p>
-                </div>
+                </div> -->
             </div>
 
         </div>
@@ -137,8 +135,9 @@
             <table class="s-resumeProjectTable" id="total-personalResume">
                 <thead>
                     <tr>
-                        <th colspan="2" style="width: 70%;">Personas</th>
-                        <th style="width: 30%;"></th>
+                        <th colspan="2">Personas</th>
+                        <th></th>
+                        <th style="width: 30%;" id="totalPersonal-resumeProject"></th>
                     </tr>
                 </thead>
                 <tbody>

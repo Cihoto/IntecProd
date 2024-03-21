@@ -351,7 +351,6 @@ function printAllMyOwners() {
     $('#ownerSelect option').remove();
     // const personal_id = PERSONAL_IDS[0].personal_id;
 
-
     $('#ownerSelect').append(new Option('', '', false, false));
     allMyOwners.forEach((owner) => {
         $('#ownerSelect').append(new Option(owner.nombre, owner.id, false, false));

@@ -28,13 +28,16 @@ function deleteAssignedFile($file_name,$file_id,$empresa_id,$event_id){
 
         $target_path = $absolute_path."\documents\buss$empresa_id\Ev$event_id\bsd$file_name";
 
-        if (!file_exists($absolute_path."\documents\buss$empresa_id\Ev$event_id\bsd$file_name")) {
+        // return file_exists($target_path);
+
+        if (!file_exists($target_path)){
             return array('error'=>true,'message'=>'El documento no existe');
         }
         
         if (!unlink($target_path)) { 
             return array('error'=>true,'message'=>'El documento no se ha podido eliminar');
-        } 
+        }
+         
         else {     
             
      
