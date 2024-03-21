@@ -2,41 +2,46 @@ let _allCalendarEvents = [];
 
 async function getCalendarEvents(){
   const EVENTS = await getAllMyEvents_notDeleted(EMPRESA_ID);
+  let purple = false
   _allCalendarEvents = EVENTS.events.map(event => {
-      return {
-          title: event.nombre_proyecto,
-          start: event.fecha_inicio,
-          end: event.fecha_termino,
-          url: `https://intecsoftware.tech/miEvento.php?event_id=${event.id}`
-      }
+    let eventColor = '#36ABA9'
+    if(!purple){
+        eventColor = '#8b5fd6'
+    }
+    purple = !purple
+    return {
+        title: event.nombre_proyecto,
+        start: event.fecha_inicio,
+        end: fixEndDateOnEvent(event.fecha_termino),
+        url: `https://intecsoftware.tech/miEvento.php?event_id=${event.id}`,
+        color: eventColor,
+    }
   });
+}
 
-  console.log(_allCalendarEvents);
-  
+function fixEndDateOnEvent(endDate){
+ 
+
+    let startDate = new Date(endDate);
+    let fixedDate = startDate.setDate(startDate.getDate() + 1)
+    return fixedDate
 }
 
 
 function renderCalendar(_calendarEvents){
   let calendarEl = document.getElementById('calendar');
 
-
   let calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       events: _calendarEvents,
-      eventColor: '#36ABA9',
-      dayMaxEventRows: true,
       locale: 'es',
-      views: {
-          timeGrid: {
-              dayMaxEventRows: 4
-          }
-      },
+      displayEventTime:false,
       headerToolbar: {
           start: 'dayGridMonth,timeGridWeek,timeGridDay',
           center: 'title',
           end: 'today prevYear,prev,next,nextYear'
       },
-      aspectRatio: 2.3,
+      aspectRatio: 1.8,
   });
   calendar.setOption('locale', 'es');
   calendar.render();
