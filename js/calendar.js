@@ -1,7 +1,8 @@
 let _allCalendarEvents = [];
 
 async function getCalendarEvents(){
-  const EVENTS = await getAllMyEvents_notDeleted(EMPRESA_ID);
+  const EVENTS = await getAllCalendarEvents(EMPRESA_ID);
+
   let purple = false
   _allCalendarEvents = EVENTS.events.map(event => {
     let eventColor = '#36ABA9'

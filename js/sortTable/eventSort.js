@@ -138,6 +138,24 @@ async function getAllMyEvents_notDeleted(empresa_id) {
         }
     })
 }
+async function getAllCalendarEvents(empresa_id) {
+
+    return $.ajax({
+        type: "POST",
+        url: 'ws/proyecto/proyecto.php',
+        data: JSON.stringify({
+            'action': "getAllCalendarEvents",
+            'empresa_id': empresa_id,
+        }),
+        dataType: 'json',
+        success: function (response) {
+            console.log("RESPONSE  getAllMyEvents", response);
+        },
+        error: function (response) {
+            console.log(response.responseText);
+        }
+    })
+}
 
 
 async function getEventByStatus_id(empresa_id, status_id) {
