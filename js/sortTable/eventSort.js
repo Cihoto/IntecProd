@@ -138,7 +138,8 @@ async function getAllMyEvents_notDeleted(empresa_id) {
         }
     })
 }
-async function getAllCalendarEvents(empresa_id) {
+
+async function getAllCalendarEvents(empresa_id,status_id) {
 
     return $.ajax({
         type: "POST",
@@ -146,6 +147,7 @@ async function getAllCalendarEvents(empresa_id) {
         data: JSON.stringify({
             'action': "getAllCalendarEvents",
             'empresa_id': empresa_id,
+            'status_id': status_id,
         }),
         dataType: 'json',
         success: function (response) {

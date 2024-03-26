@@ -56,6 +56,16 @@ $(document).ready(async function () {
     $('#vehicleCreateType').select2({
         data : typeData
     });
+
+    $('#vehicleUpdateModel').select2({
+
+    })
+    $('#vehicleUpdateBrand').select2({
+        data : selData
+    });
+    $('#vehicleUpdateType').select2({
+        data : typeData
+    });
 })
 
 $('#vehicleCreateBrand').on("change",function(){
@@ -82,6 +92,42 @@ $('#vehicleCreateBrand').on("change",function(){
         data : modelSelData
     });
 });
+
+$('#vehicleUpdateBrand').on("change",function(){
+    const BRAND_ID = $(this).val();
+
+    getAndPrintModelsPerBrand(BRAND_ID);
+});
+
+function getAndPrintModelsPerBrand(brand_id){
+    const modelSelData = _models.filter((model)=>{
+
+        if(model.brand_id === brand_id){
+
+            return {
+                'id' : model.id,
+                'text' : model.model
+            }
+        }
+    }).map((model)=>{
+        return {
+            'id' : model.id ,
+            'text' : model.model
+        }
+    });
+
+    $('#vehicleUpdateModel').select2('destroy');
+    $('#vehicleUpdateModel').empty();
+    $('#vehicleUpdateModel').select2({
+        data : modelSelData
+    });
+    
+    if(vehicleData.data.model_id){
+        $('#vehicleUpdateModel').val(vehicleData.data.model_id);
+        $('#vehicleUpdateModel').change();
+        
+    }
+}
 
 
 $(document).on("click",'#vehiclesDashTable tbody tr',async function(){
@@ -119,21 +165,93 @@ $(document).on("click",'#vehiclesDashTable tbody tr',async function(){
 
     vehicleData.data = VEHICLE_INFO.data
     vehicleData.events = VEHICLE_INFO.events
-    vehicleData.vehicleData = VEHICLE_INFO.data.id
+    vehicleData.vehicle_id = VEHICLE_INFO.data.id
 
+    $('#vehicleUpdateType').val(vehicleData.data.vehicle_type_id);
+    $('#vehicleUpdateType').change();
 
-    $('#vehicleUpdateType').val();
-    $('#vehicleUpdateBrand').val();
-    $('#vehicleUpdateModel').val();
-    $('#vehicleUpdatePatente').val();
-    $('#vehicleUpdateOwner').val();
-    $('#vehicleUpdateCostPerTrip').val();
+    $('#vehicleUpdateBrand').val(vehicleData.data.brand_id);
+    $('#vehicleUpdateBrand').change();
+
+    $('#vehicleUpdatePatente').val(vehicleData.data.patente);
+    $('#vehicleUpdateOwner').val(vehicleData.data.ownCar);
+    
+    $('#vehicleUpdateCostPerTrip').val(vehicleData.data.vehicle_type_id);
+
+    $('#vehicleUpdateModel').val(vehicleData.data.model_id);
+    // $('#vehicleUpdateModel').change();
 
     console.log(vehicleData);               
     console.log(vehicleData);
     console.log(vehicleData);
 
-})
+});
+
+
+
+$('#deleteVehicleDash').on('click',async function(){
+
+    const VEHICLE_ID = parseInt(vehicleData.vehicle_id);
+  
+  
+    Swal.fire({
+      title: "¿Quieres eliminar este vehículo?",
+      text: "Esta acción es irreversible!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+  
+        const REMOVE_VEHICLE_RESPONSE = await deleteVehicleDash(EMPRESA_ID,VEHICLE_ID);
+
+        console.log('REMOVE_VEHICLE_RESPONSE',REMOVE_VEHICLE_RESPONSE);
+
+        if(!REMOVE_VEHICLE_RESPONSE){
+          Swal.fire({
+            title: "Ups!",
+            text: "No se ha podido eliminar el vehículo, intenta nuevamente!",
+            icon: "error"
+          });
+          return 
+        }
+        Swal.fire({
+          title: "Excelente!",
+          text: "Vehículo eliminado.",
+          icon: "success"
+        });
+        $('#vehicleInfoSideMenu').removeClass('active');
+  
+  
+        $(`#vehiclesDashTable tbody tr[vehicle_id="${VEHICLE_ID}"]`).remove();
+  
+      }
+    });
+    
+  
+  
+  })
+  
+  
+  function deleteVehicleDash(empresa_id, vehicle_id){
+    return $.ajax({
+      type: "POST",
+      url: "ws/vehiculo/Vehiculo.php",
+      dataType: 'json',
+      data: JSON.stringify({
+        "action": "deleteVehicleDash",
+        'vehicle_id': vehicle_id,
+        'empresa_id': empresa_id
+      }),
+      success: function (response){
+        console.log('response delete vehicle',response)
+      }, error: function (error) {
+        console.log('error',error);
+      }
+    })
+  }
 
 async function getVehicleInfoById(vehicle_id, empresa_id){
     return $.ajax({

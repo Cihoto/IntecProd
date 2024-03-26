@@ -1,40 +1,56 @@
 <div class="dragableItems">
-    <div class="formHeader" style="align-items: center!important; margin-left: 13px;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <circle cx="6" cy="6" r="6" fill="#069B99"></circle>
-        </svg>
-        <p class="header-P" style="margin-top: -3px;">Productos seleccionados</p>
-    </div>
-    <div id="selectedProdsPreview">
+    <div class="--prodListContainer">
 
-    <!-- SAMPLE CODE FOR SELECTED PRODUCT TABLE ON PRODUCT SELECTOR -->
-        <!-- <div class="-t-container">
-            <p class="--catName-SelProd">VIDEO</p>
+        <div class="-prods-table">
+            <table id="tableProducts">
+                <thead>
+                    <th>Categoría</th>
+                    <th>Sub Categoría</th>
+                    <th class="itemProd">Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Disponibles</th>
+                    <th>Agregar</th>
+                </thead>
+                <tbody id="tableDrop">
+                </tbody>
+            </table>
+        </div>
 
-            <table class="--t-sel-prod">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Cant.</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <p>123123</p>
-                                </td>
-                                <td><input type="number" name="" id="" class=""></td>
-                                <td><img src="../../assets/svg/trashCan-red.svg" alt=""></td>
-                            </tr>
-                        </tbody>
-                    </table>
-        </div> -->
+        <div class="--selProdContainer">
+
+        <div class="--sel-prod-header">
+            <p>Agregados al evento</p>
+            <i class="fa-solid fa-x"></i>
+        </div>
+
+        <table class='itc-table-standard' id="-a-m-SelProds">
+            <thead>
+                <tr>
+                    <th>
+                        <p class="--ts">Elemento</p>
+                    </th>
+                    <th>
+                        <p class="--tc">Cantidad</p>
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr product_id="">
+                    <td class="--ts"> <p></p> </td>
+                    <td class="--tc"><input type="number" name="" id="" class="selProdQty" min="1"  value=""></td>
+                    <td><img src="../../assets/svg/trashCan-red.svg" alt="" class="rmv-sel-prod"></td>
+                </tr> -->
+            </tbody>
+        </table>
+        </div>
     </div>
-    <div class="row">
-        <div class="notSelectedProd moveProd" id="selectableProducts">
+
+    <!-- <div c lass="notSelectedProd moveProd" id="selectableProducts"> -->
         <!-- SELECTED PACKAGE DELETED SECTION -->
-            <!-- <div class="row" style="min-height: 150px; max-height: 150px; overflow: scroll;width: 100%; margin: 20px 0px;overflow-x: hidden;">
+        <!-- <div class="row" style="min-height: 150px; max-height: 150px; overflow: scroll;width: 100%; margin: 20px 0px;overflow-x: hidden;">
                 <table id="standardPackagesList">
                     <thead>
                         <th>Nombre</th>
@@ -45,25 +61,11 @@
                     </tbody>
                 </table>
             </div> -->
+        <!-- <div id="itemList">
 
-
-
-            <div id="itemList">
-                <table id="tableProducts">
-                    <thead>
-                        <th>Categoría</th>
-                        <th>Sub Categoría</th>
-                        <th class="itemProd">Nombre</th>
-                        <th>Cantidad</th>
-                        <th>Disponibles</th>
-                        <th>Agregar</th>
-                    </thead>
-                    <tbody id="tableDrop">
-                    </tbody>
-                </table>
-            </div>
         </div>
-    </div>
+    </div> -->
+
     <div class="projectSave-footer">
         <div class="returnPreviusPage">
             <button class="s-Button-w" style="width: 170px;">

@@ -108,7 +108,7 @@ function setEgresos(){
         <td class="col-4" style="text-align:end;padding-right:20px">${personal.nombre}</td>
         <td>${personal.especialidad}</td>
         <td>${personal.contrato}</td>
-        <td>${CLPFormatter(parseInt(totalPers))}</td>
+        <td class="-tae">${CLPFormatter(parseInt(totalPers))}</td>
       </tr>`;
       $('#total-personalResume tbody').append(tr);
     })
@@ -146,7 +146,7 @@ function setEgresos(){
         let tr = `<tr>
             <td class="col-4"></td>
             <td>${subRent.detalle}</td>
-            <td>${CLPFormatter(subRent.valor)}</td>
+            <td class="-tae">${CLPFormatter(subRent.valor)}</td>
         </tr>`;
         $('#total-SubArriendosResume tbody').append(tr);
     });
@@ -165,7 +165,7 @@ function setEgresos(){
         let tr = `<tr>
             <td class="col-4"></td>
             <td>${name}</td>
-            <td>${CLPFormatter(monto)}</td>
+            <td class="-tae">${CLPFormatter(monto)}</td>
         </tr>`
         $('#total-otherCostsResume tbody').append(tr);
     });
@@ -293,7 +293,7 @@ function printAllResumeIncome(){
         let tr = `<tr>
             <td class="col-4"></td>    
             <td>${equipos.categorie[0].toUpperCase() + equipos.categorie.slice(1)}</td>    
-            <td>${CLPFormatter(equipos.value)}</td>   
+            <td class="-tae">${CLPFormatter(equipos.value)}</td>   
         <tr/>`;
         $(`#subtotalCategoria-${equipos.categorie}`).val(CLPFormatter(parseInt(equipos.value)));
         $('#total-productResume > tbody').append(tr);
@@ -303,7 +303,7 @@ function printAllResumeIncome(){
         let tr = `<tr>
             <td class="col-4"></td>    
             <td>${other.detalle}</td>    
-            <td>${CLPFormatter(other.total)}</td>   
+            <td class="-tae">${CLPFormatter(other.total)}</td>   
         <tr/>`;
         // $(`#subtotalCategoria-${equipos.categorie}`).val(CLPFormatter(parseInt(equipos.value)));
         $('#total-othersResume > tbody').append(tr);

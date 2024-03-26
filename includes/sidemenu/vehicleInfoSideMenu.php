@@ -23,7 +23,7 @@
             <form id="createVehicleForm" style="margin: 15px; height: 100%;">
 
                 <div class="col-12 d-flex justify-content-end">
-                    <button type="button" id="deleteClientDash" style="border: none; background-color: white;">
+                    <button type="button" id="deleteVehicleDash" style="border: none; background-color: white;">
                         <img src="../../assets/svg/trash-2.svg" alt="">
                     </button>
                     <button type="button" id="enableEditPersonal" style="border: none;background-color: white;">

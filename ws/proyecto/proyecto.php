@@ -46,7 +46,8 @@ if ($_POST) {
             break;
         case 'getAllCalendarEvents':
             $empresa_id = $data->empresa_id;
-            $result = json_encode(getAllCalendarEvents($empresa_id));
+            $status_id = $data->status_id;
+            $result = json_encode(getAllCalendarEvents($empresa_id,$status_id));
             break;
         case 'GetAllProjects':
             $empresa_id = $data->empresaId;
@@ -947,7 +948,7 @@ function getAllMyEvents_notDeleted($empresa_id){
 
 
 }
-function getAllCalendarEvents($empresa_id){
+function getAllCalendarEvents($empresa_id,$status_id){
 
     try{
         $conn = new bd();
@@ -983,12 +984,11 @@ function getAllCalendarEvents($empresa_id){
         LEFT JOIN region re on re.id = co.region_id 
         WHERE p.empresa_id = ?
         AND p.isDelete = 0
-        AND p.status_id = 2
+        AND p.status_id = ?
         AND p.fecha_inicio IS NOT NULL
         group by p.id
         ORDER BY p.fecha_inicio desc;");
-
-        $stmt->bind_param("ii", $empresa_id, $empresa_id);
+        $stmt->bind_param("iii", $empresa_id, $empresa_id,$status_id);
         $stmt->execute();
 
         $result = $stmt->get_result();

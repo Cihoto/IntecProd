@@ -13,6 +13,11 @@ if ($_POST) {
             $request = $data->request;
             $result = insertNewClient($request);
             break;
+        case 'deleteClient':
+            $client_id = $data->client_id;
+            $empresa_id = $data->empresa_id;
+            $result = deleteClient($client_id,$empresa_id);
+            break;
         case 'addCliente':
             $request = $data->request;
             $result = addCliente($request);
@@ -116,6 +121,60 @@ function insertNewClient($request){
     }
 
    
+}
+
+
+
+function deleteClient($client_id,$empresa_id){
+    try  {
+
+        if(!viewIfClienteIsOnBussieness($client_id,$empresa_id)){
+            return ['error', 'message'=>'client has not been found'];
+        }   
+
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+        $stmt = $mysqli->prepare("UPDATE cliente set isDelete = 1 where id = ?");
+        $stmt->bind_param("i", $client_id);
+        $stmt->execute();
+
+        $results = $stmt->get_result();
+        $conn->desconectar();
+
+
+        if($stmt->affected_rows > 0){
+            return true;
+        }
+
+        return false;
+
+    } catch (Exception $e) {
+        $conn->desconectar();
+        return 'error while deleting client';
+    }
+}
+
+function viewIfClienteIsOnBussieness($client_id,$empresa_id){
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+        $stmt = $mysqli->prepare("SELECT id from cliente c where c.empresa_id = ? and c.id = ?");
+        $stmt->bind_param("ii", $empresa_id,$client_id);
+        $stmt->execute();
+
+        $results = $stmt->get_result();
+        
+        $conn->desconectar();
+        if($results->num_rows > 0){
+            return true;
+        }
+        return false;
+    } catch (Exception $e) {
+        $conn->desconectar();
+        return ['meesage'=>'error in view Cliente On Bussieness petition'];
+    }
 }
 
 function addCliente($request)
@@ -366,7 +425,8 @@ function getClientData($empresa_id)
             FROM cliente c
             INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
             INNER JOIN persona p on p.id = c.persona_id_contacto 
-            where c.empresa_id = $empresa_id";
+            where c.empresa_id = $empresa_id
+            and c.isDelete = 0";
 
         if ($responseDbClient = $conn->mysqli->query($queryGetClientData)) {
             while ($dataClient = $responseDbClient->fetch_object()) {
@@ -397,10 +457,10 @@ function getClientesByEmpresa($request)
         INNER JOIN persona p on p.id = c.persona_id_contacto 
         INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
         INNER JOIN empresa e on e.id = c.empresa_id 
-        where e.id =  $empresaId";
+        where e.id =  $empresaId
+        and c.isDelete = 0";
 
     // return $query;
-
 
     if ($responseBd = $conn->mysqli->query($query)) {
         while ($dataResponse = $responseBd->fetch_object()) {

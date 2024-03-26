@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Santiago');
 
 if ($_POST) {
     require_once('../bd/bd.php');
@@ -21,6 +22,12 @@ if ($_POST) {
             // Llama a la función getVehiculos y devuelve el resultado
             $vehiculos = json_encode(getVehiclesByBussiness($empresa_id));
             echo $vehiculos;
+            break;
+        case 'deleteVehicleDash':
+            $vehicle_id = $data->vehicle_id;
+            $empresa_id = $data->empresa_id;
+            $result = deleteVehicleDash($vehicle_id ,$empresa_id );
+            echo json_encode($result);
             break;
         case 'getVehiculos':
             // Recibe el parámetro empresaId
@@ -131,6 +138,58 @@ function getVehiclesByBussiness($empresa_id){
     }else{
         return array("error"=>true,"message"=>"Intente nuevamente");
         // return $vehiculos;
+    }
+}
+
+function deleteVehicleDash($vehicle_id,$empresa_id){
+    try  {
+
+        if(!viewIfVehicleIsOnBussieness($vehicle_id,$empresa_id)){
+            return ['error', 'message'=>'vehicle has not been found'];
+        }   
+        $now = date('Y-m-d H:i:s');
+
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+        $stmt = $mysqli->prepare("UPDATE vehiculo set IsDelete = 1 , deleteAt = ? where id = ?");
+        $stmt->bind_param("si",$now, $vehicle_id);
+        $stmt->execute();
+        $conn->desconectar();
+
+        // return $stmt->affected_rows;
+
+        if($stmt->affected_rows > 0){
+            return true;
+        }
+
+        return false;
+
+    } catch (Exception $e) {
+        $conn->desconectar();
+        return 'error while deleting vehicle';
+    }
+}
+
+function viewIfVehicleIsOnBussieness($vehicle_id,$empresa_id){
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+        $stmt = $mysqli->prepare("SELECT * FROM vehiculo v WHERE v.empresa_id  = ? AND v.id = ?");
+        $stmt->bind_param("ii", $empresa_id,$vehicle_id);
+        $stmt->execute();
+
+        $results = $stmt->get_result();
+        
+        $conn->desconectar();
+        if($results->num_rows > 0){
+            return true;
+        }
+        return false;
+    } catch (Exception $e) {
+        $conn->desconectar();
+        return ['message'=>'error in view VEHICLE On Bussieness petition'];
     }
 }
 
@@ -378,12 +437,12 @@ function getVehicleInfoById($vehicle_id, $empresa_id){
     $vehicle_data = [];
     $vehicle_events = [];
 
-    $queryGetVehicleInformation = "SELECT v.id , vb.id as brand_id , vm.id as model_id , 
+    $queryGetVehicleInformation = "SELECT v.id ,v.patente,v.ownCar , vb.id as brand_id , vm.id as model_id , 
     tv.id as vehicle_type_id
     FROM vehiculo v
     LEFT JOIN vehicle_brand vb on vb.id = v.marca 
     LEFT JOIN vehicle_model vm on vm.id = v.modelo
-    LEFT JOIN tipo_vehiculo tv on tv.id  = v.tipoVehiculo_id  
+    LEFT JOIN tipo_vehiculo tv on tv.id  = v.tipoVehiculo_id
     WHERE v.id  = $vehicle_id
     and v.empresa_id = $empresa_id;";
 

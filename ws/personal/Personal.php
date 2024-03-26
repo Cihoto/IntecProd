@@ -17,6 +17,15 @@ if ($_POST) {
             echo json_encode($personal);
             break;
 
+        case 'deletePersonalDash':
+            // Recibe el parámetro request
+            $personal_id = $data->personal_id;
+            $empresa_id = $data->empresa_id;
+
+            // Llama a la función addtoProject y devuelve el resultado
+            $response = deletePersonalDash($personal_id,$empresa_id);
+            echo json_encode($response);
+            break;
         case 'addPersonalToProject':
             // Recibe el parámetro request
             $request = $data->request;
@@ -231,6 +240,58 @@ function AddPersonal($request, $empresaId)
         return array("success" => array("message" => "Se ha ingresado a " . $nombre . " " . $apellido . " al sistema"));
     } else {
         return array("error" => array("message" => "No se ha podido ingresar a " . $nombre . " " . $apellido . " al sistema"));
+    }
+}
+
+
+function deletePersonalDash($personal_id,$empresa_id){
+    try  {
+
+        if(!viewIfPersonalOnBussieness($personal_id,$empresa_id)){
+            return ['error', 'message'=>'personal has not been found'];
+        }   
+        $now = date('Y-m-d H:i:s');
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+        $stmt = $mysqli->prepare("UPDATE personal SET IsDelete = 1 , deleteAt = ? WHERE id = ?");
+        $stmt->bind_param("si",$now, $personal_id);
+        $stmt->execute();
+        $conn->desconectar();
+
+        // return $stmt->affected_rows;
+
+        if($stmt->affected_rows > 0){
+            return true;
+        }
+
+        return false;
+
+    } catch (Exception $e) {
+        $conn->desconectar();
+        return 'error while deleting personal';
+    }
+}
+
+function viewIfPersonalOnBussieness($personal_id,$empresa_id){
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+        $stmt = $mysqli->prepare("SELECT * FROM personal p WHERE p.empresa_id  = ? AND  p.id = ?;");
+        $stmt->bind_param("ii", $empresa_id,$personal_id);
+        $stmt->execute();
+
+        $results = $stmt->get_result();
+        
+        $conn->desconectar();
+        if($results->num_rows > 0){
+            return true;
+        }
+        return false;
+    } catch (Exception $e) {
+        $conn->desconectar();
+        return ['message'=>'error in view PERSONAL On Bussiness petition'];
     }
 }
 
@@ -477,7 +538,8 @@ function getPersonal($empresaId){
                             INNER JOIN especialidad e on e.id  = p.especialidad_id 
                             INNER JOIN empresa emp on emp.id = p.empresa_id 
                             INNER JOIN tipo_contrato tc on tc.id = p.tipo_contrato_id 
-                            where emp.id = $empresaId";
+                            where emp.id = $empresaId
+                            AND p.IsDelete = 0";
     
         if ($responseBd = $conn->mysqli->query($queryPersonal)) {
             while ($dataPersonal = $responseBd->fetch_object()) {
@@ -845,7 +907,7 @@ function getPersonalByBussiness($empresa_id)
         left join especialidad e on e.id = p.especialidad_id 
         INNER JOIN persona per on per.id = p.persona_id
         where p.empresa_id = $empresa_id 
-        and p.isDelete = 0";
+        and p.IsDelete = 0";
     
         if ($response = $conn->mysqli->query($query)) {
             while ($data = $response->fetch_object()) {

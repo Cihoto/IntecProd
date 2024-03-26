@@ -1067,7 +1067,6 @@ $active = 'inventario';
         }
     }
 
-
     async function getCatsAndSubCatsByBussiness(empresa_id) {
         return $.ajax({
             type: "POST",

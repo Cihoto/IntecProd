@@ -49,16 +49,13 @@ async function printAllProjects(_projectList,isAdmSort) {
     }
 
     _projectList.forEach((evento) => {
-
         let color = "";
-
-
+        
         let phf = "";
         let php = "";
         let phv = "";
         let ehc = "";
         let ehf = "";
-
 
         let eventOwner = "";
         if(evento.owner !== null){
@@ -72,7 +69,6 @@ async function printAllProjects(_projectList,isAdmSort) {
             }
         }
 
-
         if(evento.event_has_comment == null){
             ehc = `<img src="./assets/svg/commentNoActive.svg" alt="">`
         }else{
@@ -84,13 +80,12 @@ async function printAllProjects(_projectList,isAdmSort) {
         }else{
             ehf = `<img src="./assets/svg/paperclip-active.svg" alt="">`
         }
-        
+
         if (evento.event_has_inventory == null) {
             phf = `<img src="./assets/svg/ArchiveNoActive.svg" alt="">`;
         } else {
             phf = `<img src="./assets/svg/ArchiveActive.svg" alt="">`
         }
-
 
         if (evento.php == null) {
             php = `<img src="./assets/svg/PersonalNoActive.svg" alt="">`;
@@ -102,9 +97,6 @@ async function printAllProjects(_projectList,isAdmSort) {
         } else {
             phv = `<img src="./assets/svg/VehicleActive.svg" alt="">`
         }
-
-  
-
 
         if (evento.estado == null) {
             evento.estado = "borrador"

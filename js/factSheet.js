@@ -202,6 +202,7 @@ $('#generateResumePdf').on('click',async function(){
     if($('#factSheet-documents').is(':checked') === true){
         // console.log("GENERANDO LA FICHA TECNICA")
         const factSheetWasGenerated = await generateFactSheet();
+
         console.log("factSheetWasGenerated",factSheetWasGenerated);
         console.log("factSheetWasGenerated",factSheetWasGenerated);
         console.log("factSheetWasGenerated",factSheetWasGenerated);

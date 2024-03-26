@@ -127,6 +127,10 @@ $(document).on("click", "#personalDashTable tbody tr", async function () {
     personalData.persona_id = PERSONAL_BY_ID.data.persona_id;
     personalData.personal_id = PERSONAL_ID;
 
+    console.log('personalData.data', personalData.data);
+    console.log('personalData.data', personalData.data);
+    console.log('personalData.data', personalData.data);
+
     $('#update_nombrePersonal').val(personalData.data.nombre);
     $('#update_rutPersonal').val(personalData.data.rut);
     $('#update_tipoContratoPersonal').val(personalData.data.tipo_contrato_id);
@@ -237,6 +241,77 @@ function unsetUpdateFormPersonal() {
     $('#update_correoPersonal').val(personalData.data.email);
     $('#update_telefonoPersonal').val(personalData.data.telefono);
 }
+
+
+
+$('#deletePersonalDash').on('click', async function () {
+
+    const PERSONAL_ID = parseInt(personalData.personal_id);
+
+
+    Swal.fire({
+        title: "¿Quieres eliminar a este técnico?",
+        text: "Esta acción es irreversible!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Eliminar!"
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            const REMOVE_VEHICLE_RESPONSE = await deletePersonalDash(EMPRESA_ID, PERSONAL_ID);
+
+            console.log('REMOVE_VEHICLE_RESPONSE', REMOVE_VEHICLE_RESPONSE);
+
+            if (!REMOVE_VEHICLE_RESPONSE) {
+                Swal.fire({
+                    title: "Ups!",
+                    text: "No se ha podido eliminar al técnico, intenta nuevamente!",
+                    icon: "error"
+                });
+                return
+            }
+
+            Swal.fire({
+                title: "Excelente!",
+                text: "Técnico eliminado.",
+                icon: "success"
+            });
+
+            $('#personalSideMenu-personalDash').removeClass('active');
+            $(`#personalDashTable tbody tr[personal_id="${PERSONAL_ID}"]`).remove();
+
+        }
+    });
+
+
+
+})
+
+
+function deletePersonalDash(empresa_id, personal_id) {
+    return $.ajax({
+        type: "POST",
+        url: "ws/personal/Personal.php",
+        dataType: 'json',
+        data: JSON.stringify({
+            "action": "deletePersonalDash",
+            'personal_id': personal_id,
+            'empresa_id': empresa_id
+        }),
+        success: function (response) {
+            console.log('response delete vehicle', response)
+        }, error: function (error) {
+            console.log('error', error);
+        }
+    })
+}
+
+
+
+
+
 
 function searchPersonalDrag() {
     let dragPersonal = document.getElementById('sortablePersonal1').getElementsByTagName('li')
@@ -1068,7 +1143,7 @@ function AddCargo(empresaId) {
     }
 }
 
-function printEspecialidadOnCrud(especialidades){
+function printEspecialidadOnCrud(especialidades) {
     if ($.fn.DataTable.isDataTable('#esp-table-crud')) {
         $('#esp-table-crud').DataTable()
             .clear()
@@ -1095,7 +1170,7 @@ function printEspecialidadOnCrud(especialidades){
                 { "className": "e-1", "targets": [0] },
                 { "className": "e-2", "targets": [1] }
             ],
-            lengthMenu: [3,5,10,20],
+            lengthMenu: [3, 5, 10, 20],
             language: {
                 "decimal": "",
                 "emptyTable": "No hay información",
@@ -1121,40 +1196,40 @@ function printEspecialidadOnCrud(especialidades){
     }
 }
 
-$(document).on("click",".deleteEpecialidad",async function(){
+$(document).on("click", ".deleteEpecialidad", async function () {
     const ESPECIALIDAD_ID = $(this).closest('tr').attr('especialidad_id');
 
-    const ESP_EXISTS = _allEspecialidades.find((esp)=>{ return esp.id  === ESPECIALIDAD_ID})
+    const ESP_EXISTS = _allEspecialidades.find((esp) => { return esp.id === ESPECIALIDAD_ID })
 
-    if(!ESP_EXISTS){
+    if (!ESP_EXISTS) {
         Swal.fire({
-            'icon':'error',
-            'title':"Ups!",
-            'text':'Intente nuevamente'
+            'icon': 'error',
+            'title': "Ups!",
+            'text': 'Intente nuevamente'
         })
         return
     }
 
-    const DELETE_ESPECIALIDAD_RESPONSE  = await deleteEspecialidad(ESPECIALIDAD_ID,EMPRESA_ID);
-    if(!DELETE_ESPECIALIDAD_RESPONSE.success){
+    const DELETE_ESPECIALIDAD_RESPONSE = await deleteEspecialidad(ESPECIALIDAD_ID, EMPRESA_ID);
+    if (!DELETE_ESPECIALIDAD_RESPONSE.success) {
         Swal.fire({
-            'icon':'warning',
-            'title':"Ups!",
-            'text':DELETE_ESPECIALIDAD_RESPONSE.message
+            'icon': 'warning',
+            'title': "Ups!",
+            'text': DELETE_ESPECIALIDAD_RESPONSE.message
         })
         return
     }
 
     Swal.fire({
-        'icon':'success',
-        'title':"Excelente!",
-        'text':DELETE_ESPECIALIDAD_RESPONSE.message
+        'icon': 'success',
+        'title': "Excelente!",
+        'text': DELETE_ESPECIALIDAD_RESPONSE.message
     });
 
     const ESPECIALIDADES = await GetEspecialidadByBussiness(EMPRESA_ID);
     printEspecialidadOnCrud(ESPECIALIDADES);
 })
-function printCargosOnCrud(cargos){
+function printCargosOnCrud(cargos) {
 
     if ($.fn.DataTable.isDataTable('#cargo-table-controller')) {
         $('#cargo-table-controller').DataTable()
@@ -1182,7 +1257,7 @@ function printCargosOnCrud(cargos){
                 { "className": "w-85", "targets": [0] },
                 { "className": "w-15", "targets": [1] }
             ],
-            lengthMenu: [3,5,10,20],
+            lengthMenu: [3, 5, 10, 20],
             language: {
                 "decimal": "",
                 "emptyTable": "No hay información",
@@ -1208,36 +1283,36 @@ function printCargosOnCrud(cargos){
     }
 }
 
-$(document).on("click",".deleteCargo",async function(){
+$(document).on("click", ".deleteCargo", async function () {
     const CARGO_ID = $(this).closest('tr').attr('cargo_id');
     console.table(_allCargos)
     console.table(CARGO_ID)
 
-    const CARGO_EXISTS = _allCargos.find((car)=>{return car.id === CARGO_ID})
+    const CARGO_EXISTS = _allCargos.find((car) => { return car.id === CARGO_ID })
 
-    if(!CARGO_EXISTS){
+    if (!CARGO_EXISTS) {
         Swal.fire({
-            'icon':'error',
-            'title':"Ups!",
-            'text':'Intente nuevamente'
+            'icon': 'error',
+            'title': "Ups!",
+            'text': 'Intente nuevamente'
         })
         return
     }
 
-    const DELETE_CARGO_RESPONSE  = await deleteCargo(CARGO_ID,EMPRESA_ID);
-    if(!DELETE_CARGO_RESPONSE.success){
+    const DELETE_CARGO_RESPONSE = await deleteCargo(CARGO_ID, EMPRESA_ID);
+    if (!DELETE_CARGO_RESPONSE.success) {
         Swal.fire({
-            'icon':'warning',
-            'title':"Ups!",
-            'text':DELETE_CARGO_RESPONSE.message
+            'icon': 'warning',
+            'title': "Ups!",
+            'text': DELETE_CARGO_RESPONSE.message
         })
         return
     }
 
     Swal.fire({
-        'icon':'success',
-        'title':"Excelente!",
-        'text':DELETE_CARGO_RESPONSE.message
+        'icon': 'success',
+        'title': "Excelente!",
+        'text': DELETE_CARGO_RESPONSE.message
     });
 
 
@@ -1246,7 +1321,7 @@ $(document).on("click",".deleteCargo",async function(){
 })
 
 
-async function GetEspecialidadByBussiness(empresaId){
+async function GetEspecialidadByBussiness(empresaId) {
 
     return $.ajax({
         type: "POST",
@@ -1258,14 +1333,14 @@ async function GetEspecialidadByBussiness(empresaId){
         dataType: 'json',
         success: async function (data) {
             _allEspecialidades = data.especialidades
-           
-        },error:function(error){
+
+        }, error: function (error) {
             console.log(error)
         }
     })
 }
 
-async function GetEspecialidad(empresaId){
+async function GetEspecialidad(empresaId) {
 
     return $.ajax({
         type: "POST",
@@ -1290,7 +1365,7 @@ async function GetEspecialidad(empresaId){
     })
 }
 
-async function  deleteEspecialidad(especialidad_id, empresa_id){
+async function deleteEspecialidad(especialidad_id, empresa_id) {
 
     return $.ajax({
         type: "POST",
@@ -1302,14 +1377,14 @@ async function  deleteEspecialidad(especialidad_id, empresa_id){
         }),
         dataType: 'json',
         success: async function (data) {
-           
-        },error:function(error){
+
+        }, error: function (error) {
             // console.log(error)
         }
     })
 }
 
-async function  deleteCargo(cargo_id, empresa_id){
+async function deleteCargo(cargo_id, empresa_id) {
 
     return $.ajax({
         type: "POST",
@@ -1321,8 +1396,8 @@ async function  deleteCargo(cargo_id, empresa_id){
         }),
         dataType: 'json',
         success: async function (data) {
-           
-        },error:function(error){
+
+        }, error: function (error) {
             // console.log(error)
         }
     })
@@ -1355,7 +1430,7 @@ async function GetCargoByBussiness(empresaId) {
         dataType: 'json',
         success: async function (data) {
             _allCargos = data.cargos;
-        },error:function(error){
+        }, error: function (error) {
             // console.log(error)
         }
     })

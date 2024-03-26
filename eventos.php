@@ -43,7 +43,7 @@ require_once('./includes/head.php');
                         <a class="nav-link active" id="listview-tab" data-bs-toggle="tab" href="#listview" role="tab" aria-controls="listview" aria-selected="true">Lista</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="calendar-tab" data-bs-toggle="tab" href="#calendar" role="tab" aria-controls="calendar" aria-selected="false">Calendario</a>
+                        <a class="nav-link" id="calendarView-tab" data-bs-toggle="tab" href="#calendarView" role="tab" aria-controls="calendarView" aria-selected="false">Calendario</a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="deletedEv-tab" data-bs-toggle="tab" href="#deletedEv" role="tab" aria-controls="deletedEv" aria-selected="false">Eliminados</a>
@@ -146,10 +146,23 @@ require_once('./includes/head.php');
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade tab-data" id="calendar" role="tabpanel" aria-labelledby="calendar-tab" style="margin: 15px; height: 100%;">
-                        <div class="calendar-container">
-                            <div id='calendar'></div>
+                    <div class="tab-pane fade tab-data" id="calendarView" role="tabpanel" aria-labelledby="calendarView-tab" style="margin: 15px; height: 100%;">
+                        <div class="row">
+                            <div class="form-group col-6 col-lg-3">
+                                <label for="event_status" class="inputLabel">Estado</label>
+                                <select style="width: 100%;" id="event_status" name="event_status" type="text" class="form-select input-lg s-Select">
+                                    <option value=""></option>
+                                    <option value="1">Borrador</option>
+                                    <option value="2">Confirmado</option>
+                                    <option value="4">Cotizado</option>
+                                    <option value="3">Finalizado</option>
+                                    <option value="5">Cerrado</option>
+                                </select>
+                            </div>
                         </div>
+                        <!-- <div class="calendar-container"> -->
+                        <div id='calendar'></div>
+                        <!-- </div> -->
                     </div>
                     <div class="tab-pane fade tab-data" id="deletedEv" role="tabpanel" aria-labelledby="deletedEv-tab" style="margin: 15px; height: 100%;">
                         <div style="display: block;overflow-x: auto;">
@@ -253,6 +266,35 @@ require_once('./includes/head.php');
         createCalendar();
     });
 
+    $('#event_status').on('change', async function() {
+        calendar.removeAllEvents();
+        const STATUS_ID = $(this).val()
+        if (STATUS_ID == null || STATUS_ID === "") {
+
+            return
+        }
+        const CALENDAR_EVENTS = await getAllCalendarEvents(EMPRESA_ID, STATUS_ID);
+
+
+        let purple = false
+        _allCalendarEvents = CALENDAR_EVENTS.events.map(event => {
+            let eventColor = '#36ABA9'
+            if (!purple) {
+                eventColor = '#8b5fd6'
+            }
+            purple = !purple
+            return {
+                title: event.nombre_proyecto,
+                start: event.fecha_inicio,
+                end: fixEndDateOnEvent(event.fecha_termino),
+                url: `https://intecsoftware.tech/miEvento.php?event_id=${event.id}`,
+                color: eventColor,
+            }
+        });
+        
+        renderCalendar(_allCalendarEvents);
+    })
+
 
 
 
@@ -306,7 +348,7 @@ require_once('./includes/head.php');
     $('#deletedEv-tab').on('click', function() {
         getDeletedEvents(EMPRESA_ID);
     });
-    $('#calendar-tab').on('click', function() {
+    $('#calendarView-tab').on('click', function() {
         renderCalendar(_allCalendarEvents);
     });
 

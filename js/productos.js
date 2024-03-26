@@ -1027,7 +1027,8 @@ function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
 
 
 function printAllSelectedProducts() {
-  $('.-t-container').remove();
+
+  $('#-a-m-SelProds tbody tr').remove();
 
   $('#selectedProdsPreview .prod-item').remove();
   $('#productResume-tables h3').remove();
@@ -1089,23 +1090,7 @@ function printAllSelectedProducts() {
     );
 
 
-    // SELECTEDPRODS PRINT
-
-    let catSelectedProd = `<div class="-t-container">
-      <p class="--catName-SelProd">${categoria.categoria[0].toUpperCase() + categoria.categoria.substring(1)}</p>
-      <table class="--t-sel-prod" id="${selectedProdTableId}">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Cant.</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
-    </div>`;
-    $('#selectedProdsPreview').append(catSelectedProd);
+ 
     // console.table(subCategorias);
     subCategorias.forEach((subcategoria) => {
       const productos = subcategoria.productos;
@@ -1124,15 +1109,14 @@ function printAllSelectedProducts() {
       //   <p>${prod.nombre}</p>
       //   <img src="../../assets/svg/trashCan-red.svg" alt="">
       // </div>
-        let selectedProd = `
-        <tr product_id="${prod.id}">
-          <td>
-            <p>${prod.nombre}</p>
-          </td>
-          <td><input type="number" name="" id="" class="selProdQty" value="${prod.quantityToAdd}"></td>
-          <td><img src="../../assets/svg/trashCan-red.svg" alt="" min="1" class="rmv-sel-prod"></td>
+
+        let selProdTr = `<tr product_id="${prod.id}">
+          <td class="--ts"> <p>${prod.nombre}</p> </td>
+          <td class="--tc"><input type="number" name="" id="" class="selProdQty" min="1"  value="${prod.quantityToAdd}"></td>
+          <td><img src="../../assets/svg/trashCan-red.svg" alt="" class="rmv-sel-prod"></td>
         </tr>`
-        $(`#${selectedProdTableId} tbody`).append(selectedProd);
+
+        $('#-a-m-SelProds').append(selProdTr)
       })
     })
   })

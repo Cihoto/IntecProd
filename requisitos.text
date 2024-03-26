@@ -122,10 +122,7 @@ LISTADO DE EVENTOS AGREGAR COLUMNA FINANZAS,-->>2 ICONOS->>>  ICONO DE FACTURA, 
 
 CARGAS EVENTOS PASADOS Y FINALIZADOS ->>PENDIENTE->>falta poder activar Office
 
-
 MOVER PAQUETES DE RECURSOS A INVENTARIO(DESDE EVENTOS A INVENTARIO);
-
-
 
 pop UP CLIENTES a un costado
 DATOS CLIENTE 
@@ -270,6 +267,20 @@ MOSTRAR SI O SI LOS PRODUCTOS SELECCIONADOS --- falta scroll-x y tr height
 DETALLES ===>>>> DETALLES DEL EVENTO CON HORARIOS
 COMENTARIOS Y ARCHIVOS;
 
-NOMINA ES PERSONALY VEHICULOS;
+NOMINA ES PERSONAL Y VEHICULOS;
+
+
+
+dashboard venta mensual o ventga de este mes
+quitar porcentajes y tomar dolo nuemros naturales y enteros en los parametros
+
+
+costos d epersonal ono se cambian al momento de guardar el evento.
+
+quitar en caso de seleciconados y finaliozados por que la fecha ya pas[o]
+
+
+
+
 
 

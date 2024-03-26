@@ -1,7 +1,7 @@
 let _allCalendarEvents = [];
 
 async function getCalendarEvents(){
-  const EVENTS = await getAllCalendarEvents(EMPRESA_ID);
+  const EVENTS = await getAllCalendarEvents(EMPRESA_ID,2);
 
   let purple = false
   _allCalendarEvents = EVENTS.events.map(event => {
@@ -21,18 +21,18 @@ async function getCalendarEvents(){
 }
 
 function fixEndDateOnEvent(endDate){
- 
 
-    let startDate = new Date(endDate);
-    let fixedDate = startDate.setDate(startDate.getDate() + 1)
-    return fixedDate
+  let startDate = new Date(endDate);
+  let fixedDate = startDate.setDate(startDate.getDate() + 1);
+  return fixedDate;
+
 }
 
-
+let calendar
 function renderCalendar(_calendarEvents){
   let calendarEl = document.getElementById('calendar');
 
-  let calendar = new FullCalendar.Calendar(calendarEl, {
+   calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       events: _calendarEvents,
       locale: 'es',

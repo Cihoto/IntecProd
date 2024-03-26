@@ -35,13 +35,7 @@ function FillClientes(empresaId) {
         opt.addClass()
       });
       console.log("event_data.client_id",event_data.client_id);
-      console.log("event_data.client_id",event_data.client_id);
-      console.log("event_data.client_id",event_data.client_id);
-      console.log("event_data.client_id",event_data.client_id);
-      console.log("event_data.client_id",event_data.client_id);
-      console.log("event_data.client_id",event_data.client_id);
-      console.log("event_data.client_id",event_data.client_id);
-      console.log("event_data.client_id",event_data.client_id);
+      
       if(event_data.client_id !== ""){
         $('#clienteSelect').val(event_data.client_id);
         $('#clienteSelect').change();
@@ -489,7 +483,80 @@ $(document).on("click", "#dashClient-table tbody tr", async function () {
   $('#clientSideMenu-clientDash').addClass('active')
   console.log(CLIENT_DATA_AND_EVENTS);
 
+});
+
+
+$('#deleteClientDash').on('click',async function(){
+
+  const CLIENT_ID = parseInt(selectedClientData.client[0].client_id);
+
+
+  Swal.fire({
+    title: "¿Quieres eliminar este cliente?",
+    text: "Esta acción es irreversible!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Eliminar!"
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+
+      const REMOVE_CLIENT_RESPONSE = await deleteClient(EMPRESA_ID,CLIENT_ID);
+
+      console.log('REMOVE_CLIENT_RESPONSE',REMOVE_CLIENT_RESPONSE);
+
+      if(!REMOVE_CLIENT_RESPONSE){
+        Swal.fire({
+          title: "Ups!",
+          text: "No se ha podido eliminar al cliente, intenta nuevamente!",
+          icon: "error"
+        });
+        return 
+      }
+      Swal.fire({
+        title: "Excelente!",
+        text: "Cliente eliminado.",
+        icon: "success"
+      });
+      $('#clientSideMenu-clientDash').removeClass('active');
+
+
+      $(`#dashClient-table tbody tr[client_id="${CLIENT_ID}"]`).remove()
+
+    }
+  });
+  
+
+
 })
+
+
+function deleteClient(empresa_id, client_id){
+  return $.ajax({
+    type: "POST",
+    url: "ws/cliente/cliente.php",
+    dataType: 'json',
+    data: JSON.stringify({
+      "tipo": "deleteClient",
+      'client_id': client_id,
+      'empresa_id': empresa_id
+    }),
+    success: function (response){
+      console.log('response delete client',response)
+    }, error: function (error) {
+      console.log(error.responseText)
+    }
+  })
+}
+
+
+
+
+
+
+
+
 
 $('#enableEditClient').on("click",function(){
   $('#updateClient input[type="text"]').attr("readonly",false)
