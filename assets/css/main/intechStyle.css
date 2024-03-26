@@ -203,7 +203,7 @@ textarea {
 }
 
 .addProdInput {
-  width: 40%;
+  width: 65%;
   /* max-width: 150px; */
 }
 
@@ -2935,7 +2935,6 @@ text-align: center;
 
 .quantityProductInput {
   border-radius: 10px;
-  width: 200px;
   border: 1px solid rgba(0, 0, 0, 0.356);
   padding: 3px;
 }
@@ -3200,6 +3199,14 @@ text-align: center;
 .--h-text{
   margin: 0px!important;
   width: 110px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.--h-text-lg{
+  margin: 0px!important;
+  width: 200px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -4399,10 +4406,12 @@ button{
 
 #tableProducts {
   margin-top: 50px!important;
+  margin-right: 10px;
   width: 100%;
+  
 }
 #tableProducts td ,#tableProducts th{
-  padding: 3px 12px!important;
+  padding: 1px 12px!important;
   border-right: 1px solid var(--Line-table, #DDDDE1);
 }
 #tableProducts th{

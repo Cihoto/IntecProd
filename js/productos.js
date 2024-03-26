@@ -29,7 +29,13 @@ function FillProductos(empresaId) {
 
       $('#tableProducts').DataTable({
         scrollX: true,
-        fixedHeader: true
+        fixedHeader: true,
+        columnDefs: [
+          columns[
+            [{ width: '20%' }, null, null, null, null]
+          ]
+          // { targets: '_all', visible: false }
+      ]
       })
     }
   })
@@ -964,9 +970,9 @@ function printAllProductsOnTable(searchValue, indexTab) {
 
   _productos.forEach((producto) => {
     let tr = `<tr product_id="${producto.id}">
-          <td class="catProd"> ${producto.categoria}</td>
-          <td class="itemProd"> ${producto.item}</td>
-          <td style="" class="productName">${producto.nombre}</td>
+          <td class="catProd"> <p class="--h-text-lg">${producto.categoria}</p></td>
+          <td class="itemProd"> <p class="--h-text-lg">${producto.item}</p></td>
+          <td style="" class="productName"><p class="--h-text-lg w250">${producto.nombre}</p></td>
           <td class="productStock" >${producto.cantidad}</td>
           <td class="productAvailable">${(producto.disponibles) < 0 ? 0 : producto.disponibles}</td>
           <td><input style="margin-right:8px" class="addProdInput quantityToAdd quantityProductInput" id="" type="number" min="1"/><i class="fa-solid fa-plus addItem" onclick="AddProduct(this)"></i></td>
@@ -977,7 +983,8 @@ function printAllProductsOnTable(searchValue, indexTab) {
   if (!$.fn.DataTable.isDataTable('#tableProducts')) {
     $('#tableProducts').dataTable(
       {
-        columDefs: [{ width: '10%', targets: 5 }]
+        pageLength: 100,
+        columns: [{ width: '20%' }, { width: '20%' }, { width: '20%' }, { width: '5%' }, { width: '5%' },{width: '10%'}]
       }
     );
 
@@ -1006,7 +1013,7 @@ function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
   }
   _productos.forEach((producto) => {
     let tr = `<tr product_id="${producto.id}">
-          <td class="catProd"> ${producto.categoria}</td>
+          <td class="catProd"> ${producto.categoria}123 123</td>
           <td class="itemProd"> ${producto.item}</td>
           <td style="width:25%" class="productName">${producto.nombre}</td>
           <td class="productStock" >${producto.cantidad}</td>
@@ -1018,7 +1025,12 @@ function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
 
   if (!$.fn.DataTable.isDataTable('#tableProducts')) {
 
-    $('#tableProducts').dataTable();
+    $('#tableProducts').dataTable(
+      {
+        pageLength: 100,
+        columns: [{ width: '20%' }, { width: '20%' }, { width: '20%' }, { width: '5%' }, { width: '5%' },{width: '10%'}]
+      }
+    );
 
   }
   $("#tableProducts").DataTable().page(indexTab).draw(false)
