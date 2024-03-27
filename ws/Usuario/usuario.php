@@ -359,7 +359,7 @@ function CreateUser($request)
 
     $queryInsertUser = "INSERT INTO u136839350_intec.usuario
         (`user`, `password`, createAt, empresa_id)
-        VALUES('$email', '$pass', '$today', $empresa_id)";
+        VALUES('$email', '".createPass($pass)."', '$today', $empresa_id)";
 
     if ($conn->mysqli->query($queryInsertUser)) {
         $user_id = $conn->mysqli->insert_id;

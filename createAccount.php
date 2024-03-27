@@ -117,7 +117,6 @@
         const pass = $('#c-acc-pass').val();
         const passConfirm = $('#c-acc-conf-pass').val();
 
-
         if (/^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]+$/.test(event.key)) {
 
 
