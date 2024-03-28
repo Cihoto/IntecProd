@@ -2123,11 +2123,26 @@ textarea {
   background: var(--Fondo-cyan, #E8F3F3);
 }
 
-#personalResumeAssigment thead th,
+#personalResumeAssigment thead th{
+  display: flex;
+  width: 19.1%;
+  padding: 12px 16px;
+  align-items: center;
+  flex-shrink: 0;
+
+  color: #2C2D33;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.17px;
+}
+
 #personalResumeAssigment tbody td {
   display: flex;
   width: 19.1%;
-  padding: 16px;
+  padding: 3px 16px;
   align-items: center;
   flex-shrink: 0;
 }
@@ -2390,6 +2405,20 @@ textarea {
   width: 100%;
 }
 
+#allVehiclesTable tr {
+  display: flex;
+  width: 100%;
+  padding: var(--none, 0px);
+  align-items: center;
+  gap: var(--1, 8px);
+}
+#allVehiclesTable thead tr {
+  border-top: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-right: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-bottom: 1px solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-left: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
+  background: var(--Fondo-cyan, #E8F3F3);
+}
 #allVehiclesTable thead th {
   color: #2C2D33;
   font-feature-settings: 'clig' off, 'liga' off;
@@ -2402,13 +2431,8 @@ textarea {
   letter-spacing: 0.17px;
 }
 
-#allVehiclesTable tr {
-  display: flex;
-  width: 100%;
-  padding: var(--none, 0px);
-  align-items: center;
-  gap: var(--1, 8px);
-  cursor: default;
+#allVehiclesTable tbody tr {
+  cursor: pointer ;
   transition: all 0.2s ease;
 }
 
@@ -2416,11 +2440,17 @@ textarea {
   background-color: #069b993a;
 }
 
-#allVehiclesTable td,
+#allVehiclesTable td{
+  /* width: 150px; */
+  width: 20%;
+  padding: 3px 16px;
+  align-items: center;
+  flex-shrink: 0;
+}
 #allVehiclesTable th {
   /* width: 150px; */
   width: 20%;
-  padding: 16px;
+  padding: 12px 16px;
   align-items: center;
   flex-shrink: 0;
 }
@@ -3212,6 +3242,14 @@ text-align: center;
   overflow: hidden;
 }
 
+.--h-text-flex{
+  margin: 0px!important;
+  width: 99%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .event-status.confirmado {
   background: var(--estado-confirmado, #27AE60);
 }
@@ -3798,7 +3836,7 @@ label.dateLabel {
   display: flex;
   padding: var(--none, 0px);
   align-items: center;
-  gap: var(--1, 6px);
+  /* gap: var(--1, 6px);   */
   align-self: stretch;
 }
 .dashEventsTable thead tr{
@@ -3822,7 +3860,7 @@ label.dateLabel {
   display: flex;
   padding: var(--none, 0px);
   align-items: center;
-  gap: var(--1, 6px);
+  /* gap: var(--1, 6px); */
   align-self: stretch;
   border-radius: var(--none, 0px);
   border-top: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
@@ -3831,7 +3869,7 @@ label.dateLabel {
   border-left: var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12));
 }
 .dashEventsTable tbody tr td{
-  display: flex;
+  /* display: flex; */
   justify-content: start;
   text-align: start;
   width: 166px!important;
@@ -4405,11 +4443,9 @@ button{
 
 
 #tableProducts {
-  margin-top: 50px!important;
-  margin-right: 10px;
-  width: 100%;
-  
+  width: 100% !important;
 }
+
 #tableProducts td ,#tableProducts th{
   padding: 1px 12px!important;
   border-right: 1px solid var(--Line-table, #DDDDE1);
@@ -4727,7 +4763,7 @@ border-bottom: none!important;
 }
 #eventsPerPersonal_dash tbody td{
   display: flex;
-  padding: 16px;
+  padding: 3px 16px!important;
   width: 19.3%;
   align-items: center;
   flex-shrink: 0;
@@ -4825,7 +4861,7 @@ table.dataTable thead th, table.dataTable thead td{
 #productsDashTable tbody td{
   display: flex;
   width: 17.28%;
-  padding: 16px;
+  padding: 3px 16px;
   align-items: center;
   flex-shrink: 0;
   border-right: 1px solid var(--Line-table, #DDDDE1);

@@ -984,7 +984,7 @@ function printAllProductsOnTable(searchValue, indexTab) {
     $('#tableProducts').dataTable(
       {
         pageLength: 100,
-        columns: [{ width: '20%' }, { width: '20%' }, { width: '20%' }, { width: '5%' }, { width: '5%' },{width: '10%'}]
+        columns: [{ width: '25%' }, { width: '25%' }, { width: '30%' }, { width: '5%' }, { width: '5%' },{width: '10%'}]
       }
     );
 

@@ -227,8 +227,8 @@
                     <label for="factSheet-documents">Ficha técnica</label>
                 </div>
                 <div class="checkbox-wrapper-13">
-                    <input id="documents" type="checkbox">
-                    <label for="documents">Generar nómina</label>
+                    <input id="nomDocument" type="checkbox">
+                    <label for="nomDocument">Generar nómina</label>
                 </div>
             </div>
             <button id="generateResumePdf">

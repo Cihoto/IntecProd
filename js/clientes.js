@@ -379,7 +379,7 @@ async function FillClientesTable_dash() {
         "defaultContent": "-",
         "targets": "_all"
       }],
-      "pageLength": 5
+      "pageLength": 100
 
     });
 
@@ -476,7 +476,7 @@ $(document).on("click", "#dashClient-table tbody tr", async function () {
         "defaultContent": "-",
         "targets": "_all"
       }],
-      "pageLength": 5
+      "pageLength": 100
     });
 
   }

@@ -6,15 +6,15 @@ $('#addNewFreeLance').validate({
         nombreInput:{
             required:true
         },
-        rutInput:{
-            required:true
-        },
-        correoInput:{
-            required:true
-        },
-        telefonoInput:{
-            required:true
-        }
+        // rutInput:{
+        //     required:true
+        // },
+        // correoInput:{
+        //     required:true
+        // },
+        // telefonoInput:{
+        //     required:true
+        // }
     },
     messages: {
         especialidadSelect:{
@@ -23,15 +23,15 @@ $('#addNewFreeLance').validate({
         nombreInput:{
             required:"Ingrese un valor"
         },
-        rutInput:{
-            required:"Ingrese un valor"
-        },
-        correoInput:{
-            required:"Ingrese un valor"
-        },
-        telefonoInput:{
-            required:"Ingrese un valor"
-        }
+        // rutInput:{
+        //     required:"Ingrese un valor"
+        // },
+        // correoInput:{
+        //     required:"Ingrese un valor"
+        // },
+        // telefonoInput:{
+        //     required:"Ingrese un valor"
+        // }
       
     },
     submitHandler: async function() {

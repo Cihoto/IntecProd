@@ -531,15 +531,15 @@ function getPersonal($empresaId){
         $conn->conectar();
         $personal =  [];
         $queryPersonal = "SELECT  p.id, p.cargo_id, CONCAT(per.nombre ,' ',per.apellido) as nombre,
-                                c.cargo,per.rut, e.especialidad, p.neto, tc.contrato
+                                c.cargo,per.rut, e.especialidad, p.neto, tc.contrato, p.IsDelete
                             FROM personal p
                             INNER JOIN persona per on per.id = p.persona_id 
                             INNER JOIN cargo c on c.id  = p.cargo_id 
                             INNER JOIN especialidad e on e.id  = p.especialidad_id 
                             INNER JOIN empresa emp on emp.id = p.empresa_id 
                             INNER JOIN tipo_contrato tc on tc.id = p.tipo_contrato_id 
-                            where emp.id = $empresaId
-                            AND p.IsDelete = 0";
+                            WHERE emp.id = $empresaId ;";
+                            // AND p.IsDelete = 0";
     
         if ($responseBd = $conn->mysqli->query($queryPersonal)) {
             while ($dataPersonal = $responseBd->fetch_object()) {

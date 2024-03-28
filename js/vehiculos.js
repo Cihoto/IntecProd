@@ -279,7 +279,7 @@ function FillVehiculos(empresaId) {
         url: "ws/vehiculo/Vehiculo.php",
         dataType: 'json',
         data: JSON.stringify({
-            "action": "getVehiculos",
+            "action": "getVehiculosForEvents",
             empresaId: empresaId
         }),
         success: function (response) {
@@ -293,7 +293,8 @@ function FillVehiculos(empresaId) {
                     'tipoVehiculo': vehicle.tipo,
                     'cantidadViajes': 2,
                     'isSelected': false,
-                    'isPicked': false
+                    'isPicked': false,
+                    'isDelete': vehicle.IsDelete
                 }
             });
             console.log("allVehicles", allVehicles)
@@ -501,6 +502,11 @@ function printSelectedVehicles() {
     // allVehiclesTable
     allVehicles.forEach((vehiculo) => {
 
+        console.log
+        if(vehiculo.isDelete == 1){
+            return
+        }
+
         let vehicleStatus = "";
 
 
@@ -686,17 +692,18 @@ $(document).on('click', '.addVehicleToResume', function () {
 })
 
 function addVehicle(vehiculo_id) {
+
     const vehiculo_exists = allVehicles.find((vehiculo) => {
-        return vehiculo.id === vehiculo_id;
+        return vehiculo.id == vehiculo_id;
     });
 
     if (!vehiculo_exists) {
         Swal.fire({
             'icon': "error",
             'title': "Ups!",
-            'text': "Ha ocurrido un error",
+            'text': "Ha ocurrido un error2121212",
             'showConfirmButton': false,
-            'timer': 2000
+            // 'timer': 2000
         });
         return;
     };
@@ -711,6 +718,12 @@ function addVehicle(vehiculo_id) {
     vehiculo_exists.isSelected = true;
     selectedVehicles.push(vehiculo_exists);
     printSelectedVehicles();
+
+    console.log('selectedVehicles',selectedVehicles)
+    console.log('selectedVehicles',selectedVehicles)
+    console.log('selectedVehicles',selectedVehicles)
+    console.log('selectedVehicles',selectedVehicles)
+    console.log('selectedVehicles',selectedVehicles)
 }
 
 let lastCostoPorViaje = 0;
@@ -773,7 +786,7 @@ $(document).on('click', '.cantidadViajesInput', function () {
 })
 
 $(document).on('blur', '.cantidadViajesInput', function () {
-
+    
     const value = $(this).val();
     const vehiculo_id = $(this).closest('tr').attr('vehiculo_id');
     if (value === "" || value === undefined || value === null) {
@@ -808,7 +821,11 @@ $(document).on('blur', '.cantidadViajesInput', function () {
         $(this).val(cantidadViajes)
         return;
     }
-    vehiculoExiste.cantidadViajes = parseInt(value);
+
+    const SELECTED_VEHICLE = selectedVehicles.find((selVehicle)=>{return selVehicle.id === vehiculo_id})
+
+    SELECTED_VEHICLE.cantidadViajes = parseInt(value)
+    // vehiculoExiste.cantidadViajes = parseInt(value);
     printSelectedVehicles();
 })
 

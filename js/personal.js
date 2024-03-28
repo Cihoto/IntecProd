@@ -93,7 +93,7 @@ async function printPersonal() {
                     "previous": "Anterior"
                 }
             },
-            "pageLength": 5
+            "pageLength": 100
         });
     }
 }
@@ -127,8 +127,6 @@ $(document).on("click", "#personalDashTable tbody tr", async function () {
     personalData.persona_id = PERSONAL_BY_ID.data.persona_id;
     personalData.personal_id = PERSONAL_ID;
 
-    console.log('personalData.data', personalData.data);
-    console.log('personalData.data', personalData.data);
     console.log('personalData.data', personalData.data);
 
     $('#update_nombrePersonal').val(personalData.data.nombre);
@@ -400,7 +398,8 @@ async function GetAllPersonal(empresaId) {
                     'nombre': personal.nombre,
                     'isPicked': false,
                     'isSelected': false,
-                    'horasTrabajadas': 0
+                    'horasTrabajadas': 0,
+                    'isDelete': personal.IsDelete
                 }
             })
             setAllTipoContrato();
@@ -496,7 +495,7 @@ function fillPersonal() {
 
     allPersonal.forEach((personal) => {
         let tr = `<tr personal_id="${personal.id}">
-            <td>${personal.nombre}</td>
+            <td> <p class="--h-text-flex">${personal.nombre}</p></td>
             <td>${personal.rut}</td>
             <td>${personal.contrato}</td>
             <td>${CLPFormatter(parseInt(personal.neto))}</td>
@@ -526,7 +525,7 @@ function printFilterDataAllPersonal(personalArray) {
 
     filteredPersonalByContract.forEach((filterPersonal) => {
         let tr = `<tr personal_id="${filterPersonal.id}">
-            <td>${filterPersonal.nombre}</td>
+            <td><p class="--h-text-flex">${filterPersonal.nombre}</p></td>
             <td>${filterPersonal.contrato}</td>
             <td>${CLPFormatter(parseInt(filterPersonal.neto))}</td>
             <td class=""><i class="fa-solid fa-plus pointer addPersonalToResume"></i></td>
@@ -750,6 +749,12 @@ function printAllSelectedPersonal() {
     $('.personalResumeTable').remove();
     $('#searchAllPersonal option').remove();
     allPersonal.forEach((personal) => {
+
+
+
+        if(personal.isDelete == 1){
+            return;
+        }
         // const personalExists = allSelectedPersonal.find((personalSelected)=>{
         //     if(personalSelected.id === personal.id){
         //         return true;
@@ -769,7 +774,7 @@ function printAllSelectedPersonal() {
         }
 
         let tr = `<tr personal_id="${personal.id}" class="${personalStatus}">
-            <td>${personal.nombre}</td>
+            <td> <p class="--h-text-flex">${personal.nombre}</p></td>
             <td>${personal.rut}</td>
             <td>${personal.especialidad}</td>
             <td>${personal.contrato}</td>
@@ -1596,7 +1601,7 @@ $(document).on('blur', '.freeLanceValue', function () {
     }
     personalSelectedExists.neto = valor;
     $(this).val(CLPFormatter(parseInt(valor)));
-
+    printAllSelectedPersonal();
 
 })
 

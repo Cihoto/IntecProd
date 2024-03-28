@@ -1017,7 +1017,16 @@ $active = 'inventario';
             $('#productsDashTable tbody').append(tr);
 
         });
-
+        console.log("91823791873918732918739187329182")
+        console.log("91823791873918732918739187329182")
+        console.log("91823791873918732918739187329182")
+        console.log("91823791873918732918739187329182")
+        console.log("91823791873918732918739187329182")
+        console.log("91823791873918732918739187329182")
+        console.log("91823791873918732918739187329182")
+        console.log("91823791873918732918739187329182")
+        console.log("91823791873918732918739187329182")
+        console.log("91823791873918732918739187329182")
         if (!$.fn.DataTable.isDataTable('#productsDashTable')) {
 
             dash_Client_table = new DataTable('#productsDashTable', {
@@ -1025,6 +1034,7 @@ $active = 'inventario';
                 "paging": true,
                 "scrollX": false,
                 "autoWidth": false,
+                pageLength:100,
                 lengthMenu: [5, 10, 20, 50, 100, 200, 500],
                 language: {
                     "decimal": "",
@@ -1060,8 +1070,7 @@ $active = 'inventario';
                         "defaultContent": "-",
                         "targets": "_all"
                     }
-                ],
-                "pageLength": 5
+                ]
 
             });
         }

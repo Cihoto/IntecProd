@@ -143,37 +143,42 @@ $('#generate1232231231152fd1f1Quotes').on('click',async function(){
     
 
 
-// console.log("_selectedClient",_selectedClient);
+console.log("_selectedClient",_selectedClient);
+console.log("_selectedClient",_selectedClient);
+console.log("_selectedClient",_selectedClient);
+console.log("_selectedClient",_selectedClient);
+console.log("_selectedClient",_selectedClient);
+console.log("_selectedClient",_selectedClient);
 
-    $.ajax({
-        type: "POST",
-        url: "ws/BussinessDocuments/quotesGenerator.php",
-        dataType: 'json',
-        data:JSON.stringify({
-            'empresa_id':EMPRESA_ID,
-            'table' : table,
-            'fileNameData' : fileNameData,
-            'table_Content':tableContent,
-            'totalQuoteResume':quote_resume,
-            'clientData' : _selectedClient,
-            'event_id' : event_data.event_id
-        }),
-        success: function(response){
+    // $.ajax({
+    //     type: "POST",
+    //     url: "ws/BussinessDocuments/quotesGenerator.php",
+    //     dataType: 'json',
+    //     data:JSON.stringify({
+    //         'empresa_id':EMPRESA_ID,
+    //         'table' : table,
+    //         'fileNameData' : fileNameData,
+    //         'table_Content':tableContent,
+    //         'totalQuoteResume':quote_resume,
+    //         'clientData' : _selectedClient,
+    //         'event_id' : event_data.event_id
+    //     }),
+    //     success: function(response){
 
-            preparingDocumentDownload("Descargando Cotización");
-            setTimeout(()=>{
-                // console.log("response", response);
-                let a = `<a target="_blank" id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/quotes/${response.name}"></a>`
-                $('#downloadPdf').append(a);
-                $('#dwnload')[0].click();
-            },1000)
-        },error:  function(error){
-            // console.log("error",error.responseText)
-        }
-    })
-    .then(()=>{
-        closeBottomBar();
-    })
+    //         preparingDocumentDownload("Descargando Cotización");
+    //         setTimeout(()=>{
+    //             // console.log("response", response);
+    //             let a = `<a target="_blank" id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/quotes/${response.name}"></a>`
+    //             $('#downloadPdf').append(a);
+    //             $('#dwnload')[0].click();
+    //         },1000)
+    //     },error:  function(error){
+    //         // console.log("error",error.responseText)
+    //     }
+    // })
+    // .then(()=>{
+    //     closeBottomBar();
+    // })
 
 })
 
@@ -184,27 +189,25 @@ $('#generateResumePdf').on('click',async function(){
 
     $('#footerInformation').addClass('active');
 
-    const PROJECT_IS_CREATED = await SaveOrUpdateEvent();
+    // const PROJECT_IS_CREATED = await SaveOrUpdateEvent();
 
-    if(PROJECT_IS_CREATED === false){
+    // if(PROJECT_IS_CREATED === false){
 
-        completeEventDataToContinue();
+    //     completeEventDataToContinue();
        
-        setTimeout(() => {
-            closeBottomBar();
-        }, 2000);
-        return;
-    }else if(PROJECT_IS_CREATED === true){
-        console.log(`CREADO EXAITOSAMENTE`)
-        eventWasCreatedBottomBar();
-    }
+    //     setTimeout(() => {
+    //         closeBottomBar();
+    //     }, 2000);
+    //     return;
+    // }else if(PROJECT_IS_CREATED === true){
+    //     console.log(`CREADO EXAITOSAMENTE`)
+    //     eventWasCreatedBottomBar();
+    // }
    
     if($('#factSheet-documents').is(':checked') === true){
         // console.log("GENERANDO LA FICHA TECNICA")
         const factSheetWasGenerated = await generateFactSheet();
 
-        console.log("factSheetWasGenerated",factSheetWasGenerated);
-        console.log("factSheetWasGenerated",factSheetWasGenerated);
         console.log("factSheetWasGenerated",factSheetWasGenerated);
 
 
@@ -218,6 +221,23 @@ $('#generateResumePdf').on('click',async function(){
             $('#dwnload')[0].click();
             $('#downloadPdf a').remove();
         }
+    }
+
+
+    if($('#nomDocument').is(':checked') === true){
+        const nomSheetWasGenerated  = await generateNomDocument();
+
+        if(nomSheetWasGenerated){
+            preparingDocumentDownload("Descargando Nómina");
+            $('#downloadPdf a').remove();
+            // console.log("response", response);
+            // let a = `<a target="_blank" id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/factSheet/${factSheetWasGenerated.name}"></a>`
+            let a = `<a id="dwnload" href="./ws/BussinessDocuments/documents/buss${EMPRESA_ID}/nomSheet/${nomSheetWasGenerated.name}" download></a>`
+            $('#downloadPdf').append(a);
+            $('#dwnload')[0].click();
+            $('#downloadPdf a').remove();
+        }
+
     }
     setTimeout(()=>{
         closeBottomBar();
@@ -325,10 +345,11 @@ async function generateFactSheet(){
         </tfoot>
     </table>`;
 
-    
-
-
-// console.log("_selectedClient",_selectedClient);
+    const EVENT_DATA = {
+        eventName : $('#inputProjectName').val(),
+        eventAddress : $('#dirInput').val(),
+        event_dates : $('#fechaProjectResume').text()
+    }
 
     return $.ajax({
         type: "POST",
@@ -339,8 +360,119 @@ async function generateFactSheet(){
             'table' : table,
             'fileNameData' : fileNameData,
             'table_Content':tableContent,
-            'clientData' : _selectedClient,
-            'event_id' : event_data.event_id
+            'clientData' : [_selectedClient],
+            'event_id' : event_data.event_id,
+            'event_data':EVENT_DATA
+        }),
+        success: function(response){
+            console.log(response)
+
+            
+        },error:  function(error){
+            // console.log("error",error.responseText)
+        }
+    })
+}
+
+
+async function generateNomDocument(){
+    preparingDocumentBottomBar("Generando Nómina");
+
+    const date =  new Date();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const day = date.getDay();
+
+    const fileNameData = {
+        'month' :month,
+        'year' :year,
+        'day' :day
+    }
+
+    let personal = "";
+    let tr = "";
+
+
+    let personalToNom = `<tr class="categorieQuote">
+        <td>Técnicos</td>
+        <td></td>
+        <td></td>
+    </tr>`;
+        let personalBody = ""
+    if(allSelectedPersonal.length > 0){
+
+        console.log('allSelectedPersonal',allSelectedPersonal)
+
+        allSelectedPersonal.forEach((personal)=>{
+
+            personalBody += `
+            <tr>
+                <td>${personal.nombre}</td>
+                <td>${personal.especialidad}</td>
+                <td>${personal.rut}</td>
+            </tr>`
+        })
+    }else{
+        personalBody =+ `<tr>
+            <td class='item-quote' style='text-align: right;'><p style='margin: 0px 20px 0px 0px;'></td>
+            <td class='item-quote' style='text-align: left;'><p> </p></td>
+            <td></td>
+        </tr>`
+        
+    }
+
+
+    let vehiclesToNom = `<tr class="categorieQuote">
+        <td>Vehículos</td>
+        <td></td>
+        <td></td>
+    </tr>`;
+    let vehiclesBody = '';
+    if(selectedVehicles.length > 0){
+        console.log('selectedVehicles',selectedVehicles)
+
+        selectedVehicles.forEach((vehicle)=>{
+
+            vehiclesBody += `
+            <tr>
+                <td>${vehicle.patente}</td>
+                <td>${vehicle.tipoVehiculo}</td>
+                <td></td>
+            </tr>`
+        })
+    }else{
+        vehiclesBody =+ `<tr>
+            <td class='item-quote' style='text-align: right;'><p style='margin: 0px 20px 0px 0px;'></td>
+            <td class='item-quote' style='text-align: left;'><p> </p></td>
+            <td></td>
+        </tr>`
+    }
+
+    console.log('personalToNom',personalToNom);
+    console.log('personalBody',personalBody);
+    console.log('vehiclesToNom',vehiclesToNom);
+    console.log('vehiclesBody',vehiclesBody);
+
+
+    let tableContent = `${personalToNom}${personalBody}${vehiclesToNom}${vehiclesBody}`;
+
+
+    const EVENT_DATA = {
+        eventName : $('#inputProjectName').val(),
+        eventAddress : $('#dirInput').val(),
+        event_dates : $('#fechaProjectResume').text()
+    }
+
+    return $.ajax({
+        type: "POST",
+        url: "ws/BussinessDocuments/nominaGenerator.php",
+        dataType: 'json',
+        data:JSON.stringify({
+            'empresa_id':EMPRESA_ID,
+            'fileNameData' : fileNameData,
+            'table_content':tableContent,
+            'event_id' : event_data.event_id,
+            'event_data':EVENT_DATA,
         }),
         success: function(response){
             console.log(response)

@@ -14,9 +14,10 @@
     $table_Content = $data->table_Content;
     $clientData = $data->clientData;
     $event_id = $data->event_id;
+    $event_data = $data->event_data;
 
     if(count($clientData) > 0){
-        $client_name = ucfirst($clientData[0]->nombre)." ".ucfirst($clientData[0]->apellido) ;
+        $client_name = ucfirst($clientData[0]->nombre) ;
         $nombre_fantasia = ucfirst($clientData[0]->nombre_fantasia);
     }
 
@@ -80,8 +81,11 @@
     }
     $html = str_replace("{{ numquote }}", "", $html);
     $html = str_replace("{{ today }}", $today, $html);
-
-
+    
+    $html = str_replace("{{ event_name }}", $event_data->eventName, $html);
+    $html = str_replace("{{ event_address }}", $event_data->eventAddress, $html);
+    $html = str_replace("{{ event_date }}", $event_data->event_dates, $html);
+    
     $dompdf->loadHtml($html);
     
     $dompdf->setPaper("A4","portrait");
@@ -93,7 +97,12 @@
     // $dompdf->stream("$month-$day-$year.pdf");
     
     $output = $dompdf->output();
-    $pdfRoot = __DIR__."/documents/buss1/factSheet$fileName";
+    $pdfRoot = __DIR__."/documents/buss$empresa_id/factSheet$fileName";
+    $bussFactDocumentFolder = __DIR__."/documents/buss$empresa_id/factSheet";
+
+    if(!is_dir($bussFactDocumentFolder)){
+        mkdir($bussFactDocumentFolder);
+    }
     // $pdfAdm = __DIR__."\documents\buss1\quotes";
     file_put_contents($pdfRoot, $output);
 

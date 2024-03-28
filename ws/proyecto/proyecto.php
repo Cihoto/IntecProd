@@ -16,9 +16,11 @@ if ($_POST) {
             break;
         case 'insertOrUpdateEventData_json':
             $event_id = $data->event_id;
-            $totalPerItem = $data->totalPerItem; 
+            $totalPerItem = $data->totalPerItem;
             $selectedProducts = $data->selectedProducts;
-            $result = json_encode(insertOrUpdateEventData_json($event_id ,$totalPerItem ,$selectedProducts));
+            $allSelectedPersonal = $data->allSelectedPersonal;
+            $selectedVehicles = $data->selectedVehicles;
+            $result = json_encode(insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles));
             break;
         case 'getProjectResume':
             $request = $data->request;
@@ -47,7 +49,7 @@ if ($_POST) {
         case 'getAllCalendarEvents':
             $empresa_id = $data->empresa_id;
             $status_id = $data->status_id;
-            $result = json_encode(getAllCalendarEvents($empresa_id,$status_id));
+            $result = json_encode(getAllCalendarEvents($empresa_id, $status_id));
             break;
         case 'GetAllProjects':
             $empresa_id = $data->empresaId;
@@ -163,7 +165,6 @@ function addProject($request)
         $owner = $req->owner;
         $status_id = $req->status_id;
         $event_type_id = $req->event_type_id;
-
     }
     if ($lugar_id === "") {
         $lugar_id = "null";
@@ -225,7 +226,8 @@ function addProject($request)
 }
 
 
-function insertOrUpdateEventData_json($event_id ,$totalPerItem ,$selectedProducts){
+function insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles)
+{
     try {
         $conn = new bd();
         $conn->conectar();
@@ -236,32 +238,36 @@ function insertOrUpdateEventData_json($event_id ,$totalPerItem ,$selectedProduct
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if($result->num_rows === 0){
-            return insertEventData_json($event_id ,$totalPerItem ,$selectedProducts);
+        if ($result->num_rows === 0) {
+            return insertEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles);
         }
 
         $conn->desconectar();
-        return updateEvent_json($event_id ,$totalPerItem ,$selectedProducts);
+        return updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles);
     } catch (Exception $e) {
         $conn->desconectar();
         return false;
     }
-
 }
 
 
-function insertEventData_json($event_id ,$totalPerItem ,$selectedProducts){
+function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $selectedPersonal, $selectedVehicles)
+{
     try {
         $conn = new bd();
         $conn->conectar();
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.event_data 
-        (event_id, selected_prods_json, totalPerItem_json) VALUES
-        (?, ?, ?);");
+        (event_id, selected_prods_json, totalPerItem_json,selectedPersonal_json,selectedVehicles_json) VALUES
+        (?, ?, ?,?,?);");
 
         $totalPerItem = json_encode($totalPerItem);
         $selectedProducts = json_encode($selectedProducts);
-        $stmt->bind_param("iss",  $event_id,$selectedProducts,$totalPerItem);
+
+        $selectedPersonal = json_encode($selectedPersonal);
+        $selectedVehicles = json_encode($selectedVehicles);
+
+        $stmt->bind_param("issss",  $event_id, $selectedProducts, $totalPerItem, $selectedPersonal, $selectedVehicles);
         $stmt->execute();
         $conn->desconectar();
         return true;
@@ -271,18 +277,22 @@ function insertEventData_json($event_id ,$totalPerItem ,$selectedProducts){
     }
 }
 
-function updateEvent_json($event_id ,$totalPerItem ,$selectedProducts){
+function updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles)
+{
     try {
         $conn = new bd();
         $conn->conectar();
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("UPDATE u136839350_intec.event_data 
-        SET selected_prods_json= ? , totalPerItem_json= ?  WHERE event_id= ?;");
+        SET selected_prods_json= ? , totalPerItem_json= ?  ,selectedPersonal_json = ? ,selectedVehicles_json = ? WHERE event_id= ?;");
 
         $totalPerItem = json_encode($totalPerItem);
         $selectedProducts = json_encode($selectedProducts);
 
-        $stmt->bind_param("ssi",$selectedProducts, $totalPerItem,$event_id);
+        $allSelectedPersonal = json_encode($allSelectedPersonal);
+        $selectedVehicles = json_encode($selectedVehicles);
+
+        $stmt->bind_param("ssssi", $selectedProducts, $totalPerItem, $allSelectedPersonal, $selectedVehicles, $event_id);
         $stmt->execute();
         $conn->desconectar();
         return true;
@@ -554,7 +564,7 @@ function getProjectResume($request)
             }
             if ($responseBd = $conn->mysqli->query($queryEventData_json)) {
                 while ($dataEvent_json  = $responseBd->fetch_object()) {
-                    $eventData_json [] = $dataEvent_json;
+                    $eventData_json[] = $dataEvent_json;
                 }
             }
         }
@@ -587,7 +597,8 @@ function getProjectResume($request)
     }
 }
 
-function getMyProjects($request){
+function getMyProjects($request)
+{
     $conn = new bd();
     $conn->conectar();
     $empresaId = $request->empresaId;
@@ -889,9 +900,10 @@ function getAllMyProjects_list_toExecute($empresa_id)
 
 
 
-function getAllMyEvents_notDeleted($empresa_id){
+function getAllMyEvents_notDeleted($empresa_id)
+{
 
-    try{
+    try {
         $conn = new bd();
         $conn->conectar();
         $mysqli = $conn->mysqli;
@@ -937,20 +949,16 @@ function getAllMyEvents_notDeleted($empresa_id){
             $projects_with_Date[] = $dataProject;
         }
         $conn->desconectar();
-        return array("events"=>$projects_with_Date);
-        
-    }
-    catch(Exception $e){
+        return array("events" => $projects_with_Date);
+    } catch (Exception $e) {
         $conn->desconectar();
-        return array("error"=>true);
-
+        return array("error" => true);
     }
-
-
 }
-function getAllCalendarEvents($empresa_id,$status_id){
+function getAllCalendarEvents($empresa_id, $status_id)
+{
 
-    try{
+    try {
         $conn = new bd();
         $conn->conectar();
         $mysqli = $conn->mysqli;
@@ -988,7 +996,7 @@ function getAllCalendarEvents($empresa_id,$status_id){
         AND p.fecha_inicio IS NOT NULL
         group by p.id
         ORDER BY p.fecha_inicio desc;");
-        $stmt->bind_param("iii", $empresa_id, $empresa_id,$status_id);
+        $stmt->bind_param("iii", $empresa_id, $empresa_id, $status_id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -996,16 +1004,11 @@ function getAllCalendarEvents($empresa_id,$status_id){
             $projects_with_Date[] = $dataProject;
         }
         $conn->desconectar();
-        return array("events"=>$projects_with_Date);
-        
-    }
-    catch(Exception $e){
+        return array("events" => $projects_with_Date);
+    } catch (Exception $e) {
         $conn->desconectar();
-        return array("error"=>true);
-
+        return array("error" => true);
     }
-
-
 }
 
 
@@ -1510,17 +1513,25 @@ function getDashResume($empresa_id)
     // DECLARE ALL ARRAY RESPONSE 
 
     $currentAndLastMonthEventQuantity = [];
+    $currentMonthIncome = [];
     // QUERY SECTION
 
     $queryGetCurAndLastMonthEventQuantity = "SELECT COUNT(p.id) AS total_current_month,
-	(SELECT COUNT(p.id)  from proyecto p 
-        where p.fecha_inicio >=  DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE())  , '01')),INTERVAL 1 MONTH) 
-        and  p.fecha_inicio <=LAST_DAY(DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE())  , '01')),INTERVAL 1 MONTH))
-        and p.empresa_id = $empresa_id) AS total_last_month
-        from proyecto p 
-    where p.fecha_inicio >=    DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE()) , '01'))
-    and  p.fecha_inicio >=  LAST_DAY(CURDATE())
-    and p.empresa_id = $empresa_id";
+	(SELECT COUNT(p.id)  FROM proyecto p 
+        WHERE p.fecha_inicio >=  DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE()) , '01')),INTERVAL 1 MONTH) 
+        AND  p.fecha_inicio <= LAST_DAY(DATE_SUB(DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE())  , '01')),INTERVAL 1 MONTH))
+        AND p.empresa_id = $empresa_id) AS total_last_month,
+    (SELECT COUNT(p.id)  
+        from proyecto p
+    WHERE p.fecha_inicio >= CURDATE()
+    AND p.fecha_inicio <= LAST_DAY(CURDATE())
+    AND p.empresa_id = $empresa_id) AS currentLeftEvents
+        FROM proyecto p 
+    WHERE p.fecha_inicio >=    DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE()) , '01'))
+    AND  p.fecha_inicio <=  LAST_DAY(CURDATE())
+    AND p.empresa_id = $empresa_id
+    AND p.IsDelete  = 0
+    and p.status_id in (2,3,5); ";
 
     $queryIncomeComparisonCurrentAndLast = "SELECT 
     CASE 
@@ -1539,7 +1550,15 @@ function getDashResume($empresa_id)
     where p.fecha_inicio >=    DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE()) , '01'))
     AND  p.fecha_inicio >=  LAST_DAY(CURDATE())
     AND p.empresa_id = $empresa_id
-    AND p.isDelete = 0;";
+    AND p.isDelete = 0";
+
+    $queryActualMonthIncome = "   SELECT  SUM(pfr.income)as currentMonthIncome from project_finance_resume pfr 
+    INNER JOIN proyecto p on p.id = pfr.event_id
+    where p.fecha_inicio >=    DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE()) , '01'))
+    and  p.fecha_inicio <=  LAST_DAY(CURDATE())
+    AND p.empresa_id = $empresa_id
+    and p.IsDelete = 0
+    and p.status_id = 2;  ";
 
 
 
@@ -1555,11 +1574,17 @@ function getDashResume($empresa_id)
             $incomeResume  = $dataResponse;
         }
     }
+    if ($responseBd = $conn->mysqli->query($queryActualMonthIncome)) {
+        while ($dataResponse = $responseBd->fetch_object()) {
+            $currentMonthIncome  = $dataResponse;
+        }
+    }
 
     return array(
         "success" => true,
         "event_quanity_cur_last_month" => $currentAndLastMonthEventQuantity,
-        "incomeResume" => $incomeResume
+        "incomeResume" => $incomeResume,
+        "currentMonthIncome" => $currentMonthIncome
     );
 }
 
@@ -1735,7 +1760,7 @@ function getDeletedEvents($empresa_id)
             group by p.id
             ORDER BY p.deleteAt asc;");
 
-            $stmt->bind_param("ii", $empresa_id,$empresa_id);
+            $stmt->bind_param("ii", $empresa_id, $empresa_id);
             $stmt->execute();
 
             $result = $stmt->get_result();
@@ -1755,7 +1780,8 @@ function getDeletedEvents($empresa_id)
 }
 
 
-function deleteEvent($empresa_id, $event_id){
+function deleteEvent($empresa_id, $event_id)
+{
 
     try {
         $conn = new bd();
@@ -1775,7 +1801,8 @@ function deleteEvent($empresa_id, $event_id){
     }
 }
 
-function returnEventToList($empresa_id, $event_id){
+function returnEventToList($empresa_id, $event_id)
+{
 
     try {
         $conn = new bd();

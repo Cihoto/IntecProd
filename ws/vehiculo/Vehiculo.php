@@ -36,6 +36,13 @@ if ($_POST) {
             $vehiculos = getVehiculos($empresaId);
             echo json_encode($vehiculos);
             break;
+        case 'getVehiculosForEvents':
+            // Recibe el parámetro empresaId
+            $empresaId = $data->empresaId;
+            // Llama a la función getVehiculos y devuelve el resultado
+            $vehiculos = getVehiculosForEvents($empresaId);
+            echo json_encode($vehiculos);
+            break;
         case 'getAvailableVehiculos':
             // Recibe el parámetro empresaId
             $request = $data->request->arrayRequest;
@@ -198,11 +205,30 @@ function getVehiculos($empresaId)
     $conn = new bd();
     $conn->conectar();
     $vehiculos = [];
-    $queryVehiculos = "SELECT v.id,v.patente,v.ownCar,v.tripValue,tv.tipo FROM vehiculo v 
+    $queryVehiculos = "SELECT v.id,v.patente,v.ownCar,v.tripValue,tv.tipo, v.IsDelete FROM vehiculo v 
     LEFT JOIN persona p ON p.id = v.persona_id
     INNER JOIN tipo_vehiculo tv ON tv.id = v.tipoVehiculo_id
     INNER JOIN empresa e ON e.id = v.empresa_id 
     WHERE e.id = $empresaId AND v.IsDelete = 0";
+
+    if ($responseBdVehiculos = $conn->mysqli->query($queryVehiculos)) {
+        while ($dataVehiculos = $responseBdVehiculos->fetch_object()) {
+            $vehiculos[] = $dataVehiculos;
+        }
+    }
+    $conn->desconectar();
+    return $vehiculos;
+}
+function getVehiculosForEvents($empresaId)
+{
+    $conn = new bd();
+    $conn->conectar();
+    $vehiculos = [];
+    $queryVehiculos = "SELECT v.id,v.patente,v.ownCar,v.tripValue,tv.tipo, v.IsDelete FROM vehiculo v 
+    LEFT JOIN persona p ON p.id = v.persona_id
+    INNER JOIN tipo_vehiculo tv ON tv.id = v.tipoVehiculo_id
+    INNER JOIN empresa e ON e.id = v.empresa_id 
+    WHERE e.id = $empresaId";
 
     if ($responseBdVehiculos = $conn->mysqli->query($queryVehiculos)) {
         while ($dataVehiculos = $responseBdVehiculos->fetch_object()) {

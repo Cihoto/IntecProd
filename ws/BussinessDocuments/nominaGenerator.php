@@ -9,23 +9,19 @@
     $data = json_decode($json);
 
     $empresa_id = $data->empresa_id;
-    $table = $data->table;
     $fileNameData = $data->fileNameData;
-    $table_Content = $data->table_Content;
-    $clientData = $data->clientData;
+    $table_content = $data->table_content;
     $event_id = $data->event_id;
+    $event_data = $data->event_data;
 
-    if(count($clientData) > 0){
-        $client_name = ucfirst($clientData[0]->nombre)." ".ucfirst($clientData[0]->apellido) ;
-        $nombre_fantasia = ucfirst($clientData[0]->nombre_fantasia);
-    }
+    // echo json_encode(array("name"=> $data->table_content));
 
     $month = $fileNameData->month;
     $year = $fileNameData->year;
     $day = $fileNameData->day;
     $today = date('d/m/Y');
     
-    $fileName = "/FichaTécnica-$event_id$month-$day-$year.pdf";
+    $fileName = "/Nómina-$event_id$month-$day-$year.pdf";
 
     $options = new Options();
     // $options->set("chroot",realpath(''));
@@ -35,7 +31,7 @@
 
     $dompdf = new Dompdf($options);
     ob_start();
-    require(__DIR__.'/factSheet_template.php');
+    require(__DIR__.'/nomTemplate.php');
     $html = ob_get_contents();
     ob_get_clean();
 
@@ -81,6 +77,12 @@
     $html = str_replace("{{ numquote }}", "", $html);
     $html = str_replace("{{ today }}", $today, $html);
 
+    $html = str_replace("{{ table_content }}", $table_content, $html);
+
+    $html = str_replace("{{ event_name }}", $event_data->eventName, $html);
+    $html = str_replace("{{ event_address }}", $event_data->eventAddress, $html);
+    $html = str_replace("{{ event_date }}", $event_data->event_dates, $html);
+    
 
     $dompdf->loadHtml($html);
     
@@ -93,16 +95,20 @@
     // $dompdf->stream("$month-$day-$year.pdf");
     
     $output = $dompdf->output();
-    $pdfRoot = __DIR__."/documents/buss1/factSheet$fileName";
+    $pdfRoot = __DIR__."/documents/buss$empresa_id/nomSheet$fileName";
+
+    $bussDocumentFolder = __DIR__."/documents/buss$empresa_id/nomSheet";
+
+    if(!is_dir($bussDocumentFolder)){
+        mkdir($bussDocumentFolder);
+    }
+
     // $pdfAdm = __DIR__."\documents\buss1\quotes";
     file_put_contents($pdfRoot, $output);
 
     // $data["nombre_archivo"] = "Cotización-$month$month$month-$day-$year.pdf";
     
-    echo json_encode(array("name"=> "FichaTécnica-$event_id$month-$day-$year.pdf","path"=>$pdfRoot));
-
-
-  
- 
-
+    echo json_encode(array("name"=> "Nómina-$event_id$month-$day-$year.pdf","path"=>$pdfRoot));
+    
+   
 ?>

@@ -360,26 +360,7 @@
             </tr>
         </thead>
         <tbody>
-            <!-- {{ table }} -->
-
-            <?php 
-
-            // for ($i=0; $i <3 ; $i++) { 
-                # code...
-                foreach ($table_Content as $key => $item) {
-                    echo "<tr class='categorieQuote'>
-                        <td class='categorie-quote'  style='padding:6px;'><p style='margin: 0px 0px 0px 10px;'>". ucfirst($item->categoria)."</p></td>
-                        <td class='categorie-quote' style='padding:6px;'></td>
-                    </tr>";
-                    foreach ($item->productos as $key => $prod) {
-                        echo "<tr>
-                            <td class='item-quote' style='text-align: right;'><p style='margin: 0px 20px 0px 0px;'>". $prod->quantityToAdd."</td>
-                            <td class='item-quote' style='text-align: left;'> ".ucfirst($prod->nombre)."</p></td>
-                        </tr>`;";
-                    } 
-                }
-            // }
-            ?>
+            {{ table_content }}
         </tbody>
         <tfoot>
         </tfoot>

@@ -6,13 +6,22 @@ let dateLimits = {
 }
 $(document).ready(async function () {
     // SET EVENTS QUANTITY COMPARISON BTEWEEN ACTUAL  MONTH AND LAST MONTH
+
+
     const resumeDataDashboard = await getDashResume(EMPRESA_ID);
+
+    console.log('resumeDataDashboard',resumeDataDashboard)
+    console.log('resumeDataDashboard',resumeDataDashboard)
+    console.log('resumeDataDashboard',resumeDataDashboard)
     const resumeDataQtty = resumeDataDashboard.event_quanity_cur_last_month;
     const resumeDataIncome = resumeDataDashboard.incomeResume;
+    const currentMonthIncome = resumeDataDashboard.currentMonthIncome;
 
-    const quantityResumePercentajes = getDifferencePercentajeBetweenData_CurMonth_LastMonth(resumeDataQtty.total_last_month, resumeDataQtty.total_current_month);
-    setQuantityResumePercentaje(quantityResumePercentajes);
-
+    // const quantityResumePercentajes = getDifferencePercentajeBetweenData_CurMonth_LastMonth(resumeDataQtty.total_last_month, resumeDataQtty.total_current_month);
+    // setQuantityResumePercentaje(quantityResumePercentajes);
+    
+    setQuantityResumePercentaje(resumeDataQtty.total_current_month,currentMonthIncome.currentMonthIncome == undefined ? 0 :currentMonthIncome.currentMonthIncome,resumeDataQtty.currentLeftEvents);
+    
     // SET DIFFERENCE BTEWEEN INCOME FROM ACTUAL MONTH AND LAST MONTH EVENTS
 
     const incomeResumePercentajes = getDifferencePercentajeBetweenData_CurMonth_LastMonth(resumeDataIncome.last_month_income, resumeDataIncome.actual_income_month)
@@ -318,17 +327,20 @@ function getDifferencePercentajeBetweenData_CurMonth_LastMonth(lastMonthValue, c
     }
 }
 
-function setQuantityResumePercentaje(data) {
-    $('#eventAmountCurrentMonth').text(`${data.curMonthValue}`)
-    $('#currentMonthEventamountPercentaje').text(`${data.simbol}${data.percentaje}%`)
-    $('#currentMonthEventamountPercentaje').addClass(data.class)
+function setQuantityResumePercentaje(eventAmountCurrentMonth,currentMonthIncome,currentLeftEvents) {
+    $('#eventAmountCurrentMonth').text(`${eventAmountCurrentMonth}`)
+    $('#dash-amountIncome').text(`${CLPFormatter(currentMonthIncome)}`);
+    $('#currentMonthLeftEvents').text(`${currentLeftEvents}`)
+    // $('#eventAmountCurrentMonth').text(`${data.curMonthValue}`)
+    // $('#currentMonthEventamountPercentaje').text(`${data.simbol}${data.percentaje}%`)
+    // $('#currentMonthEventamountPercentaje').addClass(data.class)
 }
 
 function setIncomeResumePercentaje(data) {
 
-    $('#dash-amountIncome').text(`${data.curMonthValue}`)
-    $('#dash-amountIncomePercentaje').text(`${data.simbol}${data.percentaje}%`)
-    $('#dash-amountIncomePercentaje').addClass(data.class)
+    // $('#dash-amountIncome').text(`${data.curMonthValue}`)
+    // $('#dash-amountIncomePercentaje').text(`${data.simbol}${data.percentaje}%`)
+    // $('#dash-amountIncomePercentaje').addClass(data.class)
 }
 
 $('.eventStatusSortDash').on('click', async function () {

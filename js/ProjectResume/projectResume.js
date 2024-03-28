@@ -101,6 +101,7 @@ function setEgresos(){
         let totalPers = (parseInt(personal.neto) / 180) * personal.horasTrabajadas
         
         if( personal.contrato.toUpperCase() === 'FREELANCE'){
+            console.log("102398902138512783409128374091873412",personal)
             totalPers = parseInt(personal.neto);
         }
         totalPersonal += totalPers;  

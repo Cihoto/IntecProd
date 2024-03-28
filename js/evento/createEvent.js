@@ -80,8 +80,9 @@ async function SaveOrUpdateEvent() {
     const RESPONSE_UPDATE_EVENT = await updateEvent(requestProject, event_data.event_id, EMPRESA_ID);
   }
 
-
-  await insertOrUpdateEventData_json(event_data.event_id,totalPerItem,_selectedProducts);
+  console.log('allSelectedPersonal',allSelectedPersonal)
+  console.log('selectedVehicles',selectedVehicles)
+  await insertOrUpdateEventData_json(event_data.event_id,totalPerItem,_selectedProducts,allSelectedPersonal,selectedVehicles);
 
   if(_tempCommentList.length > 0){
     const COMMENT_RESPONSE = await addAndAssignCommentsToEvent(_tempCommentList, EMPRESA_ID, event_data.event_id);
@@ -240,7 +241,7 @@ function createNewEvent(requestProject){
   })
 }
 
-function insertOrUpdateEventData_json(event_id, totalPerItem,selectedProducts){
+function insertOrUpdateEventData_json(event_id, totalPerItem,selectedProducts,allSelectedPersonal,selectedVehicles){
   return $.ajax({
     type: "POST",
     url: 'ws/proyecto/proyecto.php',
@@ -248,6 +249,8 @@ function insertOrUpdateEventData_json(event_id, totalPerItem,selectedProducts){
       'event_id': event_id,
       'totalPerItem': totalPerItem,
       'selectedProducts': selectedProducts,
+      'allSelectedPersonal': allSelectedPersonal,
+      'selectedVehicles': selectedVehicles,
       'action': "insertOrUpdateEventData_json",
     }),
     dataType: 'json',

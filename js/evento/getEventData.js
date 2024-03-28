@@ -172,8 +172,13 @@ async function getAllProjectData(event_id, empresa_id) {
 
     if (responseGetData.asignados.eventData_json.length > 0) {
         const EVENT_JSON = responseGetData.asignados.eventData_json[0];
-        const SELECTED_PRODUCTS = JSON.parse(EVENT_JSON.selected_prods_json);
 
+        console.log('EVENT_JSON',EVENT_JSON); 
+        
+        const SELECTED_PRODUCTS = JSON.parse(EVENT_JSON.selected_prods_json);
+        const SELECTED_PERSONAL = JSON.parse(EVENT_JSON.selectedPersonal_json);
+        const SELECTED_VEHICLES = JSON.parse(EVENT_JSON.selectedVehicles_json);
+        
         const RESPONSE_TOTAL_PER_ITEM = JSON.parse(EVENT_JSON.totalPerItem_json)
         const TOTAL_PER_ITEM_PRODUCTOS = RESPONSE_TOTAL_PER_ITEM.equipos;
 
@@ -185,6 +190,35 @@ async function getAllProjectData(event_id, empresa_id) {
         printAllProductsOnTable();
         printAllSelectedProducts();
         setIngresos();
+
+        if(SELECTED_PERSONAL === ""){
+            if (responseGetData.asignados.personal.length > 0) {
+                responseGetData.asignados.personal.forEach(personal => {
+                    AddSelectedPersonal(personal.id);
+                });
+                printAllSelectedPersonal();
+            } else { }
+        }else{
+            allSelectedPersonal = SELECTED_PERSONAL
+            printAllSelectedPersonal();
+        }
+        if(SELECTED_VEHICLES === ""){
+            if (responseGetData.asignados.vehiculos.length > 0) {
+                responseGetData.asignados.vehiculos.forEach(vehiculo => {
+
+                    addVehicle(vehiculo.id)
+                });
+            } else { }
+        }else{
+            
+            selectedVehicles = SELECTED_VEHICLES    
+
+            
+            printSelectedVehicles()
+        }
+        
+
+
         
     }else{
 
@@ -198,10 +232,26 @@ async function getAllProjectData(event_id, empresa_id) {
             printAllSelectedProducts();
             setIngresos();
         });
+        
+        if (responseGetData.asignados.personal.length > 0) {
+            responseGetData.asignados.personal.forEach(personal => {
+                AddSelectedPersonal(personal.id);
+            });
+            printAllSelectedPersonal();
+        } else { }
+
+        if (responseGetData.asignados.vehiculos.length > 0) {
+            responseGetData.asignados.vehiculos.forEach(vehiculo => {
+                addVehicle(vehiculo.id)
+            });
+        } else { }
+
+
         // if (responseGetData.asignados.productos.length > 0) {
       
         // }
     }
+
     if(responseGetData.asignados.otherProds.length > 0){
         responseGetData.asignados.otherProds.forEach(otherProd => {
             _selectedOthersProducts.push({
@@ -242,18 +292,7 @@ async function getAllProjectData(event_id, empresa_id) {
         });
     }
 
-    if (responseGetData.asignados.personal.length > 0) {
-        responseGetData.asignados.personal.forEach(personal => {
-            AddSelectedPersonal(personal.id);
-        });
-        printAllSelectedPersonal();
-    } else { }
 
-    if (responseGetData.asignados.vehiculos.length > 0) {
-        responseGetData.asignados.vehiculos.forEach(vehiculo => {
-            addVehicle(vehiculo.vehiculo_id)
-        });
-    } else { }
     if (responseGetData.asignados.accountables.length > 0) {
         
         responseGetData.asignados.accountables.forEach(accountable => {

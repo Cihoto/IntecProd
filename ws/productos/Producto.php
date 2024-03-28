@@ -288,9 +288,6 @@ function customProdSearch($request, $empresaId)
         $subcategoriaWhere = "  ";
     }
 
-
-
-
     if ($request->subcat !== "" || $request->subcat !== null) {
         $request->subcat = "AND i.id = $request->subcat";
     }
@@ -298,7 +295,7 @@ function customProdSearch($request, $empresaId)
     $productos = [];
     $queryProductos = "SELECT p.id as product_id, p.nombre as nombre_producto, c.nombre as categoria, i.item as subcategoria, inv.cantidad as stock, p.precio_arriendo  FROM producto p INNER JOIN empresa e on e.id = p.empresa_id  INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id  INNER JOIN categoria c on c.id = chi.categoria_id  INNER JOIN item i on i.id  = chi.item_id  INNER JOIN inventario inv on inv.producto_id  = p.id  WHERE e.id = $empresaId  $categoriaWhere $subcategoriaWhere";
 
-    return array($queryProductos);
+    // return array($queryProductos);
 
     if ($responseProductos = $conn->mysqli->query($queryProductos)) {
         while ($dataProductos = $responseProductos->fetch_object()) {

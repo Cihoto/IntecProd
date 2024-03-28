@@ -65,10 +65,10 @@ $active = 'dashboard';
               </div>
               <div id="monthEventsAmount" class="resume-event-container">
                 <div class="detail-month">
-                  <p class="month-name">Utilidad mensual</p>
+                  <p class="month-name">Venta del mes</p>
                   <div class="d-flex justify-content-start" style="gap: 4px;">
-                    <p id="dash-amountIncome" class="month-amount">$</p>
-                    <p id="dash-amountIncomePercentaje" class="month-perc neg">-14%</p>
+                    <p id="dash-amountIncome" class="month-amount"></p>
+                    <!-- <p id="dash-amountIncomePercentaje" class="month-perc neg">-14%</p> -->
                   </div>
                 </div>
                 <div class="img-event-month">
@@ -79,8 +79,8 @@ $active = 'dashboard';
                 <div class="detail-month">
                   <p class="month-name">Eventos por completar</p>
                   <div class="d-flex justify-content-start" style="gap: 4px;">
-                    <p class="month-amount">+5,4</p>
-                    <p class="month-perc">+14%</p>
+                    <p class="month-amount" id="currentMonthLeftEvents"></p>
+                    <!-- <p class="month-perc">+14%</p> -->
                   </div>
                 </div>
                 <div class="img-event-month">
@@ -231,6 +231,7 @@ $active = 'dashboard';
 
   <script src="./js/dashboard/dashboard.js"></script>
   <script src="./js/sortTable/eventSort.js"></script>
+  <script src="./js/valuesValidator/validator.js"></script>
 
 </body>
 
