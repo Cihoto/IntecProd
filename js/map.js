@@ -17,7 +17,7 @@ L.tileLayer('https://maps.geoapify.com/v1/tile/osm-carto/{z}/{x}/{y}.png?apiKey=
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: 'OSM'}).addTo(map);
 
-const myMarker = L.marker([START_COORDS.lat, START_COORDS.long], {title: "COOOOOORDS", alt: "COOOOOORDS", draggable: true})
+const myMarker = L.marker([START_COORDS.lat, START_COORDS.long], {title: "", alt: "", draggable: true})
 .addTo(map).on('dragend', function() {
     const lat = myMarker.getLatLng().lat.toFixed(8);
     const lon = myMarker.getLatLng().lng.toFixed(8);

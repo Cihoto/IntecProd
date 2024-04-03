@@ -63,15 +63,24 @@ async function printPersonal() {
     });
     if (!$.fn.DataTable.isDataTable('#personalDashTable')) {
         $('#personalDashTable').DataTable({
-            columnDefs: [
-                { "width": "10%", "targets": [2, 3, 4, 5, 6] },
-                { "width": "18%", "targets": [0] },
-                { "width": "10%", "targets": [1] },
-                { className: "personalName", "targets": [0] },
-                { className: "rutPersonal", "targets": [1] },
-                { className: "personalData", "targets": [2, 3, 4, 5, 6] },
-                { "defaultContent": "-", "targets": "_all" },
-            ],
+            columns: [
+             { width: '11%' },
+             { width: '11%' },
+             { width: '11%' },
+             { width: '11%' },
+             { width: '11%' },
+             { width: '11%' },
+             { width: '11%' }
+             ],
+            // columnDefs: [
+            //     { "width": "10%", "targets": [2, 3, 4, 5, 6] },
+            //     { "width": "18%", "targets": [0] },
+            //     { "width": "10%", "targets": [1] },
+            //     { className: "personalName", "targets": [0] },
+            //     { className: "rutPersonal", "targets": [1] },
+            //     { className: "personalData", "targets": [2, 3, 4, 5, 6] },
+            //     { "defaultContent": "-", "targets": "_all" },
+            // ],
             lengthMenu: [5, 10, 20, 50, 100, 200, 500],
             language: {
                 "decimal": "",
@@ -81,7 +90,7 @@ async function printPersonal() {
                 "infoFiltered": "(Filtrado de _MAX_ total entradas)",
                 "infoPostFix": "",
                 "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ Clientes",
+                "lengthMenu": "Mostrar _MENU_ Técnicos",
                 "loadingRecords": "Cargando...",
                 "processing": "Procesando...",
                 "search": "Buscar:",
@@ -1670,6 +1679,10 @@ $('#openModalNewFree').on('click', async function () {
 
 $('#triggerNewFreeLance').on('click', function () {
     $('#createNewFreeLance').trigger('click')
-})
+});
+
+
+
+
 
 

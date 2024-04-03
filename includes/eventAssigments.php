@@ -34,7 +34,7 @@
                         <p class="header-P" style="margin: 0px!important;"> Ingresa la información del evento</p>
                     </div>
                     <div class="row" style="margin-bottom: 20px;">
-                        <div class="col-7">
+                        <div class="col-lg-6 col-md-11 col-10">
                             <div class="row">
                                 <div class="form-group col-7">
                                     <label for="inputProjectName" class="inputLabel">Nombre del evento</label>
@@ -91,9 +91,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-5">
+                        <div class="col-lg-4 col-md-12 col-12">
                             
-                            <div class="rowjustify-content-end">
+                            <div class="row justify-content-end">
                                 <div id="map" style="width:580px;height : 400px;margin-top:-50px;"></div>
                             </div>
                         </div>
@@ -143,12 +143,12 @@
                         <textarea class="form-control" id="commentProjectArea" name="txtAreaComments" rows="5" cols="5"></textarea>
                     </div>
 
-                    <div class='row' style="gap: 16px;">
-                        <button type="button" class="s-Button" id="openEventComments" style="width: 240px;">
-                            <p class="s-P">Comentarios</p>
+                    <div class='row' style="gap: 16px; padding: 0px 12px;">
+                        <button type="button" class="s-Button-w" id="openEventComments" style="width: 240px;">
+                            <p class="s-P-g">Comentarios</p>
                         </button>
-                        <button type="button" class="s-Button" id="openViewUploadedFiles" style="width: 240px;">
-                            <p class="s-P">Archivos</p>
+                        <button type="button" class="s-Button-w" id="openViewUploadedFiles" style="width: 240px;">
+                            <p class="s-P-g">Archivos</p>
                         </button>
                     </div>
                     <!-- <form id="addFilesToEvent" enctype="multipart/form-data" action="#" method="post"> -->

@@ -352,18 +352,26 @@ function printAllMyVehicles() {
             ownCar = "Externo"
         }
         let tr = `<tr vehicle_id="${vehicle.vehicle_id}">
-            <td class="ps-header">${vehicle.tipo === null ? "-" : vehicle.tipo}</td>
-            <td>${vehicle.brand === null ? "-" : vehicle.brand}</td>
-            <td>${vehicle.model === null ? "-" : vehicle.model}</td>
-            <td>${vehicle.patente === null ? "-" : vehicle.patente.toUpperCase()}</td>
-            <td>${ownCar}</td>
+            <td class="ps-header"><p class="--h-text-flex">${vehicle.tipo === null ? "-" : vehicle.tipo}</p></td>
+            <td><p class="--h-text-flex">${vehicle.brand === null ? "-" : vehicle.brand}</p></td>
+            <td><p class="--h-text-flex">${vehicle.model === null ? "-" : vehicle.model}</p></td>
+            <td><p class="--h-text-flex">${vehicle.patente === null ? "-" : vehicle.patente.toUpperCase()}</p></td>
+            <td><p class="--h-text-flex">${ownCar}</p></td>
             <td>${vehicle.tripValue === null ? "-" : CLPFormatter(vehicle.tripValue)}</td>
         </tr>`;
         $('#vehiclesDashTable tbody').append(tr)
     });
     if (!$.fn.DataTable.isDataTable('#vehiclesDashTable')) {
         $('#vehiclesDashTable').DataTable({
-            lengthMenu: [3,5,10,20],
+            columns:[
+                {'width': '20%'},
+                {'width': '20%'},
+                {'width': '20%'},
+                {'width': '20%'},
+                {'width': '10%'},
+                {},
+            ],
+            lengthMenu: [3,5,10,20,50,100],
             language: {
                 "decimal": "",
                 "emptyTable": "No hay información",
@@ -384,7 +392,7 @@ function printAllMyVehicles() {
                     "previous": "Anterior"
                 }
             },
-            "pageLength": 5
+            "pageLength": 100
         });
     }
 }

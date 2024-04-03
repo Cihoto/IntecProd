@@ -262,8 +262,26 @@ function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $sele
         (?, ?, ?,?,?);");
 
         $totalPerItem = json_encode($totalPerItem);
-        $selectedProducts = json_encode($selectedProducts);
 
+
+        if(count($selectedProducts) === 0){
+            $selectedProducts = json_encode([]);
+        }else{
+            $selectedProducts = json_encode($selectedProducts);
+        }
+        if(count($selectedPersonal) === 0){
+            $selectedPersonal = json_encode([]);
+        }else{
+            $selectedPersonal = json_encode($selectedPersonal);
+        }
+        if(count($selectedVehicles) === 0){
+            $selectedVehicles = json_encode([]);
+        }else{
+            $selectedVehicles = json_encode($selectedVehicles);
+        }
+
+
+        $selectedProducts = json_encode($selectedProducts);
         $selectedPersonal = json_encode($selectedPersonal);
         $selectedVehicles = json_encode($selectedVehicles);
 
@@ -1525,7 +1543,8 @@ function getDashResume($empresa_id)
         from proyecto p
     WHERE p.fecha_inicio >= CURDATE()
     AND p.fecha_inicio <= LAST_DAY(CURDATE())
-    AND p.empresa_id = $empresa_id) AS currentLeftEvents
+    AND p.empresa_id = $empresa_id
+    AND p.status_id = 2) AS currentLeftEvents
         FROM proyecto p 
     WHERE p.fecha_inicio >=    DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE()) , '01'))
     AND  p.fecha_inicio <=  LAST_DAY(CURDATE())

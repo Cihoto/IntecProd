@@ -353,8 +353,9 @@ async function FillClientesTable_dash() {
       "paging": true,
       "scrollX": false,
       "autoWidth": false,
-      lengthMenu: [5, 10, 20, 50, 100, 200, 500],
-      language: {
+      'lengthMenu': [5, 10, 20, 50, 100, 200, 500],
+      'pageLength': 100,
+      'language': {
         "decimal": "",
         "emptyTable": "No hay información",
         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
@@ -384,7 +385,7 @@ async function FillClientesTable_dash() {
     });
 
   }
-  $("select[name='dashClient-table_length']").val("5").change();
+  // $("select[name='dashClient-table_length']").val("5").change();
 }
 
 $(document).on("click", "#dashClient-table tbody tr", async function () {

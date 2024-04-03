@@ -78,14 +78,27 @@ function checkIfOtherCostsRowIsReady(el) {
     {
         const TEMP_ID = $(el).closest('tr').attr('other_cost_id');
         $(element).removeClass("incomplete");
-        _allMyOtherCosts.push({
-            'temp_id':TEMP_ID,
-            'name': $(element).find('.nameOtherCost').val(),
-            'cantidad': $(element).find('.cantidadOtherCost').val(),
-            'monto': ClpUnformatter($(element).find('.totalOtherCost').val()) 
-        });
+
+        const OTHER_COST_EXISTS =   _allMyOtherCosts.find((otherCost)=>{
+            return otherCost.temp_id == TEMP_ID;
+        })
+
+        if(OTHER_COST_EXISTS){
+            OTHER_COST_EXISTS.name = $(element).find('.nameOtherCost').val();
+            OTHER_COST_EXISTS.cantida = $(element).find('.cantidadOtherCost').val();
+            OTHER_COST_EXISTS.monto = ClpUnformatter($(element).find('.totalOtherCost').val()) ;
+        }else{
+            _allMyOtherCosts.push({
+                'temp_id':TEMP_ID,
+                'name': $(element).find('.nameOtherCost').val(),
+                'cantidad': $(element).find('.cantidadOtherCost').val(),
+                'monto': ClpUnformatter($(element).find('.totalOtherCost').val()) 
+            });
+        }
+        
         console.log("SE HA PUSHEADO ESTO A LA LISTA",_allMyOtherCosts)
         rendicion_temp_id ++;
+        setEgresos()
     } else{
         const otherCostExistsOnList = _allMyOtherCosts.find((cost)=>{
             return cost.temp_id === TEMP_ID

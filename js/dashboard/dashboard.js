@@ -38,15 +38,6 @@ $(document).ready(async function () {
     printEventOnDashTable();
 
     console.log(getToday())
-    console.log(getToday())
-    console.log(getToday())
-    console.log(getToday())
-    console.log(getToday())
-    console.log(getToday())
-    console.log(getToday())
-    console.log(getToday())
-    console.log(getToday())
-    console.log(getToday())
 
     printDailyEvents(getToday());
 

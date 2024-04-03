@@ -174,7 +174,14 @@ async function getAllProjectData(event_id, empresa_id) {
         const EVENT_JSON = responseGetData.asignados.eventData_json[0];
 
         console.log('EVENT_JSON',EVENT_JSON); 
-        
+
+
+        if(EVENT_JSON.selectedPersonal_json === ""){
+            EVENT_JSON.selectedPersonal_json = '[]'
+        }
+        if(EVENT_JSON.selectedVehicles_json === ""){
+            EVENT_JSON.selectedVehicles_json = '[]'
+        }
         const SELECTED_PRODUCTS = JSON.parse(EVENT_JSON.selected_prods_json);
         const SELECTED_PERSONAL = JSON.parse(EVENT_JSON.selectedPersonal_json);
         const SELECTED_VEHICLES = JSON.parse(EVENT_JSON.selectedVehicles_json);
@@ -183,8 +190,7 @@ async function getAllProjectData(event_id, empresa_id) {
         const TOTAL_PER_ITEM_PRODUCTOS = RESPONSE_TOTAL_PER_ITEM.equipos;
 
         _selectedProducts = SELECTED_PRODUCTS; 
-        totalPerItem.equipos = TOTAL_PER_ITEM_PRODUCTOS
-
+        totalPerItem.equipos = TOTAL_PER_ITEM_PRODUCTOS;
 
 
         printAllProductsOnTable();
@@ -313,7 +319,8 @@ async function getAllProjectData(event_id, empresa_id) {
     if (responseGetData.asignados.otherCosts.length > 0) {
  
         responseGetData.asignados.otherCosts.forEach(cost => {
-            appendNewRowOtherCosts(cost.name,cost.quantity,cost.total);
+
+            
             // global variable fomr otherCosts.js vvv
             _allMyOtherCosts.push({
                 'temp_id':others_costs_temp_id,
@@ -321,8 +328,13 @@ async function getAllProjectData(event_id, empresa_id) {
                 'cantidad': cost.quantity,
                 'monto': cost.total
             });
+            //FUNCTION FROM OTHER COSTS
+            // add new row and add 1 to temp_id_counter
+            // by default "others_costs_temp_id"  starts in 1
+            
+            appendNewRowOtherCosts(cost.name,cost.quantity,cost.total);
             // global variable fomr otherCosts.js vvv
-            others_costs_temp_id ++;
+            // others_costs_temp_id ++;
         });
     } else { }
     if (responseGetData.asignados.arriendos.length > 0) {

@@ -59,7 +59,7 @@ $active = 'personal';
                     </button>
                 </div>
 
-                <table class="s-table" id="personalDashTable">
+                <table class="" id="personalDashTable">
                     <thead>
                         <tr>
                             <th>Nombre</th>

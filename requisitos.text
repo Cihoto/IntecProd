@@ -269,33 +269,39 @@ COMENTARIOS Y ARCHIVOS;
 
 NOMINA ES PERSONAL Y VEHICULOS;
 
-dashboard venta mensual o ventga de este mes
-quitar porcentajes y tomar dolo nuemros naturales y enteros en los parametros
+dashboard venta mensual o venta de este mes
+quitar porcentajes y tomar solo numeros naturales y enteros en los parametros ====> done
 
-costos de personal ono se cambian al momento de guardar el evento. ->listo
-quitar en caso de seleccionados y finalizados por que la fecha ya pas 
+costos de personal o no se cambian al momento de guardar el evento. ->listo
+QUITAR en caso de seleccionados y finalizados por que la fecha a eventos finalizados o cerrados
 rut correo telefono en personal creacion no  es obligatorio ===>>QUITAR!!!
-VEHICULKO HABILITAR EDITAR UN VEHICULO.
-PASAR A MENU LATERRAL CREAR FREELANCE DETNRO DE UN EVENTO
-PASAR TODAS LAS TABLAS A 100 POR DEFECTO  FUTURA CONFIGURTACION DE LARGO DE TABLA PORE BDD 
-TRADUCCION DE TABLA VEHICULOS ESTA CAMBIAR PALABRAS.
 
+VEHICULO HABILITAR EDITAR UN VEHICULO.
 
+ 
+PASAR A MENU LATERRAL CREAR FREELANCE DENTRO DE UN EVENTO
+PASAR TODAS LAS TABLAS A 100 POR DEFECTO  FUTURA CONFIGURTACION DE LARGO DE TABLA PORE BDD'::FALTA CUADRICULAR TABLAS
+TRADUCCION DE TABLA VEHICULOS ESTA CAMBIAR PALABRAS.->DONE
 ESTADO NO VA AZUL CON ROJO LKINEA DIVISORIA DIAGONAL
 
+REDIRIGIR ASIGNACIONES A EVENTOS QUE PERTENEZCAN-->> PENDING
 
+REVISAR OCNSULTA DASHBOARD;-->DONE 
 
-REDIRIGIR ASIGNACIONES A EVENTOS QUE PERTENEZCAN
-
-
-REVISAR OCNSULTA DASHBOARD;
-
-
-
-CREAR Y POINER REGISTRO DE ACTIVIDAD EVENTOS EN DASHBOARD
+CREAR Y POINER REGISTRO DE ACTIVIDAD EVENTOS EN DASHBOARD-->PENDING
 
 
 
+
+
+REU MARTES 02-04-2024
+
+DASHBOARD FIXED CURRENT AND FUTURE CURRENT MONTH EVENTS AND INCOME  --> done
+
+
+subcateogoria fix en item producto desde dashboard productos.
+agregar cuadriculado a la todas la tablas. STANDARD
+AGREAGAR EXCELS A CARGAS MASIVAS
 
 
 

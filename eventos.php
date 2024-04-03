@@ -122,7 +122,7 @@ require_once('./includes/head.php');
                                             <p>Asignación</p>
                                         </th>
                                         <th>
-                                            <p>Precio venta</p>
+                                            <p>Venta</p>
                                         </th>
                                         <th>
                                             <p>Cliente</p>
@@ -190,7 +190,7 @@ require_once('./includes/head.php');
                                             <p>Asignación</p>
                                         </th>
                                         <th>
-                                            <p>Precio venta</p>
+                                            <p>Venta</p>
                                         </th>
                                         <th>
                                             <p>Cliente</p>

@@ -195,6 +195,7 @@ require_once('./includes/head.php');
 
 
 <script>
+    
     caches.keys().then((keyList) => Promise.all(keyList.map((key) => caches.delete(key))));
 
     let isProdQuantitySelected = false;

@@ -1034,8 +1034,8 @@ $active = 'inventario';
                 "paging": true,
                 "scrollX": false,
                 "autoWidth": false,
-                pageLength:100,
                 lengthMenu: [5, 10, 20, 50, 100, 200, 500],
+                pageLength:100,
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",
@@ -1044,7 +1044,7 @@ $active = 'inventario';
                     "infoFiltered": "(Filtrado de _MAX_ total entradas)",
                     "infoPostFix": "",
                     "thousands": ",",
-                    "lengthMenu": "Mostrar _MENU_ Clientes",
+                    "lengthMenu": "Mostrar _MENU_ Productos",
                     "loadingRecords": "Cargando...",
                     "processing": "Procesando...",
                     "search": "Buscar:",
