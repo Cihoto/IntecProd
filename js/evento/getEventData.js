@@ -46,9 +46,11 @@ async function getAllProjectData(event_id, empresa_id) {
         if (nombre_cliente === "" || nombre_cliente === undefined || nombre_cliente === null) {
             nombre_cliente = "";
         }
-        if (data.comentarios === "" || data.comentarios === undefined || data.comentarios === null) {
-            comentarios = "";
+
+        if (data.comentarios === "" || data.comentarios === undefined || data.comentarios === null ||  data.comentarios === 'NULL' || data.comentarios == 'NULL') {
+            data.comentarios = "";
         }
+        
         if (data.direccion === "" || data.direccion === undefined || data.direccion === null) {
             data.direccion = "";
         }
@@ -59,6 +61,8 @@ async function getAllProjectData(event_id, empresa_id) {
         $('#dirInput').val(data.direccion);
         $('#dirInput').blur();
         $('#inputNombreCliente').val(data.nombre_cliente);
+
+
         $('#commentProjectArea').val(data.comentarios);
         // $('#estadoProyecto').text(data.estado);
 

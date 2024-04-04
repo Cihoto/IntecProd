@@ -14,7 +14,7 @@
                 </button> -->
             </div>
             <div class="modal-body">
-                <form id="addNewFreeLance">
+                <form id="addNewFreeLance2">
                     <div style="display: flex;
                                 align-items: flex-start;
                                 gap: 20px;">
@@ -54,7 +54,7 @@
 
                 </form>
                 <div class="row" style="justify-content: end">
-                    <button class="s-Button col-3" id="triggerNewFreeLance">
+                    <button class="s-Button col-3" id="triggerNewFreeLance2">
                         <p class="s-P">Crear Nuevo Técnico</p>
                     </button>
                 </div>

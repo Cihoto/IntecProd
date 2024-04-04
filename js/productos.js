@@ -987,10 +987,9 @@ function printAllProductsOnTable(searchValue, indexTab) {
         columns: [{ width: '25%' }, { width: '25%' }, { width: '30%' }, { width: '5%' }, { width: '5%' },{width: '10%'}]
       }
     );
-
   }
-
 }
+
 
 function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
 
@@ -1011,6 +1010,7 @@ function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
       .DataTable()
       .destroy();
   }
+  
   _productos.forEach((producto) => {
     let tr = `<tr product_id="${producto.id}">
           <td class="catProd"> ${producto.categoria}123 123</td>

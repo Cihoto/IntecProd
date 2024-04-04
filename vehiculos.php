@@ -66,8 +66,8 @@ $active = 'vehiculos';
                     <p class="header-P">Aquí puedes ver, editar y crear los vehículos para tus eventos</p>
                 </div>
                 <div class="row justify-content-end" style="margin:0px 14px; gap :8px;">
-                    <button class="s-Button" id="openMasivaVehicle" style="position: relative; right:-156px ; bottom: 50px;">
-                        <p class="s-P">Agregar vehículos masiva</p>
+                    <button class="s-Button-w" id="openMasivaVehicle" style="width: 220px;">
+                        <p class="s-P-g">Agregar vehículos masiva</p>
                     </button>
                     <button class="s-Button" id="openSideVehicleForm">
                         <p class="s-P">Agregar vehículo</p>
@@ -336,7 +336,7 @@ $active = 'vehiculos';
 
         });
    
-        const dataArrayIndex = ['Patente','Marca (opcional)','Modelo (opcional)','Tipo de Vehículo (opcional)',	'Propietario (opcional)',	'Costo viaje (opcional)']
+        const dataArrayIndex = ['Patente','Marca (opcional)','Modelo (opcional)','Tipo de Vehículo (opcional)',	'Propietario (opcional)','Costo viaje (opcional)']
         const dataArray = {
             'xlsxData': [
                 {

@@ -2,11 +2,20 @@
     <button id="closeMasivaPersonal" style="border: none;background-color: none;padding: 30px;">
         <img src="./assets/svg/log-out.svg" alt="">
     </button>
-    <div class="formHeader" style="align-items: center;align-content:center;margin-left: 14px;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <circle cx="6" cy="6" r="6" fill="#069B99" />
-        </svg>
-        <p class="header-P" style="line-height: 20px;letter-spacing: 0px;">Aquí puedes cargar un archivo Excel y agregar tus técnicos de forma masiva</p>
+
+
+
+    <div style="display: flex;justify-content: space-between;">
+        <div class="formHeader" style="align-items: center;align-content:center;margin-left: 14px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <circle cx="6" cy="6" r="6" fill="#069B99" />
+            </svg>
+            <p class="header-P" style="line-height: 20px;letter-spacing: 0px;">Aquí puedes cargar un archivo Excel y agregar tus técnicos de forma masiva</p>
+        </div>
+
+        <button class="s-Button-w" id="" style="width: 150px;margin-right: 16px;">
+            <p class="s-P-g" style="line-height: normal;"><a href="../../ExcelFiles/Personal carga masiva excel tipo.xlsx" download="">Descargar Excel</a></p>
+        </button>
     </div>
 
     <div style="margin: 0px 14px;">

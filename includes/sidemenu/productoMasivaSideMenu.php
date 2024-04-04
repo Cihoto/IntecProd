@@ -2,13 +2,21 @@
     <button id="closeMasivaProductos" style="border: none;background-color: none;padding: 30px;">
         <img src="./assets/svg/log-out.svg" alt="">
     </button>
-    <div class="formHeader" style="align-items: center;align-content:center;margin-left: 14px;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <circle cx="6" cy="6" r="6" fill="#069B99" />
-        </svg>
-        <p class="header-P">Aquí puedes cargar un archivo Excel y agregar tus inventario</p>
-    </div>
 
+
+    <div style="display: flex;justify-content: space-between;">
+        <div class="formHeader" style="align-items: center;align-content:center;margin-left: 14px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <circle cx="6" cy="6" r="6" fill="#069B99" />
+            </svg>
+            <p class="header-P">Aquí puedes cargar un archivo Excel y agregar tus inventario</p>
+        </div>
+
+        <button class="s-Button-w" id="" style="width: 150px;margin-right: 16px;">
+            <p class="s-P-g" style="line-height: normal;"><a href="../../ExcelFiles/Productos carga masiva excel tipo.xlsx" download="">Descargar Excel</a></p>
+        </button>
+    </div>
+    
     <div style="margin: 0px 14px;">
 
         <input type="file" id="excel_input" style="visibility: hidden;">
@@ -265,15 +273,10 @@
         display: none;
         visibility: hidden!important;
     } */
-    #excelTable tbody {
-        /* width: calc(100% + 14px); */
-    }
 
     #excelTable tbody::-webkit-scrollbar-horizontal {
         visibility: hidden;
     }
-
-    .--exp-content {}
 
     .exception-cats-subcats-container {
         display: none;

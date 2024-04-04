@@ -217,9 +217,9 @@ $active = 'dashboard';
               </div>
             </div>
 
-            <div id="finance-resume">
+            <!-- <div id="finance-resume">
 
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

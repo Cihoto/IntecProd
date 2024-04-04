@@ -60,7 +60,7 @@ require_once('./includes/head.php');
 
                         <div style="display: flex; justify-content: space-between;margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;">
 
-                            <div class="row" style="margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;">
+                            <div class="row" style="margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;margin-left: 16px;">
 
                                 <!-- <button class="s-Button-w">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
@@ -86,7 +86,7 @@ require_once('./includes/head.php');
                                 <input readonly type="text" id="calendar-input" style="width: 250px;height: 40px;border-radius: 4px;" placeholder="filtrar por fecha">
                             </div>
 
-                            <div style="display: flex;gap: 16px;flex-direction: column;margin-top: -55px;">
+                            <div style="display: flex;gap: 16px;flex-direction: column;margin-top: -55px;margin-right: 10px;">
                                 <!-- <button class="s-Button-w" style="width: 175px;position: absolute;right: 158px;" id="exportToExcel">
                                     <p class="s-P-g">Exportar Excel</p>
                                 </button> -->
@@ -541,6 +541,15 @@ require_once('./includes/head.php');
         background-color: white;
         border-radius: 10px;
         padding: 45px;
+    }
+
+    #allProjectTable-list_length{
+        margin-bottom: 16px;
+    }
+    #allProjectTable-list_filter{
+        margin-bottom: 16px;
+        margin-right: -6px;
+
     }
 </style>
 

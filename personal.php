@@ -48,44 +48,48 @@ $active = 'personal';
                     <p class="header-P">Aquí puedes ver, editar y crear los técnicos para tus eventos</p>
                 </div>
                 <div class="row justify-content-end" style="margin:0px 14px; gap :8px;">
-                    <button class="s-Button" id="openMasivaPersonal" style="position: relative; right:-395px ; bottom: 50px;">
-                        <p class="s-P">Agregar personal masiva</p>
+                    <button class="s-Button-w" style="width: 250px;" id="openEspCarController">
+                        <p class="s-P-g">Agregar cargo especialidad</p>
                     </button>
-                    <button class="s-Button" id="openEspCarController">
-                        <p class="s-P">Agregar cargo especialidad</p>
+                    <button class="s-Button-w" style="width: 220px;" id="openMasivaPersonal" style="position: relative; right:-395px ; bottom: 50px;">
+                        <p class="s-P-g">Agregar personal masiva</p>
                     </button>
-                    <button class="s-Button" id="openSidePersonalForm">
+                    <button class="s-Button" style="width: 220px;" id="openSidePersonalForm">
                         <p class="s-P">Agregar personal</p>
                     </button>
                 </div>
 
-                <table class="" id="personalDashTable">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Rut</th>
-                            <th>Especialidad</th>
-                            <th>Teléfono</th>
-                            <th>Correo eléctronico</th>
-                            <th>Tipo contrato</th>
-                            <th>Costo mensual </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- <tr>
-                            <td>Nombre</td>
-                            <td>Rut</td>
-                            <td>Especialidad</td>
-                            <td>Teléfono</td>
-                            <td>Correo eléctronico</td>
-                            <td>Tipo contrato</td>
-                            <td>Costo mensual </td>
-                        </tr> -->
-                    </tbody>
-                    <tfoot>
+                <div class="-t-container-x-scroll">
 
-                    </tfoot>
-                </table>
+                    <table class="" id="personalDashTable">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Rut</th>
+                                <th>Especialidad</th>
+                                <th>Teléfono</th>
+                                <th>Correo eléctronico</th>
+                                <th>Tipo contrato</th>
+                                <th>Costo mensual </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- <tr>
+                                <td>Nombre</td>
+                                <td>Rut</td>
+                                <td>Especialidad</td>
+                                <td>Teléfono</td>
+                                <td>Correo eléctronico</td>
+                                <td>Tipo contrato</td>
+                                <td>Costo mensual </td>
+                            </tr> -->
+                        </tbody>
+                        <tfoot>
+    
+                        </tfoot>
+                    </table>
+                </div>
+
             </div>
 
 

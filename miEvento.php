@@ -83,7 +83,6 @@ require_once('./includes/head.php');
                 </div>
                 <?php require_once('./includes/eventAssigments.php') ?>
             </div>
-
             <div id="statusMenuList" class="optionLimiter">
                 <section id="statusMenuHeader">
                     <div id="headerOptionsContent">
@@ -118,12 +117,12 @@ require_once('./includes/head.php');
         </div>
     </div>
 
-
-
     <?php require_once('./includes/sidemenu/clientSideMenu.php') ?>
 
+    <!-- DONT DELETE THIS DIV IS USED FOR DOCUMENT DOWNLOAD -->
     <div style="display: none;" id="downloadPdf">
     </div>
+    <!-- END  -->
 
     <?php require_once('./includes/footer.php'); ?>
     <?php require_once('./includes/footerScriptsJs.php'); ?>
@@ -189,13 +188,13 @@ require_once('./includes/head.php');
 
     <!-- SIDEMENUS -->
     <?php require_once('./includes/sidemenu/viewUploadedFiles.php') ?>
+    <?php require_once('./includes/sidemenu/newFreelanceSideMenu.php') ?>
     <?php require_once('./includes/sidemenu/eventComments.php') ?>
 
 </body>
 
 
 <script>
-    
     caches.keys().then((keyList) => Promise.all(keyList.map((key) => caches.delete(key))));
 
     let isProdQuantitySelected = false;
@@ -206,7 +205,7 @@ require_once('./includes/head.php');
     const PERSONAL_IDS = <?php echo $personal_ids; ?>;
 
     console.log(PERSONAL_IDS);
-    
+
     let eventIsCreated = false;
 
     $('#closeThis').on("click", function() {
@@ -220,7 +219,7 @@ require_once('./includes/head.php');
     const fileLabel = document.getElementById('fileLabel');
 
     window.addEventListener('DOMContentLoaded', function() {
-        fileInput.addEventListener('change', function(event){
+        fileInput.addEventListener('change', function(event) {
             const fileName = fileInput.files[0].name;
             const path = fileInput.files[0];
             let tmppath = this.value
@@ -252,7 +251,7 @@ require_once('./includes/head.php');
         projectDates.total_days = "";
         projectDates.selectDates = false;
         projectDates.project_id = "";
-
+        printNewRow_subRent();
         // SET EVENT_ID
         <?php if (isset($_GET['event_id'])) : ?>
             const EVENT_ID = <?= $_GET['event_id']; ?>;
@@ -335,35 +334,34 @@ require_once('./includes/head.php');
         console.log($('#status-button').attr('status_id'));
     });
 
-    $('#postComment').on('click',async function(){
+    $('#postComment').on('click', async function() {
 
         // a;; variables are declared in evnets/comments
         const COMMENT_TEXT = $('#postCommentArea').val();
 
 
-        if(COMMENT_TEXT === ''){
+        if (COMMENT_TEXT === '') {
             return
         }
-        
-        _tempCommentIdCounter ++;
 
-        let commentData =         
-            {
-                temp_comment_id: _tempCommentIdCounter,
-                post_user_id: PERSONAL_IDS[0].usuario_id,
-                user_name: PERSONAL_IDS[0].user_name,
-                comment_text: COMMENT_TEXT,
-                files:[],
-                replies:[]
-            }
+        _tempCommentIdCounter++;
+
+        let commentData = {
+            temp_comment_id: _tempCommentIdCounter,
+            post_user_id: PERSONAL_IDS[0].usuario_id,
+            user_name: PERSONAL_IDS[0].user_name,
+            comment_text: COMMENT_TEXT,
+            files: [],
+            replies: []
+        }
         $('.--comments-container').append(createComment(commentData));
 
-        if(eventIsCreated){
+        if (eventIsCreated) {
             addAndAssignCommentsToCreatedEvent([commentData], EMPRESA_ID, event_data.event_id);
-            return 
+            return
         }
         _tempCommentList.push(commentData);
-    })      
+    })
 
     $(document).keydown(function(event) {
         if (event.which === 13) {
@@ -375,9 +373,6 @@ require_once('./includes/head.php');
             }
         }
     });
-
-
-
 </script>
 
 </html>

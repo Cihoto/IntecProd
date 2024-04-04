@@ -8,6 +8,13 @@
         </tr>
     </thead>
     <tbody>
+
+    <tr>
+        <td><input type="text" class="nameOtherCost" value=""></td>
+        <td class=""><input type="text" class="cantidadOtherCost" value=""></td>
+        <td class=""><input type="text" class="totalOtherCost" value=""></td>
+        <td style="width: 57px;" class="removeOtherCost"><img src="/assets/svg/trashCan.svg" alt=""></td>
+    </tr>
         <!-- <tr>
             <td><input type="text" class="nameOthers" value="${other.detalle}"></td>
             <td class="cantTd"><input type="text" class="cantidadOthers" value="${other.cantidad}"></td>

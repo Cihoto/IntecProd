@@ -304,7 +304,7 @@ async function printNewRow_subRent(){
             </td>
             <td>
                 <select class="form-select allProvidersSelect" name="" >
-                ${options}
+                    ${options}
                 </select>
             </td>
             <td >
@@ -318,7 +318,8 @@ async function printNewRow_subRent(){
                     <path d="M6.66666 7.33398V11.334" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>             
             </td>
-        </tr>`
+        </tr>`;
+
         $('#subarriendosTable tbody').append(tr);
     })
     let newOpt =`<option value=""></option>`;

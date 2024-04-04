@@ -18,11 +18,11 @@
         <form id="updateProductSideMenu">
             <div class="modal-body">
                 <div class="row justify-conetent-end">
-                    <div class="col-2">
+                    <!-- <div class="col-2">
                         <button class="s-Button-w changeInvertHover" style="width: 100%;margin-top: 10px;" id="">
                             <p>Editar</p>
                         </button>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row justify-content-center mb-5">
                     <section style="margin-top: 15px;" class="row">
@@ -68,8 +68,8 @@
                         <div class="row">
 
                             <div class="form-group col-md-6 col-10">
-                                <label for="brandProd">Marca</label>
-                                <input type="text" name="brandProd" id="brandProd" class="form-control">
+                                <label for="brandProdUpdate">Marca</label>
+                                <input type="text" name="brandProdUpdate" id="brandProdUpdate" class="form-control">
                             </div>
                         </div>
                         <!-- <div class="form-group col-md-6 col-10">

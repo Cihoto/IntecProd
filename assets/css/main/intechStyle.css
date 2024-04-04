@@ -2316,6 +2316,20 @@ textarea {
   /* 169.231% */
   letter-spacing: 0.46px;
   text-transform: uppercase;
+
+  a{
+    color: var(--Cyan-dark, #069B99);
+    /* button/small */
+    font-family: Roboto;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 55 0;
+    line-height: 22px;
+    /* 169.231% */
+    letter-spacing: 0.46px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
 }
 
 .formHeader {
@@ -2631,6 +2645,17 @@ textarea {
   background-color: white;
   top: -10px;
   left: 0px;
+}
+
+
+.-t-container-x-scroll{
+  /* display: flex; */
+  /* width: 100%; */
+  overflow-x: scroll;
+}
+#personalDashTable_filter{
+  position: relative;
+  margin-right: 16px;
 }
 
 .categorieHeaderTitle {
@@ -4981,8 +5006,8 @@ table.dataTable thead th, table.dataTable thead td{
   flex-direction: column;
   gap: 16px;
   padding: 22px 16px;
-  width: 320px;
-  height: 545.014px;
+  width: 380px;
+  height: 345px;
   border-radius: 3.689px;
   background: #FFF;
 
@@ -5103,7 +5128,7 @@ table.dataTable thead th, table.dataTable thead td{
   position: absolute;
   /* padding: px 0px 0px 0px; */
   top: -30px;
-  height: 100%;
+  height: 60%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0);
   display: flex;

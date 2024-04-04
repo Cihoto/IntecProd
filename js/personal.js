@@ -1669,12 +1669,24 @@ $(document).on('blur', '.input-horasTrabajadas', function () {
 })
 
 $('#openModalNewFree').on('click', async function () {
-    $('#newFreeLance-Modal').modal('show');
+    // $('#newFreeLance-Modal').modal('show');
+
+
+    $('#newFreelanceSideMenu').addClass('active');
+
+
     const especialidades = await getAllEspecialidades(EMPRESA_ID);
     $('#especialidadSelect option').remove();
     especialidades.especialidades.forEach((especialidad) => {
         $('#especialidadSelect').append(new Option(especialidad.especialidad, especialidad.id))
     })
+})
+
+function closeFreelanceSideMenu(){
+
+    $('#newFreelanceSideMenu').removeClass('active');
+}
+$('#closeNewFreelanceSideMenu').on('click',function(){
 })
 
 $('#triggerNewFreeLance').on('click', function () {

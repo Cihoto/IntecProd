@@ -14,7 +14,7 @@ $('#updateProductSideMenu').validate({
         'subCatProd': {
             required: true
         },
-        'brandProd': {
+        'brandProdUpdate': {
             required: true
         },
         'modelProd': {
@@ -40,7 +40,7 @@ $('#updateProductSideMenu').validate({
         'subCatProd': {
             required: "ingrese un valor"
         },
-        'brandProd': {
+        'brandProdUpdate': {
             required: "ingrese un valor"
         },
         'modelProd': {
@@ -57,31 +57,9 @@ $('#updateProductSideMenu').validate({
     submitHandler: async function() {
         event.preventDefault();
 
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-        console.log("aslkjdalkdsjalskjd")
-
-        // if (!_executeUpdateProduct) {
-        //     return;
-        // }
+        if (!_executeUpdateProduct) {
+            return;
+        }
         _executeUpdateProduct = false;
 
         const UPDATEPRODUCTREQUEST = {
@@ -89,7 +67,7 @@ $('#updateProductSideMenu').validate({
             'stockProd': $('#stockProd').val(),
             'catProd': $('#catProd').val(),
             'subCatProd': $('#subCatProd').val(),
-            'brandProd': $('#brandProd').val(),
+            'brandProd': $('#brandProdUpdate').val(),
             'priceProd': $('#priceProd').val(),
             'rentPriceProd': $('#rentPriceProd').val()
         }
@@ -107,18 +85,18 @@ $('#updateProductSideMenu').validate({
         };
 
 
-        // Toastify({
-        //     text: 'Producto actualizado Exitosamente',
-        //     duration: 3000,
-        //     close: true,
-        //     gravity: "top", // `top` or `bottom`
-        //     position: "right", // `left`, `center` or `right`
-        //     stopOnFocus: true, // Prevents dismissing of toast on hover
-        //     style: {
-        //       background: "linear-gradient(90deg, #36ABA9 0%, #10E5E1 70.29%)   ",
-        //     },
-        //   }).showToast();
-        // _executeUpdateProduct = true;
+        Toastify({
+            text: 'Producto actualizado Exitosamente',
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "linear-gradient(90deg, #36ABA9 0%, #10E5E1 70.29%)   ",
+            },
+          }).showToast();
+        _executeUpdateProduct = true;
     }
 })
 
