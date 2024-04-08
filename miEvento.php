@@ -109,8 +109,11 @@ require_once('./includes/head.php');
                     <button status_id="3" class="event-status-btn finalizado">
                         <p>Finalizado</p>
                     </button>
-                    <button status_id="5" class="event-status-btn cerrado" style="border-radius: 0px 0px 5px 5px;">
+                    <button status_id="5" class="event-status-btn cerrado">
                         <p>Cerrado</p>
+                    </button>
+                    <button status_id="6" class="event-status-btn cancelado" style="border-radius: 0px 0px 5px 5px;">
+                        <p>No va</p>
                     </button>
                 </section>
             </div>
@@ -131,7 +134,6 @@ require_once('./includes/head.php');
     <!-- require Modal -->
     <?php require_once('./includes/Modal/direccion.php') ?>
     <?php require_once('./includes/Modal/cliente.php') ?>
-    <?php require_once('./includes/Modal/addNewFreeLance.php') ?>
     <!-- FIN require Modal -->
     <?php require_once('./includes/footerScriptsJs.php') ?>
 

@@ -180,26 +180,48 @@ async function getAllProjectData(event_id, empresa_id) {
         console.log('EVENT_JSON',EVENT_JSON); 
 
 
-        if(EVENT_JSON.selectedPersonal_json === ""){
-            EVENT_JSON.selectedPersonal_json = '[]'
+        // if(EVENT_JSON.selectedPersonal_json === ""){
+        //     EVENT_JSON.selectedPersonal_json = [];
+        // }
+        // if(EVENT_JSON.selectedVehicles_json === ""){
+        //     EVENT_JSON.selectedVehicles_json = [];
+        // }
+        let SELECTED_PERSONAL = ''
+        let SELECTED_VEHICLES = ''
+        let SELECTED_PRODUCTS = ''
+        if(EVENT_JSON.selectedPersonal_json === '"[]"'){
+            EVENT_JSON.selectedPersonal_json = [];
+        }else{
+            SELECTED_PERSONAL = JSON.parse(EVENT_JSON.selectedPersonal_json);
         }
-        if(EVENT_JSON.selectedVehicles_json === ""){
-            EVENT_JSON.selectedVehicles_json = '[]'
-        }
-        const SELECTED_PRODUCTS = JSON.parse(EVENT_JSON.selected_prods_json);
-        const SELECTED_PERSONAL = JSON.parse(EVENT_JSON.selectedPersonal_json);
-        const SELECTED_VEHICLES = JSON.parse(EVENT_JSON.selectedVehicles_json);
-        
-        const RESPONSE_TOTAL_PER_ITEM = JSON.parse(EVENT_JSON.totalPerItem_json)
-        const TOTAL_PER_ITEM_PRODUCTOS = RESPONSE_TOTAL_PER_ITEM.equipos;
 
-        _selectedProducts = SELECTED_PRODUCTS; 
+        if(EVENT_JSON.selectedVehicles_json === '"[]"'){
+            EVENT_JSON.selectedVehicles_json = [];
+        }else{
+            SELECTED_VEHICLES = JSON.parse(EVENT_JSON.selectedVehicles_json);
+        }
+
+        if(EVENT_JSON.selected_prods_json === '"[]"'){
+            EVENT_JSON.selected_prods_json = [];
+        }else{
+            SELECTED_PRODUCTS = JSON.parse(EVENT_JSON.selected_prods_json);
+            _selectedProducts = SELECTED_PRODUCTS; 
+            if(_selectedProducts.length > 0 ){
+                console.log('SELECTED_PRODUCTS',SELECTED_PRODUCTS.length);
+                console.log('SELECTED_PRODUCTS',SELECTED_PRODUCTS);
+                console.log('_selectedProducts',_selectedProducts.length);
+                console.log('_selectedProducts',_selectedProducts);
+                printAllProductsOnTable();
+                printAllSelectedProducts();
+                setIngresos();
+            }
+        }
+
+        const RESPONSE_TOTAL_PER_ITEM = JSON.parse(EVENT_JSON.totalPerItem_json);
+        const TOTAL_PER_ITEM_PRODUCTOS = RESPONSE_TOTAL_PER_ITEM.equipos;
         totalPerItem.equipos = TOTAL_PER_ITEM_PRODUCTOS;
 
 
-        printAllProductsOnTable();
-        printAllSelectedProducts();
-        setIngresos();
 
         if(SELECTED_PERSONAL === ""){
             if (responseGetData.asignados.personal.length > 0) {

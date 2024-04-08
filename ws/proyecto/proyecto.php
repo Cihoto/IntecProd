@@ -1717,14 +1717,16 @@ function getTodayEvent()
         return array("error" => $e);
     }
 }
-function getEventDay($empresa_id, $date)
-{
+function getEventDay($empresa_id, $date){
 
     try {
         $conn = new bd();
         $conn->conectar();
         $events = [];
-        $query = "SELECT * FROM proyecto p WHERE p.fecha_inicio = '$date' and p.empresa_id = $empresa_id";
+        $query = "SELECT p.*, pers.nombre as owner FROM proyecto p 
+        INNER join personal per on per.id = p.owner 
+        INNER JOIN persona pers on pers.id = per.persona_id 
+        WHERE p.fecha_inicio = '$date' and p.empresa_id = $empresa_id";
 
         if ($response = $conn->mysqli->query($query)) {
             while ($data = $response->fetch_object()) {

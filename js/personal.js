@@ -1672,14 +1672,26 @@ $('#openModalNewFree').on('click', async function () {
     // $('#newFreeLance-Modal').modal('show');
 
 
-    $('#newFreelanceSideMenu').addClass('active');
-
-
+    
+    
+    
+    
     const especialidades = await getAllEspecialidades(EMPRESA_ID);
+    console.log('especialidades',especialidades)
+    console.log('especialidades',especialidades)
+    console.log('especialidades',especialidades)
+    console.log('especialidades',especialidades)
+    console.log('especialidades',especialidades)
+    console.log($('#especialidadSelect'));
+    console.log($('#especialidadSelect'));
+    console.log($('#especialidadSelect'));
     $('#especialidadSelect option').remove();
     especialidades.especialidades.forEach((especialidad) => {
         $('#especialidadSelect').append(new Option(especialidad.especialidad, especialidad.id))
-    })
+    });
+
+
+    $('#newFreelanceSideMenu').addClass('active');
 })
 
 function closeFreelanceSideMenu(){

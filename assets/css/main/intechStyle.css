@@ -3294,6 +3294,8 @@ text-align: center;
 .event-status.borrador {
   background: var(--estado-finalizado, #939395);
 }
+.event-status.cancelado {
+  background: linear-gradient(352.5deg, rgba(235,87,87,1) 0%, rgba(224,85,97,1) 50%, rgba(116,69,196,1) 50%);}
 
 .buttonEventList.buttonEventList {
   margin-right: 3px;
@@ -3382,6 +3384,12 @@ text-align: center;
   background: #EB5757;
 }
 
+.event-status-btn.cancelado {
+  /* clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); */
+  /* background-color: linear-gradient(45deg ,#EB5757 0%,#EB5757 50%,#7445C4 50%,#7445C4 100%); */
+  background: linear-gradient(352.5deg, rgba(235,87,87,1) 0%, rgba(224,85,97,1) 50%, rgba(116,69,196,1) 50%);
+}
+
 
 #statusMenuList.active {
   z-index: 10000;
@@ -3428,10 +3436,20 @@ text-align: center;
 }
 
 .statusMenuOptions {
-  display: flex;
+  /* display: flex;
   width: 245px;
   height: 208px;
   padding: var(--1, 8px) var(--none, 0px);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--none, 0px);
+  flex-shrink: 0;
+  margin-bottom: 0px; */
+
+  display: flex;
+  width: 245px;
+  /* height: 208px; */
+  /* padding: var(--1, 8px) var(--none, 0px); */
   flex-direction: column;
   align-items: flex-start;
   gap: var(--none, 0px);
@@ -3813,13 +3831,13 @@ label.dateLabel {
   overflow: auto;
 }
 
-#dash-event-housing tbody tr{
+/* #dash-event-housing tbody tr{
 
 }
 
 #dash-event-housing tbody td{
 
-}
+} */
 
 .dstheader {
   color: var(--Text-primary, #2C2D33);
@@ -5173,6 +5191,15 @@ table.dataTable thead th, table.dataTable thead td{
   border-radius:50% ;
   background-color: white;
   margin-right: 16px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p{
+    font-size: 18px;
+    font-weight: 600;
+  }
 }
 .--dly-ev-data-body .--dly-info{
   /* display: flex; */

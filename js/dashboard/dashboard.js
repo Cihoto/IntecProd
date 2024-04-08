@@ -238,21 +238,52 @@ async function printDailyEvents(dayToSearch) {
 
     });
 
-    // const todayEv = await todayEvents();
-    const todayEv = await getEventDay(dayToSearch,EMPRESA_ID);
+
+
+    const TODAY_EVENTS = await getEventDay(dayToSearch,EMPRESA_ID);
+
+    console.log('TODAY_EVENTS',TODAY_EVENTS);
+    console.log('TODAY_EVENTS',TODAY_EVENTS);
+    console.log('TODAY_EVENTS',TODAY_EVENTS);
+
     const LIST_CONTAINER = $('#daily-event-list');
     let bgClass = "bg-cyan";
 
-
     $('.event-data-container').remove();
+    TODAY_EVENTS.data.forEach((event) => {
+        let color = '';
 
-    todayEv.data.forEach((event) => {
+        if(event.status_id == 1){ color = '939395'}
+        if(event.status_id == 4){ color = '2F80ED'}
+        if(event.status_id == 2){ color = '27AE60'}
+        if(event.status_id == 3){ color = '7445C4'}
+        if(event.status_id == 5){ color = 'EB5757'}
+
+
+        let eventOwner = "";
+        if(event.owner !== null){
+
+            let eventOwnerArray = event.owner.split(' ');
+
+            if(eventOwnerArray.length > 1){
+                eventOwner = `${eventOwnerArray[0][0].toUpperCase()}${eventOwnerArray[1][0].toUpperCase()}`
+            }else{
+                eventOwner = `${eventOwnerArray[0][0].toUpperCase()}`
+            }
+        }
+
+
+        if(event.status_id == 6){ color = ''}
         if (violetBackground) {
             bgClass = "bg-violet"
         };
-        let section = `<div class="event-data-container ${bgClass}">
+
+        
+        let section = `<div class="event-data-container " style="background-color:#${color};">
           <div class="--dly-ev-data-body">
-            <div class="--dly-logo"></div>
+            <div class="--dly-logo">
+                <p>${eventOwner}</p>
+            </div>
             <div class="--dly-info">
                 <p class="--dly-info-event-name">${event.nombre_proyecto}</p>
                 <p class="--dly-info-event-desc">
@@ -382,7 +413,7 @@ async function getDashResume(empresa_id) {
         type: "POST",
         url: 'ws/proyecto/proyecto.php',
         data: JSON.stringify({
-            'empresa_id': empresa_id,
+            'empresa_id': empresa_id, 
             'action': "getDashResume"
         }),
         dataType: 'json',

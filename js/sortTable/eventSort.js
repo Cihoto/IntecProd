@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    const event_status_order = [2, 3, 5, 4, 1];
+    const event_status_order = [2, 3, 5, 4, 1,6];
     let future_search = false;
     $('#sortAllMyEvents').on('click', async function () {
 
@@ -151,7 +151,7 @@ async function getAllCalendarEvents(empresa_id,status_id) {
         }),
         dataType: 'json',
         success: function (response) {
-            console.log("RESPONSE  getAllMyEvents", response);
+            console.log("RESPONSE  getAllCalendarEvents", response);
         },
         error: function (response) {
             console.log(response.responseText);
