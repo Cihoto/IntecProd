@@ -534,8 +534,8 @@ function getPersonal($empresaId){
                                 c.cargo,per.rut, e.especialidad, p.neto, tc.contrato, p.IsDelete
                             FROM personal p
                             INNER JOIN persona per on per.id = p.persona_id 
-                            INNER JOIN cargo c on c.id  = p.cargo_id 
-                            INNER JOIN especialidad e on e.id  = p.especialidad_id 
+                            LEFT JOIN cargo c on c.id  = p.cargo_id 
+                            LEFT JOIN especialidad e on e.id  = p.especialidad_id 
                             INNER JOIN empresa emp on emp.id = p.empresa_id 
                             INNER JOIN tipo_contrato tc on tc.id = p.tipo_contrato_id 
                             WHERE emp.id = $empresaId ;";

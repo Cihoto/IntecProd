@@ -39,6 +39,11 @@ $('#updatePersonal').validate({
             "personal_id":personalData.personal_id
         }
 
+        console.log('PERSONAL_UPDATE',PERSONAL_REQUEST);
+        console.log('PERSONAL_UPDATE',PERSONAL_REQUEST);
+        console.log('PERSONAL_UPDATE',PERSONAL_REQUEST);
+        // return;
+
         const response = await updatePersonal(PERSONAL_REQUEST, EMPRESA_ID,);
         if (response.success) {
             Toastify({

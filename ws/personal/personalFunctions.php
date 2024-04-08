@@ -17,8 +17,8 @@ function getPersonal($empresaId){
     $conn->conectar();
     $personal= [];
     $queryPersonal = "SELECT  p.id, CONCAT(p.nombre,' ',p.apellido) as nombre, c.cargo, es.especialidad  from personal p 
-                        INNER JOIN especialidad es on es.id  = p.especialidad_id 
-                        INNER JOIN cargo c ON c.id = p.cargo_id 
+                        LEFT JOIN especialidad es on es.id  = p.especialidad_id 
+                        LEFT JOIN cargo c ON c.id = p.cargo_id 
                         INNER JOIN empresa e on e.id = p.empresa_id 
                         where e.id = $empresaId";
 

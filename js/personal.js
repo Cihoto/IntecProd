@@ -395,6 +395,7 @@ async function GetAllPersonal(empresaId) {
         }),
         success: function (response) {
             allPersonal = response;
+
             allPersonal = allPersonal.map((personal) => {
                 return {
                     'cargo': personal.cargo,
@@ -733,6 +734,7 @@ function AddSelectedPersonal(personal_id) {
         personal.isSelected = true;
         allSelectedPersonal.push(personal);
     }
+
 
     // console.log("ESTE ES EL BOTON DE AGREGAR EL PERSONAL LLASELECTEDPERSONAL", allSelectedPersonal);
 }
@@ -1706,6 +1708,22 @@ $('#triggerNewFreeLance').on('click', function () {
 });
 
 
+
+function setNetoPersonal(selPersonal){
+
+    selPersonal.forEach((selPersonal)=>{
+        
+
+        const PERSONAL = allPersonal.find((personal)=>{
+            return personal.id == selPersonal.id
+        });
+
+        if(PERSONAL){
+            selPersonal.neto = PERSONAL.neto
+        }
+    })
+
+}
 
 
 

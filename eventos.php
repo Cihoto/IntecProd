@@ -83,7 +83,7 @@ require_once('./includes/head.php');
                                 <button class="s-Button-w" style="width: 125px;" id="sortAdmEvents">
                                     <p class="s-P-g">Administración</p>
                                 </button>
-                                <input readonly type="text" id="calendar-input" style="width: 250px;height: 40px;border-radius: 4px;" placeholder="filtrar por fecha">
+                                <input readonly type="text" id="calendarInput" style="width: 250px;height: 40px;border-radius: 4px;" placeholder="filtrar por fecha">
                             </div>
 
                             <div style="display: flex;gap: 16px;flex-direction: column;margin-top: -55px;margin-right: 10px;">
@@ -247,6 +247,9 @@ require_once('./includes/head.php');
         return date;
     };
     $(document).ready(async function() {
+
+        createCalendar();
+
         await getEvents(EMPRESA_ID);
         await getCalendarEvents();
 
@@ -263,7 +266,7 @@ require_once('./includes/head.php');
             })
         }
 
-        createCalendar();
+        
     });
 
     $('#event_status').on('change', async function() {
@@ -488,7 +491,7 @@ require_once('./includes/head.php');
         });
     }
 
-    function createCalendar() {
+    function createCalendar(){
 
         const options = {
             input: true,
@@ -506,30 +509,39 @@ require_once('./includes/head.php');
                 }
             },
             actions: {
-                changeToInput(e, calendar, self) {
-                    if (!self.HTMLInputElement) return
+                clickDay(event, self) {
                     if (self.selectedDates[1]) {
                         self.selectedDates.sort((a, b) => +new Date(a) - +new Date(b))
                         self.HTMLInputElement.value = `${self.selectedDates[0]} — ${self.selectedDates[self.selectedDates.length - 1]}`
                         let filtered_dates = filtrarPorRangoDeFechas(_projectsToList, init_date(self.selectedDates[0]), end_date(self.selectedDates[self.selectedDates.length - 1]));
                         _filteredProjects = filtered_dates;
+                        console.log('FILTRO DE EVENTOS PARA LAS FECHAS',_filteredProjects)
                         printAllProjects(filtered_dates);
                     } else if (self.selectedDates[0]) {
                         self.HTMLInputElement.value = self.selectedDates[0];
                         let filtered_dates = filtrarPorRangoDeFechas(_projectsToList, init_date(self.selectedDates[0]), init_date(self.selectedDates[0]));
                         _filteredProjects = filtered_dates;
+                        console.log('FILTRO DE EVENTOS PARA LAS FECHAS',_filteredProjects)
                         printAllProjects(filtered_dates);
                     } else {
                         self.HTMLInputElement.value = ""
                         _filteredProjects = [];
+                        console.log('FILTRO DE EVENTOS PARA LAS FECHAS',_filteredProjects)
                         printAllProjects(_projectsToList);
 
                     }
-                }
+                    
+                },
+                // changeToInput(e, calendar, self) {
+                //     console.log(self)
+                //     if (!self.HTMLInputElement) return;
+                //     // console.log(self.selectedDates);
+                // }
             }
         }
 
-        const calendarInput = new VanillaCalendar("#calendar-input", options)
+        const calendarInput = new VanillaCalendar("#calendarInput", options);
+        
         calendarInput.init();
     }
 </script>

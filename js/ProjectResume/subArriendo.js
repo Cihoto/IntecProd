@@ -61,6 +61,10 @@ function printAllMyProviders() {
     $('.allProvidersSelect').select2();
 }
 
+$('#subArriendo-Heading').on('click',function(){
+    printAllMyProviders();
+}) 
+
 function AddSubArriendo() {
 
     let newTr = `<tr>

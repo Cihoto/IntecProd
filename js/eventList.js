@@ -98,8 +98,14 @@ async function printAllProjects(_projectList,isAdmSort) {
             phv = `<img src="./assets/svg/VehicleActive.svg" alt="">`
         }
 
+
+        let eventStatus = evento.estado;
+
         if (evento.estado == null) {
             evento.estado = "borrador"
+        }
+        if (evento.estado == 'No va') {
+            evento.estado = "No_va"
         }
         if (evento.estado_id === 1) {
 
@@ -153,7 +159,7 @@ async function printAllProjects(_projectList,isAdmSort) {
                 </div>
             </td>
             <td data-order="${timeStamp}"><p style="text-align:center;">${getEventListDate(evento.fecha_inicio, evento.fecha_termino)}</p> </td>
-            <td> <p class="event-status ${evento.estado}">${evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p> </td>
+            <td> <p class="event-status ${evento.estado}">${eventStatus[0].toUpperCase()}${eventStatus.slice(1)}</p> </td>
             <td class="ownerCircleContainer"> <div class="ownerCircle"> <p>${eventOwner}</p> </div> </td>
             <td>
                 <div class="-eve-list-inf-ctn">

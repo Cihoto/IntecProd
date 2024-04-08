@@ -193,6 +193,22 @@ async function getAllProjectData(event_id, empresa_id) {
             EVENT_JSON.selectedPersonal_json = [];
         }else{
             SELECTED_PERSONAL = JSON.parse(EVENT_JSON.selectedPersonal_json);
+
+
+            // return {
+            //     'cargo': personal.cargo,
+            //     'cargo_id': personal.cargo_id,
+            //     'contrato': personal.contrato,
+            //     'especialidad': personal.especialidad,
+            //     'id': personal.id,
+            //     'rut': personal.rut,
+            //     'neto': personal.neto,
+            //     'nombre': personal.nombre,
+            //     'isPicked': false,
+            //     'isSelected': false,
+            //     'horasTrabajadas': 0,
+            //     'isDelete': personal.IsDelete
+            // }
         }
 
         if(EVENT_JSON.selectedVehicles_json === '"[]"'){
@@ -222,7 +238,6 @@ async function getAllProjectData(event_id, empresa_id) {
         totalPerItem.equipos = TOTAL_PER_ITEM_PRODUCTOS;
 
 
-
         if(SELECTED_PERSONAL === ""){
             if (responseGetData.asignados.personal.length > 0) {
                 responseGetData.asignados.personal.forEach(personal => {
@@ -231,7 +246,8 @@ async function getAllProjectData(event_id, empresa_id) {
                 printAllSelectedPersonal();
             } else { }
         }else{
-            allSelectedPersonal = SELECTED_PERSONAL
+            allSelectedPersonal = SELECTED_PERSONAL;
+            setNetoPersonal(SELECTED_PERSONAL);
             printAllSelectedPersonal();
         }
         if(SELECTED_VEHICLES === ""){

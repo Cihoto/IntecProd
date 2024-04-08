@@ -150,8 +150,6 @@ require_once('./includes/head.php');
     <script src="/js/evento/eventoController.js"></script>
     <script src="/js/map.js"></script> -->
 
-
-
     <script src="./js/const/projectToSearch.js"></script>
     <script src="./js/Funciones/NewProject.js"></script>
     <script src="./js/packages.js"></script>
