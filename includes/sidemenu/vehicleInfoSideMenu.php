@@ -89,7 +89,7 @@
             </form>
         </div>
         <div class="tab-pane fade tab-data" id="events" role="tabpanel" aria-labelledby="events-tab" style="margin: 15px; height: 100%;">
-            <table class="s-table" id="eventsPerPersonal_dash">
+            <table id="eventsPerVehicle_dash">
                 <thead>
                     <tr>
                         <th>Evento</th>

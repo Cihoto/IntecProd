@@ -51,7 +51,7 @@ async function printPersonal() {
         if (personal.contrato === "") { personal.contrato = "-" }
         if (personal.neto === "") { personal.neto = "-" }
         let tr = `<tr personal_id="${personal.personal_id}">
-            <td>${personal.nombre} ${personal.apellido}</td>
+            <td class="ps-header">${personal.nombre} ${personal.apellido}</td>
             <td>${personal.rut}</td>
             <td>${personal.especialidad}</td>
             <td>${personal.telefono}</td>
@@ -72,15 +72,17 @@ async function printPersonal() {
              { width: '11%' },
              { width: '11%' }
              ],
-            // columnDefs: [
-            //     { "width": "10%", "targets": [2, 3, 4, 5, 6] },
-            //     { "width": "18%", "targets": [0] },
-            //     { "width": "10%", "targets": [1] },
-            //     { className: "personalName", "targets": [0] },
-            //     { className: "rutPersonal", "targets": [1] },
-            //     { className: "personalData", "targets": [2, 3, 4, 5, 6] },
-            //     { "defaultContent": "-", "targets": "_all" },
-            // ],
+             columnDefs: [ 
+                {
+                    className: "ps-header",
+                    "targets": [0]
+                },
+                {
+                    "defaultContent": "-",
+                    "targets": "_all"
+                }
+            ],
+
             lengthMenu: [5, 10, 20, 50, 100, 200, 500],
             language: {
                 "decimal": "",
@@ -248,6 +250,13 @@ function unsetUpdateFormPersonal() {
     $('#update_correoPersonal').val(personalData.data.email);
     $('#update_telefonoPersonal').val(personalData.data.telefono);
 }
+
+
+
+$(document).on('click','#eventsPerPersonal_dash tbody tr',function(){
+    const EVENT_ID = $(this).attr('event_id');
+    openEvent(EVENT_ID);
+})
 
 
 

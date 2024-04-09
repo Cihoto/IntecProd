@@ -233,6 +233,9 @@ $active = 'dashboard';
   <script src="./js/sortTable/eventSort.js"></script>
   <script src="./js/valuesValidator/validator.js"></script>
 
+  <!-- GLOBAL FUNCTIONS -->
+  <script src="./js/Funciones/openEventFromTables.js"></script>
+
 </body>
 
 

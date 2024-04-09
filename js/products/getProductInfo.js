@@ -45,12 +45,13 @@ function printProductDataOnForm(prodData){
     console.log(prodData);
     console.log(prodData);
     console.log(prodData);
+    
     $('#productName').text(prodData.nombre);
-
     $('#nomProd').val(prodData.nombre);
     $('#stockProd').val(prodData.stock);
     $('#catProd').val(prodData.categorie_id);
     $('#subCatProd').val(prodData.subcat_id);
+    $('#brandProdUpdate').val(prodData.marca);
     $('#priceProd').val(prodData.precio_compra);
     $('#rentPriceProd').val(prodData.precio_arriendo);
     $('#brandProd').val(prodData.marca);

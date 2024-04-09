@@ -189,7 +189,7 @@ async function getAllProjectData(event_id, empresa_id) {
         let SELECTED_PERSONAL = ''
         let SELECTED_VEHICLES = ''
         let SELECTED_PRODUCTS = ''
-        if(EVENT_JSON.selectedPersonal_json === '"[]"'){
+        if(EVENT_JSON.selectedPersonal_json === '"[]"' || EVENT_JSON.selectedPersonal_json === ""){
             EVENT_JSON.selectedPersonal_json = [];
         }else{
             SELECTED_PERSONAL = JSON.parse(EVENT_JSON.selectedPersonal_json);
@@ -211,13 +211,13 @@ async function getAllProjectData(event_id, empresa_id) {
             // }
         }
 
-        if(EVENT_JSON.selectedVehicles_json === '"[]"'){
+        if(EVENT_JSON.selectedVehicles_json === '"[]"' || EVENT_JSON.selectedVehicles_json === "" ){
             EVENT_JSON.selectedVehicles_json = [];
         }else{
             SELECTED_VEHICLES = JSON.parse(EVENT_JSON.selectedVehicles_json);
         }
 
-        if(EVENT_JSON.selected_prods_json === '"[]"'){
+        if(EVENT_JSON.selected_prods_json === '"[]"' || EVENT_JSON.selected_prods_json === ""){
             EVENT_JSON.selected_prods_json = [];
         }else{
             SELECTED_PRODUCTS = JSON.parse(EVENT_JSON.selected_prods_json);
@@ -253,7 +253,6 @@ async function getAllProjectData(event_id, empresa_id) {
         if(SELECTED_VEHICLES === ""){
             if (responseGetData.asignados.vehiculos.length > 0) {
                 responseGetData.asignados.vehiculos.forEach(vehiculo => {
-
                     addVehicle(vehiculo.id)
                 });
             } else { }
@@ -290,6 +289,22 @@ async function getAllProjectData(event_id, empresa_id) {
 
         if (responseGetData.asignados.vehiculos.length > 0) {
             responseGetData.asignados.vehiculos.forEach(vehiculo => {
+
+                
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
+                console.log("estoe stoy buscando en vehiculos",vehiculo)
                 addVehicle(vehiculo.id)
             });
         } else { }

@@ -4500,7 +4500,7 @@ button{
 
 /* ,#personalDashTable th */
 #personalDashTable th{
-  padding: 16px!important;
+  padding: 12px 16px!important;
   border-right: 1px solid var(--Line-table, #DDDDE1);
 }
 
@@ -4514,7 +4514,7 @@ button{
 
 #personalDashTable thead tr{
   border-radius: var(--none, 0px);
-  background: var(--Fondo-cyan, #E8F3F3);
+  background: var(--Fondo-cyan, #f8f8f8);
 }
 #personalDashTable td {
   white-space: nowrap;
@@ -4551,7 +4551,7 @@ button{
 }
 
 #vehiclesDashTable th{
-  padding: 16px!important;
+  padding: 12px 16px!important;
   border-right: 1px solid var(--Line-table, #DDDDE1);
 }
 
@@ -4565,7 +4565,7 @@ button{
 
 #vehiclesDashTable thead tr{
   border-radius: var(--none, 0px);
-  background: var(--Fondo-cyan, #E8F3F3);
+  background: var(--Fondo-cyan, #f8f8f8);
 }
 
 #vehiclesDashTable td {
@@ -4629,6 +4629,81 @@ button{
 }
 
 
+
+
+
+#productsDashTable {
+  width: 100% !important;
+}
+#productsDashTable td ,#productsDashTable th{
+  padding: 1px 12px!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+}
+#productsDashTable th{
+  padding: 12px 16px!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+}
+#productsDashTable thead tr{
+  border-radius: var(--none, 0px);
+  border: 1px solid var(--Line-table, #DDDDE1);
+
+  background: var(--Fondo-cyan, #f8f8f8);
+  /* background: var(--Fondo-cyan, #E8F3F3); */
+}
+#productsDashTable tbody tr:hover {
+  scale: 1.0075;
+  cursor: pointer;
+  border: 1px solid var(--Secondary-color, #6136AB);
+  background: var(--Purple-200, #DCD0F1);
+  button{
+    background-color: var(--Purple-200, #DCD0F1);
+  }
+  svg{
+    background-color: var(--Purple-200, #DCD0F1);
+  }
+  .deleteEv-container{
+    background-color: white!important;
+  }
+}
+
+
+
+
+#dashClient-table {
+  width: 100% !important;
+}
+#dashClient-table td ,#dashClient-table th{
+  padding: 1px 12px!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+}
+#dashClient-table th{
+  padding: 12px 16px!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+}
+#dashClient-table thead tr{
+  border-radius: var(--none, 0px);
+  border: 1px solid var(--Line-table, #DDDDE1);
+
+  background: var(--Fondo-cyan, #f8f8f8);
+  /* background: var(--Fondo-cyan, #E8F3F3); */
+}
+#dashClient-table tbody tr:hover {
+  scale: 1.0075;
+  cursor: pointer;
+  border: 1px solid var(--Secondary-color, #6136AB);
+  background: var(--Purple-200, #DCD0F1);
+  button{
+    background-color: var(--Purple-200, #DCD0F1);
+  }
+  svg{
+    background-color: var(--Purple-200, #DCD0F1);
+  }
+  .deleteEv-container{
+    background-color: white!important;
+  }
+}
+
+
 #deletedEventsTable-list {
   margin-top: 50px!important;
 }
@@ -4646,6 +4721,56 @@ button{
   background: var(--Fondo-cyan, #E8F3F3);
 }
 #deletedEventsTable-list tbody tr:hover {
+  scale: 1.0075;
+  cursor: pointer;
+  border: 1px solid var(--Secondary-color, #6136AB);
+  background: var(--Purple-200, #DCD0F1);
+  button{
+    background-color: var(--Purple-200, #DCD0F1);
+  }
+  svg{
+    background-color: var(--Purple-200, #DCD0F1);
+  }
+  .deleteEv-container{
+    background-color: white!important;
+  }
+}
+
+
+#eventsPerVehicle_dash {
+  margin-top: 50px!important;
+  /* display: table; */
+  border-collapse: collapse;
+}
+
+#eventsPerVehicle_dash p {
+  line-height: normal;
+}
+#eventsPerVehicle_dash tr {
+  /* line-height: normal; */
+  display: flex;
+}
+
+#eventsPerVehicle_dash tr td {
+  display: flex;
+}
+
+
+#eventsPerVehicle_dash td ,#eventsPerVehicle_dash th{
+  padding: 3px 16px!important;
+  
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+}
+#eventsPerVehicle_dash th{
+  padding: 16px 16px!important;
+  border-right: 1px solid var(--Line-table, #DDDDE1);
+}
+#eventsPerVehicle_dash thead tr{
+  border-radius: var(--none, 0px);
+  border: 1px solid var(--Line-table, #DDDDE1);
+  background: var(--Fondo-cyan, #E8F3F3);
+}
+#eventsPerVehicle_dash tbody tr:hover {
   scale: 1.0075;
   cursor: pointer;
   border: 1px solid var(--Secondary-color, #6136AB);
@@ -4707,11 +4832,7 @@ button{
 } */
 
 
-/* 
-#vehiclesDashTable_wrapper{
-  display: flex;
-  width: 70%;
-} */
+
 
 
 .sideMenu-s{
@@ -4825,7 +4946,7 @@ button{
   background: var(--White, #FCFCFC);
 }
 
-#dashClient-table th{
+/* #dashClient-table th{
   padding-top:16px!important;
   padding-bottom:16px!important;
 }
@@ -4841,7 +4962,7 @@ button{
   align-items: center;
   border-right: 1px solid var(--Line-table, #DDDDE1);
   background: rgba(0, 0, 0, 0.00);
-}
+} */
 
 .ps-header{
   background: var(--Fondo-cyan-2, #EDF6F6)!important;
@@ -4921,89 +5042,11 @@ border-bottom: none!important;
   background: rgba(0, 0, 0, 0.00);
   
 }
+
 #eventsPerPersonal_dash tbody td p {
   line-height: 16px!important;
 }
-/* 
-#vehiclesDashTable tbody td{
-  display: flex;
-  padding: 16px;
-  align-items: center;
-  flex-shrink: 0;
-  border-right: 1px solid var(--Line-table, #DDDDE1);
-  background: rgba(0, 0, 0, 0.00);
-}
 
-#vehiclesDashTable thead tr{
-  display: flex;
-  padding: var(--none, 0px);
-  align-items: center;
-  gap: var(--1, 8px);
-  border-radius: var(--none, 0px);
-  border: 1px solid var(--Line-table, #DDDDE1);
-  background: var(--Fondo-cyan-2, #EDF6F6);
-}
-#vehiclesDashTable thead th{
-  display: flex;
-  padding: 16px;
-  align-items: center;
-  flex-shrink: 0;
-  border-right: 1px solid var(--Line-table, #DDDDE1);
-  background: rgba(0, 0, 0, 0.00);
-}
-table.dataTable thead th, table.dataTable thead td{
-  border-bottom: none!important;
-}
-
-#vehiclesDashTable tbody tr{
-  display: flex;
-  padding: var(--none, 0px);
-  align-items: center;
-  gap: var(--1, 8px);
-  border-radius: var(--none, 0px);
-  border-top: var(--none, 0px) solid var(--Line-table, #DDDDE1);
-  border-right: 1px solid var(--Line-table, #DDDDE1);
-  border-bottom: 1px solid var(--Line-table, #DDDDE1);
-  border-left: 1px solid var(--Line-table, #DDDDE1);
-}
-#vehiclesDashTable tbody td{
-  display: flex;
-  padding: 3px 16px;
-  align-items: center;
-  flex-shrink: 0;
-  border-right: 1px solid var(--Line-table, #DDDDE1);
-  background: rgba(0, 0, 0, 0.00);
-}
-#vehiclesDashTable tbody tr:hover{
-  cursor: pointer;
-  border: 1px solid var(--Secondary-color, #6136AB) !important;
-  background: var(--Purple-200, #DCD0F1) !important;
-} */
-
-
-#productsDashTable tbody tr{
-  display: flex;
-  padding: var(--none, 0px);
-  align-items: center;
-  gap: var(--1, 8px);
-  border-radius: var(--none, 0px);
-  border-top: var(--none, 0px) solid var(--Line-table, #DDDDE1);
-  border-right: 1px solid var(--Line-table, #DDDDE1);
-  border-bottom: 1px solid var(--Line-table, #DDDDE1);
-  border-left: 1px solid var(--Line-table, #DDDDE1);
-}
-#productsDashTable tbody td{
-  display: flex;
-  width: 17.28%;
-  padding: 3px 16px;
-  align-items: center;
-  flex-shrink: 0;
-  border-right: 1px solid var(--Line-table, #DDDDE1);
-  background: rgba(0, 0, 0, 0.00);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
 .right-side-dash{
   display: flex;
@@ -5172,6 +5215,7 @@ table.dataTable thead th, table.dataTable thead td{
   padding: 8px 16px;
   /* medium-s */
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.04), 0px 4px 10px -1px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
 }
 
 .event-data-container.bg-cyan{

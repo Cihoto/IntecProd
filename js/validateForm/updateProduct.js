@@ -12,19 +12,19 @@ $('#updateProductSideMenu').validate({
             required: true
         },
         'subCatProd': {
-            required: true
+            required: false
         },
         'brandProdUpdate': {
-            required: true
+            required: false
         },
         'modelProd': {
-            required: true
+            required: false
         },
         'priceProd': {
-            required: true
+            required: false
         },
         'rentPriceProd': {
-            required: true
+            required: false
         }
     },
     messages: {
@@ -56,6 +56,9 @@ $('#updateProductSideMenu').validate({
     },
     submitHandler: async function() {
         event.preventDefault();
+
+
+        console.log('ESTOY ACTUALIZANDO EL PRODUCTO')
 
         if (!_executeUpdateProduct) {
             return;

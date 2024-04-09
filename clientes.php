@@ -50,14 +50,14 @@ $active = 'clientes';
                     </button>
                 </div>
 
-                <table class="s-table" id="dashClient-table">
+                <table class="" id="dashClient-table">
                     <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th>Rut</th>
-                            <th>Correo Eléctronico</th>
                             <th>Eventos</th>
                             <th>Facturación</th>
+                            <th>Rut</th>
+                            <th>Correo Eléctronico</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -109,6 +109,10 @@ $active = 'clientes';
     <?php require_once('./includes/sidemenu/clientSideMenuDash.php') ?>
     <?php require_once('./includes/sidemenu/clienteMasivaSideMenu.php') ?>
     <?php require_once('./includes/footerScriptsJs.php') ?>
+
+    
+    <!-- GLOBAL FUNCTIONS  -->
+    <script src="./js/Funciones/openEventFromTables.js"></script>
 
     <!-- Validador intec -->
     <script src="./js/valuesValidator/validator.js"></script>

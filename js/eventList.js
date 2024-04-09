@@ -401,66 +401,6 @@ async function printDeletedEvents(_DeletedprojectList) {
 
     _DeletedprojectList.forEach((evento) => {
 
-        // let color = "";
-
-        // let phf = "";
-
-        // let php = "";
-
-        // let phv = "";
-
-        // let ehc = "";
-
-        // if (evento.phf == null) {
-        //     phf = `<img src="./assets/svg/ArchiveNoActive.svg" alt="">`;
-        // } else {
-        //     phf = `<img src="./assets/svg/ArchiveActive.svg" alt="">`
-        // }
-        // if (evento.php == null) {
-        //     php = `<img src="./assets/svg/PersonalNoActive.svg" alt="">`;
-        // } else {
-        //     php = `<img src="./assets/svg/PersonalActive.svg" alt="">`
-        // }
-        // if (evento.phv == null) {
-        //     phv = `<img src="./assets/svg/VehicleNoActive.svg" alt="">`;
-        // } else {
-        //     phv = `<img src="./assets/svg/VehicleActive.svg" alt="">`
-        // }
-
-        // if(evento.event_has_comments == null){
-        //     ehc = `<img src="./assets/svg/paperclip.svg" alt="">`
-        // }else{
-        //     ehc = `<img src="./assets/svg/paperclip-active.svg" alt="">`
-        // }
-
-        // if (evento.estado == null) {
-        //     evento.estado = "borrador"
-        // }
-        // if (evento.estado_id === 1) {
-
-        // }
-        // if (evento.estado_id === 2) {
-        //     color = "#27AE60"
-        // }
-        // if (evento.estado_id === 3) {
-        //     color = "#7F45E3"
-        // }
-
-        // if (evento.nombreCliente === null) {
-        //     evento.nombreCliente = ""
-        // }
-
-
-
-        // let nombreCliente = '';
-        // if (evento.nombre_fantasia !== null) {
-        //     nombreCliente = evento.nombre_fantasia
-        // } else {
-        //     nombreCliente = evento.nombreCliente
-        // }
-        // let dateToFormatt = new Date(evento.fecha_inicio);
-        // let timeStamp = dateToFormatt.getTime() / 1000
-
         let color = "";
 
 
@@ -516,9 +456,13 @@ async function printDeletedEvents(_DeletedprojectList) {
 
   
 
+        let eventStatus = evento.estado;
 
         if (evento.estado == null) {
             evento.estado = "borrador"
+        }
+        if (evento.estado == 'No va') {
+            evento.estado = "No_va"
         }
         if (evento.estado_id === 1) {
 
@@ -529,10 +473,8 @@ async function printDeletedEvents(_DeletedprojectList) {
         if (evento.estado_id === 3) {
             color = "#7F45E3"
         }
+ 
 
-        if (evento.nombreCliente === null) {
-            evento.nombreCliente = ""
-        }
 
         // let estadoStyle = '<p style =""></p>'
         //     let trs = `<tr project_id=${evento.id}>
@@ -574,7 +516,7 @@ async function printDeletedEvents(_DeletedprojectList) {
                 </div>
             </td>
             <td data-order="${timeStamp}"> <p>${getEventListDate(evento.fecha_inicio, evento.fecha_termino)}</p> </td>
-            <td> <p class="event-status ${evento.estado}">${evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p> </td>
+            <td> <p class="event-status ${evento.estado}">${eventStatus[0].toUpperCase()}${eventStatus.slice(1)}</p> </td>
             <td class="ownerCircleContainer"> <div class="ownerCircle"> <p>${eventOwner}</p> </div> </td>
             <td>
 

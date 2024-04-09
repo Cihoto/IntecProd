@@ -253,11 +253,12 @@ async function printDailyEvents(dayToSearch) {
     TODAY_EVENTS.data.forEach((event) => {
         let color = '';
 
-        if(event.status_id == 1){ color = '939395'}
-        if(event.status_id == 4){ color = '2F80ED'}
-        if(event.status_id == 2){ color = '27AE60'}
-        if(event.status_id == 3){ color = '7445C4'}
-        if(event.status_id == 5){ color = 'EB5757'}
+        if(event.status_id == 1){ color = '#939395'}
+        if(event.status_id == 4){ color = '#2F80ED'}
+        if(event.status_id == 2){ color = '#27AE60'}
+        if(event.status_id == 3){ color = '#7445C4'}
+        if(event.status_id == 5){ color = '#EB5757'}
+        if(event.status_id == 6){ color = 'linear-gradient(346deg, rgba(235,87,87,1) 0%, rgba(224,85,97,1) 50%, rgba(116,69,196,1) 50%)'};
 
 
         let eventOwner = "";
@@ -273,13 +274,13 @@ async function printDailyEvents(dayToSearch) {
         }
 
 
-        if(event.status_id == 6){ color = ''}
+        // if(event.status_id == 6){ color = ''}
         if (violetBackground) {
             bgClass = "bg-violet"
         };
 
         
-        let section = `<div class="event-data-container " style="background-color:#${color};">
+        let section = `<div class="event-data-container " style="background:${color};" event_id="${event.id}">
           <div class="--dly-ev-data-body">
             <div class="--dly-logo">
                 <p>${eventOwner}</p>
@@ -296,6 +297,11 @@ async function printDailyEvents(dayToSearch) {
         LIST_CONTAINER.append(section);
     })
 }
+
+$(document).on('click','.event-data-container',function(){
+    const EVENT_ID =  $(this).attr('event_id');
+    openEvent(EVENT_ID);
+});
 
 function todayEvents() {
     return $.ajax({

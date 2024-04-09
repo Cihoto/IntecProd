@@ -136,6 +136,9 @@ $active = 'personal';
 
     <?php require_once('./includes/footerScriptsJs.php') ?>
 
+    <!-- GLOBAL FUNCITONS  -->
+    <script src="./js/Funciones/openEventFromTables.js"></script>
+
     <!-- REQUIRE SIDEMENU PERSONAL -->
     <?php require_once('./includes/sidemenu/personalSideMenu.php') ?>
     <?php require_once('./includes/sidemenu/personalSideMenuDash.php') ?>

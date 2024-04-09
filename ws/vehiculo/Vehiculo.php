@@ -472,9 +472,10 @@ function getVehicleInfoById($vehicle_id, $empresa_id){
     WHERE v.id  = $vehicle_id
     and v.empresa_id = $empresa_id;";
 
-    $queryGetVehicleEvents = "SELECT p.* , phv.* FROM vehiculo v
+    $queryGetVehicleEvents = "SELECT p.* , phv.*,es.estado FROM vehiculo v
     INNER JOIN proyecto_has_vehiculo phv on phv.vehiculo_id = v.id
     INNER JOIN proyecto p on p.id = phv.proyecto_id 
+    INNER JOIN estado es on es.id = p.status_id
     WHERE phv.vehiculo_id  = $vehicle_id
     AND p.empresa_id = $empresa_id
     and v.empresa_id = $empresa_id;";

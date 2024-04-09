@@ -161,6 +161,16 @@ if ($_POST) {
             $product_id = $data->product_id;
             $response = updateProductById($request, $empresa_id, $product_id);
             echo json_encode($response);
+        case 'createNewProduct':
+            $request = $data->request;
+            $response = insertProduct($request);
+            echo json_encode($response);
+            break;
+        case 'test_1':
+            $catid = $data->catid;
+            $subcatId = $data->subcatId;
+            $response = insertOrGetCategorieHasSubCategorie($catid,$subcatId);
+            echo json_encode($response);
             break;
         default:
             echo 'Invalid action.';
@@ -254,7 +264,7 @@ function getAllMyProductsToList($empresaId)
         INNER JOIN empresa e on e.id = p.empresa_id 
         INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id 
         INNER JOIN categoria c on c.id = chi.categoria_id 
-        INNER JOIN item i on i.id  = chi.item_id 
+        LEFT JOIN item i on i.id  = chi.item_id 
         INNER JOIN inventario inv on inv.producto_id  = p.id 
         WHERE e.id = $empresaId";
 
@@ -934,37 +944,38 @@ function updateProductById($request, $empresa_id, $product_id){
         $priceProd = $request->priceProd;
         $rentPriceProd = $request->rentPriceProd;
 
-        $chi = 0;
+        $chi = insertOrGetCategorieHasSubCategorie($catProd,$subCatProd);
         $brand_id = 0;
 
-        $queryGetChi = "SELECT * FROM categoria_has_item chi 
-        WHERE chi.categoria_id = $catProd
-        AND chi.item_id = $subCatProd
-        limit 1;";
+        // $queryGetChi = "SELECT * FROM categoria_has_item chi 
+        // WHERE chi.categoria_id = $catProd
+        // AND chi.item_id = $subCatProd
+        // limit 1;";
 
-        if($response = $conn->mysqli->query($queryGetChi)){
+        // if($response = $conn->mysqli->query($queryGetChi)){
 
-            // return $queryGetChi;
+        //     // return $queryGetChi;
 
-            if ($response->num_rows > 0) {
-                // Si hay resultados, extraer el ID
-                $data = $response->fetch_object();
-                $chi = $data->id;
-            } else {
-                // Si no hay resultados, insertar y obtener el nuevo ID
-                $insertChi = "INSERT INTO u136839350_intec.categoria_has_item (categoria_id, item_id)
-                              VALUES ($catProd, $subCatProd)";
+        //     if ($response->num_rows > 0) {
+        //         // Si hay resultados, extraer el ID
+        //         $data = $response->fetch_object();
+        //         $chi = $data->id;
+        //     } else {
+        //         // Si no hay resultados, insertar y obtener el nuevo ID
+        //         $insertChi = "INSERT INTO u136839350_intec.categoria_has_item (categoria_id, item_id)
+        //                       VALUES ($catProd, $subCatProd)";
         
-                if ($conn->mysqli->query($insertChi)) {
-                    $chi = $conn->mysqli->insert_id;
-                } else {
-                    return array("error" => true);
-                }
-            }
+        //         if ($conn->mysqli->query($insertChi)) {
+        //             $chi = $conn->mysqli->insert_id;
+        //         } else {
+        //             return array("error" => true);
+        //         }
+        //     }
             
-        }else{
-            return array("error"=>true);
-        }
+        // }else{
+        //     return array("error"=>true);
+        // }
+
         $queryGetBrand = "SELECT * FROM marca m WHERE LOWER(m.marca) = LOWER('$brandProd')";
 
         if($response = $conn->mysqli->query($queryGetBrand)){
@@ -1021,5 +1032,167 @@ function updateProductById($request, $empresa_id, $product_id){
         }
     } catch (Exception $error) {
         return array("fatalError" => true, "message" => "Tenemos problemas para procesar tu solicitud, intenta nuevamente", "asd" => $error);
+    }
+}
+
+
+
+function insertProduct($request){
+    $conn = new bd();
+
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+
+        $createNomProd = $request->createNomProd;
+        $createStockProd = $request->createStockProd;
+        $createCatProd = $request->createCatProd;
+        $createSubCatProd = $request->createSubCatProd;
+        $createBrandProd = $request->createBrandProd;
+        $createPriceProd = $request->createPriceProd;
+        $createRentPriceProd = $request->createRentPriceProd;
+        $empresaId = $request->empresaId;
+        
+        $today = date('Y-m-d');
+        
+        $brand_id = insertOrGetBrand($createBrandProd);
+        $chiId = insertOrGetCategorieHasSubCategorie($createCatProd,$createSubCatProd);
+
+        if($createPriceProd === ""){
+            $createPriceProd = 0;
+        }else{
+            $createPriceProd = intval($createPriceProd);
+        }
+        if($createRentPriceProd === ""){
+            $createRentPriceProd = 0;
+        }else{
+            $createRentPriceProd = intval($createRentPriceProd);
+        }
+
+        $stmt = $mysqli->prepare("INSERT INTO 
+        producto (nombre, marca_id, categoria_has_item_id, precio_compra, precio_arriendo, createAt, empresa_id) 
+        VALUES(?, ? , ?, ? , ?, ? , ? );");
+        $stmt->bind_param("siiiisi",$createNomProd , $brand_id, $chiId, $createPriceProd ,$createRentPriceProd, $today, $empresaId);
+        $stmt->execute();
+        
+        $prodId = $stmt->insert_id;
+
+        insertOrUpdateStock($prodId,$createStockProd);
+        $conn->desconectar();
+        return true;
+    } catch (Exception $err) {
+        $conn->desconectar();
+        return false;
+    }
+}
+
+function insertOrGetBrand($brand){
+
+    // return $brand;
+    // return "SELECT m.id FROM marca m where UPPER(m.marca)  = UPPER($brand);";
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+
+        $today = date('Y-m-d');
+        $stmt = $mysqli->prepare("SELECT m.id FROM marca m where UPPER(m.marca) = UPPER(?);");
+        $stmt->bind_param("s", $brand);
+        $stmt->execute();
+        $results = $stmt->get_result()->fetch_object();
+        
+        // return $results->fetch_object()->id;
+        
+        if(!isset($results->id)){
+            
+            $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.marca (marca, createAt) 
+            VALUES(?, ?);");
+            $stmt->bind_param("ss", $brand,$today);
+            $stmt->execute();
+            $results = $stmt->get_result();
+
+            $conn->desconectar();
+            return $stmt->insert_id;
+        }
+
+        $conn->desconectar();
+        return $results->id;
+ 
+    } catch (Exception $err) {
+        $conn->desconectar();
+        return false;
+    }
+}
+
+
+function insertOrGetCategorieHasSubCategorie($catId,$subcatId){
+
+    // return $subcatId;
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+        
+        // if($subcatId == ""){$subcatId = 0;}
+        // return "SELECT chi.id FROM categoria_has_item chi where chi.categoria_id = $catId and chi.item_id = $subcatId;";
+
+        $stmt = $mysqli->prepare("SELECT chi.id FROM categoria_has_item chi where chi.categoria_id = ? and chi.item_id = ? ;");
+        $stmt->bind_param("ii",$catId,$subcatId);
+        $stmt->execute();
+        $results = $stmt->get_result()->fetch_object();
+        
+        if(!isset($results->id)){
+            
+            $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.categoria_has_item (categoria_id, item_id) VALUES(?,?);");
+            $stmt->bind_param("ii",$catId,$subcatId);
+            $stmt->execute();
+            $conn->desconectar();
+            return $stmt->insert_id;
+
+        }
+
+        $conn->desconectar();
+        return $results->id;
+ 
+    } catch (Exception $err) {
+        $conn->desconectar();
+        return false;
+    }
+}
+function insertOrUpdateStock($prodId,$stock){
+
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+        $today = date('Y-m-d');
+
+        $stmt = $mysqli->prepare("SELECT * FROM inventario i WHERE i.producto_id  = ?;");
+        $stmt->bind_param("i",$prodId);
+        $stmt->execute();
+        $results = $stmt->get_result()->fetch_object();
+        
+        if(!isset($results->id)){
+            
+            $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.inventario (producto_id, cantidad, createAt)
+            VALUES(?, ?, ?);");
+            $stmt->bind_param("iis",$prodId,$stock,$today);
+            $stmt->execute();
+            $conn->desconectar();
+            return $stmt->insert_id;
+            
+        }else{
+            $stmt = $mysqli->prepare("UPDATE inventario set cantidad = ? WHERE id = ?");
+            $stmt->bind_param("ii", $stock, $prodId);
+            $stmt->execute();
+            $conn->desconectar();
+            return $stmt->insert_id;
+        }
+
+ 
+    } catch (Exception $err) {
+        $conn->desconectar();
+        return false;
     }
 }

@@ -270,6 +270,10 @@ $active = 'vehiculos';
     </div>
     </div>
     <?php require_once('./includes/footerScriptsJs.php') ?>
+
+
+    <!-- GLOBAL FUNCTIONS  -->
+    <script src="./js/Funciones/openEventFromTables.js"></script>
     <!-- xlsx Reader -->
     <script src="js/xlsxReader.js"></script>
     <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>

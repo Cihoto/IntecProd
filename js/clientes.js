@@ -338,11 +338,12 @@ async function FillClientesTable_dash() {
 
     let tr = `<tr client_id="${cliente.cliente_id}">
       <td>${name}</td>
-      <td>${cliente.rut_df}</td>
-      <td>${correo}</td>
       <td>${cliente.event_quantity}</td>
       <td>${CLPFormatter(cliente.totalPerClient)}</td>
-    </tr>`
+      <td>${cliente.rut_df}</td>
+      <td>${correo}</td>
+    </tr>`;
+    
     $('#dashClient-table tbody').append(tr);
   });
 
@@ -375,11 +376,22 @@ async function FillClientesTable_dash() {
           "previous": "Anterior"
         }
       },
-      columnDefs: [{ "width": "17%", "targets": "_all" }, { className: "ps-header", "targets": [0] }, { className: "tc", "targets": [3] },
-      {
-        "defaultContent": "-",
-        "targets": "_all"
-      }],
+      columnDefs: [
+        { 
+          "width": "17%", "targets": "_all" 
+        }, 
+        {
+          className: "ps-header", "targets": [0] 
+        }
+        , 
+        { 
+          className: "tc", "targets": [3] 
+        },
+        {
+          "defaultContent": "-",
+          "targets": "_all"
+        }
+    ],
       "pageLength": 100
 
     });
@@ -530,6 +542,14 @@ $('#deleteClientDash').on('click',async function(){
   
 
 
+});
+
+
+
+
+$(document).on('click','#eventsPerClient_dash tbody tr',function(){
+  const EVENT_ID = $(this).attr('event_id');
+  openEvent(EVENT_ID);
 })
 
 

@@ -150,6 +150,7 @@ $(document).on("click",'#vehiclesDashTable tbody tr',async function(){
     
     $('#vehicleInfoSideMenu').addClass('active');
     const VEHICLE_INFO = await getVehicleInfoById(VEHICLE_ID, EMPRESA_ID);
+
     
     if(!VEHICLE_INFO.success){
         
@@ -184,8 +185,96 @@ $(document).on("click",'#vehiclesDashTable tbody tr',async function(){
     console.log(vehicleData);               
     console.log(vehicleData);
     console.log(vehicleData);
-
+    printVehicleEvents();
 });
+
+
+function printVehicleEvents(){
+
+    // vehicleData.events.forEach(())
+    console.log(vehicleData.events)
+    console.log(vehicleData.events)
+    console.log(vehicleData.events)
+    console.log(vehicleData.events)
+    console.log(vehicleData.events)
+
+
+
+    if ($.fn.DataTable.isDataTable('#eventsPerVehicle_dash')) {
+        $('#eventsPerVehicle_dash').DataTable()
+            .clear()
+            .draw();
+        $('#eventsPerVehicle_dash').DataTable().destroy();
+    }
+    vehicleData.events.forEach((evento) => {
+
+        let fecha = evento.fecha_inicio;
+
+
+        if(evento.fechaTermino !== '' || evento.fechaTermino !== null){
+            fecha = `${evento.fecha_inicio}-${evento.fecha_termino}`
+        }
+
+        let eventStatus = evento.estado;
+
+        if (evento.estado == null) {
+            evento.estado = "borrador"
+        }
+        if (evento.estado == 'No va') {
+            evento.estado = "No_va"
+        }
+        if (evento.estado_id === 1) {
+
+        }
+        if (evento.estado_id === 2) {
+            color = "#27AE60"
+        }
+        if (evento.estado_id === 3) {
+            color = "#7F45E3"
+        }
+
+        let tr = `<tr event_id="${evento.id}">
+            <td><p class="--h-text-flex">${evento.nombre_proyecto}</p></td>
+            <td><p class="--h-text-flex">${fecha}</p></td>
+            <td><p class="event-status ${evento.estado}">${eventStatus[0].toUpperCase()}${eventStatus.slice(1)}</p> </td>
+            <td><p class="--h-text-flex">${CLPFormatter(parseInt(evento.price_per_trip) * parseInt(evento.trip_count)) }</p></td>
+        </tr>`;
+        $('#eventsPerVehicle_dash tbody').append(tr)
+    });
+    if (!$.fn.DataTable.isDataTable('#eventsPerVehicle_dash')) {
+        $('#eventsPerVehicle_dash').DataTable({
+            columns:[{'width':'10%'},{'width':'10%'},{'width':'10%'},{'width':'10%'}],
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ eventos",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+            "pageLength": 10
+        });
+    }
+}
+
+
+
+$(document).on('click','#eventsPerVehicle_dash tbody tr',function(){
+    const EVENT_ID = $(this).attr('event_id');
+    openEvent(EVENT_ID);
+})
 
 
 
@@ -370,6 +459,12 @@ function printAllMyVehicles() {
                 {'width': '20%'},
                 {'width': '10%'},
                 {},
+            ],
+            columnDefs: [
+                 {
+                    className: "ps-header",
+                    "targets": [0]
+                }
             ],
             lengthMenu: [3,5,10,20,50,100],
             language: {
@@ -699,20 +794,20 @@ $(document).on('click', '.addVehicleToResume', function () {
     addVehicle(vehiculo_id);
 })
 
-function addVehicle(vehiculo_id) {
+function addVehicle(vehiculo_id){
 
     const vehiculo_exists = allVehicles.find((vehiculo) => {
         return vehiculo.id == vehiculo_id;
     });
 
-    if (!vehiculo_exists) {
-        Swal.fire({
-            'icon': "error",
-            'title': "Ups!",
-            'text': "Ha ocurrido un error2121212",
-            'showConfirmButton': false,
-            // 'timer': 2000
-        });
+    if (!vehiculo_exists){
+        // Swal.fire({
+        //     'icon': "error",
+        //     'title': "Ups!",
+        //     'text': "Ha ocurrido un error al asignar vehículos",
+        //     'showConfirmButton': false,
+        //     // 'timer': 2000
+        // });
         return;
     };
     const vehiculoIsSelected = selectedVehicles.find((selected) => {
@@ -727,10 +822,6 @@ function addVehicle(vehiculo_id) {
     selectedVehicles.push(vehiculo_exists);
     printSelectedVehicles();
 
-    console.log('selectedVehicles',selectedVehicles)
-    console.log('selectedVehicles',selectedVehicles)
-    console.log('selectedVehicles',selectedVehicles)
-    console.log('selectedVehicles',selectedVehicles)
     console.log('selectedVehicles',selectedVehicles)
 }
 

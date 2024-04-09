@@ -73,7 +73,7 @@ $active = 'inventario';
                     </div>
 
                     <div class="row justify-content-end col-7" style="margin:0px 14px; gap :8px;">
-                        <button class="s-Button" id="buttonProductoUnitario">
+                        <button class="s-Button" id="buttonProductoUnitario" onclick="openCreateProdSideMenu()">
                             <p class="s-P">Agregar nuevo producto</p>
                         </button>
                         <button class="s-Button" id="buttonProductosMasiva">
@@ -85,7 +85,7 @@ $active = 'inventario';
                     </div>
                 </div>
 
-                <table class="s-table" id="productsDashTable">
+                <table class="" id="productsDashTable">
                     <thead>
                         <tr>
                             <th>Categoría</th>
@@ -126,11 +126,13 @@ $active = 'inventario';
 
     <!-- Side Menu -->
     <?php require_once('./includes/sidemenu/productoMasivaSideMenu.php') ?>
+    <?php require_once('./includes/sidemenu/addNewProductSideMenu.php') ?>
 
 
     <!-- xlsx Reader -->
     <script src="js/xlsxReader.js"></script>
     <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+
     <!-- JS FUNCTIONS REFERENCES -->
     <script src="/js/valuesValidator/validator.js"></script>
     <script src="/js/categorias.js"></script>
@@ -145,6 +147,9 @@ $active = 'inventario';
     <?php require_once('./includes/sidemenu/productDataSideMenu.php');?>
     <!-- UPDATE PRODUCT FORM VALIDATION -->
     <script src="./js/validateForm/updateProduct.js"></script>
+
+    <!-- FORM VALIDATION -->
+    <script src="./js/validateForm/createNewProductSideMenu.js"></script>
 </body>
 <script>
     const IDEMPRESA = document.getElementById('empresaId').textContent;
@@ -1006,7 +1011,9 @@ $active = 'inventario';
 
         _allProductsToList.forEach((producto, index) => {
 
-            
+            if(producto.subcategoria == null){
+                producto.subcategoria = ''
+            }
             let tr = `<tr product_id="${producto.product_id}">
                 <td>${producto.categoria}</td>
                 <td>${producto.subcategoria}</td>
