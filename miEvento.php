@@ -112,7 +112,7 @@ require_once('./includes/head.php');
                     <button status_id="5" class="event-status-btn cerrado">
                         <p>Cerrado</p>
                     </button>
-                    <button status_id="6" class="event-status-btn cancelado" style="border-radius: 0px 0px 5px 5px;">
+                    <button status_id="6" class="event-status-btn No_va" style="border-radius: 0px 0px 5px 5px;">
                         <p>No va</p>
                     </button>
                 </section>
@@ -329,7 +329,7 @@ require_once('./includes/head.php');
         const STATUS_ID = $(this).attr('status_id');
         $('#status-button').removeClass(ACTUAL_CLASS);
         $('#status-button').addClass(BUTTON_CLASS);
-        $('#status-button').find('p').text(BUTTON_CLASS);
+        $('#status-button').find('p').text(BUTTON_CLASS.replaceAll('_',' '));
         $('#status-button').attr('status_id', STATUS_ID);
         console.log($('#status-button').attr('status_id'));
     });

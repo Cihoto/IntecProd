@@ -3388,7 +3388,7 @@ text-align: center;
   background: #EB5757;
 }
 
-.event-status-btn.cancelado {
+.event-status-btn.No_va {
   /* clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); */
   /* background-color: linear-gradient(45deg ,#EB5757 0%,#EB5757 50%,#7445C4 50%,#7445C4 100%); */
   background: linear-gradient(352.5deg, rgba(235,87,87,1) 0%, rgba(224,85,97,1) 50%, rgba(116,69,196,1) 50%);
