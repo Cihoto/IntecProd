@@ -1,6 +1,6 @@
 let _executeUpdateProduct = true;
 
-$('#updateProductSideMenu').validate({
+$('#updateProdFormSideMenu_').validate({
     rules: {
         'nomProd': {
             required: true
@@ -75,31 +75,37 @@ $('#updateProductSideMenu').validate({
             'rentPriceProd': $('#rentPriceProd').val()
         }
 
-        const RESPONSE_UPDATE_PRODUCT = await updateProductById(UPDATEPRODUCTREQUEST, EMPRESA_ID,_selectedProdId);
+        try{
+            const RESPONSE_UPDATE_PRODUCT = await updateProductFromSideMenu(UPDATEPRODUCTREQUEST, EMPRESA_ID,_selectedProdId);
 
-        if(!RESPONSE_UPDATE_PRODUCT.success){
-            Swal.fire({
-                "icon": "warning",
-                "title": "Ups!",
-                "text": "Por favor intente nuevamente"
-            });
+            if(!RESPONSE_UPDATE_PRODUCT.success){
+                Swal.fire({
+                    "icon": "warning",
+                    "title": "Ups!",
+                    "text": "Por favor intente nuevamente"
+                });
+                _executeUpdateProduct = true;
+                return ;
+            };
+    
+    
+            Toastify({
+                text: 'Producto actualizado Exitosamente',
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background: "linear-gradient(90deg, #36ABA9 0%, #10E5E1 70.29%)   ",
+                },
+              }).showToast();
             _executeUpdateProduct = true;
-            return ;
-        };
+        }catch(error){
+            _executeUpdateProduct = true;
+        }
 
 
-        Toastify({
-            text: 'Producto actualizado Exitosamente',
-            duration: 3000,
-            close: true,
-            gravity: "top", // `top` or `bottom`
-            position: "right", // `left`, `center` or `right`
-            stopOnFocus: true, // Prevents dismissing of toast on hover
-            style: {
-              background: "linear-gradient(90deg, #36ABA9 0%, #10E5E1 70.29%)   ",
-            },
-          }).showToast();
-        _executeUpdateProduct = true;
     }
 })
 
@@ -110,7 +116,7 @@ $('#updateProductSideMenu').validate({
 //     submitHandler: function() { alert("Submitted!") }
 //   });
 
-async function updateProductById(request, empresa_id, product_id) {
+async function updateProductFromSideMenu(request, empresa_id, product_id) {
     return $.ajax({
         type: "POST",
         url: "ws/productos/Producto.php",

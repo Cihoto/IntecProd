@@ -1068,7 +1068,6 @@ $active = 'inventario';
                         "targets": "_all"
                     }
                 ]
-
             });
         }
     }

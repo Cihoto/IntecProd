@@ -15,7 +15,7 @@
             </svg>
             <p class="header-P" id="productName"></p>
         </div>
-        <form id="updateProductSideMenu">
+        <form id="updateProdFormSideMenu_">
             <div class="modal-body">
                 <div class="row justify-conetent-end">
                     <!-- <div class="col-2">

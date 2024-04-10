@@ -25,7 +25,6 @@ if ($_POST) {
             // Recibe el parámetro empresaId
             $empresaId = $data->empresaId;
 
-            // Llama a la función getProductos y devuelve el resultado
             $productos = getProductos($empresaId);
             echo json_encode($productos);
             break;
@@ -33,7 +32,6 @@ if ($_POST) {
             // Recibe el parámetro empresaId
             $empresaId = $data->empresaId;
 
-            // Llama a la función getProductos y devuelve el resultado
             $productos = getAllMyProductsToList($empresaId);
             echo json_encode($productos);
             break;
@@ -42,7 +40,6 @@ if ($_POST) {
             $request = $data->request;
             $empresaId = $data->empresaId;
 
-            // Llama a la función getProductos y devuelve el resultado
             $productos = customProdSearch($request, $empresaId);
             echo json_encode($productos);
             break;
@@ -51,7 +48,6 @@ if ($_POST) {
             // Recibe el parámetro empresaId
             $product_id = $data->product_id;
 
-            // Llama a la función getProductos y devuelve el resultado
             $productos = GetProductDataById($product_id);
             echo json_encode($productos);
             break;
@@ -240,7 +236,7 @@ function getProductos($empresaId)
         INNER JOIN empresa e on e.id = p.empresa_id 
         INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id 
         INNER JOIN categoria c on c.id = chi.categoria_id 
-        INNER JOIN item i on i.id  = chi.item_id 
+        LEFT JOIN item i on i.id  = chi.item_id 
         INNER JOIN inventario inv on inv.producto_id  = p.id 
         WHERE e.id = $empresaId";
 
@@ -677,7 +673,7 @@ function GetAllProductsByBussiness($empresa_id)
     $query = "SELECT p.*, inv.cantidad,c.nombre as categoria, i.item  FROM producto p
         INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id 
         INNER JOIN categoria c on c.id = chi.categoria_id 
-        INNER JOIN item i on i.id = chi.item_id
+        LEFT JOIN item i on i.id = chi.item_id
         INNER JOIN inventario inv on inv.producto_id = p.id 
         where p.empresa_id  = $empresa_id";
 
@@ -930,6 +926,7 @@ function insertSubCatOnArr($empresa_id, $arrCats)
 }
 
 function updateProductById($request, $empresa_id, $product_id){
+
     try {
         $conn = new bd();
         $conn->conectar();
@@ -946,6 +943,7 @@ function updateProductById($request, $empresa_id, $product_id){
 
         $chi = insertOrGetCategorieHasSubCategorie($catProd,$subCatProd);
         $brand_id = 0;
+    // return 1;
 
         // $queryGetChi = "SELECT * FROM categoria_has_item chi 
         // WHERE chi.categoria_id = $catProd

@@ -180,19 +180,16 @@ require_once('./includes/head.php');
     <script src="/js/evento/viewUploadedFiles.js"></script>
     <script src="/js/evento/eventComments.js"></script>
 
-
     <!-- VALIDATE FORM -->
     <script src="./js/validateForm/addNewFreeLance.js"></script>
     <script src="./js/validateForm/addNewProvider.js"></script>
     <script src="./js/validateForm/clientForm.js"></script>
 
     <!-- SIDEMENUS -->
-    <?php require_once('./includes/sidemenu/viewUploadedFiles.php') ?>
-    <?php require_once('./includes/sidemenu/newFreelanceSideMenu.php') ?>
-    <?php require_once('./includes/sidemenu/eventComments.php') ?>
-
+    <?php require_once('./includes/sidemenu/viewUploadedFiles.php'); ?>
+    <?php require_once('./includes/sidemenu/newFreelanceSideMenu.php'); ?>
+    <?php require_once('./includes/sidemenu/eventComments.php'); ?>
 </body>
-
 
 <script>
     caches.keys().then((keyList) => Promise.all(keyList.map((key) => caches.delete(key))));

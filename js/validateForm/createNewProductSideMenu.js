@@ -51,6 +51,9 @@ $('#createProductSideMenu').validate({
     submitHandler: async function() {
         event.preventDefault();
 
+        console.log('ESTOY CREANDO EL PRODUCTO')
+
+
         if (!_executeCreateNewProduct) {
             return;
         }

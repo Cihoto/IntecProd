@@ -706,7 +706,7 @@ let _searchProductValue = "";
 async function GetAllMyProducts() {
   const allMyProds = await GetAllProductsByBussiness(EMPRESA_ID);
 
-  // console.table(allMyProds.data);
+  // console.table('allMyProds.data',allMyProds.data);
   _productos = allMyProds.data.map((producto) => {
     return {
       'id': producto.id,
@@ -917,10 +917,16 @@ function setCategoriesAndSubCategories() {
         });
 
         console.log('____subcat.categorie', subcat.categoria)
-        console.log('____productosSubCat', productosSubCat)
+        console.log('____productosSubCat', productosSubCat);
+
+        let isEmptySubCategorie = subcat.subcategoria;
+
+        if(isEmptySubCategorie == null ){
+          isEmptySubCategorie = 'sin subcateogría'
+        }
 
         return {
-          'nombre': subcat.subcategoria,
+          'nombre': isEmptySubCategorie,
           'productos': productosSubCat
         }
       }
@@ -947,10 +953,7 @@ function setCategoriesAndSubCategories() {
 
 function printAllProductsOnTable(searchValue, indexTab) {
 
-  // if ($.fn.DataTable.isDataTable('#tableProducts')) {
-  //   $('#tableProducts').DataTable().destroy();
-  //   $('#tableProducts tbody tr').remove();
-  // }
+
 
 
 
@@ -971,7 +974,7 @@ function printAllProductsOnTable(searchValue, indexTab) {
   _productos.forEach((producto) => {
     let tr = `<tr product_id="${producto.id}">
           <td class="catProd"> <p class="--h-text-lg">${producto.categoria}</p></td>
-          <td class="itemProd"> <p class="--h-text-lg">${producto.item}</p></td>
+          <td class="itemProd"> <p class="--h-text-lg">${producto.item == null ? ' ' :producto.item}</p></td>
           <td style="" class="productName"><p class="--h-text-lg w250">${producto.nombre}</p></td>
           <td class="productStock" >${producto.cantidad}</td>
           <td class="productAvailable">${(producto.disponibles) < 0 ? 0 : producto.disponibles}</td>
@@ -993,10 +996,7 @@ function printAllProductsOnTable(searchValue, indexTab) {
 
 function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
 
-  // if ($.fn.DataTable.isDataTable('#tableProducts')) {
-  //   $('#tableProducts').DataTable().destroy();
-  //   $('#tableProducts tbody tr').remove();
-  // }
+
 
   if ($.fn.DataTable.isDataTable('#tableProducts')) {
 
@@ -1013,8 +1013,8 @@ function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
   
   _productos.forEach((producto) => {
     let tr = `<tr product_id="${producto.id}">
-          <td class="catProd"> ${producto.categoria}123 123</td>
-          <td class="itemProd"> ${producto.item}</td>
+          <td class="catProd"> ${producto.categoria}</td>
+          <td class="itemProd"> ${producto.item == null ? ' ' :producto.item}</td>
           <td style="width:25%" class="productName">${producto.nombre}</td>
           <td class="productStock" >${producto.cantidad}</td>
           <td class="productAvailable">${(producto.disponibles) < 0 ? 0 : producto.disponibles}</td>
