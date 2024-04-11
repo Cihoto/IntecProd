@@ -756,6 +756,8 @@ function setAllProducts_DiscountTakenProd() {
     }
   });
 
+  
+
   // DISCOUNT TAKENPRODS FROM _PRODUCTOS
   _takenProducts.forEach((takenProd) => {
     // console.log("takenProd",takenProd);
@@ -1563,11 +1565,5 @@ function setOtherIfReady() {
 /*
   // END OTHER PRODUCTS SECTION
 */
-
-
-
-
-
-
 
 
