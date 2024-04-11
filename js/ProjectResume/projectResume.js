@@ -106,11 +106,17 @@ function setEgresos(){
         }
         totalPersonal += totalPers;  
       let tr = `<tr>
-        <td class="col-4" style="text-align:end;padding-right:20px">${personal.nombre}</td>
-        <td>${personal.especialidad}</td>
-        <td>${personal.contrato}</td>
-        <td class="-tae">${CLPFormatter(parseInt(totalPers))}</td>
-      </tr>`;
+            <td><p>${personal.nombre}</p></td>
+            <td><p>${personal.especialidad}</p></td>
+            <td><p>${personal.contrato}</p></td>
+            <td><p>${CLPFormatter(parseInt(totalPers))}</p></td>
+        </tr>`;
+    //   let tr = `<tr>
+    //     <td class="col-4" style="text-align:end;padding-right:20px">${personal.nombre}</td>
+    //     <td>${personal.especialidad}</td>
+    //     <td>${personal.contrato}</td>
+    //     <td class="-tae">${CLPFormatter(parseInt(totalPers))}</td>
+    //   </tr>`;
       $('#total-personalResume tbody').append(tr);
     })
 
@@ -124,8 +130,28 @@ function setEgresos(){
 
     let totalExternos = 0;
     let totalPropios = 0;
-    
+
+    $('#total-vehiculosResume tbody tr').remove()
+    // console.log('selectedVehicles',selectedVehicles)
     selectedVehicles.forEach((selected)=>{
+        let own = 'Propio';
+        let tripCost = parseInt(selected.cantidadViajes) * parseInt(selected.tripValue);
+        if(selected.ownCar == 0){
+            own = 'Externo'
+        }
+
+
+
+        let tr = `<tr>
+            <td><p>${selected.patente}</p></td>
+            <td><p>${own}</p></td>
+            <td><p></p></td>
+            <td id="totalVehiculosExternos"><p>${CLPFormatter(tripCost)}</p></td>
+        </tr>`;
+
+
+
+        $('#total-vehiculosResume tbody').append(tr)
         if(selected.ownCar === "1"){
             totalPropios += (parseInt(selected.tripValue) * parseInt(selected.cantidadViajes))
         }
@@ -133,7 +159,10 @@ function setEgresos(){
         if(selected.ownCar === "0"){
             totalExternos += (parseInt(selected.tripValue) * parseInt(selected.cantidadViajes))
         }
-    })
+    });
+
+
+
 
 
     $('#totalVehiculosPropios').text(CLPFormatter(totalPropios));
@@ -141,14 +170,20 @@ function setEgresos(){
 
     let subArriendototal = 0;
 
-    $('#total-SubArriendosResume tbody tr').remove()
+    // $('#total-SubArriendosResume tbody tr').remove()
     _subRentsToAssign.forEach((subRent)=>{
         subArriendototal += parseInt(subRent.valor) ;
         let tr = `<tr>
-            <td class="col-4"></td>
-            <td>${subRent.detalle}</td>
-            <td class="-tae">${CLPFormatter(subRent.valor)}</td>
+            <td><p>${subRent.detalle}</p></td>
+            <td><p></p></td>
+            <td><p></p></td>
+            <td><p>${CLPFormatter(subRent.valor)}</p></td>
         </tr>`;
+        // let tr = `<tr>
+        //     <td class="col-4"></td>
+        //     <td>${subRent.detalle}</td>
+        //     <td class="-tae">${CLPFormatter(subRent.valor)}</td>
+        // </tr>`;
         $('#total-SubArriendosResume tbody').append(tr);
     });
     _subRentsToAssign.forEach(({valor,detalle})=>{
@@ -156,7 +191,7 @@ function setEgresos(){
         console.log("detalle",detalle)
     });
     // section others costs
-    $('#total-otherCostsResume tbody tr').remove()
+    // $('#total-otherCostsResume tbody tr').remove();
     let totalOthersCosts = 0;
     // console.log("ALL MY OTHER COST")
     // console.log("ALL MY OTHER COST",_allMyOtherCosts)
@@ -164,10 +199,16 @@ function setEgresos(){
     _allMyOtherCosts.forEach(({name,monto})=>{
         totalOthersCosts += parseInt(monto); 
         let tr = `<tr>
-            <td class="col-4"></td>
-            <td>${name}</td>
-            <td class="-tae">${CLPFormatter(monto)}</td>
+            <td><p>${name}</p></td>
+            <td><p></p></td>
+            <td><p></p></td>
+            <td><p>${CLPFormatter(monto)}</p></td>
         </tr>`
+        // let tr = `<tr>
+        //     <td class="col-4"></td>
+        //     <td>${name}</td>
+        //     <td class="-tae">${CLPFormatter(monto)}</td>
+        // </tr>`
         $('#total-otherCostsResume tbody').append(tr);
     });
 
@@ -292,20 +333,27 @@ function printAllResumeIncome(){
     totalPerItem.equipos.forEach((equipos)=>{
         totalEquipos +=  parseInt(equipos.value);
         let tr = `<tr>
-            <td class="col-4"></td>    
-            <td>${equipos.categorie[0].toUpperCase() + equipos.categorie.slice(1)}</td>    
-            <td class="-tae">${CLPFormatter(equipos.value)}</td>   
-        <tr/>`;
+            <td><p></p></td>
+            <td><p>${equipos.categorie[0].toUpperCase() + equipos.categorie.slice(1)}</p></td>
+            <td><p></p></td>
+            <td><p>${CLPFormatter(equipos.value)}</p></td>
+        </tr>`;
         $(`#subtotalCategoria-${equipos.categorie}`).val(CLPFormatter(parseInt(equipos.value)));
         $('#total-productResume > tbody').append(tr);
     });
 
     _selectedOthersProducts.forEach((other)=>{
         let tr = `<tr>
-            <td class="col-4"></td>    
-            <td>${other.detalle}</td>    
-            <td class="-tae">${CLPFormatter(other.total)}</td>   
-        <tr/>`;
+            <td><p></p></td>
+            <td><p>${other.detalle}</p></td>
+            <td><p></p></td>
+            <td><p>${CLPFormatter(other.total)}</p></td>
+        </tr>`;
+        // let tr = `<tr>
+        //     <td class="col-4"></td>    
+        //     <td>${other.detalle}</td>    
+        //     <td class="-tae">${CLPFormatter(other.total)}</td>   
+        // <tr/>`;
         // $(`#subtotalCategoria-${equipos.categorie}`).val(CLPFormatter(parseInt(equipos.value)));
         $('#total-othersResume > tbody').append(tr);
         totalOthers += parseInt(other.total);

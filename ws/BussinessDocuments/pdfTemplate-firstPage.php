@@ -92,7 +92,7 @@
         }
 
         #quoteDetailsTable {
-            margin-top: 60px;
+            margin-top: 320px;
             width: 700px;
             border-spacing: 0;
         }
@@ -273,7 +273,7 @@
 
 <body>
 
-    <!-- <img class="svgLogo" style="left: -45px;" src="./PDF_svg/bar1.svg" alt="1asdasd">
+    <img class="svgLogo" style="left: -45px;" src="./PDF_svg/bar1.svg" alt="1asdasd">
     <img class="svgLogo" style="margin-left: 72px;z-index: -1;" src="./PDF_svg/bar2.svg" alt="2asdasdasd">
     <img class="svgLogo" style="margin-left: 210px;z-index: -2;" src="./PDF_svg/bar3.svg" alt="3asdqw2e12ed">
     <img class="right-logo" src="./PDF_svg/bar4.svg" alt="4d1d12">
@@ -330,7 +330,7 @@
         <div class="contact-container"><p class="contact-quote">Correo:</p> <p class="contact-data">{{ ownerEmail }}</p></div>
         
         
-    </div> -->
+    </div>
 
     <table id="quoteDetailsTable">
         <thead>
@@ -414,7 +414,7 @@
         <img class="right-logo" width="100" style="right: -60px;" src="./PDF_svg/bar5.svg" alt="5d12d12">
     </div> -->
 
-    <!-- {{ footer }} -->
+    {{ footer }}
 
 </body>
 

@@ -93,32 +93,32 @@
         <img class='fourt-bottom' src='./PDF_svg/bar4.svg' alt='4d1d12'>
         <img class='fifth-bottom' width='100' src='./PDF_svg/bar5.svg' alt='5d12d12'>
         </footer>";
-        // $html = str_replace('{{ footer }}',$hfooter,$html);
+        $html = str_replace('{{ footer }}',$hfooter,$html);
        
         $html = str_replace("{{ totalResumeTable }}", $totalQuoteResume, $html);
         
-        // if(isset($client_name)){
+        if(isset($client_name)){
             
-        //     $html = str_replace("{{ client_name }}", $client_name, $html);
-        // }else{
-        //     $html = str_replace("{{ client_name }}", "", $html);
+            $html = str_replace("{{ client_name }}", $client_name, $html);
+        }else{
+            $html = str_replace("{{ client_name }}", "", $html);
     
-        // }
-        // if(isset($nombre_fantasia)){
+        }
+        if(isset($nombre_fantasia)){
     
-        //     $html = str_replace("{{ nombre_fantasia }}", $nombre_fantasia, $html);
+            $html = str_replace("{{ nombre_fantasia }}", $nombre_fantasia, $html);
             
-        // }else{
-        //     $html = str_replace("{{ nombre_fantasia }}", "", $html);
+        }else{
+            $html = str_replace("{{ nombre_fantasia }}", "", $html);
             
-        // }
+        }
         $quoteNumber = "$event_id-$month$day$year";
-        // $html = str_replace("{{ numquote }}",$quoteNumber , $html);
-        // $html = str_replace("{{ today }}", $today, $html);
+        $html = str_replace("{{ numquote }}",$quoteNumber , $html);
+        $html = str_replace("{{ today }}", $today, $html);
     
-        // $html = str_replace("{{ bussAddress }}", $address, $html);
-        // $html = str_replace("{{ ownerPhone }}", $phone, $html);
-        // $html = str_replace("{{ ownerEmail }}", $mail, $html);
+        $html = str_replace("{{ bussAddress }}", $address, $html);
+        $html = str_replace("{{ ownerPhone }}", $phone, $html);
+        $html = str_replace("{{ ownerEmail }}", $mail, $html);
     
     
         $dompdf->loadHtml($html);
