@@ -140,8 +140,6 @@ function setEgresos(){
             own = 'Externo'
         }
 
-
-
         let tr = `<tr>
             <td><p>${selected.patente}</p></td>
             <td><p>${own}</p></td>
@@ -170,7 +168,7 @@ function setEgresos(){
 
     let subArriendototal = 0;
 
-    // $('#total-SubArriendosResume tbody tr').remove()
+    $('#total-SubArriendosResume tbody tr').remove()
     _subRentsToAssign.forEach((subRent)=>{
         subArriendototal += parseInt(subRent.valor) ;
         let tr = `<tr>
@@ -191,11 +189,11 @@ function setEgresos(){
         console.log("detalle",detalle)
     });
     // section others costs
-    // $('#total-otherCostsResume tbody tr').remove();
     let totalOthersCosts = 0;
     // console.log("ALL MY OTHER COST")
     // console.log("ALL MY OTHER COST",_allMyOtherCosts)
     // console.log("ALL MY OTHER COST")
+    $('#total-otherCostsResume tbody tr').remove();
     _allMyOtherCosts.forEach(({name,monto})=>{
         totalOthersCosts += parseInt(monto); 
         let tr = `<tr>
@@ -203,12 +201,8 @@ function setEgresos(){
             <td><p></p></td>
             <td><p></p></td>
             <td><p>${CLPFormatter(monto)}</p></td>
-        </tr>`
-        // let tr = `<tr>
-        //     <td class="col-4"></td>
-        //     <td>${name}</td>
-        //     <td class="-tae">${CLPFormatter(monto)}</td>
-        // </tr>`
+        </tr>`;
+
         $('#total-otherCostsResume tbody').append(tr);
     });
 
