@@ -186,52 +186,80 @@ async function getAllProjectData(event_id, empresa_id) {
         // if(EVENT_JSON.selectedVehicles_json === ""){
         //     EVENT_JSON.selectedVehicles_json = [];
         // }
-        let SELECTED_PERSONAL = ''
-        let SELECTED_VEHICLES = ''
-        let SELECTED_PRODUCTS = ''
-        if(EVENT_JSON.selectedPersonal_json === '"[]"' || EVENT_JSON.selectedPersonal_json === ""){
-            EVENT_JSON.selectedPersonal_json = [];
-        }else{
-            SELECTED_PERSONAL = JSON.parse(EVENT_JSON.selectedPersonal_json);
+        let SELECTED_PERSONAL = '';
+        let SELECTED_VEHICLES = '';
+        let SELECTED_PRODUCTS = '';
 
 
-            // return {
-            //     'cargo': personal.cargo,
-            //     'cargo_id': personal.cargo_id,
-            //     'contrato': personal.contrato,
-            //     'especialidad': personal.especialidad,
-            //     'id': personal.id,
-            //     'rut': personal.rut,
-            //     'neto': personal.neto,
-            //     'nombre': personal.nombre,
-            //     'isPicked': false,
-            //     'isSelected': false,
-            //     'horasTrabajadas': 0,
-            //     'isDelete': personal.IsDelete
-            // }
-        }
+        const SELECTED_PERSONAL_FORMATTED = parseTextToArray(EVENT_JSON.selectedPersonal_json);
+        const SELECTED_PRODUCTS_FORMATTED = parseTextToArray(EVENT_JSON.selected_prods_json);
+        const SELECTED_VEHICLES_FORMATTED = parseTextToArray(EVENT_JSON.selectedVehicles_json);
 
-        if(EVENT_JSON.selectedVehicles_json === '"[]"' || EVENT_JSON.selectedVehicles_json === "" ){
-            EVENT_JSON.selectedVehicles_json = [];
-        }else{
-            SELECTED_VEHICLES = JSON.parse(EVENT_JSON.selectedVehicles_json);
-        }
+        console.log('SELECTED_PERSONAL_FORMATTED',SELECTED_PERSONAL_FORMATTED);
+        console.log('SELECTED_PRODUCTS_FORMATTED',SELECTED_PRODUCTS_FORMATTED);
+        console.log('SELECTED_VEHICLES_FORMATTED',SELECTED_VEHICLES_FORMATTED);
+        // return
 
-        if(EVENT_JSON.selected_prods_json === '"[]"' || EVENT_JSON.selected_prods_json === ""){
-            EVENT_JSON.selected_prods_json = [];
-        }else{
-            SELECTED_PRODUCTS = JSON.parse(EVENT_JSON.selected_prods_json);
-            _selectedProducts = SELECTED_PRODUCTS; 
-            if(_selectedProducts.length > 0 ){
-                console.log('SELECTED_PRODUCTS',SELECTED_PRODUCTS.length);
-                console.log('SELECTED_PRODUCTS',SELECTED_PRODUCTS);
-                console.log('_selectedProducts',_selectedProducts.length);
-                console.log('_selectedProducts',_selectedProducts);
-                printAllProductsOnTable();
-                printAllSelectedProducts();
-                setIngresos();
-            }
-        }
+        allSelectedPersonal = SELECTED_PERSONAL_FORMATTED;
+        _selectedProducts = SELECTED_PRODUCTS_FORMATTED;
+        selectedVehicles = SELECTED_VEHICLES_FORMATTED;
+
+        // if(EVENT_JSON.selectedPersonal_json === '"[]"' || EVENT_JSON.selectedPersonal_json === '[]' || EVENT_JSON.selectedPersonal_json === ""){
+        //     console.log('PARSED 13109328019823',EVENT_JSON.selectedPersonal_json)
+        //     EVENT_JSON.selectedPersonal_json = [];
+        // }else{
+
+        //     let parsedSelectedPersonal = JSON.parse(EVENT_JSON.selected_prods_json);
+        //     let secondParsedPersonal = JSON.parse(parsedSelectedPersonal);
+        //     SELECTED_PRODUCTS = secondParsed;
+        //     _selectedProducts = SELECTED_PRODUCTS;
+            
+        //     SELECTED_PERSONAL = JSON.parse(EVENT_JSON.selectedPersonal_json);
+
+
+        //     // return {
+        //     //     'cargo': personal.cargo,
+        //     //     'cargo_id': personal.cargo_id,
+        //     //     'contrato': personal.contrato,
+        //     //     'especialidad': personal.especialidad,
+        //     //     'id': personal.id,
+        //     //     'rut': personal.rut,
+        //     //     'neto': personal.neto,
+        //     //     'nombre': personal.nombre,
+        //     //     'isPicked': false,
+        //     //     'isSelected': false,
+        //     //     'horasTrabajadas': 0,
+        //     //     'isDelete': personal.IsDelete
+        //     // }
+        // }
+
+        // if(EVENT_JSON.selectedVehicles_json === '"[]"' || EVENT_JSON.selectedVehicles_json === "" ){
+        //     EVENT_JSON.selectedVehicles_json = [];
+        // }else{
+        //     SELECTED_VEHICLES = JSON.parse(EVENT_JSON.selectedVehicles_json);
+        // }
+
+
+
+
+        // if(EVENT_JSON.selected_prods_json === '"[]"' || EVENT_JSON.selected_prods_json === ""){
+        //     EVENT_JSON.selected_prods_json = [];
+        // }else{
+
+        //     let parsedSelectedProducts = JSON.parse(EVENT_JSON.selected_prods_json);
+        //     let secondParsed = JSON.parse(parsedSelectedProducts);
+        //     SELECTED_PRODUCTS = secondParsed;
+        //     // _selectedProducts = SELECTED_PRODUCTS; 
+
+        //     // if(_selectedProducts.length > 0 ){ 
+        //     //     console.log('SELECTED_PRODUCTS',SELECTED_PRODUCTS.length);
+        //     //     console.log('SELECTED_PRODUCTS',SELECTED_PRODUCTS);
+
+        //     //     console.log('_selectedProducts',_selectedProducts.length);
+        //     //     console.log('_selectedProducts',_selectedProducts);
+
+        //     // }
+        // }
 
         const RESPONSE_TOTAL_PER_ITEM = JSON.parse(EVENT_JSON.totalPerItem_json);
         const TOTAL_PER_ITEM_PRODUCTOS = RESPONSE_TOTAL_PER_ITEM.equipos;
@@ -243,13 +271,13 @@ async function getAllProjectData(event_id, empresa_id) {
                 responseGetData.asignados.personal.forEach(personal => {
                     AddSelectedPersonal(personal.id);
                 });
-                printAllSelectedPersonal();
+                // printAllSelectedPersonal();
             } else { }
         }else{
-            allSelectedPersonal = SELECTED_PERSONAL;
-            setNetoPersonal(SELECTED_PERSONAL);
-            printAllSelectedPersonal();
+            // allSelectedPersonal = SELECTED_PERSONAL;
+
         }
+
         if(SELECTED_VEHICLES === ""){
             if (responseGetData.asignados.vehiculos.length > 0) {
                 responseGetData.asignados.vehiculos.forEach(vehiculo => {
@@ -257,13 +285,21 @@ async function getAllProjectData(event_id, empresa_id) {
                 });
             } else { }
         }else{
-            
-            selectedVehicles = SELECTED_VEHICLES    
-
-            
-            printSelectedVehicles()
+            // selectedVehicles = SELECTED_VEHICLES    
         }
+
+        // PRINT PRODUCTOS
+            printAllProductsOnTable();
+            printAllSelectedProducts();
+            setIngresos();
+
+        // PRINT PERSONAL
+            setNetoPersonal(allSelectedPersonal);
+            printAllSelectedPersonal();
+
+        // PRINT VEHICLES
         
+            printSelectedVehicles()
 
 
         
@@ -436,5 +472,39 @@ async function getAllProjectData(event_id, empresa_id) {
         });
         printOthersProds();;
         setIngresos();
+    }
+}
+
+
+
+function parseTextToArray(txtArray){
+    console.log('txtArray funcoin',txtArray);
+    if(txtArray === '"[]"' || txtArray === '[]' || txtArray === ""){
+        // console.log('PARSED 13109328019823',txtArray)
+        // txtArray = [];
+
+        console.log("RETORNO DE3 ARRAY VACIO")
+        console.log("RETORNO DE3 ARRAY VACIO")
+        return [];
+    }else{
+        let parseArray = JSON.parse(txtArray);
+        while(!Array.isArray(parseArray)){
+
+            parseArray = JSON.parse(txtArray);
+        }
+
+        // let secondParsed = JSON.parse(parseArray);
+
+        console.log('RESPONSE DE FORMT ARRAY', parseArray)
+
+
+        return parseArray;
+
+        SELECTED_PRODUCTS = secondParsed;
+        _selectedProducts = SELECTED_PRODUCTS;
+        
+        SELECTED_PERSONAL = JSON.parse(txtArray);
+
+        return [1]
     }
 }

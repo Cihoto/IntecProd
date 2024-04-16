@@ -1736,4 +1736,11 @@ function setNetoPersonal(selPersonal){
 
 
 
+$('#triggerNewFreeLance').on('click',function(){
+    console.log($('#createNewFreeLance'))
+    $('#createNewFreeLance')[0].click()
+})
+
+
+
 

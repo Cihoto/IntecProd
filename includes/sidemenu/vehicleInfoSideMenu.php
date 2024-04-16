@@ -88,23 +88,25 @@
                 </div>
             </form>
         </div>
-        <div class="tab-pane fade tab-data" id="events" role="tabpanel" aria-labelledby="events-tab" style="margin: 15px; height: 100%;">
-            <table id="eventsPerVehicle_dash">
-                <thead>
-                    <tr>
-                        <th>Evento</th>
-                        <th>Fecha</th>
-                        <th>Estado</th>
-                        <th>Monto</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <div class="tab-pane fade tab-data" id="events" role="tabpanel" aria-labelledby="events-tab" style=" height: 100%;">
+            <div style="display: flex;">
+                <table class="s-table" id="eventsPerVehicle_dash">
+                    <thead>
+                        <tr>
+                            <th>Evento</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                </tbody>
-                <tfoot>
+                    </tbody>
+                    <tfoot>
 
-                </tfoot>
-            </table>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
 

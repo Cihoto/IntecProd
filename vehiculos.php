@@ -65,7 +65,7 @@ $active = 'vehiculos';
                     </svg>
                     <p class="header-P">Aquí puedes ver, editar y crear los vehículos para tus eventos</p>
                 </div>
-                <div class="row justify-content-end" style="margin:0px 14px; gap :8px;">
+                <div class="row justify-content-end" style="margin:0px; gap :8px;">
                     <button class="s-Button-w" id="openMasivaVehicle" style="width: 220px;">
                         <p class="s-P-g">Agregar vehículos masiva</p>
                     </button>

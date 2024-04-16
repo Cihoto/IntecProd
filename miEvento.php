@@ -42,11 +42,11 @@ require_once('./includes/head.php');
             <header class="page-header">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="txtDec-no" href="./proximosEventos.php"><img src="./assets/svg/Eventos.svg" alt=""> Eventos</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a class="txtDec-no" href="#">Crear evento</a></li>
+                        <li class="breadcrumb-item"><a class="txtDec-no" href="./eventos.php"><img src="./assets/svg/Eventos.svg" alt=""> Eventos</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a class="txtDec-no createOrEditBreadcrumTitle" id="" href="#">Crear evento</a></li>
                     </ol>
                 </nav>
-                <p class="headerTitle" style="margin:-13px 0px 16px 0px!important;">Crear un nuevo evento</p>
+                <p class="headerTitle createOrEditBreadcrumTitle" style="margin:-13px 0px 16px 0px!important;">Crear un nuevo evento</p>
             </header>
 
             <div class="pageContent">
@@ -122,6 +122,9 @@ require_once('./includes/head.php');
 
     <?php require_once('./includes/sidemenu/clientSideMenu.php') ?>
 
+
+
+
     <!-- DONT DELETE THIS DIV IS USED FOR DOCUMENT DOWNLOAD -->
     <div style="display: none;" id="downloadPdf">
     </div>
@@ -129,6 +132,8 @@ require_once('./includes/head.php');
 
     <?php require_once('./includes/footer.php'); ?>
     <?php require_once('./includes/footerScriptsJs.php'); ?>
+
+
 
 
     <!-- require Modal -->
@@ -180,15 +185,17 @@ require_once('./includes/head.php');
     <script src="/js/evento/viewUploadedFiles.js"></script>
     <script src="/js/evento/eventComments.js"></script>
 
-    <!-- VALIDATE FORM -->
-    <script src="./js/validateForm/addNewFreeLance.js"></script>
-    <script src="./js/validateForm/addNewProvider.js"></script>
-    <script src="./js/validateForm/clientForm.js"></script>
+
 
     <!-- SIDEMENUS -->
     <?php require_once('./includes/sidemenu/viewUploadedFiles.php'); ?>
     <?php require_once('./includes/sidemenu/newFreelanceSideMenu.php'); ?>
     <?php require_once('./includes/sidemenu/eventComments.php'); ?>
+
+        <!-- VALIDATE FORM -->
+    <script src="./js/validateForm/addNewFreeLance.js"></script>
+    <script src="./js/validateForm/addNewProvider.js"></script>
+    <script src="./js/validateForm/clientForm.js"></script>
 </body>
 
 <script>
@@ -255,6 +262,8 @@ require_once('./includes/head.php');
             event_data.event_id = EVENT_ID;
             projectDates.project_id = EVENT_ID;
             eventIsCreated = true;
+
+            $('.createOrEditBreadcrumTitle').text('Ver evento');
 
         <?php endif; ?>
 

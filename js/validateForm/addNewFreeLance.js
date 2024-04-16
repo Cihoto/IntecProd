@@ -1,4 +1,4 @@
-$('#addNewFreeLance').validate({
+$('#addNewFreeLanceSideMenuForm').validate({
     rules: {
         especialidadSelect:{
             required:true
@@ -21,7 +21,7 @@ $('#addNewFreeLance').validate({
             required:"Ingrese un valor"
         },
         nombreInput:{
-            required:"Ingrese un valor"
+            required:"Ingrese un nombre"
         },
         // rutInput:{
         //     required:"Ingrese un valor"

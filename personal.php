@@ -47,7 +47,7 @@ $active = 'personal';
                     </svg>
                     <p class="header-P">Aquí puedes ver, editar y crear los técnicos para tus eventos</p>
                 </div>
-                <div class="row justify-content-end" style="margin:0px 14px; gap :8px;">
+                <div class="row justify-content-end" style="margin:0px 6px; gap :8px;">
                     <button class="s-Button-w" style="width: 250px;" id="openEspCarController">
                         <p class="s-P-g">Agregar cargo especialidad</p>
                     </button>

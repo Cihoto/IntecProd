@@ -250,13 +250,7 @@ function setIngresos(){
 
         
         // console.log("TOTALPERITEM.EQUIPOS FILTERED",totalPerItem.equipos);
-        console.log('totalPerItem.equipos',totalPerItem.equipos);
-        console.log('totalPerItem.equipos',totalPerItem.equipos);
-        console.log('totalPerItem.equipos',totalPerItem.equipos);
-        console.log('totalPerItem.equipos',totalPerItem.equipos);
-        console.log('totalPerItem.equipos',totalPerItem.equipos);
-        console.log('totalPerItem.equipos',totalPerItem.equipos);
-        console.log('totalPerItem.equipos',totalPerItem.equipos);
+
         console.log('totalPerItem.equipos',totalPerItem.equipos);
         
         totalPerItem.equipos.forEach((totalPerItem)=>{
@@ -265,6 +259,7 @@ function setIngresos(){
             }
         })
     }
+
 
     // _selectedProducts.forEach((selected)=>{
     //     const totalCatExists = totalPerItem.equipos.find((item)=>{
@@ -277,6 +272,8 @@ function setIngresos(){
     // })
 
     // FILL TOTALPERITEM ARRAY ON EQUIPOS TOTAL
+    console.log('_selectedProducts',_selectedProducts);
+
     const productTotal = _selectedProducts.map((product)=>{
         return {
             'categorie':product.categoria,
@@ -325,7 +322,7 @@ function printAllResumeIncome(){
 
     // console.log("ESTO ES LO  QUE SSE VA A IMPRIMIIR", totalPerItem.equipos)
     $('#total-productResume > tbody tr').remove();
-    $('#total-othersResume > tbody tr').remove();
+    // $('#total-othersResume > tbody tr').remove();
 
     let totalEquipos = 0;
     let totalOthers = 0;
@@ -343,19 +340,17 @@ function printAllResumeIncome(){
     });
 
     _selectedOthersProducts.forEach((other)=>{
+
+        
         let tr = `<tr>
             <td><p></p></td>
             <td><p>${other.detalle}</p></td>
             <td><p></p></td>
             <td><p>${CLPFormatter(other.total)}</p></td>
         </tr>`;
-        // let tr = `<tr>
-        //     <td class="col-4"></td>    
-        //     <td>${other.detalle}</td>    
-        //     <td class="-tae">${CLPFormatter(other.total)}</td>   
-        // <tr/>`;
-        // $(`#subtotalCategoria-${equipos.categorie}`).val(CLPFormatter(parseInt(equipos.value)));
-        $('#total-othersResume > tbody').append(tr);
+        // $('#total-othersResume > tbody').append(tr);
+
+        $('#total-productResume tbody tr:last').after(tr);
         totalOthers += parseInt(other.total);
     });
     

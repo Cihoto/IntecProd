@@ -57,7 +57,7 @@ $active = 'inventario';
                 </div>
                 <div class="row justify-content-between align-items-center">
 
-                    <div class="row justify-content-start col-4" style="margin:0px 14px; gap :8px;">
+                    <div class="row justify-content-start col-4" style="gap :8px;">
                         <div class="form-group" style="width:180px">
                             <label for="catSelect" class="inputLabel">Categoría</label>
                             <select id="catSelect" name="catSelect" type="text" class="form-select s-Select-g">
@@ -72,7 +72,7 @@ $active = 'inventario';
                         </div>
                     </div>
 
-                    <div class="row justify-content-end col-7" style="margin:0px 14px; gap :8px;">
+                    <div class="row justify-content-end col-7" style="margin:0px; gap :8px;">
                         <button class="s-Button" id="buttonProductoUnitario" onclick="openCreateProdSideMenu()">
                             <p class="s-P">Agregar nuevo producto</p>
                         </button>

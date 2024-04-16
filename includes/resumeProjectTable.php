@@ -111,7 +111,7 @@
                         </tr> -->
                     </tbody>
                 </table>
-                <table class="-resume-table-S -r-t-income secondary" id="total-othersResume">
+                <!-- <table class="-resume-table-S -r-t-income secondary" id="total-othersResume">
                     <thead>
                         <tr>
                             <th><p>Otros</p></th>
@@ -120,18 +120,21 @@
                             <th><p id="totalOthers">$0</p></th>
                         </tr>
                     </thead>
-                    <tbody>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                        
+                        </tfoot>
+                </table> -->
                         <!-- <tr>
                             <td><p>Random</p></td>
                             <td><p></p></td>
                             <td><p></p></td>
                             <td><p>$35.000</p></td>
                         </tr> -->
-                    </tbody>
-                    <tfoot>
 
-                    </tfoot>
-                </table>
+
+
                 <table class="-resume-table-S -r-t-costs main">
                     <thead>
                         <tr>

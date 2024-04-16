@@ -41,7 +41,7 @@ $active = 'clientes';
                     <p class="header-P">Aquí puedes ver, editar y crear los clientes para tus eventos</p>
                 </div>
 
-                <div class="row justify-content-end" style="margin:0px 14px;">
+                <div class="row justify-content-end" style="margin:0px;">
                     <button class="s-Button" id="openMasivaCliente" style="position: relative; right:-138px ; bottom: 50px;">
                         <p class="s-P">Agregar clientes masiva</p>
                     </button>

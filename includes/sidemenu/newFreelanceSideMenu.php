@@ -8,7 +8,7 @@
         </svg>
         <p class="header-P">Aquí puedes agregar un nuevo técnico freelance</p>
     </div>
-    <form id="addNewFreeLance" style="padding: 16px;">
+    <form id="addNewFreeLanceSideMenuForm" style="padding: 16px;">
         <div class="d-flex" style="flex-direction: column; width: 100%;">
             <div class="row">
                 <div style="display: flex;
@@ -49,12 +49,15 @@
             </div>
         </div>
 
-        <input type="submit" style="display: none; " id="createNewFreeLance">
+        <!-- <input type="submit"  id="createNewFreeLance" value="alskdjlaksjd"> -->
+        
+            <div class="row" style="justify-content: end;">
+                    <button class="s-Button col-3" id="triggerNewFreeLance">
+                        <p class="s-P">Crear Nuevo Técnico</p>
+                    </button>
+            </div>
+
     </form>
-    <div class="row" style="justify-content: end; margin-right: 16px;">
-        <button class="s-Button col-3" id="triggerNewFreeLance">
-            <p class="s-P">Crear Nuevo Técnico</p>
-        </button>
-    </div>
+
     <!-- <button id="cerrarClienteModal">Cerrar</button> -->
 </div>

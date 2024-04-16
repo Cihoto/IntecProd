@@ -1717,6 +1717,7 @@ function getTodayEvent()
         return array("error" => $e);
     }
 }
+
 function getEventDay($empresa_id, $date){
 
     try {
@@ -1726,7 +1727,9 @@ function getEventDay($empresa_id, $date){
         $query = "SELECT p.*, pers.nombre as owner FROM proyecto p 
         LEFT JOIN personal per on per.id = p.owner 
         LEFT JOIN persona pers on pers.id = per.persona_id 
-        WHERE p.fecha_inicio = '$date' and p.empresa_id = $empresa_id";
+        WHERE p.fecha_inicio = '$date' 
+        AND p.empresa_id = $empresa_id
+        AND p.isDelete =  0 ";
 
 
         if ($response = $conn->mysqli->query($query)) {

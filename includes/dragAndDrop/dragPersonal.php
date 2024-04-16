@@ -10,9 +10,9 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-8">
-                    <div class="searchRow" style="margin-bottom: 20px;">
-                        <div class="d-flex" style="align-items: end;">
+                <div class="col-8" style="padding-right: 0px;">
+                    <div class="searchRow" style="margin-bottom: 20px;justify-content: end;">
+                        <!-- <div class="d-flex" style="align-items: end;">
                             <div style="margin-right: 8px;">
                                 <div class="form-group" style="margin-bottom: 0px;">
                                     <label for="cargoPersonalAssigmentFilter" class="inputLabel">*Cargo</label>
@@ -27,9 +27,9 @@
                                 </svg>
                                 <p class="s-P-g">Filtros</p>
                             </button>
-                        </div>
+                        </div> -->
                         <div>
-                            <button class="s-Button-w" id="openModalNewFree" style="margin-right: 15px;width: 150px;">
+                            <button class="s-Button-w" id="openModalNewFree" style="width: 150px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
                                     <path d="M9.5 17C13.6421 17 17 13.6421 17 9.5C17 5.35786 13.6421 2 9.5 2C5.35786 2 2 5.35786 2 9.5C2 13.6421 5.35786 17 9.5 17Z" stroke="#069B99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M9.5 6.5V12.5" stroke="#069B99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -56,7 +56,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-4" style="padding-left: 0px;">
                     <h4>Personal a disponer</h4>
                     <table id="selectedPersonalSideResume">
                         <thead>

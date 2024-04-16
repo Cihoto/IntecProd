@@ -182,9 +182,8 @@ $(document).on("click",'#vehiclesDashTable tbody tr',async function(){
     $('#vehicleUpdateModel').val(vehicleData.data.model_id);
     // $('#vehicleUpdateModel').change();
 
-    console.log(vehicleData);               
     console.log(vehicleData);
-    console.log(vehicleData);
+
     printVehicleEvents();
 });
 
@@ -192,10 +191,6 @@ $(document).on("click",'#vehiclesDashTable tbody tr',async function(){
 function printVehicleEvents(){
 
     // vehicleData.events.forEach(())
-    console.log(vehicleData.events)
-    console.log(vehicleData.events)
-    console.log(vehicleData.events)
-    console.log(vehicleData.events)
     console.log(vehicleData.events)
 
 
@@ -243,7 +238,7 @@ function printVehicleEvents(){
     });
     if (!$.fn.DataTable.isDataTable('#eventsPerVehicle_dash')) {
         $('#eventsPerVehicle_dash').DataTable({
-            columns:[{'width':'10%'},{'width':'10%'},{'width':'10%'},{'width':'10%'}],
+            // columns:[{'width':'10%'},{'width':'10%'},{'width':'10%'},{'width':'10%'}],
             language: {
                 "decimal": "",
                 "emptyTable": "No hay información",

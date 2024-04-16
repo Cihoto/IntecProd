@@ -2655,7 +2655,7 @@ textarea {
 }
 #personalDashTable_filter{
   position: relative;
-  margin-right: 16px;
+  margin-right: 5px;
 }
 
 .categorieHeaderTitle {
@@ -4906,7 +4906,6 @@ button{
 
 #eventsPerVehicle_dash {
   margin-top: 50px!important;
-  /* display: table; */
   border-collapse: collapse;
 }
 
@@ -4914,13 +4913,12 @@ button{
   line-height: normal;
 }
 #eventsPerVehicle_dash tr {
-  /* line-height: normal; */
   display: flex;
 }
 
 #eventsPerVehicle_dash tr td {
   display: flex;
-}
+} 
 
 
 #eventsPerVehicle_dash td ,#eventsPerVehicle_dash th{

@@ -73,15 +73,16 @@
 <style>
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-    
     line-height: 30px !important;
 }
+
 .select2-container .select2-selection--single {
     height: 40px !important;
     padding: .375rem 1.75rem .375rem .75rem !important;
     border: 1px solid gray!important;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px!important;
 }
+
 .select2-selection__arrow {
     top: -5px!important;
 }
@@ -89,7 +90,6 @@
 .select2-container--default .select2-selection--single .select2-selection__arrow{
     top: 8px!important;
 }
-
 
 #vehicleCreateType-error{
     position: relative;
