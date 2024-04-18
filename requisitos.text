@@ -294,12 +294,9 @@ REU MARTES 02-04-2024
 
 DASHBOARD FIXED CURRENT AND FUTURE CURRENT MONTH EVENTS AND INCOME --> done
 
-
 subcateogoria fix en item producto desde dashboard productos.
 agregar cuadriculado a la todas la tablas. STANDARD
 AGREAGAR EXCELS A CARGAS MASIVAS.
-
-
 
 04-04-2024
 
@@ -313,7 +310,6 @@ EN PRODUCTO HAY QUE CAMBIAR EL FORMULARIO DE UPDATE POR LA MARCA, ACTUALIZAR EL 
 
 EN CLIENTES NOMBRE EVENTOS FACTURACION RUT CORREO 
 
-
 Cambios el morado dele stado no va a azul.
 
 Crear modulo proveedores
@@ -322,17 +318,19 @@ eliminados del daily en dashboard quitarlos
 
 width en eventos de cliente mas delgada
 
+usar margen de la derecha el lado izquierdo en la lista de eventos
 
-
-usar margen de la derechaen el lado izquierdo en lalista de eventos
-
-
-En crear o editare evento usar margin de casillas con mapa
+En crear o editar evento usar margin de casillas con mapa
 eliminar boton guardar borrador
-vert catgeogiras en productos seleccionados
+vert categorias en productos seleccionados
+
 Eliminar filtros dentro de personal
 
-Cambiar a botrones morados
+Cambiar a botones morados
+
+
+CAPTURAR TAB OR CLOSE DEL NAVEGADOR PARA GUARDAR EL EVENTO 
+Y EVITAR PERDIDA DE INFORMACION
 
 
 

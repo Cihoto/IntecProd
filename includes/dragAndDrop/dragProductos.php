@@ -68,9 +68,9 @@
 
     <div class="projectSave-footer">
         <div class="returnPreviusPage">
-            <button class="s-Button-w" style="width: 170px;">
+            <!-- <button class="s-Button-w" style="width: 170px;">
                 <p class="s-P-g">Guardar Borrador</p>
-            </button>
+            </button> -->
         </div>
 
         <div class="saveProject">

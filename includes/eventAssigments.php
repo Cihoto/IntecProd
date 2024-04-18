@@ -33,15 +33,15 @@
                         </svg>
                         <p class="header-P" style="margin: 0px!important;"> Ingresa la información del evento</p>
                     </div>
-                    <div class="row" style="margin-bottom: 20px;">
-                        <div class="col-lg-6 col-md-11 col-10">
-                            <div class="row">
-                                <div class="form-group col-7">
+                    <div class="row justify-content-center" style="margin-bottom: 20px;">
+                        <div class="col-lg-7 col-md-11 col-10">
+                            <div class="row justify-content-center">
+                                <div class="form-group col-lg-7 col-12">
                                     <label for="inputProjectName" class="inputLabel">Nombre del evento</label>
                                     <input id="inputProjectName" name="txtProjectName" type="text" class="form-control input-lg s-Input" value="" />
                                     <p class="errMessaje" id="eventNameMessage">Debes ingresar un nombre para el proyecto</p>
                                 </div>
-                                <div class="form-group col-5">
+                                <div class="form-group col-lg-5 col-12">
                                     <label for="event_type" class="inputLabel">*Tipo de evento</label>
                                     <select style="width: 100%;" id="event_type" name="event_type" type="text" class="form-select input-lg s-Select">
                                         <option value=""></option>
@@ -54,30 +54,30 @@
                                         <option value="7">Otro</option>
                                     </select>
                                 </div>
-                                <div class="form-group col-7">
+                                <div class="form-group col-lg-7 col-12">
                                     <label for="eventOwner" class="inputLabel" style="z-index: 10000;">Owner</label>
                                     <!-- <input id="eventOwner" name="eventOwner" type="text" class="form-control input-lg s-Input" value="" /> -->
                                     <select style="width: 100%;" id="ownerSelect" name="ownerSelect" type="text" class="form-select input-lg s-Select ">
                                     </select>
                                 </div>
-                                <div class="form-group col-5">
+                                <div class="form-group col-lg-5 col-12">
                                     <label for="inputNombreCliente" class="inputLabel">Cliente</label>
                                     <input readonly id="inputNombreCliente" name="txtCliente" type="text" class="form-control input-lg s-Input" value=""/>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-7" style="display: flex;flex-direction: column;justify-content: start;">
+                                <div class="col-lg-7 col-12" style="display: flex;flex-direction: column;justify-content: start;">
                                     <p class="date-header">Fecha del evento</p>
                                     <div style="display: flex; gap: 8px;">
     
                                         <div class="form-group col-6">
                                             <label for="fechaInicio" class="inputLabel dateLabel">Inicio</label>
-                                            <input id="fechaInicio" name="dpInicio" type="date" class="form-control input-lg s-Input">
+                                            <input id="fechaInicio" name="dpInicio" type="date" class="form-control input-lg s-Input" style="width: 97%;">
                                         </div>
     
                                         <div class="form-group col-6">
                                             <label for="fechaTermino" class="inputLabel dateLabel">Término (opcional)</label>
-                                            <input id="fechaTermino" name="dpTermino" disabled type="date" class="form-control input-lg s-Input">
+                                            <input id="fechaTermino" name="dpTermino" disabled type="date" class="form-control input-lg s-Input" style="width: 97%;">
                                         </div>
                                     </div>
                                 </div>
@@ -85,16 +85,15 @@
                                 <label for="direccionInput" class="inputLabel">Dirección del evento</label>
                                 <input id="direccionInput" name="txtDir" type="text" class="form-control input-lg s-Input">
                             </div> -->
-                                <div class="form-group col-5" style="margin-top: 25px!important;">
+                                <div class="form-group col-lg-5 col-12" style="margin-top: 25px!important;">
                                     <label for="dirInput" class="inputLabel">Dirección del evento</label>
                                     <input id="dirInput" name="txt_dir" type="text" class="form-control input-lg s-Input">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-12 col-12">
-                            
-                            <div class="row justify-content-end">
-                                <div id="map" style="width:580px;height : 400px;margin-top:-50px;"></div>
+                        <div class="col-lg-5 col-md-12 col-12" style="justify-content: center;">
+                            <div class="d-flex" style="justify-content: center;">
+                                <div id="map" style="width: 580px; height: 250px; margin-top: 10px; position: relative; outline-style: none;"></div>
                             </div>
                         </div>
                     </div>
@@ -144,12 +143,20 @@
                     </div>
 
                     <div class='row' style="gap: 16px; padding: 0px 12px;">
-                        <button type="button" class="s-Button-w" id="openEventComments" style="width: 240px;">
+                        <button type="button" class="--secondary-action-btn" id="openEventComments" style="width: 240px;">
+                            <img src="../assets/svg/commentBubblePurple.svg" alt="">
+                            <p>Agregar Comentarios</p>
+                        </button>
+                        <button type="button" class="--secondary-action-btn" id="openViewUploadedFiles" style="width: 240px;">
+                            <img src="../assets/svg/fileClipPurple.svg" alt="">
+                            <p>Agregar archivos</p>
+                        </button>
+                        <!-- <button type="button" class="s-Button-w" id="openEventComments" style="width: 240px;">
                             <p class="s-P-g">Comentarios</p>
                         </button>
                         <button type="button" class="s-Button-w" id="openViewUploadedFiles" style="width: 240px;">
                             <p class="s-P-g">Archivos</p>
-                        </button>
+                        </button> -->
                     </div>
                     <!-- <form id="addFilesToEvent" enctype="multipart/form-data" action="#" method="post"> -->
     
@@ -165,9 +172,9 @@
 
                 <div class="projectSave-footer">
                     <div class="returnPreviusPage">
-                        <button class="s-Button-w saveDraft" style="width: 170px;" id="">
+                        <!-- <button class="s-Button-w saveDraft" style="width: 170px;" id="">
                             <p class="s-P-g">Guardar Borrador</p>
-                        </button>
+                        </button> -->
                     </div>
                     <div class="saveProject">
                         <button class="s-Button createOrContinue" id="createProject" style="width: 170px;">

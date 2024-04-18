@@ -1,3 +1,4 @@
+let dataTableProduct = ''; 
 
 
 function FillProductos(empresaId) {
@@ -27,7 +28,7 @@ function FillProductos(empresaId) {
         $('#tableProducts tbody').append(`<tr id="${producto.id}">${td}</tr>`)
       });
 
-      $('#tableProducts').DataTable({
+      dataTableProduct = $('#tableProducts').DataTable({
         scrollX: true,
         fixedHeader: true,
         columnDefs: [
@@ -629,32 +630,7 @@ async function FillAllAvailableProducts(dates) {
   }
 }
 
-function fillProductsTableAssigments() {
 
-
-
-  return false;
-  if ($.fn.DataTable.isDataTable('#tableProducts')) {
-    $('#tableProducts').DataTable().destroy();
-    $('#tableDrop > tr').each((key, element) => {
-      $(element).remove();
-    })
-  }
-  listProductArray.forEach(producto => {
-    let td = `
-          <td class="productId" style="display:none">${producto.id}</td>
-          <td class="catProd"> ${producto.categoria}</td>
-          <td class="itemProd"> ${producto.item}</td>
-          <td style="width:25%" class="productName">${producto.nombre}</td>
-          <td class="productPrice"> ${producto.precio_arriendo} </td>
-          <td class="productStock" >${producto.cantidad}</td>
-          <td class="productAvailable" >${(producto.disponibles < 0) ? 0 : producto.disponibles}</td>
-          <td><input style="margin-right:8px" class="addProdInput quantityToAdd" id="" type="number" min="1" max="${producto.cantidad}"/><i class="fa-solid fa-plus addItem" onclick="AddProduct(this)"></i></td>`
-    $('#tableDrop').append(`<tr id="${producto.id}">${td}</tr>`);
-  });
-
-  $('#tableProducts').dataTable();
-}
 
 
 
@@ -986,7 +962,7 @@ function printAllProductsOnTable(searchValue, indexTab) {
   });
 
   if (!$.fn.DataTable.isDataTable('#tableProducts')) {
-    $('#tableProducts').dataTable(
+    dataTableProduct = $('#tableProducts').DataTable(
       {
         pageLength: 100,
         columns: [{ width: '25%' }, { width: '25%' }, { width: '30%' }, { width: '5%' }, { width: '5%' },{width: '10%'}]
@@ -1027,7 +1003,7 @@ function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
 
   if (!$.fn.DataTable.isDataTable('#tableProducts')) {
 
-    $('#tableProducts').dataTable(
+    dataTableProduct = $('#tableProducts').DataTable(
       {
         pageLength: 100,
         columns: [{ width: '20%' }, { width: '20%' }, { width: '20%' }, { width: '5%' }, { width: '5%' },{width: '10%'}]
@@ -1059,7 +1035,12 @@ function printAllSelectedProducts() {
   $('#projectResumeFilter-products').append(`<option value="all">Todos</option>`);
 
   // THIS IS FOR PROJECT RESUME  
-
+  console.log('_categoriesandsubcategories',_categoriesandsubcategories);
+  console.log('_categoriesandsubcategories',_categoriesandsubcategories);
+  console.log('_categoriesandsubcategories',_categoriesandsubcategories);
+  console.log('_categoriesandsubcategories',_categoriesandsubcategories);
+  console.log('_categoriesandsubcategories',_categoriesandsubcategories);
+  console.log('_categoriesandsubcategories',_categoriesandsubcategories);
   _categoriesandsubcategories.forEach((categoria) => {
 
     $('#projectResumeFilter-products')
@@ -1068,6 +1049,12 @@ function printAllSelectedProducts() {
     const tableId = `projectResumeProduct-${categoria.categoria.replaceAll(' ', '_')}`;
     let selectedProdTableId = `eventSelectedProduct-${categoria.categoria.replaceAll(' ', '_')}`;
     const subCategorias = categoria.subcategorias;
+
+    let selProdTr = `<tr>
+      <td class="--sel-pr-cat" colspan="3"> <p class="-sel-cat-name">${categoria.categoria}</p> </td>
+    </tr>`
+
+  $('#-a-m-SelProds').append(selProdTr)
 
     $('#ventaEventos').append(
       `<div class="row categorieSubTotal">
@@ -1124,7 +1111,7 @@ function printAllSelectedProducts() {
       //   <img src="../../assets/svg/trashCan-red.svg" alt="">
       // </div>
 
-        let selProdTr = `<tr product_id="${prod.id}">
+        let selProdTr = `<tr product_id="${prod.id}" class="--sel-pr">
           <td class="--ts"> <p>${prod.nombre}</p> </td>
           <td class="--tc"><input type="number" name="" id="" class="selProdQty" min="1"  value="${prod.quantityToAdd}"></td>
           <td><img src="../../assets/svg/trashCan-red.svg" alt="" class="rmv-sel-prod"></td>
@@ -1565,5 +1552,16 @@ function setOtherIfReady() {
 /*
   // END OTHER PRODUCTS SECTION
 */
+
+
+
+
+
+// HEADER SEARCH INPUT FOR PROD TABLE
+
+$('#products-tab').on('click',function(){
+
+  searchInputTarget = dataTableProduct;
+})
 
 

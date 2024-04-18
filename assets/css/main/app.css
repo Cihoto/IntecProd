@@ -22721,7 +22721,8 @@ body .bi:before {
 #main {
     margin-left: 300px;
     min-height: 100vh;
-    padding: 2rem
+    /* padding: 2rem */
+    padding: 16px
 }
 
 @media screen and (max-width:1199px) {

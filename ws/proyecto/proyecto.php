@@ -872,12 +872,13 @@ function getAllMyProjects_list_toExecute($empresa_id)
     $today = date('Y-m-d');
 
     $projects = [];
-    $queryProyectos = "SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',
+    $queryProyectos = "SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',pfr.income
     CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
     df.nombre_fantasia as nombre_fantasia ,
     CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,
     p.fecha_inicio ,p.fecha_termino,phv.proyecto_id as 'phv', php.proyecto_id as 'php',  phf.event_id as 'phf',
-    et.nombre as event_type, pfr.income as income, pfr.cost as cost,(SELECT persona.nombre 
+    et.nombre as event_type, pfr.income as income, pfr.cost as cost,
+    (SELECT persona.nombre 
     FROM personal pers
     INNER JOIN persona on persona.id = pers.persona_id 
     INNER JOIN proyecto proye on proye.owner = pers.id
@@ -897,7 +898,7 @@ function getAllMyProjects_list_toExecute($empresa_id)
     LEFT JOIN datos_facturacion df on df.id = c.datos_facturacion_id          
     LEFT JOIN persona per on per.id = c.persona_id_contacto
     LEFT JOIN comuna co on co.id = d.comuna_id 
-    LEFT JOIN region re on re.id = co.region_id 
+    LEFT JOIN region re on re.id = co.region_id  
     WHERE p.empresa_id = $empresa_id 
     AND p.status_id IN (2,4)
     AND p.fecha_inicio >= '$today'
@@ -1571,13 +1572,13 @@ function getDashResume($empresa_id)
     AND p.empresa_id = $empresa_id
     AND p.isDelete = 0";
 
-    $queryActualMonthIncome = "   SELECT  SUM(pfr.income)as currentMonthIncome from project_finance_resume pfr 
+    $queryActualMonthIncome = "SELECT  SUM(pfr.income)as currentMonthIncome from project_finance_resume pfr 
     INNER JOIN proyecto p on p.id = pfr.event_id
     where p.fecha_inicio >=    DATE(CONCAT_WS('-', YEAR(CURRENT_DATE()), MONTH(CURRENT_DATE()) , '01'))
     and  p.fecha_inicio <=  LAST_DAY(CURDATE())
     AND p.empresa_id = $empresa_id
     and p.IsDelete = 0
-    and p.status_id = 2;  ";
+    and p.status_id in(2,3,5);  ";
 
 
 
@@ -1677,9 +1678,18 @@ function getEventsForDashboard($request, $empresa_id)
         $type = "";
     }
 
-    $query = "SELECT p.id, p.nombre_proyecto, d.direccion as 'address' ,p.fecha_inicio ,e.estado as estado, e.id as estado_id FROM proyecto p  
+    $query = "SELECT p.id, p.nombre_proyecto, d.direccion as 'address' ,
+    p.fecha_inicio ,
+    e.estado as estado,
+    e.id as estado_id,
+    (SELECT ehc.id FROM event_has_comment ehc where ehc.event_id = p.id LIMIT 1) as event_has_comment,
+    phf.event_id as 'phf',
+    pfr.income 
+    FROM proyecto p  
     LEFT join event_type et on et.id = p.event_type_id  
     LEFT join direccion d on d.id = p.address_id  
+    LEFT JOIN project_finance_resume pfr ON pfr.event_id = p.id
+    LEFT JOIN proyecto_has_files phf on phf.event_id = p.id
     LEFT JOIN estado e on e.id = p.status_id  where p.empresa_id = $empresa_id 
     $status $date $type 
     AND p.isDelete = 0;";

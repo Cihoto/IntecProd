@@ -27,18 +27,19 @@ require_once('./includes/head.php');
 
         <div id="main">
             <header class="page-header">
-                <nav aria-label="breadcrumb">
+                <?php require_once('./includes/headerBreadCrumb.php')?>
+
+                <!-- <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="txtDec-no" href="./proximosEventos.php"><img src="./assets/svg/Eventos.svg" alt=""> Eventos</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a class="txtDec-no" href="#">Listado de eventos</a></li>
+                        
                     </ol>
                 </nav>
-                <p class="headerTitle">Listado de eventos</p>
+                <p class="headerTitle">Listado de eventos</p> -->
             </header>
 
             <div class="pageContent">
 
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-left: 8px;">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" id="listview-tab" data-bs-toggle="tab" href="#listview" role="tab" aria-controls="listview" aria-selected="true">Lista</a>
                     </li>
@@ -51,7 +52,7 @@ require_once('./includes/head.php');
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active tab-data" id="listview" role="tabpanel" aria-labelledby="listview-tab">
-                        <div class="formHeader d-flex justify-content-start" style="margin-top: 8px;">
+                        <div class="formHeader d-flex justify-content-start" style="margin-top: 8px; margin-left: 16px;">
                             <svg style="margin-top: 4px;" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                                 <circle cx="6" cy="6" r="6" fill="#069B99" />
                             </svg>
@@ -228,6 +229,11 @@ require_once('./includes/head.php');
 <script src="./js/sortTable/eventSort.js"></script>
 <script src="./js/valuesValidator/validator.js"></script>
 
+
+<!-- HEADER CONTROLLER -->
+<script src="./js/pageHeader/breadCrumb.js"></script>
+<script src="./js/pageHeader/searchBar.js"></script>
+
 <script>
     caches.keys().then((keyList) => Promise.all(keyList.map((key) => caches.delete(key))));
     const EMPRESA_ID = <?php echo $empresaId; ?>;
@@ -249,6 +255,13 @@ require_once('./includes/head.php');
     $(document).ready(async function() {
 
         createCalendar();
+
+
+        // from apgeheaderbreadCrumb
+        createBreadCrumb('eventList');
+        // from pageheader/searchbar set input target
+        searchInputTarget = $('#dash-event-table_filter')
+        // .find('input[type="search"]');
 
         await getEvents(EMPRESA_ID);
         await getCalendarEvents();

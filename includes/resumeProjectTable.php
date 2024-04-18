@@ -1,6 +1,47 @@
 <!-- <div class="container" style="margin: 0px;"> -->
+<div class="documentPdfSelector">
+    <p style="margin: 0px!important;">Selecciona para descargar</p>
+    <div class="checkbox-wrapper-13">
+        <input id="details-documents" type="checkbox">
+        <label for="details-documents">Detalles</label>
+    </div>
+    <div class="checkbox-wrapper-13">
+        <input id="factSheet-documents" type="checkbox">
+        <label for="factSheet-documents">Ficha técnica</label>
+    </div>
+    <div class="checkbox-wrapper-13">
+        <input id="nomDocument" type="checkbox">
+        <label for="nomDocument">Generar nómina</label>
+    </div>
+    <button id="generateResumePdf">
+        <p>Exportar PDF</p>
+        <img src="../assets/svg/download.svg" alt="">
+    </button>
+</div>
 
-<div class="formHeader" style="align-items: center!important; margin-left: 13px;">
+<!-- <div id="documentSelectorContainer">
+            <div id="documentOptions">
+                <p style="margin: 0px!important;">Selecciona para descargar</p>
+                <div class="checkbox-wrapper-13">
+                    <input id="details-documents" type="checkbox">
+                    <label for="details-documents">Detalles</label>
+                </div>
+                <div class="checkbox-wrapper-13">
+                    <input id="factSheet-documents" type="checkbox">
+                    <label for="factSheet-documents">Ficha técnica</label>
+                </div>
+                <div class="checkbox-wrapper-13">
+                    <input id="nomDocument" type="checkbox">
+                    <label for="nomDocument">Generar nómina</label>
+                </div>
+            </div>
+            <button id="generateResumePdf">
+                <p>Exportar PDF</p>
+                <img src="../assets/svg/download.svg" alt="">
+            </button>
+        </div> -->
+
+<div class="formHeader" style="align-items: center!important; margin-left: 16px;">
     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
         <circle cx="6" cy="6" r="6" fill="#069B99" />
     </svg>
@@ -286,28 +327,7 @@
         </div>
     </div>
     <!-- <div class="col-2"> -->
-        <div id="documentSelectorContainer">
-            <div id="documentOptions">
-                <p style="margin: 0px!important;">Selecciona para descargar</p>
-    
-                <div class="checkbox-wrapper-13">
-                    <input id="details-documents" type="checkbox">
-                    <label for="details-documents">Detalles</label>
-                </div>
-                <div class="checkbox-wrapper-13">
-                    <input id="factSheet-documents" type="checkbox">
-                    <label for="factSheet-documents">Ficha técnica</label>
-                </div>
-                <div class="checkbox-wrapper-13">
-                    <input id="nomDocument" type="checkbox">
-                    <label for="nomDocument">Generar nómina</label>
-                </div>
-            </div>
-            <button id="generateResumePdf">
-                <p>Exportar PDF</p>
-                <img src="../assets/svg/download.svg" alt="">
-            </button>
-        </div>
+
     <!-- </div> -->
 </div>
 
@@ -319,9 +339,9 @@
 <!-- </div> -->
 <div class="projectSave-footer">
     <div class="returnPreviusPage">
-        <button class="s-Button-w" style="width: 170px;" id="saveDraft">
+        <!-- <button class="s-Button-w" style="width: 170px;" id="saveDraft">
             <p class="s-P-g">Guardar Borrador</p>
-        </button>
+        </button> -->
     </div>
 
     <div class="saveProject">

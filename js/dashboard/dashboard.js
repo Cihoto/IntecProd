@@ -4,8 +4,22 @@ let dateLimits = {
     "init": "",
     "finish": ""
 }
+
+$(window).bind("beforeunload", function() { 
+    return confirm("Do you really want to close?"); 
+});
 $(document).ready(async function () {
     // SET EVENTS QUANTITY COMPARISON BTEWEEN ACTUAL  MONTH AND LAST MONTH
+
+
+
+
+
+    // from apgeheaderbreadCrumb
+    createBreadCrumb('index');
+    // from pageheader/searchbar set input target
+    searchInputTarget = $('#dash-event-table_filter')
+    // .find('input[type="search"]');
 
 
     const resumeDataDashboard = await getDashResume(EMPRESA_ID);
@@ -431,6 +445,11 @@ async function getDashResume(empresa_id) {
         }
     })
 }
+
+
+
+
+
 
 
 

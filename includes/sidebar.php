@@ -73,7 +73,14 @@
             </svg>
             <p class="sidebarTitle">Eventos</p>
           </a>
-          <ul class="submenu">
+          <?php
+          if ($active == 'proximosEventos' || $active == 'crearEventos' || $active === "eventos") {
+            echo '<ul class="submenu active">';
+          } else {
+            echo '<ul class="submenu">';
+          }
+          ?>
+          
             <?php if (in_array("7", $rol_id) || in_array("1", $rol_id) || in_array("2", $rol_id)) : ?>
               <li class="submenu-item">
                 <a href="miEvento.php">Crear Evento</a>

@@ -260,7 +260,6 @@ async function getEventsDashboard(empresa_id) {
         }),
         dataType: 'json',
         success: function (response) {
-            // console.log(response)
             _dashEvents = response;
         },
         error: function (response) {
@@ -301,7 +300,135 @@ function printNoEventsAvailableDash() {
 
 
 let table = "";
-function printEventOnDashTable() {
+
+
+function printEventOnDashTable(){
+    if ($.fn.DataTable.isDataTable('#dash-event-table')) {
+        $('#dash-event-table').DataTable()
+            .clear()
+            .draw();
+        $('#dash-event-table').DataTable().destroy();
+    }
+
+    _dashEvents.forEach((evento) => {
+        // console.log(evento)
+
+        if(evento.estado == null){
+            evento.estado = "borrador"
+        }
+        if(evento.estado_id === 1){
+            
+        }
+        if(evento.estado_id === 2){
+            color = "#27AE60"
+        }
+        if(evento.estado_id === 3){
+            color = "#7F45E3"
+        }
+        
+        if(evento.address === null){ 
+            evento.address = ""
+        }
+
+        let ehc = `<img src="./assets/svg/commentActive.svg" alt="">`;
+        let ehf = `<img src="./assets/svg/paperclip.svg" alt="">`;
+        if(evento.event_has_comment == null){
+            ehc = `<img src="./assets/svg/commentNoActive.svg" alt="">`;
+        }else{
+            ehc = `<img src="./assets/svg/commentActive.svg" alt="">`;
+        }
+
+        if(evento.phf == null){
+            ehf = `<img src="./assets/svg/paperclip.svg" alt="">`;
+        }else{
+            ehf = `<img src="./assets/svg/paperclip-active.svg" alt="">`;
+        }
+
+        let nameAndAssigments = `<div class="-eve-list-inf-ctn">
+            <p class="event-cell-hide-text --h-text-flex-30"> ${evento.nombre_proyecto}</p>
+            <div class="--ev-assigments-container">
+
+            <button class="commentContainer">
+                ${ehc}
+            </button>
+            <button class="buttonEventList">
+                ${ehf}
+            </button>
+            </div>
+        </div>`;
+
+        let tr = `<tr>
+            <td>${nameAndAssigments}</td>
+            <td>${evento.fecha_inicio}</td>
+            <td><p class="event-status ${evento.estado}">${ evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p></td>
+            <td><p>${CLPFormatter(evento.income)}</p></td>
+        </tr>`
+
+
+        $('#dash-event-table tbody').append(tr);
+
+        // if(evento.direccion == null){evento.direccion =""}
+
+        // table.row
+        //     .add([
+        //         nameAndAssigments,
+        //         // evento.nombre_proyecto,
+        //         evento.fecha_inicio,
+        //         `<p class="event-status ${evento.estado}">${ evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p>`,
+        //         `<p>${CLPFormatter(evento.income)}</p>`
+        //     ])
+        //     .draw(false)
+    });
+
+
+    if (!$.fn.DataTable.isDataTable('#dash-event-table')) {
+
+        tableEventList = $('#dash-event-table').DataTable({
+            responsive: true,
+            sort: true,
+            pageLength: 100,
+            columnDefs: [
+                {width: '30%', targets: [0]},
+                {width: '20%', targets: [1]},
+                {width: '20%', targets: [2]},
+                {width: '20%', targets: [3]},
+            ],
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Eventos",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+
+        // from pageheader/searchbar set input target
+        searchInputTarget = tableEventList;
+
+    }
+
+
+
+
+
+}
+
+
+
+function printEventOnDashTable_120931092301nx298301c2_() {
 
     // const table =  $('#dash-event-table');
     // $('#dash-event-table tbody tr').remove();
@@ -310,13 +437,16 @@ function printEventOnDashTable() {
 
         table = new DataTable('#dash-event-table', {
             "paging": true,
-            "autoWidth":false,
-            scrollY: '230px',
+            pageLength:10,
             lengthMenu: [5, 8, 10, 20,50,100],
-            columnDefs: [ 
-                { "defaultContent": "", "targets": "_all" }
-                // { "width" : "147px", "targets": "_all"}
-            ],
+            columns: [{ width: '30%' }, { width: '20%' }, { width: '20%' }, { width: '20%' }]
+            // columnDefs: [ 
+
+            //     { width: '50%', targets: 0 },
+            //     { width: '15%', targets: [1,2,3]}
+            //     // { "defaultContent": "", "targets": "_all" }
+            //     // { "width" : "147px", "targets": "_all"}
+            // ],
             // "columns":[
             //     { "width": "147px" },
             //     { "width": "147px" },
@@ -337,6 +467,9 @@ function printEventOnDashTable() {
     // if ( $.fn.DataTable.isDataTable( '#dash-event-table' ) ) {
     //     $('#dash-event-table').Datatable().destroy();
     // }
+
+
+    console.log('_dashEvents',_dashEvents)
     
     _dashEvents.forEach((evento) => {
         // console.log(evento)
@@ -358,21 +491,50 @@ function printEventOnDashTable() {
             evento.address = ""
         }
 
+        let ehc = `<img src="./assets/svg/commentActive.svg" alt="">`;
+        let ehf = `<img src="./assets/svg/paperclip.svg" alt="">`;
+        if(evento.event_has_comment == null){
+            ehc = `<img src="./assets/svg/commentNoActive.svg" alt="">`;
+        }else{
+            ehc = `<img src="./assets/svg/commentActive.svg" alt="">`;
+        }
+
+        if(evento.phf == null){
+            ehf = `<img src="./assets/svg/paperclip.svg" alt="">`;
+        }else{
+            ehf = `<img src="./assets/svg/paperclip-active.svg" alt="">`;
+        }
+
+        let nameAndAssigments = `<div class="-eve-list-inf-ctn">
+            <p class="event-cell-hide-text "> ${evento.nombre_proyecto} </p>
+            <div class="--ev-assigments-container">
+
+            <button class="commentContainer">
+                ${ehc}
+            </button>
+            <button class="buttonEventList">
+                ${ehf}
+            </button>
+            </div>
+        </div>`;
+
         if(evento.direccion == null){evento.direccion =""}
 
         table.row
             .add([
-                evento.nombre_proyecto,
+                nameAndAssigments,
+                // evento.nombre_proyecto,
                 evento.fecha_inicio,
-                `<p><img src="./assets/svg/location.svg" alt=""> ${evento.address}</p>`,
-                `<p class="event-status ${evento.estado}">${ evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p>`
+                `<p class="event-status ${evento.estado}">${ evento.estado[0].toUpperCase()}${evento.estado.slice(1)}</p>`,
+                `<p>${CLPFormatter(evento.income)}</p>`
             ])
             .draw(false)
-    });
-
-
+        });
+        
+        
+        
+    }
     
-}
-
+    // `<p><img src="./assets/svg/location.svg" alt=""> ${evento.address}</p>`,
 
 

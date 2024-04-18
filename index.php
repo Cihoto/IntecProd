@@ -28,12 +28,10 @@ $active = 'dashboard';
       <div class="page-right-content">
 
         <header class="page-header">
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a class="txtDec-no" href="./proximosEventos.php"><img src="./assets/svg/Dashboard.svg" alt="" style="margin-top: -5px;"> Eventos</a></li>
-            </ol>
-          </nav>
-          <p class="headerTitle" style="margin:-13px 0px 16px 0px!important;">Dashboard</p>
+
+
+          <?php require_once('./includes/headerBreadCrumb.php')?>
+
 
 
           <div class="personalInformation-user">
@@ -89,29 +87,29 @@ $active = 'dashboard';
               </div>
             </div>
             <div id="dash-event-housing">
-              <p class="dstheader">Historial de eventos</p>
+              <p class="dstheader">Próximos eventos</p>
               <form id="dash-event-menu">
-                <div id="dash-event-status">
-                  <label for="" id="dash-searchBy">Buscar por:</label>
-                  <div class="select-status-container">
-                    <input type="radio" class="eventStatusSortDash" value="all" checked>
-                    <label for="">Todos</label>
-                  </div>
-                  <div class="select-status-container">
-                    <input type="radio" class="eventStatusSortDash" value="1">
-                    <label for="">Creados</label>
-                  </div>
-                  <div class="select-status-container">
-                    <input type="radio" class="eventStatusSortDash" value="2">
-                    <label for="">Confirmados</label>
-                  </div>
-                  <div class="select-status-container">
-                    <input type="radio" class="eventStatusSortDash" value="3">
-                    <label for="">Finalizados</label>
-                  </div>
-                </div>
+                  <!-- <div id="dash-event-status">
+                    <label for="" id="dash-searchBy">Buscar por:</label>
+                    <div class="select-status-container">
+                      <input type="radio" class="eventStatusSortDash" value="all" checked>
+                      <label for="">Todos</label>
+                    </div>
+                    <div class="select-status-container">
+                      <input type="radio" class="eventStatusSortDash" value="1">
+                      <label for="">Creados</label>
+                    </div>
+                    <div class="select-status-container">
+                      <input type="radio" class="eventStatusSortDash" value="2">
+                      <label for="">Confirmados</label>
+                    </div>
+                    <div class="select-status-container">
+                      <input type="radio" class="eventStatusSortDash" value="3">
+                      <label for="">Finalizados</label>
+                    </div>
+                  </div> -->
                 <div class="row justify-content-between">
-                  <div class="dash-filter-event">
+                  <!-- <div class="dash-filter-event">
                     <div class="select-area-dashEvent">
                       <div class="form-group" style="width: 180px;">
                         <label for="fechaInicio" class="inputLabel dateLabel">Fecha</label>
@@ -131,7 +129,7 @@ $active = 'dashboard';
                         <option value="7">Otro</option>
                       </select>
                     </div>
-                  </div>
+                  </div> -->
                   <!-- <button class="s-Button-w" style="margin-top: 10px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
                       <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
@@ -141,13 +139,13 @@ $active = 'dashboard';
                 </div>
               </form>
 
-              <table class="dashEventsTable" id="dash-event-table">
+              <table class="" id="dash-event-table">
                 <thead>
                   <tr>
                     <th>Evento</th>
                     <th>Fecha</th>
-                    <th>Ubicación</th>
                     <th>Estado</th>
+                    <th>Venta</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -156,6 +154,7 @@ $active = 'dashboard';
                 <tfoot>
                 </tfoot>
               </table>
+              
             </div>
           </div>
           <div class="right-side-dash">
@@ -235,6 +234,8 @@ $active = 'dashboard';
 
   <!-- GLOBAL FUNCTIONS -->
   <script src="./js/Funciones/openEventFromTables.js"></script>
+  <script src="./js/pageHeader/breadCrumb.js"></script>
+  <script src="./js/pageHeader/searchBar.js"></script>
 
 </body>
 
@@ -261,7 +262,12 @@ $active = 'dashboard';
 
 
 <script>
+// window.addEventListener("beforeunload", function (e) {
+//   var confirmationMessage = "\o/";
 
+//   (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+//   return confirmationMessage;                            //Webkit, Safari, Chrome
+// });
 </script>
 
 <!-- <script src="/js/Cargo_Especialidad/Testing/calendarviewResume.js"></script> -->

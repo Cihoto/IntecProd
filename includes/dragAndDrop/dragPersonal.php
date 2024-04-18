@@ -1,4 +1,4 @@
-<div class="row">
+<div>
     <div class="col-12 " style="max-height: 800px; overflow-y: scroll;overflow-x: hidden;">
         <div class="row">
             <div class="formHeader" style="margin-left:18px ;">
@@ -9,8 +9,8 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-8" style="padding-right: 0px;">
+            <div class="d-flex">
+                <div style="padding-right: 0px; width: 80%;">
                     <div class="searchRow" style="margin-bottom: 20px;justify-content: end;">
                         <!-- <div class="d-flex" style="align-items: end;">
                             <div style="margin-right: 8px;">
@@ -56,8 +56,10 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-4" style="padding-left: 0px;">
-                    <h4>Personal a disponer</h4>
+                <div id="selected-PersonalSideResume" style="padding-right: 0px; width: 20%;">
+                    <p>Personal a disponer</p>
+
+                    <div class="--divider-sideSelected"></div>
                     <table id="selectedPersonalSideResume">
                         <thead>
                             <th></th>
@@ -78,9 +80,9 @@
 </div>
 <div class="projectSave-footer">
     <div class="returnPreviusPage">
-        <button class="s-Button-w" style="width: 170px;">
+        <!-- <button class="s-Button-w" style="width: 170px;">
             <p class="s-P-g">Guardar Borrador</p>
-        </button>
+        </button> -->
     </div>
 
     <div class="saveProject">

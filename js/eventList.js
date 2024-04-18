@@ -228,51 +228,12 @@ async function printAllProjects(_projectList,isAdmSort) {
             }
         });
 
+        // from pageheader/searchbar set input target
+        searchInputTarget = tableEventList;
+
     }
-
-    // $('#allProjectTable-list').DataTable({
-    //     responsive: true,
-    //     columnDefs: [{ width: '10%', targets: 0 }]
-    // })
-    // $('#allProjectTable-list').DataTable({
-    //     order: [[2, 'asc']],
-    //     language: {
-    //         "decimal": "",
-    //         "emptyTable": "No hay información",
-    //         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-    //         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-    //         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-    //         "infoPostFix": "",
-    //         "thousands": ",",
-    //         "lengthMenu": "Mostrar _MENU_ Eventos",
-    //         "loadingRecords": "Cargando...",
-    //         "processing": "Procesando...",
-    //         "search": "Buscar:",
-    //         "zeroRecords": "Sin resultados encontrados",
-    //         "paginate": {
-    //           "first": "Primero",
-    //           "last": "Ultimo",
-    //           "next": "Siguiente",
-    //           "previous": "Anterior"
-    //         }
-    //     }
-    // })
-    // }
-
-    // $("#allProjectTable-list_length select").change();
-    // $("#allProjectTable-list_length select option[value=25]").attr('selected','selected');
-
 }
-{/* <td> <p class="event-name" >${evento.owner === null ? "" : evento.owner}</p> </td> */}
- // <td style="width: 15%;">  <p class="event-cell-hide-text">${CLPFormatter(evento.income)}000000</p> </td>
 
-
-//  <td style="display:flex;justify-content:space-between;">            
-//  <button class="buttonEventList">
-//      <img src="./assets/svg/dollar-sign-inactive.svg" alt="">
-//  </button>
-
-// </td> 
 
 function subDayToDate(date, daysToSub) {
 
@@ -387,7 +348,6 @@ async function getDeletedEvents(empresa_id) {
 
 async function printDeletedEvents(_DeletedprojectList) {
 
-    // const table = $('#allProjectTable-list').DataTable();
 
 
     if ($.fn.DataTable.isDataTable('#deletedEventsTable-list')) {
@@ -589,39 +549,10 @@ async function printDeletedEvents(_DeletedprojectList) {
             }
         });
 
+        // from pageheader/searchbar set input target
+        searchInputTarget = tableEventList;
+
     }
-
-    // $('#allProjectTable-list').DataTable({
-    //     responsive: true,
-    //     columnDefs: [{ width: '10%', targets: 0 }]
-    // })
-    // $('#allProjectTable-list').DataTable({
-    //     order: [[2, 'asc']],
-    //     language: {
-    //         "decimal": "",
-    //         "emptyTable": "No hay información",
-    //         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-    //         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-    //         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-    //         "infoPostFix": "",
-    //         "thousands": ",",
-    //         "lengthMenu": "Mostrar _MENU_ Eventos",
-    //         "loadingRecords": "Cargando...",
-    //         "processing": "Procesando...",
-    //         "search": "Buscar:",
-    //         "zeroRecords": "Sin resultados encontrados",
-    //         "paginate": {
-    //           "first": "Primero",
-    //           "last": "Ultimo",
-    //           "next": "Siguiente",
-    //           "previous": "Anterior"
-    //         }
-    //     }
-    // })
-    // }
-
-    // $("#allProjectTable-list_length select").change();
-    // $("#allProjectTable-list_length select option[value=25]").attr('selected','selected');
 
 }
 

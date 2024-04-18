@@ -94,6 +94,12 @@ function setEgresos(){
     $('#totalCostProject').text(CLPFormatter(allSelectedPersonalCost));
     $('#total-personalResume tbody tr').remove();
 
+
+    console.log('allSelectedPersonal',allSelectedPersonal)
+    console.log('allSelectedPersonal',allSelectedPersonal)
+    console.log('allSelectedPersonal',allSelectedPersonal)
+    console.log('allSelectedPersonal',allSelectedPersonal)
+
     let totalPersonal = 0;
     allSelectedPersonal.forEach((personal)=>{
         console.log('personal',personal)

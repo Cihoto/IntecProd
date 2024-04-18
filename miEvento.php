@@ -40,13 +40,14 @@ require_once('./includes/head.php');
         <div id="main">
 
             <header class="page-header">
-                <nav aria-label="breadcrumb">
+
+            <?php require_once('./includes/headerBreadCrumb.php')?>
+                <!-- <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="txtDec-no" href="./eventos.php"><img src="./assets/svg/Eventos.svg" alt=""> Eventos</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a class="txtDec-no createOrEditBreadcrumTitle" id="" href="#">Crear evento</a></li>
+                        
                     </ol>
                 </nav>
-                <p class="headerTitle createOrEditBreadcrumTitle" style="margin:-13px 0px 16px 0px!important;">Crear un nuevo evento</p>
+                <p class="headerTitle createOrEditBreadcrumTitle" style="margin:-13px 0px 16px 0px!important;">Crear un nuevo evento</p> -->
             </header>
 
             <div class="pageContent">
@@ -184,7 +185,12 @@ require_once('./includes/head.php');
     <script src="/js/factSheet.js"></script>
     <script src="/js/evento/viewUploadedFiles.js"></script>
     <script src="/js/evento/eventComments.js"></script>
-
+    
+    
+    <!-- HEADER CONTROLLER -->
+    <script src="/js/pageHeader/breadCrumb.js"></script>
+    <script src="/js/pageHeader/searchBar.js"></script>
+    
 
 
     <!-- SIDEMENUS -->
@@ -256,6 +262,8 @@ require_once('./includes/head.php');
         projectDates.selectDates = false;
         projectDates.project_id = "";
         printNewRow_subRent();
+        // from apgeheaderbreadCrumb
+        createBreadCrumb('eventCreateOrEdit');
         // SET EVENT_ID
         <?php if (isset($_GET['event_id'])) : ?>
             const EVENT_ID = <?= $_GET['event_id']; ?>;
@@ -264,6 +272,7 @@ require_once('./includes/head.php');
             eventIsCreated = true;
 
             $('.createOrEditBreadcrumTitle').text('Ver evento');
+            $('#createOrEditBreadcrumTitle').text('Ver evento');
 
         <?php endif; ?>
 
