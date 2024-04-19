@@ -872,7 +872,7 @@ function getAllMyProjects_list_toExecute($empresa_id)
     $today = date('Y-m-d');
 
     $projects = [];
-    $queryProyectos = "SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',pfr.income
+    $queryProyectos = "SELECT p.id, p.nombre_proyecto,e.estado , p.status_id as 'estado_id',pfr.income,
     CONCAT(per.nombre,' ', per.apellido) as nombreCliente, 
     df.nombre_fantasia as nombre_fantasia ,
     CONCAT(d.direccion, ' ',d.numero,', ',co.comuna,', ',re.region) as direccion,

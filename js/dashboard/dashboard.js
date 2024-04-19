@@ -5,9 +5,12 @@ let dateLimits = {
     "finish": ""
 }
 
-$(window).bind("beforeunload", function() { 
-    return confirm("Do you really want to close?"); 
-});
+// $(window).bind("beforeunload", function() { 
+//     return confirm("Do you really want to close?"); 
+// });
+
+
+
 $(document).ready(async function () {
     // SET EVENTS QUANTITY COMPARISON BTEWEEN ACTUAL  MONTH AND LAST MONTH
 

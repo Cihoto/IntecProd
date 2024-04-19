@@ -2563,7 +2563,6 @@ textarea {
   margin-bottom: 15px;
 }
 
-.nav-item {}
 
 .nav-link {
   color: var(--Text-secondary, #53545C);
@@ -3004,12 +3003,6 @@ text-align: center;
 }
 
 
-
-.p-estado {
-  /* padding: 15px; */
-}
-
-
 #eventListContainer {
   display: flex;
   padding: var(--2, 16px);
@@ -3035,10 +3028,6 @@ text-align: center;
   line-height: normal;
   letter-spacing: 0.18px;
   height: 10px;
-}
-
-.page-header {
-  /* margin-left: -18px; */
 }
 
 .pageContent {
@@ -4058,9 +4047,6 @@ label.dateLabel {
   margin: 0px !important;
 }
 
-.page-right-content {
-  /* margin-top: -20px; */
-}
 
 
 .page-r-content {
@@ -4453,8 +4439,6 @@ label.dateLabel {
     --background: #fff;
     --disabled: #F6F8FF;
     --disabled-inner: #E1E6F9;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     height: 21px;
     outline: none;
     display: inline-block;
@@ -5290,9 +5274,6 @@ button{
 }
 
 
-.s-file{
-
-}
 
 #file-input-face{
   display: flex;
@@ -5579,9 +5560,6 @@ border-bottom: none!important;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-}
-.--dly-ev-data-body p{
-
 }
 
 
