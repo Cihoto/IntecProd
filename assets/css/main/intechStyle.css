@@ -6431,9 +6431,9 @@ span.bkt {
 }
 
 /* product table list */
-#tableProducts_filter{
+/* #tableProducts_filter{
   visibility: hidden;
-}
+} */
 
 
 /* END DATATBLE FILTER HIDE */

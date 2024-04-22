@@ -930,10 +930,7 @@ function setCategoriesAndSubCategories() {
 }
 
 function printAllProductsOnTable(searchValue, indexTab) {
-
-
-
-
+  
 
   if ($.fn.DataTable.isDataTable('#tableProducts')) {
 
