@@ -763,11 +763,20 @@ function printAllSelectedPersonal() {
     // console.log("allSelectedPersonal", allSelectedPersonal)
     // console.log("allPersonal", allPersonal)
     // console.log("projectDates",projectDates);
+
+
+
+    
     $('#personalResumeAssigment tbody tr').remove();
+
     $('#selectedPersonalSideResume tbody tr').remove();
+
     $('#selectedPersonalAssigtment tbody tr').remove();
+
     $('.personalResumeTable').remove();
+
     $('#searchAllPersonal option').remove();
+
     allPersonal.forEach((personal) => {
 
 

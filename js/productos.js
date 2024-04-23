@@ -18,19 +18,21 @@ function FillProductos(empresaId) {
     success: function (response) {
       response.forEach(producto => {
         let td = `
-              <td class="productId" style="display:none">${producto.id}</td>
-              <td class="catProd"> ${producto.categoria}</td>
-              <td class="itemProd"> ${producto.item}</td>
-              <td style="width:25%" class="productName">${producto.nombre}</td>
-              <td class="productPrice"> ${producto.precio_arriendo} </td>
-              <td class="productStock" >${producto.cantidad}</td>
-              <td><input style="margin-right:8px" class="addProdInput quantityToAdd" id="" type="number" min="1" max="${producto.cantidad}"/><i class="fa-solid fa-plus addItem" onclick="AddProduct(this)"></i></td>`
-        $('#tableProducts tbody').append(`<tr id="${producto.id}">${td}</tr>`)
+          <td class="productId --res-del" style="display:none">${producto.id}</td>
+          <td class="catProd"> ${producto.categoria}</td>
+          <td class="itemProd"> ${producto.item}</td>
+          <td style="width:25%" class="productName">${producto.nombre}</td>
+          <td class="productPrice"> ${producto.precio_arriendo} </td>
+          <td class="productStock" >${producto.cantidad}</td>
+          <td><input class="addProdInput quantityToAdd" id="" type="number" min="1" max="${producto.cantidad}"/><i class="fa-solid fa-plus addItem" onclick="AddProduct(this)"></i></td>`
+          
+          $('#tableProducts tbody').append(`<tr id="${producto.id}">${td}</tr>`)
       });
 
       dataTableProduct = $('#tableProducts').DataTable({
         scrollX: true,
-        fixedHeader: true,
+        // fixedHeader: true,
+        responsive:true,
         columnDefs: [
           columns[
             [{ width: '20%' }, null, null, null, null]
@@ -38,6 +40,7 @@ function FillProductos(empresaId) {
           // { targets: '_all', visible: false }
       ]
       })
+      closeSelectedProdsMobile();
     }
   })
 }
@@ -948,12 +951,12 @@ function printAllProductsOnTable(searchValue, indexTab) {
 
   _productos.forEach((producto) => {
     let tr = `<tr product_id="${producto.id}">
-          <td class="catProd"> <p class="--h-text-lg">${producto.categoria}</p></td>
-          <td class="itemProd"> <p class="--h-text-lg">${producto.item == null ? ' ' :producto.item}</p></td>
-          <td style="" class="productName"><p class="--h-text-lg w250">${producto.nombre}</p></td>
-          <td class="productStock" >${producto.cantidad}</td>
-          <td class="productAvailable">${(producto.disponibles) < 0 ? 0 : producto.disponibles}</td>
-          <td><input style="margin-right:8px" class="addProdInput quantityToAdd quantityProductInput" id="" type="number" min="1"/><i class="fa-solid fa-plus addItem" onclick="AddProduct(this)"></i></td>
+          <td class="catProd --res-del"> <p class="--h-text-lg">${producto.categoria}</p></td>
+          <td class="itemProd --res-del"> <p class="--h-text-lg">${producto.item == null ? ' ' :producto.item}</p></td>
+          <td class="productName"><p class="--h-text-lg w250">${producto.nombre}</p></td>
+          <td class="productStock --res-del" >${producto.cantidad}</td>
+          <td class="productAvailable --res-del">${(producto.disponibles) < 0 ? 0 : producto.disponibles}</td>
+          <td><input class="addProdInput quantityToAdd quantityProductInput" id="" type="number" min="1"/><i class="fa-solid fa-plus addItem plusProd" onclick="AddProduct(this)"></i></td>
         </tr>`
     $('#tableProducts tbody').append(tr);
   });
@@ -962,9 +965,11 @@ function printAllProductsOnTable(searchValue, indexTab) {
     dataTableProduct = $('#tableProducts').DataTable(
       {
         pageLength: 100,
+        responsive:true,
         columns: [{ width: '25%' }, { width: '25%' }, { width: '30%' }, { width: '5%' }, { width: '5%' },{width: '10%'}]
       }
     );
+    closeSelectedProdsMobile();
   }
 }
 
@@ -988,12 +993,12 @@ function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
   
   _productos.forEach((producto) => {
     let tr = `<tr product_id="${producto.id}">
-          <td class="catProd"> ${producto.categoria}</td>
-          <td class="itemProd"> ${producto.item == null ? ' ' :producto.item}</td>
+          <td class="catProd --res-del"> ${producto.categoria}</td>
+          <td class="itemProd --res-del"> ${producto.item == null ? ' ' :producto.item}</td>
           <td style="width:25%" class="productName">${producto.nombre}</td>
-          <td class="productStock" >${producto.cantidad}</td>
-          <td class="productAvailable">${(producto.disponibles) < 0 ? 0 : producto.disponibles}</td>
-          <td style="display:flex"><input style="margin-right:8px" class="addProdInput quantityToAdd quantityProductInput" id="" type="number" min="1"/><i class="fa-solid fa-plus addItem addI-20" onclick="AddProduct(this)"></i></td>
+          <td class="productStock --res-del" >${producto.cantidad}</td>
+          <td class="productAvailable --res-del">${(producto.disponibles) < 0 ? 0 : producto.disponibles}</td>
+          <td ><input class="addProdInput quantityToAdd quantityProductInput" id="" type="number" min="1"/><i class="fa-solid fa-plus addItem addI-20" onclick="AddProduct(this)"></i></td>
         </tr>`
     $('#tableProducts tbody').append(tr);
   });
@@ -1003,10 +1008,11 @@ function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
     dataTableProduct = $('#tableProducts').DataTable(
       {
         pageLength: 100,
+        responsive:true,
         columns: [{ width: '20%' }, { width: '20%' }, { width: '20%' }, { width: '5%' }, { width: '5%' },{width: '10%'}]
       }
     );
-
+    closeSelectedProdsMobile();
   }
   $("#tableProducts").DataTable().page(indexTab).draw(false)
   $('#tableProducts_filter').find('input[type="search"]').val(searchValue);

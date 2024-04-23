@@ -45,8 +45,14 @@
                     </table>
                 </div>
 
+                <div id="selected-vehiclesSideResume" class="--mo-active">
 
-                <div id="selected-vehiclesSideResume">
+                    <div class="--selectedVehiclesHeader">
+                        <div class="d-flex" style="gap: 8px;">
+                            <img src="../../assets/svg/backDoubleArrows.svg" class="hideSelectedProds" id="closeSelectedVehicles" onclick="closeSelectedVehicles()">
+                            <p>Vehículos agregados al evento</p>
+                        </div>
+                    </div>
                     <p class="--addElementHeader" >Vehículos a disponer</p>
                     <table id="selectedVehiculoSideResume">
                         <tr>
@@ -63,6 +69,11 @@
                         <tfoot>
                         </tfoot>
                     </table>
+                </div>
+                <div class="--openSelectedPersonalContainer">
+                    <button class="floatingButton" id="openSelectedVehicles" onclick="openSelectedVehicles()">
+                        <p>Agregados</p>
+                    </button>
                 </div>
             </section>
         <!-- </div> -->
@@ -82,3 +93,16 @@
     </div>
 </div>
 
+<script>
+
+    function openSelectedVehicles(){
+        $('#selected-vehiclesSideResume').addClass('--mo-active');
+        $('#selected-AllVehiclesResume').removeClass('--mo-active');
+        $('#openSelectedVehicles').css('display','none');
+    }
+    function closeSelectedVehicles(){
+        $('#selected-vehiclesSideResume').removeClass('--mo-active');
+        $('#selected-AllVehiclesResume').addClass('--mo-active');
+        $('#openSelectedVehicles').css('display','flex');
+    }
+</script>

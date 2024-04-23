@@ -9,8 +9,8 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="d-flex">
-                <div style="padding-right: 0px; width: 80%;">
+            <div class="--personalContainer-listSelected">
+                <div class="--personalListSelector">
                     <div class="searchRow" style="margin-bottom: 20px;justify-content: end;">
                         <!-- <div class="d-flex" style="align-items: end;">
                             <div style="margin-right: 8px;">
@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="tableContainer">
-                        <table id="personalResumeAssigment" class="">
+                        <table id="personalResumeAssigment" class="--mo-active">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
@@ -56,8 +56,17 @@
                         </table>
                     </div>
                 </div>
-                <div id="selected-PersonalSideResume" style="padding-right: 0px; width: 20%;">
-                    <p>Personal a disponer</p>
+                <div id="selected-PersonalSideResume" class="--selectedPersonal">
+
+                <div class="--sel-personal-header">
+
+                    <div class="d-flex" style="gap: 8px;">
+                        <img src="../../assets/svg/backDoubleArrows.svg" class="hideSelectedProds" id="closeSelectedPersonal" onclick="closeSelectedPersonal()">
+                        <p>Personal agregado al evento</p>
+                    </div>
+                </div>
+
+                    <!-- <p>Personal a disponer</p> -->
 
                     <div class="--divider-sideSelected"></div>
                     <table id="selectedPersonalSideResume">
@@ -72,6 +81,11 @@
 
                         </tfoot>
                     </table>
+                </div>
+                <div class="--openSelectedPersonalContainer">
+                    <button class="floatingButton" id="openSelectesdPersonal" onclick="openSelectedPersonal()">
+                        <p>Agregados</p>
+                    </button>
                 </div>
             </div>
         </div>
@@ -91,3 +105,18 @@
         </button>
     </div>
 </div>
+
+
+<script>
+
+    function openSelectedPersonal(){
+        $('#selected-PersonalSideResume').addClass('--mo-active');
+        $('#personalResumeAssigment').removeClass('--mo-active');
+        $('#openSelectesdPersonal').css('display','none');
+    }
+    function closeSelectedPersonal(){
+        $('#selected-PersonalSideResume').removeClass('--mo-active');
+        $('#personalResumeAssigment').addClass('--mo-active');
+        $('#openSelectesdPersonal').css('display','flex');
+    }
+</script>

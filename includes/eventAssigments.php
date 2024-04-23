@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs" id="myTab" role="tablist">
+<ul class="nav nav-tabs --res-tab" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
         <a class="nav-link active" id="details-tab" data-bs-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="true">Detalles</a>
     </li>
@@ -33,8 +33,8 @@
                         </svg>
                         <p class="header-P" style="margin: 0px!important;"> Ingresa la información del evento</p>
                     </div>
-                    <div class="row justify-content-center" style="margin-bottom: 20px;">
-                        <div class="col-lg-7 col-md-11 col-10">
+                    <div class="row justify-content-center res" style="margin-bottom: 20px;">
+                        <div class="col-lg-7 col-12">
                             <div class="row justify-content-center">
                                 <div class="form-group col-lg-7 col-12">
                                     <label for="inputProjectName" class="inputLabel">Nombre del evento</label>
@@ -99,7 +99,7 @@
                     </div>
 
                     <div class="scheduleModule d-flex" style="width: 100%;">
-                        <div class="d-flex" style="width: 80%;flex-direction: column;">
+                        <div class="d-flex --schedule-box-container" style="">
                             <p class="date-header" style="margin-bottom: 0px!important;overflow-x: hidden;">Horarios del evento</p>
                             <div class="schedulesContainer hiddenScroll" id="schedule-container">
                                 <div class="schedule-item" schedule_id="1" >
