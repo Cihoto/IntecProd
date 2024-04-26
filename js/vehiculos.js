@@ -29,6 +29,7 @@ function searchVehiculoDrag() {
 
 $(document).ready(async function () {
     const VEHICLES_BRANDS_MODELS = await getVehicleBrandsAndModels();
+
     _brands = VEHICLES_BRANDS_MODELS.brands;
     _models = VEHICLES_BRANDS_MODELS.models;
     _types = VEHICLES_BRANDS_MODELS.types;
@@ -67,6 +68,8 @@ $(document).ready(async function () {
         data : typeData
     });
 })
+
+
 
 $('#vehicleCreateBrand').on("change",function(){
     const BRAND_ID = $(this).val();
@@ -109,11 +112,14 @@ function getAndPrintModelsPerBrand(brand_id){
                 'text' : model.model
             }
         }
+
     }).map((model)=>{
+
         return {
             'id' : model.id ,
             'text' : model.model
         }
+
     });
 
     $('#vehicleUpdateModel').select2('destroy');
@@ -307,15 +313,10 @@ $('#deleteVehicleDash').on('click',async function(){
           icon: "success"
         });
         $('#vehicleInfoSideMenu').removeClass('active');
-  
-  
         $(`#vehiclesDashTable tbody tr[vehicle_id="${VEHICLE_ID}"]`).remove();
   
       }
     });
-    
-  
-  
   })
   
   
@@ -600,7 +601,6 @@ function printSelectedVehicles() {
     // allVehiclesTable
     allVehicles.forEach((vehiculo) => {
 
-        console.log
         if(vehiculo.isDelete == 1){
             return
         }
@@ -616,13 +616,12 @@ function printSelectedVehicles() {
             vehiculo.tripValue = 0
         }
 
-        let owner = "";
+        let owner = "Propio";
 
-        if (vehiculo.propietario === true) {
-            owner = "Propio";
-        } else {
+        if (vehiculo.ownCar === '0') {
             owner = "Externo";
         }
+        
 
         let tr = `<tr vehiculo_id="${vehiculo.id}" class="${vehicleStatus}">
             <td>${vehiculo.tipoVehiculo}</td>
@@ -657,20 +656,52 @@ function printSelectedVehicles() {
             <td>${CLPFormatter(total)}</td>
         </tr>`
         $('#selectedVehiclesCosts').append(tr);
+    });
 
-        let trResume = `<tr class="" vehiculo_id="${selectedVehicle.id}">
-            <td>${selectedVehicle.patente}</td>
-            <td>${owner}</td>
-            <td class="removeVehiculoToAssigment c-pointer">
-                <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M2 4H3.33333H14" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M5.33334 4.00065V2.66732C5.33334 2.3137 5.47381 1.97456 5.72386 1.72451C5.97391 1.47446 6.31305 1.33398 6.66667 1.33398H9.33334C9.68696 1.33398 10.0261 1.47446 10.2761 1.72451C10.5262 1.97456 10.6667 2.3137 10.6667 2.66732V4.00065M12.6667 4.00065V13.334C12.6667 13.6876 12.5262 14.0267 12.2761 14.2768C12.0261 14.5268 11.687 14.6673 11.3333 14.6673H4.66667C4.31305 14.6673 3.97391 14.5268 3.72386 14.2768C3.47381 14.0267 3.33334 13.6876 3.33334 13.334V4.00065H12.6667Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9.33334 7.33398V11.334" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M6.66666 7.33398V11.334" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </td>
-        </tr>`;
-        $('#selectedVehiculoSideResume ').append(trResume);
+
+    let ownCars = ['1','0'];
+
+    console.log('selectedVehicles',selectedVehicles)
+    ownCars.forEach((ownCar)=>{
+        const SELECTED_VEHICLES_BY_OWNER = selectedVehicles.filter((selVehicle)=>{
+            return ownCar === selVehicle.ownCar;
+        });
+
+        console.log('SELECTED_VEHICLES_BY_OWNER',SELECTED_VEHICLES_BY_OWNER);
+        console.log('SELECTED_VEHICLES_BY_OWNER.length',SELECTED_VEHICLES_BY_OWNER.length);
+
+        if(SELECTED_VEHICLES_BY_OWNER.length > 0){
+
+            let ownerTitle = 'Propios';
+            if(ownCar === '0'){
+                ownerTitle = 'Externos';
+            }
+
+            let ownerSelectedVehicle = `<tr><td colspan="3" class="--v-OwnerHeader"><p>${ownerTitle}</p></td></tr>`;
+            $('#selectedVehiculoSideResume tbody').append(ownerSelectedVehicle);
+
+            SELECTED_VEHICLES_BY_OWNER.forEach((selectedVehicle)=>{
+
+                let owner = 'Propio';
+                if(selectedVehicle.ownCar === '0'){
+                    owner = 'Externo';
+                }
+
+                let trResume = `<tr class="" vehiculo_id="${selectedVehicle.id}">
+                    <td>${selectedVehicle.patente}</td>
+                    <td>${owner}</td>
+                    <td class="removeVehiculoToAssigment c-pointer">
+                        <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 4H3.33333H14" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5.33334 4.00065V2.66732C5.33334 2.3137 5.47381 1.97456 5.72386 1.72451C5.97391 1.47446 6.31305 1.33398 6.66667 1.33398H9.33334C9.68696 1.33398 10.0261 1.47446 10.2761 1.72451C10.5262 1.97456 10.6667 2.3137 10.6667 2.66732V4.00065M12.6667 4.00065V13.334C12.6667 13.6876 12.5262 14.0267 12.2761 14.2768C12.0261 14.5268 11.687 14.6673 11.3333 14.6673H4.66667C4.31305 14.6673 3.97391 14.5268 3.72386 14.2768C3.47381 14.0267 3.33334 13.6876 3.33334 13.334V4.00065H12.6667Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9.33334 7.33398V11.334" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6.66666 7.33398V11.334" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </td>
+                </tr>`;
+                $('#selectedVehiculoSideResume tbody').append(trResume);
+            })
+        }
     })
 
     tippy('.isPicked', {

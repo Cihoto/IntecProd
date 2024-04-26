@@ -61,14 +61,30 @@ require_once('./includes/head.php');
 
                         <div style="display: flex; justify-content: space-between;margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;">
 
+                            <!-- <div class="--eventList-searchBar">
+                                <div class="--eventList-searchBar">
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <label for="event_status" class="inputLabel">Estado</label>
+                                        <select  id="" name="" type="text" class="form-select">
+                                            <option id="sortAllMyEvents">Todos</option>
+                                            <option id="sortDrafEvents">Borradores</option>
+                                            <option id="sortSells">Ventas</option>
+                                            <option id="sortOperationalEvents">Operaciones</option>
+                                            <option id="sortAdmEvents">Administración</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div> -->
+
+                            <!-- <button class="s-Button-w">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+                                    <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <p class="s-P-g">Filtros</p>
+                            </button> -->
                             <div class="row" style="margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;margin-left: 16px;">
 
-                                <!-- <button class="s-Button-w">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
-                                        <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                    <p class="s-P-g">Filtros</p>
-                                </button> -->
                                 <button class="s-Button-w" id="sortAllMyEvents">
                                     <p class="s-P-g">Todos</p>
                                 </button>
@@ -84,7 +100,8 @@ require_once('./includes/head.php');
                                 <button class="s-Button-w" style="width: 125px;" id="sortAdmEvents">
                                     <p class="s-P-g">Administración</p>
                                 </button>
-                                <input readonly type="text" id="calendarInput" style="width: 250px;height: 40px;border-radius: 4px;" placeholder="filtrar por fecha">
+                                <input readonly type="text" id="calendarInput"  placeholder="Filtrar por fecha">
+
                             </div>
 
                             <div style="display: flex;gap: 16px;flex-direction: column;margin-top: -55px;margin-right: 10px;">
@@ -92,10 +109,11 @@ require_once('./includes/head.php');
                                     <p class="s-P-g">Exportar Excel</p>
                                 </button> -->
 
-                                <button class="s-Button-w" id="exportToExcel" style="width: 140px;">
-                                    <p class="s-P-g">Exportar Excel</p>
+                                <button class="--secondary-action-btn" id="exportToExcel" style="width: 160px;">
+                                    <img src="./assets/svg/downloadLogoSecondary.svg" alt="">
+                                    <p>Exportar Excel</p>
                                 </button>
-                                <button class="s-Button" id="openModalNewFree" style="width: 140px;">
+                                <button class="s-Button" id="openModalNewFree" style="width: 160px;">
                                     <p class="s-P"><a href="./miEvento.php" style="color: white;text-decoration: none;">Crear evento</a></p>
                                 </button>
                             </div>

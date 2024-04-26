@@ -1,6 +1,6 @@
 <div id="eventCommentsSideMenu" class="sideMenu-m" style="gap: 12px;">
 
-    <button id="closeThismfMenu" style="border: none;background-color: none;padding: 30px;" onclick="closeEventComments()">
+    <button id="closeThismfMenu" class="sideMenuCloseButton" onclick="closeEventComments()">
         <img src="./assets/svg/log-out.svg" alt="">
     </button>
 

@@ -1,6 +1,6 @@
-<div class="footer clearfix mb-0 text-muted">
+<div class="footer clearfix mb-0 text-muted" style="padding: 0px 16px;">
     <div class="float-start">
-        <p>2023 &copy; Intech</p>
+        <p>2023 &copy; Intec</p>
     </div>
     <div class="float-end">
         <p>
@@ -9,7 +9,7 @@
         </p>
     </div>
 </div>
-<div id="footerInformation" class="">
+<!-- <div id="footerInformation" class="">
 
     <p>Hello</p>
 
@@ -19,7 +19,7 @@
         </div>
     </div>
     
-</div>
+</div> -->
 
 <style type="text/css"> 
     @keyframes ldio-r2lhg8dn3dg {

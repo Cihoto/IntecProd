@@ -144,6 +144,14 @@ require_once('./includes/head.php');
     <?php require_once('./includes/footerScriptsJs.php') ?>
 
 
+
+    <!-- SIDEMENUS -->
+    <?php require_once('./includes/sidemenu/viewUploadedFiles.php'); ?>
+    <?php require_once('./includes/sidemenu/newFreelanceSideMenu.php'); ?>
+    <?php require_once('./includes/sidemenu/eventComments.php'); ?>
+    <?php require_once('./includes/sidemenu/vehicleSideMenu.php'); ?>
+
+
     <!-- REQUIRE FORM ARRIENDOS -->
     <?php require_once('./includes/forms/arriendosForm.php') ?>
 
@@ -190,22 +198,22 @@ require_once('./includes/head.php');
     <!-- HEADER CONTROLLER -->
     <script src="/js/pageHeader/breadCrumb.js"></script>
     <script src="/js/pageHeader/searchBar.js"></script>
-    
 
 
-    <!-- SIDEMENUS -->
-    <?php require_once('./includes/sidemenu/viewUploadedFiles.php'); ?>
-    <?php require_once('./includes/sidemenu/newFreelanceSideMenu.php'); ?>
-    <?php require_once('./includes/sidemenu/eventComments.php'); ?>
-
-        <!-- VALIDATE FORM -->
+    <!-- VALIDATE FORM -->
     <script src="./js/validateForm/addNewFreeLance.js"></script>
     <script src="./js/validateForm/addNewProvider.js"></script>
     <script src="./js/validateForm/clientForm.js"></script>
+    <script src="./js/validateForm/createVehicle.js"></script>
 </body>
 
 <script>
     caches.keys().then((keyList) => Promise.all(keyList.map((key) => caches.delete(key))));
+
+    // VARIABLE FOR CREATE NEW VEHICLE SIDE MENU FORM
+    // RECOGNIZE IF REQUEST COME FROM VEHICLE DASH OR EVENT
+    const REQUEST_FROM_EVENTS = true;
+    //END VEHICLE VARIBLE SECTION
 
     let isProdQuantitySelected = false;
     let prodQuantityElementSelected = "";
@@ -255,6 +263,10 @@ require_once('./includes/head.php');
     }
 
     $(document).ready(async function() {
+
+        // CHANGE TOP MOBILE BAR PAGE NAME 
+
+        $('.--pageHeadName').text('Eventos')
 
         projectDates.start_date = "";
         projectDates.finish_date = "";

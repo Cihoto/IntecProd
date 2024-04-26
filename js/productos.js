@@ -30,7 +30,6 @@ function FillProductos(empresaId) {
       });
 
       dataTableProduct = $('#tableProducts').DataTable({
-        scrollX: true,
         // fixedHeader: true,
         responsive:true,
         columnDefs: [
@@ -1014,7 +1013,10 @@ function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
     );
     closeSelectedProdsMobile();
   }
-  $("#tableProducts").DataTable().page(indexTab).draw(false)
+  $("#tableProducts").DataTable().page(indexTab).draw(false);
+
+
+  
   $('#tableProducts_filter').find('input[type="search"]').val(searchValue);
 }
 

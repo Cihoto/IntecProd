@@ -88,10 +88,12 @@ function GetAllUsuariosByEmpresa($empresa_id)
     $conn->conectar();
     $usuarios = [];
 
-    $queryGetAlUsers = "SELECT u.id as user_id, per.nombre , per.apellido,per.email,u.user as user_email FROM usuario u 
-        INNER JOIN personal p on p.usuario_id = u.id 
-        INNER JOIN persona per on per.id = p.persona_id
-        WHERE u.empresa_id = $empresa_id  and u.is_deleted is null or u.is_deleted != 1";
+    $queryGetAlUsers = "SELECT u.is_deleted , u.empresa_id,u.id as user_id, per.nombre , per.apellido,per.email,u.user as user_email FROM usuario u 
+    INNER JOIN personal p on p.usuario_id = u.id 
+    INNER JOIN persona per on per.id = p.persona_id
+    WHERE u.empresa_id = $empresa_id
+    AND p.empresa_id = $empresa_id
+    AND  u.is_deleted = 0";
 
     if ($responseDb = $conn->mysqli->query($queryGetAlUsers)) {
         if ($responseDb->num_rows > 0) {

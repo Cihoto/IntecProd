@@ -89,7 +89,7 @@ body {
   .-bcr-ctn{
     display: flex;
     justify-content: center;
-    margin-left: 12px;
+    padding-left: 12px;
     margin-bottom: 4px;
     flex-direction: column;
     
@@ -120,33 +120,34 @@ body {
       margin-right: 12px;
 
       gap: 16px;
-      .-usr-name{
-        display: flex;
-        width: 32px;
-        height: 32px;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        
 
-        border-radius: var(--8, 64px);
-        background: var(--components-avatar-fill, #BDBDBD);
-
-
-        p{
-          color: var(--background-paper-elevation-0, #FFF);
-          text-align: center;
-          font-feature-settings: 'clig' off, 'liga' off;
-
-          font-size: 16px;
-          font-style: normal;
-          font-weight: 400;
-          line-height: 20px;
-          letter-spacing: 0.14px;
-          margin: 0px;
-        }
-      }
     }
+  }
+}
+.-usr-name{
+  display: flex;
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  
+
+  border-radius: var(--8, 64px);
+  background: var(--components-avatar-fill, #BDBDBD);
+
+
+  p{
+    color: var(--background-paper-elevation-0, #FFF);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.14px;
+    margin: 0px;
   }
 }
 
@@ -2178,12 +2179,6 @@ textarea {
 }
 
 
-/* #personalResumeAssigment thead{
-  position: sticky;
-}
-.theme-dark #personalResumeAssigment thead{
-  background-color: #1e1e2d !important;
-} */
 
 #personalResumeAssigment {
   display: flex;
@@ -2265,10 +2260,41 @@ textarea {
   overflow-y: scroll;
   overflow-x: hidden;
   scrollbar-width: none;
+  border: 1.09px solid #F2F2F2;
+
+  th:nth-child(1){
+    background: #E7F6F6;
+    padding: 9px;
+    text-align: start;
+
+    p{
+      color: var(--Text-primary, #2C2D33);
+      font-size: 15.31px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24.058px;
+      letter-spacing: 0.503px;
+    }
+  }
+
+  .--selPers-esp{
+    text-align: center;
+    padding: 0px;
+    background: var(--Disable-button-background, #EDEDED);
+    p{
+      color: var(--Text-primary, #2C2D33);
+      text-align: center;
+      font-size: 15.31px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24.058px;
+      letter-spacing: 0.503px;
+    }
+  }
+
 }
 
 #selectedPersonalSideResume td {
-  height: 45px;
   padding: 4px;
 }
 
@@ -2357,7 +2383,7 @@ textarea {
 .searchRow {
   display: flex;
   width: 100%;
-  align-content: end;
+  /* align-content: end; */
   align-items: end;
   justify-content: space-between;
 }
@@ -2663,7 +2689,7 @@ textarea {
   width: 20%;
   /* padding: 0px 10px; */
   border-radius: var(--borderRadius, 4px);
-  background: var(--Disable-button-background, #EDEDED);
+  /* background: var(--Disable-button-background, #EDEDED); */
   padding: 0px 6px;
 
 
@@ -2689,7 +2715,7 @@ textarea {
   width: 20%;
   /* padding: 0px 10px; */
   border-radius: var(--borderRadius, 4px);
-  background: var(--Disable-button-background, #EDEDED);
+  /* background: var(--Disable-button-background, #EDEDED); */
   padding: 9px 8px;
 
   .--sel-personal-header{
@@ -2718,6 +2744,43 @@ textarea {
 #selectedVehiculoSideResume {
   width: 100%;
 
+
+  thead tr{
+    background-color: #E7F6F6;
+
+  }
+  th {
+    padding: 8px;
+    p {
+      color: var(--Text-primary, #2C2D33);
+      font-size: 15.31px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24.058px;
+      letter-spacing: 0.503px;
+    }
+  }
+  tbody tr td{
+    padding: 8px;
+
+
+    
+  }
+  .--v-OwnerHeader{
+    text-align: center;
+    padding: 0px;
+    background: var(--Disable-button-background, #EDEDED);
+    p{
+      color: var(--Text-primary, #2C2D33);
+      text-align: center;
+      font-size: 15.31px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24.058px;
+      letter-spacing: 0.503px;
+    }
+  }
+  
 
   td:nth-child(3){
     display: flex;
@@ -4891,6 +4954,7 @@ button{
 
 #tableProducts {
   width: 100% !important;
+  height: 80px;
 
   th:nth-child(1),td:nth-child(1){
     border-left: 1px solid #DDDDE1;
@@ -6565,6 +6629,102 @@ span.bkt {
   padding: 12px 0px;
 }
 
+
+.sideMenuCloseButton{
+  border: none;
+  background-color: none;
+  padding: 30px;
+}
+
+
+.--topMobileHeader{
+  display: none;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 4px;
+
+  .--pageHeadName{
+    color: var(--Text-primary, #2C2D33);
+    text-align: center;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+}
+
+#searchRowVehicles{
+  display: flex;
+  padding-right: 8px;
+}
+
+
+.--eventList-searchBar{
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+  select{
+    width: 250px;
+  }
+  .--evList-status-date{
+    display: flex;
+    gap: 16px;
+  }
+  
+}
+
+#calendarInput{
+  width: 250px;
+  height: 38px;
+  border-radius: 4px;
+}
+
+
+.actionMobileContainer{
+
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 0px 37px;
+
+  .--mo-action-button{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    flex-shrink: 0;
+    border-radius: var(--1, 8px);
+    background: var(--black-amp-white-white, #FFF);
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.04), 0px 4px 10px -1px rgba(0, 0, 0, 0.08);
+    padding: 15px 20px;
+    
+
+    p{
+      color: var(--Cyan-dark, #069B99);
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      letter-spacing: 0.4px;
+      margin: 0px!important;
+    }
+  }
+
+
+}
+
+
+
+/* #tableProducts_paginate{
+  display: flex;
+  width:100%;
+  justify-content: space-between;
+} */
+
 /* DATATBLE FILTER HIDE */
 
 /* event list */
@@ -6621,6 +6781,54 @@ span.bkt {
   .--schedule-box-container{
     width: 70%;
   }
+  .sideMenu-m{
+    width: 100%;
+  }
+  .sideMenuCloseButton{
+    padding: 15px;
+  }
+
+  .sideMenu-m p {
+    text-align: start;
+    line-height: normal;
+  }
+
+}
+@media screen and (max-width:700px) {
+  .sideMenu-s{
+    width: 100%;
+  }
+
+  .sideMenu-s p {
+    text-align: start;
+    line-height: normal;
+  }
+}
+@media screen and (max-width:750px) {
+  .--replySection{
+    width: 90%;
+    margin-right: 5%;
+    height: 160px;
+  }
+
+  .--reply-text-area{
+    height: 100px!important;
+    margin-right: 10px;
+  }
+}
+@media screen and (max-width:743px) {
+  .--res-tab{
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    flex-shrink: 0;
+    overflow-x: scroll;
+    padding: 1px;
+  }
+
+  .--res-tab::-webkit-scrollbar {
+    display: none;
+  }
 }
 @media screen and (max-width:600px) {
   .--schedule-box-container{
@@ -6629,9 +6837,111 @@ span.bkt {
 }
 
 @media screen and (max-width:515px) {
+
+  /* EVENT SECTION */
+  .scheduleModule{
+    display: none!important;
+  }
+
+  /* DASHBOARD START  */
+
+  .actionMobileContainer{
+
+    display: flex;
+  }
+
+  #dash-event-housing{
+    display: none;
+  }
+  
+  #dash-monthResumeContainer{
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    flex-shrink: 0;
+    overflow-x: scroll;
+    padding: 1px;
+  }
+
+  #dash-event-table{
+
+    thead:not(th:nth-child(1)){
+      display: none;
+    }
+
+    tbody tr{
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  #dash-monthResumeContainer::-webkit-scrollbar {
+    display: none;
+  }
+
+  .page-r-content {
+    flex-direction: column;
+  }
+  .left-side-container{
+    width: 100%;
+  }
+  .right-side-dash{
+    width: 100%;
+    align-items: center;
+  }
+
+
+  /* BREADCRUMB CHANGES */
+
+  .--topMobileHeader{
+    display: flex;
+  }
+
+  .-head-breadCrumb-container{
+    flex-direction: column;
+    height: auto;
+    margin-bottom: 4px;
+
+  }
+  .-bcr-ctn{
+      width: 100%;
+      padding-left: 8px;
+      order: 2;
+      margin-top: 12px;
+      margin-bottom: 0px;
+  }
+  #bcrumb-Container{
+    margin-bottom: 0px;
+  }
+
+
+  .-head-breadCrumb-container
+  .-user-info-ctn
+  .-usr-inf {
+    display: none;
+  }
+
+  .-head-breadCrumb-container
+  .-user-info-ctn
+  .-search-tab {
+    justify-content: start;
+    padding: 0px 8px;
+    width: 100%;
+    gap: 16px;
+    margin-right: 0px;
+    .form-group{
+      width: 90%;
+    }
+  }
+  /* MAIN DIV */
+  #main{
+    padding: 16px 8px;
+  }
   .--schedule-box-container{
     width: 50%;
   }
+
+  /* PRODUCTS TABLE ASSIGMENT */
 
   #tableProducts_wrapper{
     display: none;
@@ -6648,8 +6958,6 @@ span.bkt {
     }
 
   }
-
-
 
   #tableProducts {
     width: 100%;
@@ -6718,10 +7026,14 @@ span.bkt {
       justify-content: start!important;
     }
     /* width: 0%; */
+
+
+
+
   }
 
   
-  #productListResponsiveHeader{
+  #productListResponsiveHeader.--mo-active{
     display: flex;
   }
   
@@ -6747,12 +7059,14 @@ span.bkt {
     }
 
     th:nth-child(1),
+    td:nth-child(1){
+      width: 35%;
+    }
     th:nth-child(3),
-    th:nth-child(5),
-    td:nth-child(1),
     td:nth-child(3),
+    th:nth-child(5),
     td:nth-child(5){
-      width: 30%;
+      width: 25%;
     }
   }
 
@@ -6782,8 +7096,41 @@ span.bkt {
     flex-direction: column;
   }
 
+  #searchRowVehicles{
+    padding-right: 0px;
+    display: none;
+  }
+  #searchRowVehicles.--mo-active{
+    display: flex;
+  }
+
+
+ 
+  #allVehiclesTable{
+    th:nth-child(2),
+    th:nth-child(4),
+    td:nth-child(2),
+    td:nth-child(4){
+      display: none;
+    }
+
+    th:nth-child(1),
+    td:nth-child(1){
+      width: 30%;
+    }
+    th:nth-child(3),
+    td:nth-child(3){
+      width: 30%;
+    }
+    th:nth-child(5),
+    td:nth-child(5){
+      width: 30%;
+    }
+  }
+
+
   #selected-AllVehiclesResume.--mo-active{
-      display: block;
+    display: block;
   }
   
   #selected-AllVehiclesResume {
@@ -6802,23 +7149,32 @@ span.bkt {
       justify-content: start;
     }
   }
+
+
+  #vehicleTypeVlist{
+    width: 155px;
+  }
 }
+
 @media screen and (max-width:391px) {
   .addProdInput {
     margin-right: 8px!important;
    
   }
-}
-@media screen and (max-width:380px) {
-  .scheduleModule{
-    display: none!important;
-   
+
+  #personalResumeAssigment{
+    th:nth-child(1),
+    th:nth-child(3),
+    th:nth-child(5),
+    td:nth-child(1),
+    td:nth-child(3),
+    td:nth-child(5){
+      width: 23%;
+    }
   }
 }
 
+@media screen and (max-width:380px) {
 
-/* .--res-tab{
-  width: 99%;
-  height: 40px;
-  overflow-x: scroll!important;
-} */
+}
+

@@ -11,15 +11,15 @@
         <div class="card-body">
             <div class="--personalContainer-listSelected">
                 <div class="--personalListSelector">
-                    <div class="searchRow" style="margin-bottom: 20px;justify-content: end;">
+                    <div class="searchRow" id="searchRowPersonal" style="margin-bottom: 20px;">
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            <label for="especialidadPersonalAssigmentFilter" class="inputLabel">*Especialidad</label>
+                            <select id="especialidadPersonalAssigmentFilter" name="especialidadPersonalAssigmentFilter" type="text" class="form-select input-lg s-Select">
+                                <option value="all">Todos</option>
+                            </select>
+                        </div>
                         <!-- <div class="d-flex" style="align-items: end;">
                             <div style="margin-right: 8px;">
-                                <div class="form-group" style="margin-bottom: 0px;">
-                                    <label for="cargoPersonalAssigmentFilter" class="inputLabel">*Cargo</label>
-                                    <select id="cargoPersonalAssigmentFilter" name="cargoPersonalAssigmentFilter" type="text" class="form-select input-lg s-Select">
-                                        <option value="all">Todos</option>
-                                    </select>
-                                </div>
                             </div>
                             <button class="s-Button-w">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
@@ -58,21 +58,20 @@
                 </div>
                 <div id="selected-PersonalSideResume" class="--selectedPersonal">
 
-                <div class="--sel-personal-header">
+                    <div class="--sel-personal-header">
 
-                    <div class="d-flex" style="gap: 8px;">
-                        <img src="../../assets/svg/backDoubleArrows.svg" class="hideSelectedProds" id="closeSelectedPersonal" onclick="closeSelectedPersonal()">
-                        <p>Personal agregado al evento</p>
+                        <div class="d-flex" style="gap: 8px;">
+                            <img src="../../assets/svg/backDoubleArrows.svg" class="hideSelectedProds" id="closeSelectedPersonal" onclick="closeSelectedPersonal()">
+                            <p>Personal agregado al evento</p>
+                        </div>
                     </div>
-                </div>
 
                     <!-- <p>Personal a disponer</p> -->
 
                     <div class="--divider-sideSelected"></div>
                     <table id="selectedPersonalSideResume">
                         <thead>
-                            <th></th>
-                            <th></th>
+                            <th colspan="2"><p>Nombre</p></th>
                         </thead>
                         <tbody>
 
@@ -108,15 +107,17 @@
 
 
 <script>
-
-    function openSelectedPersonal(){
+    function openSelectedPersonal() {
         $('#selected-PersonalSideResume').addClass('--mo-active');
         $('#personalResumeAssigment').removeClass('--mo-active');
-        $('#openSelectesdPersonal').css('display','none');
+        $('#openSelectesdPersonal').css('display', 'none');
+        $('#searchRowPersonal').css('display', 'none');
     }
-    function closeSelectedPersonal(){
+
+    function closeSelectedPersonal() {
         $('#selected-PersonalSideResume').removeClass('--mo-active');
         $('#personalResumeAssigment').addClass('--mo-active');
-        $('#openSelectesdPersonal').css('display','flex');
+        $('#openSelectesdPersonal').css('display', 'flex');
+        $('#searchRowPersonal').css('display', 'flex');
     }
 </script>

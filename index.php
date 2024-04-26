@@ -30,7 +30,7 @@ $active = 'dashboard';
         <header class="page-header">
 
 
-          <?php require_once('./includes/headerBreadCrumb.php')?>
+          <?php require_once('./includes/headerBreadCrumb.php') ?>
 
 
 
@@ -86,10 +86,29 @@ $active = 'dashboard';
                 </div>
               </div>
             </div>
+
+            <div class="actionMobileContainer">
+
+              <div class="--mo-action-button" id="eventListdashMobile">
+                <p>Lista de eventos</p>
+
+                <div class="img-event-month">
+                  <img src="./assets/svg/medal.svg" alt="">
+                </div>
+              </div>
+
+              <div class="--mo-action-button" id="dashCreateNewEventMobile">
+                <p>Crear Evento</p>
+                <div class="img-event-month" style="margin-left: 32px;">
+                  <img src="./assets/svg/medal.svg" alt="">
+                </div>
+              </div>
+
+            </div>
             <div id="dash-event-housing">
               <p class="dstheader">Próximos eventos</p>
               <form id="dash-event-menu">
-                  <!-- <div id="dash-event-status">
+                <!-- <div id="dash-event-status">
                     <label for="" id="dash-searchBy">Buscar por:</label>
                     <div class="select-status-container">
                       <input type="radio" class="eventStatusSortDash" value="all" checked>
@@ -154,7 +173,7 @@ $active = 'dashboard';
                 <tfoot>
                 </tfoot>
               </table>
-              
+
             </div>
           </div>
           <div class="right-side-dash">
@@ -262,12 +281,12 @@ $active = 'dashboard';
 
 
 <script>
-// window.addEventListener("beforeunload", function (e) {
-//   var confirmationMessage = "\o/";
+  // window.addEventListener("beforeunload", function (e) {
+  //   var confirmationMessage = "\o/";
 
-//   (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-//   return confirmationMessage;                            //Webkit, Safari, Chrome
-// });
+  //   (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+  //   return confirmationMessage;                            //Webkit, Safari, Chrome
+  // });
 </script>
 
 <!-- <script src="/js/Cargo_Especialidad/Testing/calendarviewResume.js"></script> -->

@@ -1,5 +1,5 @@
 <div id="newFreelanceSideMenu" class="sideMenu-s">
-    <button id="closeNewFreelanceSideMenu" style="border: none;background-color: none;padding: 30px;" onclick="closeFreelanceSideMenu()">
+    <button id="closeNewFreelanceSideMenu" class="sideMenuCloseButton" onclick="closeFreelanceSideMenu()">
         <img src="./assets/svg/log-out.svg" alt="">
     </button>
     <div class="formHeader" style="align-items: center;align-content:center;margin-left: 14px;">
@@ -27,22 +27,22 @@
             </div>
 
             <div class="row">
-                <div class="form-group col-lg-8 col-10">
+                <div class="form-group col-lg-8 col-12">
                     <label for="nombreInput" class="inputLabel">*Nombre</label>
                     <input id="nombreInput" name="nombreInput" type="text" class="form-control input-lg s-Input" />
                 </div>
-                <div class="form-group col-lg-4 col-10">
+                <div class="form-group col-lg-4 col-12">
                     <label for="rutInput" class="inputLabel">*Rut</label>
                     <input id="rutInput" name="rutInput" type="text" class="form-control input-lg s-Input shortFree" />
                 </div>
             </div>
 
             <div class="row">
-                <div class="form-group col-lg-8 col-10">
+                <div class="form-group col-lg-8 col-12">
                     <label for="correoInput" class="inputLabel">*Correo electrónico</label>
                     <input id="correoInput" name="correoInput" type="text" class="form-control input-lg s-Input" />
                 </div>
-                <div class="form-group col-lg-4 col-10">
+                <div class="form-group col-lg-4 col-12">
                     <label for="telefonoInput" class="inputLabel">*Teléfono</label>
                     <input id="telefonoInput" name="telefonoInput" type="text" class="form-control input-lg s-Input shortFree" />
                 </div>

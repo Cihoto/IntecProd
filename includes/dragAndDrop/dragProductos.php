@@ -14,7 +14,7 @@
         </div>
 
         <div class="-prods-table">
-            <table id="tableProducts">
+            <table id="tableProducts" class="--prodDataTable-ss">
                 <thead>
                     <th>Categoría</th>
                     <th>Sub Categoría</th>
@@ -113,12 +113,16 @@
     function openSelectedProdsMobile(){
         $('.--selProdContainer').addClass('--mo-active');
         $('#tableProducts_wrapper').removeClass('--mo-active');
-        $('#openSelectedProdsMobile').css('display','none');
+        // $('#openSelectedProdsMobile').css('display','none');
+        $('#productListResponsiveHeader').removeClass('--mo-active')
+        // .css('display','none');
     }
     function closeSelectedProdsMobile(){
         $('.--selProdContainer').removeClass('--mo-active');
         $('#tableProducts_wrapper').addClass('--mo-active');
-        $('#openSelectedProdsMobile').css('display','flex');
+        // $('#openSelectedProdsMobile').css('display','flex');
+        $('#productListResponsiveHeader').addClass('--mo-active')
+        // $('#productListResponsiveHeader').css('display','flex');
     }
 
 

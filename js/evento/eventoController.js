@@ -29,9 +29,12 @@ $('#fechaInicio').on('change', async function() {
 
   const differenceBtw = getDiffBtwDays();
   if (differenceBtw < 0) {
-    Swal.fire('Ups!', 'La fecha de inicio debe ser mayor a la fecha de termino', 'warning');
-    $(this).val(currentFinishDate)
-    return;
+
+    // $(this).val();
+    $('#fechaTermino').val($(this).val());
+    // Swal.fire('Ups!', 'La fecha de inicio debe ser mayor a la fecha de termino', 'warning');
+    // $(this).val(currentFinishDate)
+    // return;
   }
 
   if ($('#fechaTermino').val() === "") {
@@ -54,7 +57,6 @@ $('#fechaInicio').on('change', async function() {
   setCategoriesAndSubCategories();
   printAllSelectedProducts();
   setIngresos();
-
   
   await setTakenPersonalByRangeDate();
   setAllPersonal_DiscountTakenPersonal();
@@ -63,67 +65,74 @@ $('#fechaInicio').on('change', async function() {
 })
 
 
-  let currentFinishDate = "";
-  $('#fechaTermino').on('click', function() {
-    currentFinishDate = $(this).val();
-  })
+let currentFinishDate = "";
+$('#fechaTermino').on('click', function() {
+  currentFinishDate = $(this).val();
+})
 
-  $('#fechaTermino').on('change', async function() {
-    const differenceBtw = getDiffBtwDays();
-    if (differenceBtw < 0) {
-      Swal.fire('Ups!', 'La fecha de inicio debe ser mayor a la fecha de termino', 'warning');
-      $(this).val(currentFinishDate)
-      return;
-    }
-    projectDates.finish_date = $(this).val();
-    const TotalDays = setTotalDays();
-    if (!TotalDays) {
-      alert("Seleccione un rango de fecha");
-      return;
-    }
-    await setTakenProdsByRangeDate();
-    setAllProducts_DiscountTakenProd();
-    printAllProductsOnTable();
-    setCategoriesAndSubCategories();
-    printAllSelectedProducts();
-    setIngresos();
-    $('#fechaProjectResume').text($('#fechaProjectResume').text() + '  /  ' + $(this).val());
-  })
+$('#fechaTermino').on('change', async function() {
+  const differenceBtw = getDiffBtwDays();
+  if (differenceBtw < 0) {
 
-  $('#commentProjectArea').on('change', function() {
-    $('.comentariosProjectResume').text($(this).val())
-  })
-  $('#dirInput').on('change', function() {
-    $('#lugarProjectResume').text($(this).val())
-  })
+    $('#fechaInicio').val($(this).val());
 
-
-  function getDiffBtwDays() {
-    const date_1 = new Date($('#fechaInicio').val());
-    const date_2 = new Date($('#fechaTermino').val());
-    const differenceTime = date_2.getTime() - date_1.getTime();
-    const differenceDays = Math.ceil(differenceTime / (1000 * 60 * 60 * 24));
-
-    return differenceDays;
+    // Swal.fire('Ups!', 'La fecha de inicio debe ser mayor a la fecha de termino', 'warning');
+    // $(this).val(currentFinishDate)
+    // return;
   }
-
-  function setTotalDays() {
-
-    const date_1 = new Date($('#fechaInicio').val());
-    const date_2 = new Date($('#fechaTermino').val());
-
-    const differenceTime = Math.abs(date_1.getTime() - date_2.getTime());
-    const differenceDays = Math.ceil(differenceTime / (1000 * 60 * 60 * 24));
-
-    if (differenceDays === 0) {
-      projectDates.total_days = 1;
-      return true
-    } else {
-      projectDates.total_days = differenceDays;
-      return true
-    }
-    return false;
+  projectDates.finish_date = $(this).val();
+  const TotalDays = setTotalDays();
+  if (!TotalDays) {
+    alert("Seleccione un rango de fecha");
+    return;
   }
+  await setTakenProdsByRangeDate();
+  setAllProducts_DiscountTakenProd();
+  printAllProductsOnTable();
+  setCategoriesAndSubCategories();
+  printAllSelectedProducts();
+  setIngresos();
+  $('#fechaProjectResume').text($('#fechaProjectResume').text() + '  /  ' + $(this).val());
+
+  await setTakenPersonalByRangeDate();
+  setAllPersonal_DiscountTakenPersonal();
+  printAllSelectedPersonal();
+})
+
+$('#commentProjectArea').on('change', function() {
+  $('.comentariosProjectResume').text($(this).val())
+})
+$('#dirInput').on('change', function() {
+  $('#lugarProjectResume').text($(this).val())
+})
+
+
+function getDiffBtwDays() {
+  const date_1 = new Date($('#fechaInicio').val());
+  const date_2 = new Date($('#fechaTermino').val());
+  const differenceTime = date_2.getTime() - date_1.getTime();
+  const differenceDays = Math.ceil(differenceTime / (1000 * 60 * 60 * 24));
+
+  return differenceDays;
+}
+
+function setTotalDays() {
+
+  const date_1 = new Date($('#fechaInicio').val());
+  const date_2 = new Date($('#fechaTermino').val());
+
+  const differenceTime = Math.abs(date_1.getTime() - date_2.getTime());
+  const differenceDays = Math.ceil(differenceTime / (1000 * 60 * 60 * 24));
+
+  if (differenceDays === 0) {
+    projectDates.total_days = 1;
+    return true
+  } else {
+    projectDates.total_days = differenceDays;
+    return true
+  }
+  return false;
+}
 
 async function getAssignedElements() {
 
@@ -201,6 +210,8 @@ async function getAssignedElements() {
 
   // ADD PACKAGE TO PROJECT ON PLUS ICON ON PACKAGE LIST
   $(document).ready(async function(){
+
+    GetEspecialidadByBussiness(EMPRESA_ID);
     
     fillProductsTable();
     // FillAllProducts();

@@ -451,10 +451,11 @@ async function getAllProjectData(event_id, empresa_id) {
         if (data.fecha_termino === "" || data.fecha_termino === undefined || data.fecha_termino === null) {
             data.fecha_termino = "";
         }
-        $('#fechaInicio').val(data.fecha_inicio)
-        $('#fechaTermino').val(data.fecha_termino)
+        $('#fechaInicio').val(data.fecha_inicio);
+        $('#fechaTermino').val(data.fecha_termino);
         $('#fechaInicio').change();
         $('#fechaTermino').change();
+        $('#fechaTermino').prop('disabled',false);
         $('#inputProjectName').change();
     });
 

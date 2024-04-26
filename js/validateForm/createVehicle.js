@@ -49,8 +49,13 @@ $('#createVehicleForm').validate({
                 "text": response.message
             })
         }
-        await printPersonal();
-        $('#personaSideMenu').removeClass("active");
+
+        if(REQUEST_FROM_EVENTS){
+            await FillVehiculos(EMPRESA_ID)
+            printSelectedVehicles();
+            
+        }
+        closeVehicleSideMenu();
     }
 })
 
@@ -69,3 +74,4 @@ async function insertVehicle(request_vehicle, empresa_id) {
         }
     });
 }
+

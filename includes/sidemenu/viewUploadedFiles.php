@@ -1,5 +1,5 @@
 <div id="viewUploadedFiles" class="sideMenu-m" >
-    <button id="closeViewUploadedFiles" style="border: none;background-color: none;padding: 30px;">
+    <button id="closeViewUploadedFiles" class="sideMenuCloseButton" style="">
         <img src="./assets/svg/log-out.svg" alt="">
     </button>
     <!-- <div class="formHeader" style="align-items: center;align-content:center;margin-left: 14px;">

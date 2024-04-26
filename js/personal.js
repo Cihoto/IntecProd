@@ -759,27 +759,19 @@ function RemoveSelectedPersonal(personal_id) {
     }
 }
 
+
 function printAllSelectedPersonal() {
     // console.log("allSelectedPersonal", allSelectedPersonal)
     // console.log("allPersonal", allPersonal)
     // console.log("projectDates",projectDates);
-
-
-
     
     $('#personalResumeAssigment tbody tr').remove();
-
     $('#selectedPersonalSideResume tbody tr').remove();
-
     $('#selectedPersonalAssigtment tbody tr').remove();
-
     $('.personalResumeTable').remove();
-
     $('#searchAllPersonal option').remove();
-
+    // selectedPersonalSideResume
     allPersonal.forEach((personal) => {
-
-
 
         if(personal.isDelete == 1){
             return;
@@ -854,21 +846,69 @@ function printAllSelectedPersonal() {
             </tr>`;
         }
         // APPEND TO RESUME ON PERSONAL
-        let trResume = `<tr class="${personalStatus}" personal_id="${personal.id}">
-            <td>${personal.nombre}</td>
-            <td>${personal.especialidad}</td>
-            <td class="removePersonalToAssigment c-pointer">
-                <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M2 4H3.33333H14" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M5.33334 4.00065V2.66732C5.33334 2.3137 5.47381 1.97456 5.72386 1.72451C5.97391 1.47446 6.31305 1.33398 6.66667 1.33398H9.33334C9.68696 1.33398 10.0261 1.47446 10.2761 1.72451C10.5262 1.97456 10.6667 2.3137 10.6667 2.66732V4.00065M12.6667 4.00065V13.334C12.6667 13.6876 12.5262 14.0267 12.2761 14.2768C12.0261 14.5268 11.687 14.6673 11.3333 14.6673H4.66667C4.31305 14.6673 3.97391 14.5268 3.72386 14.2768C3.47381 14.0267 3.33334 13.6876 3.33334 13.334V4.00065H12.6667Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9.33334 7.33398V11.334" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M6.66666 7.33398V11.334" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </td>
-        </tr>`
-        $('#selectedPersonalSideResume tbody').append(trResume);
+        // let trResume = `<tr class="${personalStatus}" personal_id="${personal.id}">
+        //     <td>${personal.nombre}</td>
+        //     <td>${personal.especialidad}</td>
+        //     <td class="removePersonalToAssigment c-pointer">
+        //         <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        //             <path d="M2 4H3.33333H14" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
+        //             <path d="M5.33334 4.00065V2.66732C5.33334 2.3137 5.47381 1.97456 5.72386 1.72451C5.97391 1.47446 6.31305 1.33398 6.66667 1.33398H9.33334C9.68696 1.33398 10.0261 1.47446 10.2761 1.72451C10.5262 1.97456 10.6667 2.3137 10.6667 2.66732V4.00065M12.6667 4.00065V13.334C12.6667 13.6876 12.5262 14.0267 12.2761 14.2768C12.0261 14.5268 11.687 14.6673 11.3333 14.6673H4.66667C4.31305 14.6673 3.97391 14.5268 3.72386 14.2768C3.47381 14.0267 3.33334 13.6876 3.33334 13.334V4.00065H12.6667Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
+        //             <path d="M9.33334 7.33398V11.334" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
+        //             <path d="M6.66666 7.33398V11.334" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
+        //         </svg>
+        //     </td>
+        // </tr>`
+        // $('#selectedPersonalSideResume tbody').append(trResume);
         $('#selectedPersonalAssigtment').append(tr);
     });
+
+
+    console.log('_allEspecialidades',_allEspecialidades);
+    console.log('_allEspecialidades',_allEspecialidades);
+    console.log('_allEspecialidades',_allEspecialidades);
+
+    _allEspecialidades.forEach((especialidad)=>{
+        const SELECTED_PERSONAL_BY_ESPECIALIDAD = allSelectedPersonal.filter((selectedPersonal)=>{
+            return especialidad.especialidad.toLowerCase() === selectedPersonal.especialidad.toLowerCase();
+        });
+
+        console.log('SELECTED_PERSONAL_BY_ESPECIALIDAD',SELECTED_PERSONAL_BY_ESPECIALIDAD);
+        console.log('SELECTED_PERSONAL_BY_ESPECIALIDAD.length',SELECTED_PERSONAL_BY_ESPECIALIDAD.length);
+
+        if(SELECTED_PERSONAL_BY_ESPECIALIDAD.length > 0){
+
+            let espSelectedPersonal = `<tr><td colspan="2" class="--selPers-esp"><p>${especialidad.especialidad}</p></td></tr>`
+            $('#selectedPersonalSideResume tbody').append(espSelectedPersonal);
+
+            SELECTED_PERSONAL_BY_ESPECIALIDAD.forEach((selectedPers)=>{
+
+                let personalStatus = "";
+                if (selectedPers.isSelected) {
+                    personalStatus = ""
+                }
+                if (selectedPers.isPicked === true) {
+                    personalStatus = "isPicked";
+                }
+                if (selectedPers.isPicked && selectedPers.isSelected) {
+                    personalStatus = "pickedAndSelected"
+                }
+
+                let trResume = `<tr class="${personalStatus}" personal_id="${selectedPers.id}">
+                    <td>${selectedPers.nombre}</td>
+                    <td class="removePersonalToAssigment c-pointer">
+                        <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 4H3.33333H14" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5.33334 4.00065V2.66732C5.33334 2.3137 5.47381 1.97456 5.72386 1.72451C5.97391 1.47446 6.31305 1.33398 6.66667 1.33398H9.33334C9.68696 1.33398 10.0261 1.47446 10.2761 1.72451C10.5262 1.97456 10.6667 2.3137 10.6667 2.66732V4.00065M12.6667 4.00065V13.334C12.6667 13.6876 12.5262 14.0267 12.2761 14.2768C12.0261 14.5268 11.687 14.6673 11.3333 14.6673H4.66667C4.31305 14.6673 3.97391 14.5268 3.72386 14.2768C3.47381 14.0267 3.33334 13.6876 3.33334 13.334V4.00065H12.6667Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9.33334 7.33398V11.334" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6.66666 7.33398V11.334" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </td>
+                </tr>`
+                $('#selectedPersonalSideResume tbody').append(trResume);
+
+            })
+        }
+    })
 
     tippy('.isPicked', {
         content: '<strong>Técnico reservado para otro evento en la fecha seleccionada</strong>'
@@ -1559,25 +1599,29 @@ function setAllPersonal_DiscountTakenPersonal() {
 
     allPersonal.forEach((personal) => {
         personal.isPicked = false
-    })
+    });
+
     _takenPersonal.forEach((takenPersonal) => {
-        if (takenPersonal.proyecto_id !== projectDates.project_id) {
+        if (takenPersonal.proyecto_id !== EVENT_ID) {
             // DISCOUNTS ON ALLPERSONAL ON NO SELECTED ARRAY
             const personalExists = allPersonal.find((personal) => {
                 return personal.id === takenPersonal.personal_id;
-            })
+            });
+            
             if (personalExists) {
                 personalExists.isPicked = true;
             }
             // DISOCUNT TAKEN PRODUCTS ON SELECTED PRODUCTS
             const selectedPersonal = allSelectedPersonal.find((selectedPersonal) => {
                 return selectedPersonal.id === takenPersonal.personal_id
-            })
+            });
+
             if (selectedPersonal) {
                 personalExists.isPicked = true;
             }
         }
-    })
+    });
+
 };
 
 let lastFreeLanceValue = 0;

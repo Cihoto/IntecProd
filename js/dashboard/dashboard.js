@@ -9,14 +9,32 @@ let dateLimits = {
 //     return confirm("Do you really want to close?"); 
 // });
 
+let eventListDashMobile = document.getElementById('eventListdashMobile');
+let createNewEventDashMobile = document.getElementById('dashCreateNewEventMobile');
 
+
+eventListDashMobile.addEventListener("click",openEventList);
+createNewEventDashMobile.addEventListener("click",openCreateNewEvent);
+
+
+function openCreateNewEvent(){
+    location.href = "./miEvento.php";
+
+}
+
+function openEventList(){
+    location.href = "./eventos.php";
+
+}
 
 $(document).ready(async function () {
     // SET EVENTS QUANTITY COMPARISON BTEWEEN ACTUAL  MONTH AND LAST MONTH
 
 
 
+    // CHANGE TOP MOBILE BAR PAGE NAME 
 
+    $('.--pageHeadName').text('Dashboard');
 
     // from apgeheaderbreadCrumb
     createBreadCrumb('index');
