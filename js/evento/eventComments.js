@@ -12,6 +12,8 @@ let _canCloseReplyMenu = false;
 let _assignedComments = [];
 let _assignedCommentsReplies = [];
 
+
+
 $('#openEventComments').on('click', function () {
     openEventComments()
 });

@@ -14,7 +14,7 @@
                     <div class="searchRow" id="searchRowPersonal" style="margin-bottom: 20px;">
                         <div class="form-group" style="margin-bottom: 0px;">
                             <label for="especialidadPersonalAssigmentFilter" class="inputLabel">*Especialidad</label>
-                            <select id="especialidadPersonalAssigmentFilter" name="especialidadPersonalAssigmentFilter" type="text" class="form-select input-lg s-Select">
+                            <select onchange="filterPersonalTable(this.value)" id="especialidadPersonalAssigmentFilter" name="especialidadPersonalAssigmentFilter" type="text" class="form-select input-lg s-Select">
                                 <option value="all">Todos</option>
                             </select>
                         </div>

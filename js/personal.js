@@ -20,6 +20,7 @@ let personalData = {
 
 
 
+
 let dash_personal_table
 async function printPersonal() {
     const PERSONAL = await getPersonalByBussiness(EMPRESA_ID);
@@ -1412,6 +1413,7 @@ async function GetEspecialidadByBussiness(empresaId) {
             console.log(error)
         }
     })
+
 }
 
 async function GetEspecialidad(empresaId) {
@@ -1735,11 +1737,6 @@ $(document).on('blur', '.input-horasTrabajadas', function () {
 $('#openModalNewFree').on('click', async function () {
     // $('#newFreeLance-Modal').modal('show');
 
-
-    
-    
-    
-    
     const especialidades = await getAllEspecialidades(EMPRESA_ID);
     console.log('especialidades',especialidades)
     console.log('especialidades',especialidades)
@@ -1756,7 +1753,10 @@ $('#openModalNewFree').on('click', async function () {
 
 
     $('#newFreelanceSideMenu').addClass('active');
-})
+});
+
+
+
 
 function closeFreelanceSideMenu(){
 

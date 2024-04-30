@@ -16,6 +16,9 @@ $('#createAccount').validate({
       required: true,
       email: true
     },
+    'c-acc-name': {
+      required: true
+    },
     'c-acc-pass': {
       required: true,
     },
@@ -39,6 +42,9 @@ $('#createAccount').validate({
     'c-acc-email': {
       required: "Ingrese un correo",
       email: "Correo invalido"
+    },
+    'c-acc-name': {
+      required: "Ingrese un nombre",
     },
     'c-acc-pass': {
       required: "",
@@ -64,6 +70,7 @@ $('#createAccount').validate({
       'rut': $('#c-acc-rut').val(),
       'address': $('#c-acc-addr').val(),
       'email': $('#c-acc-email').val(),
+      'uName': $('#c-acc-name').val(),
       'pass': $('#c-acc-pass').val(),
     }
 

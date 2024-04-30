@@ -4,7 +4,7 @@
             <div class="--search-container">
                 <div class="form-group --mb-0 --top">
                     <label for="dashIndexInput" class="inputLabel">Buscar</label>
-                    <input id="dashIndexInput" name="dashIndexInput" type="text" class="form-control input-lg s-Input prodSearchBar" value="">
+                    <input id="dashIndexInput" name="dashIndexInput" type="text" onkeyup="filterInventiryTable(this.value)" class="form-control input-lg s-Input prodSearchBar" value="">
                 </div>
                 <img src="./assets/svg/searchLent.svg" alt="" style="margin-top: 15px;">
             </div>

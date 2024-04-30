@@ -479,7 +479,12 @@ function createNewAccount($request){
         deleteDatosFacturacion($datos_facturacion_id);
         deleteEmpresa($empresa_id);
         return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
-    }
+    };
+
+
+
+
+
 
     $tries = 0;
     $queryRol = "INSERT INTO u136839350_intec.rol_has_usuario 
@@ -509,10 +514,22 @@ function createNewAccount($request){
         removeuserFromDb($user_id);
         return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
     }
-   
-    
-    
+}
 
+function createCargoEspecialidad($empresa_id){
+
+    $conn = new bd();
+    $conn->conectar();
+    $mysqli = $conn->mysqli;
+
+    $cargo = 'Administrador';
+    $especialidad = 'Sistemas';
+
+
+    $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.cargo (cargo, empresa_id) VALUES(?, 0);");
+    $stmt->bind_param("si", $cargo,$empresa_id); 
+    $stmt->execute();
+    
 }
 
 function createPass($pass){

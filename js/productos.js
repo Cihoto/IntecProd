@@ -1,5 +1,14 @@
 let dataTableProduct = ''; 
 
+function filterInventiryTable(value){
+  if(value ===""){
+    dataTableProduct.search("").draw();
+    return
+  }
+
+  dataTableProduct.search(value).draw();
+}
+
 
 function FillProductos(empresaId) {
   if ($.fn.DataTable.isDataTable('#tableProducts')) {

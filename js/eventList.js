@@ -27,8 +27,6 @@ async function getEvents(empresa_id) {
 let tableEventList;
 async function printAllProjects(_projectList,isAdmSort) {
 
-    // const table = $('#allProjectTable-list').DataTable();
-
     let sort = [1,'asc']
     console.log('_isAdmSort',isAdmSort);
     console.log('_isAdmSort',isAdmSort);
@@ -146,19 +144,19 @@ async function printAllProjects(_projectList,isAdmSort) {
         let tr = `<tr evento_id="${evento.id}" class="eventListRow">
             <td>
                 <div class="-eve-list-inf-ctn">
-                    <p class="event-cell-hide-text"> ${evento.nombre_proyecto} </p>
+                    <p class="--h-text-flex-20"> ${evento.nombre_proyecto}</p>
                     <div class="--ev-assigments-container">
 
-                    <button class="commentContainer">
-                        ${ehc}
-                    </button>
-                    <button class="buttonEventList">
-                        ${ehf}
-                    </button>
+                        <button class="commentContainer">
+                            ${ehc}
+                        </button>
+                        <button class="buttonEventList">
+                            ${ehf}
+                        </button>
                     </div>
                 </div>
             </td>
-            <td data-order="${timeStamp}"><p style="text-align:center;">${getEventListDate(evento.fecha_inicio, evento.fecha_termino)}</p> </td>
+            <td data-order="${timeStamp}"><p class="--eventDates-evl">${getEventListDate(evento.fecha_inicio, evento.fecha_termino)}</p> </td>
             <td> <p class="event-status ${evento.estado}">${eventStatus[0].toUpperCase()}${eventStatus.slice(1)}</p> </td>
             <td class="ownerCircleContainer"> <div class="ownerCircle"> <p>${eventOwner}</p> </div> </td>
             <td>
@@ -193,20 +191,42 @@ async function printAllProjects(_projectList,isAdmSort) {
         tableEventList = $('#allProjectTable-list').DataTable({
             sort: true,
             responsive: true,
-            pageLength: 100,
             order: sort,
-            columnDefs: [
-                {width: '20%', targets: [0]},
-                {width: '10%', targets: [1]},
-                {width: '10%', targets: [2]},
-                {width: '6%', targets: [3]},
-                {width: '10%', targets: [4]},
-                {width: '5%', targets: [5]},
-                {width: '4%', targets: [6]},
-                {width: '8%', targets: [7]},
-                // {width: '8%', targets: [8]},
-                {width: '1%', targets: [8]}
-            ],language: {
+            pageLength: 100,
+            columns:[
+                { width: '20%' },
+                { width: '10%' },
+                { width: '10%' },
+                { width: '6%' },
+                { width: '10%' },
+                { width: '5%' },
+                { width: '4%' },
+                { width: '8%' },
+                { width: '1%' }
+            ],
+                // columnDefs: [
+                //     // {width: '20%', targets: [0]},
+                //     // {width: '10%', targets: [1]},
+                //     // {width: '10%', targets: [2]},
+                //     // {width: '6%', targets: [3]},
+                //     // {width: '10%', targets: [4]},
+                //     // {width: '5%', targets: [5]},
+                //     // {width: '4%', targets: [6]},
+                //     // {width: '8%', targets: [7]},
+                //     // // {width: '8%', targets: [8]},
+                //     // {width: '1%', targets: [8]}
+                //     {width: '30%', targets: [0]},
+                //     // {width: '%', targets: [1]},
+                //     // {width: '%', targets: [2]},
+                //     // {width: '%', targets: [3]},
+                //     // {width: '%', targets: [4]},
+                //     // {width: '%', targets: [5]},
+                //     // {width: '%', targets: [6]},
+                //     // {width: '%', targets: [7]},
+                //     // {width: '8%', targets: [8]},
+                //     {width: '1%', targets: [8]}
+                // ],
+            language: {
                 "decimal": "",
                 "emptyTable": "No hay información",
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",

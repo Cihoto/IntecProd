@@ -37,7 +37,7 @@ require_once('./includes/head.php');
                 <p class="headerTitle">Listado de eventos</p> -->
             </header>
 
-            <div class="pageContent">
+            <div class="pageContent" id="evListContent">
 
                 <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-left: 8px;">
                     <li class="nav-item" role="presentation">
@@ -52,7 +52,7 @@ require_once('./includes/head.php');
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active tab-data" id="listview" role="tabpanel" aria-labelledby="listview-tab">
-                        <div class="formHeader d-flex justify-content-start" style="margin-top: 8px; margin-left: 16px;">
+                        <div class="formHeader d-flex justify-content-start" style="margin-top: 8px; margin-left: 16px;" id="eventListHeaderTitle">
                             <svg style="margin-top: 4px;" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                                 <circle cx="6" cy="6" r="6" fill="#069B99" />
                             </svg>
@@ -61,21 +61,24 @@ require_once('./includes/head.php');
 
                         <div style="display: flex; justify-content: space-between;margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;">
 
-                            <!-- <div class="--eventList-searchBar">
-                                <div class="--eventList-searchBar">
+                            <div class="--eventList-searchBar">
+                                <!-- <div class="--eventList-searchBar"> -->
                                     <div class="form-group" style="margin-bottom: 0px;">
                                         <label for="event_status" class="inputLabel">Estado</label>
-                                        <select  id="" name="" type="text" class="form-select">
-                                            <option id="sortAllMyEvents">Todos</option>
-                                            <option id="sortDrafEvents">Borradores</option>
-                                            <option id="sortSells">Ventas</option>
-                                            <option id="sortOperationalEvents">Operaciones</option>
-                                            <option id="sortAdmEvents">Administración</option>
+                                        <select  id="eventListSelector" name="" type="text" class="form-select">
+                                            <option value="exe">Futuros</option>
+                                            <option value="all">Todos</option>
+                                            <option value="draft">Borradores</option>
+                                            <option value="sells">Ventas</option>
+                                            <option value="op">Operaciones</option>
+                                            <option value="adm">Administración</option>
                                         </select>
                                     </div>
 
-                                </div>
-                            </div> -->
+                                <!-- </div> -->
+                                <input readonly type="text" id="calendarInput"  placeholder="Filtrar por fecha">
+
+                            </div>
 
                             <!-- <button class="s-Button-w">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
@@ -83,7 +86,7 @@ require_once('./includes/head.php');
                                 </svg>
                                 <p class="s-P-g">Filtros</p>
                             </button> -->
-                            <div class="row" style="margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;margin-left: 16px;">
+                            <!-- <div class="row" style="margin-left: 0px;margin-bottom: -16px;gap: 10px;width: 100%;margin-left: 16px;">
 
                                 <button class="s-Button-w" id="sortAllMyEvents">
                                     <p class="s-P-g">Todos</p>
@@ -100,11 +103,10 @@ require_once('./includes/head.php');
                                 <button class="s-Button-w" style="width: 125px;" id="sortAdmEvents">
                                     <p class="s-P-g">Administración</p>
                                 </button>
-                                <input readonly type="text" id="calendarInput"  placeholder="Filtrar por fecha">
 
-                            </div>
+                            </div> -->
 
-                            <div style="display: flex;gap: 16px;flex-direction: column;margin-top: -55px;margin-right: 10px;">
+                            <div class="--evl-actionbtn-ctn">
                                 <!-- <button class="s-Button-w" style="width: 175px;position: absolute;right: 158px;" id="exportToExcel">
                                     <p class="s-P-g">Exportar Excel</p>
                                 </button> -->
@@ -119,7 +121,7 @@ require_once('./includes/head.php');
                             </div>
                         </div>
 
-                        <div style="display: block;overflow-x: auto;">
+                        <div style="display: flex;overflow-x: scroll;">
                             <table class="" id="allProjectTable-list">
                                 <thead>
                                     <tr>
@@ -257,7 +259,9 @@ require_once('./includes/head.php');
     const EMPRESA_ID = <?php echo $empresaId; ?>;
     const ROL_ID = <?php echo json_encode($rol_id); ?>;
 
-
+    function alertSomthings(){
+        alert('SomeThing');
+    }
 
     let init_date = (iDate) => {
 

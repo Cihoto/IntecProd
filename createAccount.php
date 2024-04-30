@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <?php require_once('./includes/head.php'); ?>
 
@@ -47,9 +47,13 @@
                     </div>
 
                     <div class="row -jcs">
-                        <div class="form-group col-8">
+                        <div class="form-group col-lg-7 col-12">
                             <label for="c-acc-email" class="inputLabel">Correo</label>
                             <input id="c-acc-email" name="c-acc-email" type="text" class="form-control input-lg s-Input" />
+                        </div>
+                        <div class="form-group col-lg-5 col-12">
+                            <label for="c-acc-name" class="inputLabel">Nombre</label>
+                            <input id="c-acc-name" name="c-acc-name" type="text" class="form-control input-lg s-Input" />
                         </div>
                     </div>
                     <div class="row -jcs-b">

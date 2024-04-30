@@ -316,8 +316,10 @@ $active = 'inventario';
             tableBody.append(tableContent.table[1])
             $('#fileName').text(tableContent[0]);
 
+            setNoCatOrNoSubCat();
 
             orderExcelTable_printErrOnTop();
+
             const TABLE_WIDTH = $(tableBody).width();
             const TABLE_ROWS = $('#excelTable tbody tr').length;
             console.log(TABLE_ROWS);
@@ -335,6 +337,22 @@ $active = 'inventario';
             })
         )
     });
+
+    function setNoCatOrNoSubCat(){
+        $('#excelTable tbody tr').each((index, tr)=>{
+
+            if($(tr).find('td:eq(0)').text() === ''){
+                $(tr).find('td:eq(0)').text('Sin categoría');
+                $(tr).find('td:eq(0)').removeClass('err')
+            }
+            if($(tr).find('td:eq(1)').text() === ''){
+                $(tr).find('td:eq(1)').text('Sin Subcategoría') 
+                $(tr).find('td:eq(1)').removeClass('err')
+            }
+
+                
+        });
+    }
 
 
     function orderExcelTable_printErrOnTop() {

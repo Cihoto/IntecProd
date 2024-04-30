@@ -11,13 +11,24 @@ let projectDates = {
   'project_id' : ""
 }
 
+
+
+// MY EVENT PAGE ELEMENTS
+const PERSONAL_FILTER = document.getElementById('especialidadPersonalAssigmentFilter');
+const VEHICLE_FILTER_OPT = document.getElementById('vehicleTypeVlist');
+
+
+
+
+// END MY EVENT PAGE ELEMENTS
+
 //BOTON DE TEST
 $('#verarray').on('click', async function(){
   // localStorage.clear();
   // console.log("asdjhasd,jahkdsjhasd");
   // $('#arriendosModal').modal('show');
   // console.log(selectedPackages);
-  setEgresos();
+  // setEgresos();
   // setIngresos();                                                             
 })
 //FIN BOTON TEST
@@ -211,51 +222,57 @@ async function getAssignedElements() {
   // ADD PACKAGE TO PROJECT ON PLUS ICON ON PACKAGE LIST
   $(document).ready(async function(){
 
-    GetEspecialidadByBussiness(EMPRESA_ID);
-    
-    fillProductsTable();
-    // FillAllProducts();
-    FillStandardPackages();
-    $('#tableResume').DataTable({})
-    //fillvehiculos
-    FillVehiculos(EMPRESA_ID);
-    // Fill Clientes
-    FillClientes(EMPRESA_ID);
-    //FILL DIRECCIONES
-    FillDirecciones();
+  await GetEspecialidadByBussiness(EMPRESA_ID);
 
-    //FILL PRODUCTOS
-    // FillProductos(EMPRESA_ID);
-    //FILL PERSONAL
-    // FillPersonal(EMPRESA_ID)
-    // CALL ALL PERSONAL
-    // CLEAR LOCALSTORGE
-    localStorage.clear();
-    // FILL REGIONES
-    GetAllPersonal(EMPRESA_ID);
-    FillRegiones(EMPRESA_ID);
+  appendPersonalOptions();
+  
+  fillProductsTable();
+  // FillAllProducts();
+  FillStandardPackages();
+  $('#tableResume').DataTable({})
+  //fillvehiculos
+  FillVehiculos(EMPRESA_ID);
+  appendVehiclesFilters();
+  // Fill Clientes
+  FillClientes(EMPRESA_ID);
+  //FILL DIRECCIONES
+  FillDirecciones();
+
+  //FILL PRODUCTOS
+  // FillProductos(EMPRESA_ID);
+  //FILL PERSONAL
+  // FillPersonal(EMPRESA_ID)
+  // CALL ALL PERSONAL
+  // CLEAR LOCALSTORGE
+  localStorage.clear();
+  // FILL REGIONES
+  GetAllPersonal(EMPRESA_ID);
+  FillRegiones(EMPRESA_ID);
 
 
 
-    getAllMyProviders(EMPRESA_ID);
+  getAllMyProviders(EMPRESA_ID);
 
-    $(document).on('click', '.logoRemove', function() {
-      let productId = $(this).closest('.detailsProduct-box').find('.itemId').text();
-      removeProduct(productId);
-      $(this).closest('.detailsProduct-box').remove()
-      $('#resumeBody').find(`.idProd${productId}`).remove();
-    })
+  $(document).on('click', '.logoRemove', function() {
+    let productId = $(this).closest('.detailsProduct-box').find('.itemId').text();
+    removeProduct(productId);
+    $(this).closest('.detailsProduct-box').remove()
+    $('#resumeBody').find(`.idProd${productId}`).remove();
+  });
 
-    // SHOW BILLING DATA 
-    $('#clientHasFacturacion').on('click', function() {
-      if ($(this).is(':checked')) {
 
-        $('#clientFactData').addClass('active');
-      } else {
 
-        $('#clientFactData').removeClass('active');
-      }
-    })
+
+  // SHOW BILLING DATA 
+  $('#clientHasFacturacion').on('click', function() {
+    if ($(this).is(':checked')) {
+
+      $('#clientFactData').addClass('active');
+    } else {
+
+      $('#clientFactData').removeClass('active');
+    }
+  })
     // VALIDAR FORM AGREGAR DIRECCION
 $('#direccionAddForm').validate({
   rules: {
@@ -528,6 +545,121 @@ $('#clienteForm').validate({
 })
 });
 
+
+// APPEND ALL PERSONAL SELECT FILTER OPTIONS
+function appendPersonalOptions(){
+  _allEspecialidades.forEach((esp)=>{
+
+      let option = document.createElement('option')
+      option.value = esp.especialidad;
+      option.text = esp.especialidad;
+      PERSONAL_FILTER.append(option)
+  });
+
+}
+
+function filterPersonalTable(esp){
+
+  let filtered_personal = [];
+  if(esp === 'all'){
+    filtered_personal = allPersonal;
+  }else{
+
+    filtered_personal = allPersonal.filter((personal)=>{
+      return personal.especialidad === esp
+    });
+
+  }
+
+  $('#personalResumeAssigment tbody tr').remove();
+
+  filtered_personal.forEach((personal)=>{
+
+    if(personal.isDelete == 1){
+      return;
+    }
+    let personalStatus = "";
+    if (personal.isSelected) {
+        personalStatus = "personalSelected"
+    }
+    if (personal.isPicked === true) {
+        personalStatus = "isPicked";
+    }
+    if (personal.isPicked && personal.isSelected) {
+        personalStatus = "pickedAndSelected"
+    }
+
+    let tr = `<tr personal_id="${personal.id}" class="${personalStatus}">
+      <td> <p class="--h-text-flex">${personal.nombre}</p></td>
+      <td>${personal.rut}</td>
+      <td>${personal.especialidad}</td>
+      <td>${personal.contrato}</td>
+      <td class="addPersonalToResume"><p class="s-P-g">Agregar</p></td>
+    <tr>`;
+    $('#personalResumeAssigment > tbody').append(tr);
+  })
+
+}
+
+// APPEND VEHICLES FILTER OPTIONS
+
+function appendVehiclesFilters(){
+  _types.forEach((vType)=>{
+
+    console.log('vType',vType);
+
+    let option = document.createElement('option')
+    option.value = vType.tipo;
+    option.text = vType.tipo;
+    VEHICLE_FILTER_OPT.append(option)
+  });
+}
+
+
+function filterVehiclesTable(vType){
+  let filteredVehicles = [];
+  if(esp === 'all'){
+    filteredVehicles = allVehicles;
+  }else{
+
+    filteredVehicles = allVehicles.filter((vehicle)=>{
+      return vehicle.tipo === vType
+    });
+
+  }
+
+  $('#allVehiclesTable tbody tr').remove();
+
+  filteredVehicles.forEach((vehiculo) => {
+
+    if(vehiculo.isDelete == 1){
+      return
+    }
+    let vehicleStatus = "";
+
+    if (vehiculo.isSelected === true) {
+      vehicleStatus = "isSelected"
+    }
+
+    if (vehiculo.tripValue === null) {
+      vehiculo.tripValue = 0
+    }
+
+    let owner = "Propio";
+    if (vehiculo.ownCar === '0') {
+        owner = "Externo";
+    }
+
+    let tr = `<tr vehiculo_id="${vehiculo.id}" class="${vehicleStatus}">
+        <td>${vehiculo.tipoVehiculo}</td>
+        <td>${owner}</td>
+        <td>${vehiculo.patente}</td>
+        <td>${CLPFormatter(parseInt(vehiculo.tripValue))}</td>
+        <td class="addVehicleToResume"><p class="s-P-g">Agregar</p></td>
+    </tr>`
+    $('#allVehiclesTable tbody').append(tr);
+})
+}
 //OPEN MODAL DIRECCION
 $('#direccionInput').on('click', function() {
   $('#direccionModal').modal('show');

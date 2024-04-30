@@ -20,7 +20,7 @@
                 <div class="searchRow --mo-active" id="searchRowVehicles" style="margin-bottom: 20px;">
                     <div class="form-group" style="margin-bottom: 0px;">
                         <label for="vehicleTypeVlist" class="inputLabel">*Tipo Vehículo</label>
-                        <select id="vehicleTypeVlist" name="vehicleTypeVlist" type="text" class="form-select input-lg s-Select">
+                        <select onchange="filterVehiclesTable(this.value)" id="vehicleTypeVlist" name="vehicleTypeVlist" type="text" class="form-select input-lg s-Select">
                             <option value="all">Todos</option>
                         </select>
                     </div>
