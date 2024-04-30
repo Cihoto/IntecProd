@@ -121,7 +121,7 @@ require_once('./includes/head.php');
                             </div>
                         </div>
 
-                        <div style="display: flex;overflow-x: scroll;">
+                        <div style="overflow-x: scroll;">
                             <table class="" id="allProjectTable-list">
                                 <thead>
                                     <tr>
@@ -595,7 +595,7 @@ require_once('./includes/head.php');
     }
     #allProjectTable-list_filter{
         margin-bottom: 16px;
-        margin-right: -6px;
+        margin-right: 0px;
 
     }
 </style>
