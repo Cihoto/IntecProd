@@ -183,6 +183,11 @@ $active = 'inventario';
         }
         if (prods) {
             _allProductsToList = prods;
+            console.log('_allProductsToList',_allProductsToList);
+            console.log('_allProductsToList',_allProductsToList);
+            console.log('_allProductsToList',_allProductsToList);
+            console.log('_allProductsToList',_allProductsToList);
+            console.log('_allProductsToList',_allProductsToList);
             printMyProducts();
         }
         $('#example').DataTable({
@@ -566,6 +571,9 @@ $active = 'inventario';
         }).filter((item) => {
             return item !== undefined
         });
+
+        console.log('arrayRequest',arrayRequest);
+
         addProdsOnMasiveExcel(arrayRequest);
     });
 

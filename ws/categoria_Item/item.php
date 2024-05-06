@@ -33,7 +33,7 @@ function GetItems($empresaId){
     
     $conn = new bd();
     $conn->conectar();
-
+    $response = [];
     $querySelectMarca ="SELECT i.item,i.id  from item i 
                         INNER JOIN categoria_has_item chi on chi.item_id = i.id
                         INNER JOIN producto p on p.categoria_has_item_id =chi.id 

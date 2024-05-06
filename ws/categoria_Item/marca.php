@@ -31,7 +31,7 @@ function GetMarcas($empresaId){
     
     $conn = new bd();
     $conn->conectar();
-
+    $response = [];
     $querySelectMarca ="SELECT m.marca, m.id  from marca m
                             INNER JOIN producto p on p.marca_id = m.id
                             where p.empresa_id = $empresaId

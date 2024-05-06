@@ -9,7 +9,7 @@
         </p>
     </div>
 </div>
-<!-- <div id="footerInformation" class="">
+<div id="footerInformation" class="">
 
     <p>Hello</p>
 
@@ -19,7 +19,7 @@
         </div>
     </div>
     
-</div> -->
+</div>
 
 <style type="text/css"> 
     @keyframes ldio-r2lhg8dn3dg {

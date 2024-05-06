@@ -38,11 +38,15 @@ function GetCategorias($empresaId){
     $conn = new bd();
     $conn->conectar();
 
+    $response = [];
+
     $querySelectCategorias ="SELECT c.id,c.nombre  from categoria c 
-                            INNER JOIN categoria_has_item chi on chi.categoria_id = c.id 
-                            INNER JOIN producto p on p.categoria_has_item_id =chi.id 
-                            where p.empresa_id = $empresaId
-                            GROUP BY c.nombre";
+INNER JOIN categoria_has_item chi on chi.categoria_id = c.id 
+INNER JOIN producto p on p.categoria_has_item_id =chi.id 
+where p.empresa_id = $empresaId
+GROUP BY c.nombre";
+
+    // return $querySelectCategorias; 
 
     $responseBd = $conn->mysqli->query($querySelectCategorias);
 

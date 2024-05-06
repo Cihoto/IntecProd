@@ -196,9 +196,9 @@ function setEgresos(){
     });
     // section others costs
     let totalOthersCosts = 0;
-    // console.log("ALL MY OTHER COST")
-    // console.log("ALL MY OTHER COST",_allMyOtherCosts)
-    // console.log("ALL MY OTHER COST")
+    console.log("ALL MY OTHER COST")
+    console.log("ALL MY OTHER COST",_allMyOtherCosts)
+    console.log("ALL MY OTHER COST")
     $('#total-otherCostsResume tbody tr').remove();
     _allMyOtherCosts.forEach(({name,monto})=>{
         totalOthersCosts += parseInt(monto); 

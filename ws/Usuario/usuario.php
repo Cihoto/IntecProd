@@ -408,6 +408,7 @@ function createNewAccount($request){
     $rut = $request->rut;
     $address = $request->address;
     $email = $request->email;
+    $uName = $request->uName;
     $pass = $request->pass;
     // DATES DATA
     $today = date('Y-m-d');
@@ -482,14 +483,28 @@ function createNewAccount($request){
     };
 
 
-
-
+    createPersonalOnNewBussiness($empresa_id,$email,$uName,$user_id);
+    createCategorieAndSubcategorieOnNewAccount($empresa_id);
 
 
     $tries = 0;
     $queryRol = "INSERT INTO u136839350_intec.rol_has_usuario 
     (rol_id, usuario_id) 
-    VALUES(1, $user_id);";
+    VALUES (1, $user_id),
+    (2, $user_id),
+    (3, $user_id),
+    (4, $user_id),
+    (5, $user_id),
+    (6, $user_id),
+    (7, $user_id),
+    (8, $user_id),
+    (9, $user_id),
+    (10, $user_id),
+    (11, $user_id),
+    (12, $user_id),
+    (13, $user_id),
+    (14, $user_id);";
+
 
     while($tries < 9){
         try{
@@ -516,7 +531,7 @@ function createNewAccount($request){
     }
 }
 
-function createCargoEspecialidad($empresa_id){
+function createPersonalOnNewBussiness($empresa_id,$email,$uName,$user_id){
 
     $conn = new bd();
     $conn->conectar();
@@ -524,12 +539,54 @@ function createCargoEspecialidad($empresa_id){
 
     $cargo = 'Administrador';
     $especialidad = 'Sistemas';
+    $today = Date('Y-m-d');
 
 
-    $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.cargo (cargo, empresa_id) VALUES(?, 0);");
-    $stmt->bind_param("si", $cargo,$empresa_id); 
-    $stmt->execute();
+    $queryCargo = "INSERT INTO u136839350_intec.cargo (cargo, empresa_id) VALUES('$cargo',$empresa_id);";
+    $queryEspecialidad = "INSERT INTO u136839350_intec.especialidad (especialidad, createAt, empresa_id) 
+    VALUES('$especialidad','$today',$empresa_id);";
+
+    $resultCargo = $mysqli->query($queryCargo);
+    $cargoId = $mysqli->insert_id;
     
+    $resultEspecialidad = $mysqli->query($queryEspecialidad);
+    $especialidadId = $mysqli->insert_id;
+    
+    
+    $queryPersona = "INSERT INTO u136839350_intec.persona (nombre, email) VALUES('$uName','$email' );";
+    $resultPersona = $mysqli->query($queryPersona);
+    $personaId = $mysqli->insert_id;
+
+
+    $query_personal = "INSERT INTO u136839350_intec.personal 
+    (persona_id, usuario_id, neto, cargo_id, especialidad_id, tipo_contrato_id, createAt,  IsDelete, empresa_id) 
+    VALUES($personaId,$user_id , 0, $cargoId, $especialidadId, 4, '$today',0,$empresa_id);";
+    $resultPersonal = $mysqli->query($query_personal);
+    $personal_id = $mysqli->insert_id;
+
+
+    return $personal_id;
+    
+}
+
+function createCategorieAndSubcategorieOnNewAccount($empresa_id){
+
+    $conn = new bd();
+    $conn->conectar();
+    $mysqli = $conn->mysqli;
+
+    $today= Date('Y-m-d');
+
+
+    $queryCategoria = "INSERT INTO u136839350_intec.categoria (nombre, `desc`, createAt, empresa_id) 
+    VALUES('Sin categoría', '', '$today', $empresa_id);";
+    $mysqli->query($queryCategoria);
+    
+    $querySubcategoria = "INSERT INTO u136839350_intec.item (item, createAt, empresa_id) 
+    VALUES('Sin Subcategoría', '$today', $empresa_id);";
+    $mysqli->query($querySubcategoria);
+
+
 }
 
 function createPass($pass){

@@ -36,6 +36,7 @@ async function SaveOrUpdateEvent() {
   clearBottomBar();
   initBottomBar();
   $('#footerInformation').addClass('active');
+  
   preparingDocumentBottomBar("Guardando cambios");
 
   // SET event_data.event_id = projectDates.project_id

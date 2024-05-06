@@ -179,7 +179,7 @@
         <?php endif; ?>
 
 
-        <?php if (in_array("10", $rol_id)) : ?>
+        <?php if (in_array("10", $rol_id)||in_array("1", $rol_id)) : ?>
           <?php
           if ($active == 'clientes') {
             echo '<li class="sidebar-item active">';
@@ -247,7 +247,7 @@
         <?php endif; ?>
 
 
-        <?php if ($empresaId === "2") : ?>
+        <?php if ($empresaId === "2" || $empresaId === "10") : ?>
           <?php
 
           if ($active == 'pruebas') {

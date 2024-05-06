@@ -480,10 +480,20 @@ function addProdsMasiva($requestProds, $empresa_id)
 
             if($request->marca !== ""){
 
-                $queryGetMarcaId = "SELECT * from marca m where UPPER(m.marca) = UPPER('$request->marca') ";
+                $queryGetMarcaId = "SELECT * from marca m where UPPER(m.marca) = UPPER('$request->marca')";
     
                 if ($response = $conn->mysqli->query($queryGetMarcaId)) {
-                    $marca_id = $response->fetch_object()->id;
+
+
+                    if($response->num_rows > 0 ){
+                        $marca_id = $response->fetch_object()->id;
+                    }else{
+                        $queryInsertBrand = "INSERT INTO u136839350_intec.marca (marca, createAt,isDelete) 
+                        VALUES('$request->marca', '$today',0);";
+
+                        $conn->mysqli->query($queryInsertBrand);
+                        $marca_id = $conn->mysqli->insert_id;
+                    }
                 } else {
                     continue;
                 }
@@ -491,10 +501,17 @@ function addProdsMasiva($requestProds, $empresa_id)
                 $marca_id = "NULL";
             }
 
+            if(!is_numeric($request->precioCompra)){
+                $request->precioCompra = 0;
+            }
+            if(!is_numeric($request->precioArriendo)){
+                $request->precioArriendo = 0;
+            }
+
             $queryInsertProduct = "INSERT INTO u136839350_intec.producto 
             (nombre, `desc`, marca_id, categoria_has_item_id,precio_compra, precio_arriendo, createAt, IsDelete,  empresa_id)
             VALUES( '$request->nombre', NULL, $marca_id, $catHasSub_id, $request->precioCompra, $request->precioArriendo, '$today',0, $empresa_id);";
-
+            // return $queryInsertProduct;
             if ($response = $conn->mysqli->query($queryInsertProduct)) {
                 $inserted_counter++;
                 $prod_id = $conn->mysqli->insert_id;
