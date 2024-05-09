@@ -170,6 +170,11 @@ $active = 'inventario';
         })
         
         const catsSubCats = await getCatsAndSubCatsByBussiness(EMPRESA_ID);
+        console.log('catsSubCats',catsSubCats);
+        console.log('catsSubCats',catsSubCats);
+        console.log('catsSubCats',catsSubCats);
+        console.log('catsSubCats',catsSubCats);
+        console.log('catsSubCats',catsSubCats);
         const prods = await getAllMyProductsToList(EMPRESA_ID);
 
         if (catsSubCats.success) {

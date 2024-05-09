@@ -299,7 +299,7 @@ function customProdSearch($request, $empresaId)
     }
 
     $productos = [];
-    $queryProductos = "SELECT p.id as product_id, p.nombre as nombre_producto, c.nombre as categoria, i.item as subcategoria, inv.cantidad as stock, p.precio_arriendo  FROM producto p INNER JOIN empresa e on e.id = p.empresa_id  INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id  INNER JOIN categoria c on c.id = chi.categoria_id  INNER JOIN item i on i.id  = chi.item_id  INNER JOIN inventario inv on inv.producto_id  = p.id  WHERE e.id = $empresaId  $categoriaWhere $subcategoriaWhere";
+    $queryProductos = "SELECT p.id as product_id, p.nombre as nombre_producto,c.nombre as categoria,i.item as subcategoria,inv.cantidad as stock,p.precio_arriendo  FROM producto p INNER JOIN empresa e on e.id = p.empresa_id  INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id  INNER JOIN categoria c on c.id = chi.categoria_id  INNER JOIN item i on i.id  = chi.item_id  INNER JOIN inventario inv on inv.producto_id  = p.id WHERE e.id = $empresaId  $categoriaWhere $subcategoriaWhere";
 
     // return array($queryProductos);
 
@@ -801,7 +801,7 @@ function getCatsAndSubCatsByBussiness($empresa_id)
     $querySubcategorias = "SELECT i.item , c.nombre, i.id subcat_id, c.id as cat_id  from item i 
         INNER JOIN categoria_has_item chi on chi.item_id = i.id 
         INNER JOIN categoria c on c.id =chi.categoria_id 
-        INNER JOIN producto p on p.categoria_has_item_id = chi.id
+        LEFT JOIN producto p on p.categoria_has_item_id = chi.id
         where c.empresa_id = $empresa_id
         group by i.id;";
 

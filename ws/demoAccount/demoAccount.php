@@ -28,6 +28,19 @@ if ($_POST) {
             $empresa_id = $data->empresa_id;
             $result = addStockToProducts($empresa_id);
             break;
+        case 'setMyCatsAndSubCats':
+            $chiArr = $data->chiArr;
+            $result = setMyCatsAndSubCats($chiArr);
+            break;
+        case 'setMyChiOnNewBussiness':
+            $empresa_id = $data->empresa_id;
+            $prod_data = $data->prod_data;
+            $result = setMyChiOnNewBussiness($prod_data,$empresa_id);
+            break;
+        case 'newAccountProdData':
+            $empresa_id = $data->empresa_id;
+            $result = newAccountProdData($empresa_id);
+            break;
         case 'addCategorieHasItemToDemoAccount':
             $empresa_id = $data->empresa_id;
             $result = addCategorieHasItemToDemoAccount($empresa_id);
@@ -67,30 +80,34 @@ function createDemoAccount($empresa_id)
     $empresa_id = intval($empresa_id);
     $empresa_id = 10;
 
-    if ($empresa_id === "") {
-        return returnBadReq();
-    } else {
-        $empresa_id = filter_var($empresa_id, FILTER_VALIDATE_INT);
-    }
+    // if ($empresa_id === "") {
+    //     return returnBadReq();
+    // } else {
+    //     $empresa_id = filter_var($empresa_id, FILTER_VALIDATE_INT);
+    // }
 
-    if (!addProductsToDemoAccount($empresa_id)) {
-        return returnBadReq();
-    }
+    // if (!addProductsToDemoAccount($empresa_id)) {
+    //     return returnBadReq();
+    // }
 
-    if (!addCategorie($empresa_id)) {
-        return returnBadReq();
-    }
-    if (!addSubcategories($empresa_id)) {
-        return returnBadReq();
-    }
+    // if (!addCategorie($empresa_id)) {
+    //     return returnBadReq();
+    // }
+    // if (!addSubcategories($empresa_id)) {
+    //     return returnBadReq();
+    // }
 
-    if (!addStockToProducts($empresa_id)) {
-        return returnBadReq();
-    }
 
-    if (!addVehiclesToDemoAccount($empresa_id)) {
-        return returnBadReq();
-    }
+    // return` addStockToProducts($empresa_id);
+
+    // if (!addStockToProducts($empresa_id)) {
+    //     // return returnBadReq();
+    //     return ['err'];
+    // }
+
+    // if (!addVehiclesToDemoAccount($empresa_id)){
+    //     return returnBadReq();
+    // }
 
     // if (!addPersonalToDemoAccount($empresa_id)){
     //     return returnBadReq();
@@ -134,8 +151,8 @@ function addCategorie($empresa_id)
         return false;
     }
 }
-function addSubcategories($empresa_id)
-{
+
+function addSubcategories($empresa_id){
     try {
         $conn = new bd();
         $conn->conectar();
@@ -182,6 +199,8 @@ function addStockToProducts($empresa_id)
                 array_push($TO_QUERY, $arrToPush);
             }
         }
+
+        // return $TO_QUERY;
         // Filtrar elementos nulos
         $TO_QUERY = array_filter($TO_QUERY, function ($p) {
             return $p !== null;
@@ -195,15 +214,157 @@ function addStockToProducts($empresa_id)
             $stmt->bind_param("ii", $prod_id, $stock);
             $stmt->execute();
 
-            $conn->desconectar();
-
-            return true;
+            
+            // return true;
         }
+        $conn->desconectar();
         return true;
     } catch (Exception $err) {
         $conn->desconectar();
         return false;
     }
+}
+
+function setMyCatsAndSubCats($chiArr){
+    // try{
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+
+        foreach ($chiArr as $prod) {
+            $cat_id = $prod->catId;
+            $subcatId = $prod->subcatId;
+
+            $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.categoria_has_item (categoria_id, item_id) 
+            VALUES(?, ?);");
+
+            $stmt->bind_param("ii",$cat_id,$subcatId);
+            $stmt->execute();
+        }
+
+        return true;
+    // }catch(Exception $err){
+    //     return false;
+    // }   
+}
+
+function setMyChiOnNewBussiness($prod_data,$empresa_id){
+    $conn = new bd();
+    $conn->conectar();
+    $mysqli = $conn->mysqli;
+
+    foreach ($prod_data as $prod) {
+        $chi_id = $prod->chi_id;
+        $prod_id = $prod->prod_id;
+        $prod_id = $prod->prod_id;
+        $stmt = $mysqli->prepare("UPDATE producto set categoria_has_item_id = ? where id  = ? and empresa_id = ?");
+        $stmt->bind_param("iii",$chi_id,$prod_id,$empresa_id);
+        $stmt->execute();
+    }
+    return true;
+}
+
+
+function newAccountProdData($empresa_id){
+
+    $conn = new bd();
+    $conn->conectar();
+    $mysqli = $conn->mysqli;
+
+
+    // $productos = [];
+    // $productosDemo = [];
+    // $categorias = [];
+    // $subcateogorias = [];
+    $chi = [];
+    $products = [];
+
+
+    $stmt = $mysqli->prepare("SELECT chi.id as chi_id,c.nombre as categorie, i.item as subcategorie FROM categoria_has_item chi 
+    INNER JOIN categoria c on c.id = chi.categoria_id 
+    INNER JOIN item i on i.id = chi.item_id 
+    WHERE c.empresa_id  = ?");
+    $stmt->bind_param("i",$empresa_id);  
+    $stmt->execute();
+    $results = $stmt->get_result();
+
+    while($data = $results->fetch_object()){
+        $chi [] = $data;
+    }
+
+    $stmt = $mysqli->prepare("SELECT p.id as prod_id,p.nombre as prod_name, dp.categorie, dp.subCategorie as subcategorie, '' as chi_id
+    FROM producto p 
+    INNER JOIN demo_product dp ON dp.nombre = p.nombre 
+    where p.empresa_id = ?
+    GROUP BY p.id");
+    $stmt->bind_param("i",$empresa_id);  
+    $stmt->execute();
+    $results = $stmt->get_result();
+
+    while($data = $results->fetch_object()){
+        $products [] = $data;
+    }
+
+    return [
+        "products"=>$products,
+        "chi"=>$chi
+    ];
+
+
+    // $stmt = $mysqli->prepare("SELECT * FROM producto p WHERE p.empresa_id = ?");
+    // $stmt->bind_param("i",$empresa_id);  
+    // $stmt->execute();
+    // $results = $stmt->get_result();
+
+    // while($data = $results->fetch_object()){
+    //     $productos [] = $data;
+    // }
+
+    
+    // $stmt = $mysqli->prepare("SELECT * FROM demo_product dp");
+    // $stmt->execute();
+    // $results = $stmt->get_result();
+
+    // while($data = $results->fetch_object()){
+    //     $productosDemo [] = $data;
+    // }
+    
+    // $stmt = $mysqli->prepare("SELECT * FROM categoria c WHERE c.empresa_id = ?");
+    // $stmt->bind_param("i",$empresa_id);  
+    // $stmt->execute();
+    // $results = $stmt->get_result();
+
+    // while($data = $results->fetch_object()){
+    //     $categorias [] = $data;
+    // }
+
+    // $stmt = $mysqli->prepare("SELECT * FROM categoria c WHERE c.empresa_id = ?");
+    // $stmt->bind_param("i",$empresa_id);  
+    // $stmt->execute();
+    // $results = $stmt->get_result();
+
+    // while($data = $results->fetch_object()){
+    //     $subcateogorias [] = $data;
+    // }
+
+    // $stmt = $mysqli->prepare("SELECT chi.id as chi_id,c.nombre as categorie, i.item as subcategorie FROM categoria_has_item chi 
+    // INNER JOIN categoria c on c.id = chi.categoria_id 
+    // INNER JOIN item i on i.id = chi.item_id 
+    // WHERE c.empresa_id  = ?");
+    // $stmt->bind_param("i",$empresa_id);  
+    // $stmt->execute();
+    // $results = $stmt->get_result();
+
+    // while($data = $results->fetch_object()){
+    //     $subcateogorias [] = $data;
+    // }
+
+    // return [
+    //     "productos"=>$productos,
+    //     "productosDemo"=>$productosDemo,
+    //     "categorias"=>$categorias,
+    //     "subcateogorias"=>$subcateogorias
+    // ];
 }
 
 function addVehiclesToDemoAccount($empresa_id){

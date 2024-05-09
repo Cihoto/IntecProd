@@ -7403,7 +7403,7 @@ span.bkt {
 
     /* display: none; */
     .--h-text-flex-20 {
-      max-width: 320px;
+      max-width: 135px;
       text-overflow: clip;
     }
 
@@ -7437,7 +7437,7 @@ span.bkt {
       .--eventDates-evl {
         margin: 0px !important;
         text-align: start;
-        width: 51px;
+        width: 111px;
       }
     }
 
