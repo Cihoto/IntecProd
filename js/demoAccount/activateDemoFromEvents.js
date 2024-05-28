@@ -3,57 +3,57 @@
 
 function activateDemoFromEvents() {
 
-    console.log('_productos', _productos);
-    console.log('allPersonal', allPersonal);
-    console.log('allVehicles', allVehicles);
+    // console.log('_productos', _productos);
+    // console.log('allPersonal', allPersonal);
+    // console.log('allVehicles', allVehicles);
 
-    if (!isDemoAvailable){
+    // if (!isDemoAvailable){
 
-        if (_productos.length === 0) {
-            $('#prodReminder').append(`<button class="--module-btn-reminder">
-                <a class="--rLink" href="./inventario.php">Carga tu inventario</a>
-            </button>`);
+    //     if (_productos.length === 0) {
+    //         $('#prodReminder').append(`<button class="--module-btn-reminder">
+    //             <a class="--rLink" href="./inventario.php">Carga tu inventario</a>
+    //         </button>`);
 
-            // HIDE TABLES
-            // prods
-            document.getElementById('palCtn').style.display = 'none';
-        }
+    //         // HIDE TABLES
+    //         // prods
+    //         document.getElementById('palCtn').style.display = 'none';
+    //     }
 
-        // if (allPersonal.length === 0) {
-        //     $('#perReminder').append(`<button class="--module-btn-reminder">
-        //         <a class="--rLink" href="./personal.php">Carga tu personal</a>
-        //     </button>`);
-        //     // personal
-        //     document.getElementById('peralCtn').style.display = 'none';
-        // }
+    //     // if (allPersonal.length === 0) {
+    //     //     $('#perReminder').append(`<button class="--module-btn-reminder">
+    //     //         <a class="--rLink" href="./personal.php">Carga tu personal</a>
+    //     //     </button>`);
+    //     //     // personal
+    //     //     document.getElementById('peralCtn').style.display = 'none';
+    //     // }
 
-        // if (allVehicles.length === 0) {
-        //     $('#vehReminder').append(`<button class="--module-btn-reminder">
-        //         <a class="--rLink" href="./vehiculos.php">Carga tu transporte</a>
-        //     </button>`);
-        //     // vehicles
-        //     document.getElementById('veaLCtn').style.display = 'none';
-        //     // hideAllEventAssigmentTables();
-        //     return
-        // }
-    }
+    //     // if (allVehicles.length === 0) {
+    //     //     $('#vehReminder').append(`<button class="--module-btn-reminder">
+    //     //         <a class="--rLink" href="./vehiculos.php">Carga tu transporte</a>
+    //     //     </button>`);
+    //     //     // vehicles
+    //     //     document.getElementById('veaLCtn').style.display = 'none';
+    //     //     // hideAllEventAssigmentTables();
+    //     //     return
+    //     // }
+    // }
 
-    if (bussinessIsDemo) {
-        return;
-    }
-    // || allPersonal.length > 0 || allVehicles.length > 0
-    if ((_productos.length > 0 ) && !bussinessIsDemo) {
+    // if (bussinessIsDemo) {
+    //     return;
+    // }
+    // // || allPersonal.length > 0 || allVehicles.length > 0
+    // if ((_productos.length > 0 ) && !bussinessIsDemo) {
 
-        showAllEventAssigmentTables();
+    //     showAllEventAssigmentTables();
 
-        return;
-    }
+    //     return;
+    // }
 
-    hideAllEventAssigmentTables();
+    // hideAllEventAssigmentTables();
 
-    $('.--demo-btn-container').append(`<button class="--demo-btn-reminder">
-        <p>Cargar datos demo</p>
-    </button>`);
+    // $('.--demo-btn-container').append(`<button class="--demo-btn-reminder">
+    //     <p>Cargar datos demo</p>
+    // </button>`);
     
 }
 
