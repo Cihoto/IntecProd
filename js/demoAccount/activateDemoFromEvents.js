@@ -19,23 +19,23 @@ function activateDemoFromEvents() {
             document.getElementById('palCtn').style.display = 'none';
         }
 
-        if (allPersonal.length === 0) {
-            $('#perReminder').append(`<button class="--module-btn-reminder">
-                <a class="--rLink" href="./personal.php">Carga tu personal</a>
-            </button>`);
-            // personal
-            document.getElementById('peralCtn').style.display = 'none';
-        }
+        // if (allPersonal.length === 0) {
+        //     $('#perReminder').append(`<button class="--module-btn-reminder">
+        //         <a class="--rLink" href="./personal.php">Carga tu personal</a>
+        //     </button>`);
+        //     // personal
+        //     document.getElementById('peralCtn').style.display = 'none';
+        // }
 
-        if (allVehicles.length === 0) {
-            $('#vehReminder').append(`<button class="--module-btn-reminder">
-                <a class="--rLink" href="./vehiculos.php">Carga tu transporte</a>
-            </button>`);
-            // vehicles
-            document.getElementById('veaLCtn').style.display = 'none';
-            // hideAllEventAssigmentTables();
-            return
-        }
+        // if (allVehicles.length === 0) {
+        //     $('#vehReminder').append(`<button class="--module-btn-reminder">
+        //         <a class="--rLink" href="./vehiculos.php">Carga tu transporte</a>
+        //     </button>`);
+        //     // vehicles
+        //     document.getElementById('veaLCtn').style.display = 'none';
+        //     // hideAllEventAssigmentTables();
+        //     return
+        // }
     }
 
     if (bussinessIsDemo) {
