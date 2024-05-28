@@ -41,8 +41,8 @@ function activateDemoFromEvents() {
     if (bussinessIsDemo) {
         return;
     }
-
-    if ((_productos.length > 0 || allPersonal.length > 0 || allVehicles.length > 0) && !bussinessIsDemo) {
+    // || allPersonal.length > 0 || allVehicles.length > 0
+    if ((_productos.length > 0 ) && !bussinessIsDemo) {
 
         showAllEventAssigmentTables();
 
