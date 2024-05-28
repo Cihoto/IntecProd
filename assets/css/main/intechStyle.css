@@ -3295,7 +3295,7 @@ textarea {
     p {
       font-weight: 400;
       color: #2C2D33;
-      max-width: 140px;
+      max-width: 200px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
