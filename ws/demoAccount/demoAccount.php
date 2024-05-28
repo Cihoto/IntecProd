@@ -1,6 +1,8 @@
 <?php
 header("Content-Type: text/html;charset=utf-8");
 
+date_default_timezone_set('America/Santiago');
+
 if ($_POST) {
     require_once('../bd/bd.php');
 
@@ -53,6 +55,10 @@ if ($_POST) {
             $empresa_id = $data->empresa_id;
             $result = addPersonalToDemoAccount($empresa_id);
             break;
+        case 'removeDemoAccount':
+            $empresa_id = $data->empresa_id;
+            $result = removeDemoAccount($empresa_id);
+            break;
         default:
             $result = false;
             break;
@@ -80,43 +86,84 @@ function createDemoAccount($empresa_id)
     $empresa_id = intval($empresa_id);
     $empresa_id = 10;
 
-    // if ($empresa_id === "") {
-    //     return returnBadReq();
-    // } else {
-    //     $empresa_id = filter_var($empresa_id, FILTER_VALIDATE_INT);
-    // }
+    if ($empresa_id === "") {
+        return returnBadReq();
+    } else {
+        $empresa_id = filter_var($empresa_id, FILTER_VALIDATE_INT);
+    }
 
-    // if (!addProductsToDemoAccount($empresa_id)) {
-    //     return returnBadReq();
-    // }
+    if (!addProductsToDemoAccount($empresa_id)) {
+        return returnBadReq();
+    }
 
-    // if (!addCategorie($empresa_id)) {
-    //     return returnBadReq();
-    // }
-    // if (!addSubcategories($empresa_id)) {
-    //     return returnBadReq();
-    // }
+    if (!addCategorie($empresa_id)) {
+        return returnBadReq();
+    }
+    if (!addSubcategories($empresa_id)) {
+        return returnBadReq();
+    }
 
 
     // return` addStockToProducts($empresa_id);
 
-    // if (!addStockToProducts($empresa_id)) {
-    //     // return returnBadReq();
-    //     return ['err'];
-    // }
+    if (!addStockToProducts($empresa_id)) {
+        return ['err'];
+    }
 
-    // if (!addVehiclesToDemoAccount($empresa_id)){
-    //     return returnBadReq();
-    // }
-
-    // if (!addPersonalToDemoAccount($empresa_id)){
-    //     return returnBadReq();
-    // }
+    if (!addVehiclesToDemoAccount($empresa_id)){
+        return returnBadReq();
+    }
+    
+    if (!addPersonalToDemoAccount($empresa_id)){
+        return returnBadReq();
+    }
+    if (!activeDemoAccountOnBussiness($empresa_id)){
+        return returnBadReq();
+    }
     // return addPersonalToDemoAccount($empresa_id);
 
-    // return array("success"=>true);
+
+    $stmt = $mysqli->prepare("SELECT datediff(CURDATE(),e.createdAt) AS diff ,e.demo_active, bl.bus_logo_name as bl
+    FROM empresa e 
+    LEFT JOIN businessLogo bl on bl.bus_logo_id  = e.bus_logo_id 
+    WHERE e.id =?;");
+    $stmt->bind_param("i", $empresa_id);
+    $stmt->execute();
+    $responseBussData = $stmt->get_result();
+
+    while ($data = $responseBussData->fetch_object()) {
+        $buss_data = $data;
+    }
+
+    if(session_id() == '') {
+        session_start();
+    }
+    $_SESSION['buss_data'] = $buss_data;
+
+    $conn->desconectar();
+
+    return array("success"=>true);
 
 }
+
+function activeDemoAccountOnBussiness($empresa_id){
+
+    $conn = new bd();
+    $conn->conectar();
+    $mysqli = $conn->mysqli;
+
+    $today = date("Y-m-d H:i:s");
+
+    try {
+        $stmt = $mysqli->prepare("UPDATE empresa SET demo_active = 1, demo_activation_date = ? WHERE id = ?;");
+        $stmt->bind_param("si",$today, $empresa_id);
+        $stmt->execute();
+        return true;
+    } catch (Exception $err) {
+        $conn->desconectar();
+        return false;
+    }
+}   
 
 function addProductsToDemoAccount($empresa_id)
 {
@@ -226,7 +273,7 @@ function addStockToProducts($empresa_id)
 }
 
 function setMyCatsAndSubCats($chiArr){
-    // try{
+    try{
         $conn = new bd();
         $conn->conectar();
         $mysqli = $conn->mysqli;
@@ -241,11 +288,12 @@ function setMyCatsAndSubCats($chiArr){
             $stmt->bind_param("ii",$cat_id,$subcatId);
             $stmt->execute();
         }
-
+        $conn->desconectar();
         return true;
-    // }catch(Exception $err){
-    //     return false;
-    // }   
+    }catch(Exception $err){
+        $conn->desconectar();
+        return false;
+    }   
 }
 
 function setMyChiOnNewBussiness($prod_data,$empresa_id){
@@ -261,6 +309,7 @@ function setMyChiOnNewBussiness($prod_data,$empresa_id){
         $stmt->bind_param("iii",$chi_id,$prod_id,$empresa_id);
         $stmt->execute();
     }
+    $conn->desconectar();
     return true;
 }
 
@@ -270,12 +319,6 @@ function newAccountProdData($empresa_id){
     $conn = new bd();
     $conn->conectar();
     $mysqli = $conn->mysqli;
-
-
-    // $productos = [];
-    // $productosDemo = [];
-    // $categorias = [];
-    // $subcateogorias = [];
     $chi = [];
     $products = [];
 
@@ -304,67 +347,11 @@ function newAccountProdData($empresa_id){
     while($data = $results->fetch_object()){
         $products [] = $data;
     }
-
+    $conn->desconectar();
     return [
         "products"=>$products,
         "chi"=>$chi
     ];
-
-
-    // $stmt = $mysqli->prepare("SELECT * FROM producto p WHERE p.empresa_id = ?");
-    // $stmt->bind_param("i",$empresa_id);  
-    // $stmt->execute();
-    // $results = $stmt->get_result();
-
-    // while($data = $results->fetch_object()){
-    //     $productos [] = $data;
-    // }
-
-    
-    // $stmt = $mysqli->prepare("SELECT * FROM demo_product dp");
-    // $stmt->execute();
-    // $results = $stmt->get_result();
-
-    // while($data = $results->fetch_object()){
-    //     $productosDemo [] = $data;
-    // }
-    
-    // $stmt = $mysqli->prepare("SELECT * FROM categoria c WHERE c.empresa_id = ?");
-    // $stmt->bind_param("i",$empresa_id);  
-    // $stmt->execute();
-    // $results = $stmt->get_result();
-
-    // while($data = $results->fetch_object()){
-    //     $categorias [] = $data;
-    // }
-
-    // $stmt = $mysqli->prepare("SELECT * FROM categoria c WHERE c.empresa_id = ?");
-    // $stmt->bind_param("i",$empresa_id);  
-    // $stmt->execute();
-    // $results = $stmt->get_result();
-
-    // while($data = $results->fetch_object()){
-    //     $subcateogorias [] = $data;
-    // }
-
-    // $stmt = $mysqli->prepare("SELECT chi.id as chi_id,c.nombre as categorie, i.item as subcategorie FROM categoria_has_item chi 
-    // INNER JOIN categoria c on c.id = chi.categoria_id 
-    // INNER JOIN item i on i.id = chi.item_id 
-    // WHERE c.empresa_id  = ?");
-    // $stmt->bind_param("i",$empresa_id);  
-    // $stmt->execute();
-    // $results = $stmt->get_result();
-
-    // while($data = $results->fetch_object()){
-    //     $subcateogorias [] = $data;
-    // }
-
-    // return [
-    //     "productos"=>$productos,
-    //     "productosDemo"=>$productosDemo,
-    //     "categorias"=>$categorias,
-    //     "subcateogorias"=>$subcateogorias
-    // ];
 }
 
 function addVehiclesToDemoAccount($empresa_id){
@@ -429,11 +416,13 @@ function addCategorieHasItemToDemoAccount($request)
 
 function addPersonalToDemoAccount($empresa_id)
 {
+
+    
     $cargos = [];
     $especialidades = [];
     $personas = [
         [
-            "nombre" => "Carlos Urrutia",
+            "   nombre" => "Carlos Urrutia",
             "apellido" => "",
             "rut" => "18.905.324-2",
             "email" => "carlos@example.com",
@@ -495,7 +484,7 @@ function addPersonalToDemoAccount($empresa_id)
             "empresa_id" => 0
         ]
     ];
-    return addCargosAndEspecialidades($empresa_id);
+    // return addCargosAndEspecialidades($empresa_id);
     try{
 
         if(!addCargosAndEspecialidades($empresa_id)){ 
@@ -522,27 +511,27 @@ function addPersonalToDemoAccount($empresa_id)
             $especialidades [] = $data;
         }
 
-        $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.persona (nombre, apellido, rut, email, telefono) 
-        VALUES (?, '', ?, ?,?)");
-
-        $stmt_personal = $mysqli->prepare("INSERT INTO u136839350_intec.personal 
-        (persona_id, usuario_id, neto, cargo_id, especialidad_id, tipo_contrato_id, createAt, IsDelete, empresa_id,is_demo) 
-        VALUES (?, NULL, ?, ?, ?, ?, CURDATE(), 0, ?,1)");
-
         $counter = 0;
         foreach ($personas as $key => $persona) {
+
+            $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.persona (nombre, apellido, rut, email, telefono) 
+            VALUES (?, '', ?, ?,?)");
             $stmt->bind_param("ssss", $persona['nombre'], $persona['rut'],$persona['email'], $persona['telefono']);
             $stmt->execute();
-
+            
             $persona_id = $stmt->insert_id;
+            
+            $stmt_personal = $mysqli->prepare("INSERT INTO u136839350_intec.personal 
+            (persona_id, usuario_id, neto, cargo_id, especialidad_id, tipo_contrato_id, createAt, IsDelete, empresa_id,is_demo) 
+            VALUES (?, NULL, ?, ?, ?, ?, CURDATE(), 0, ?,1)");
 
             $stmt_personal->bind_param("iiiiii", $persona_id,$personal[$key]['neto'],$cargos[$counter]->id,
             $especialidades[$counter]->id,$personal[$counter]['tipo_contrato_id'],$empresa_id);
 
             $stmt_personal->execute();
-
             $counter ++;
-        }   
+        }  
+
         $conn->desconectar();
         return array("success");
     } catch (Exception $e) {
@@ -552,40 +541,75 @@ function addPersonalToDemoAccount($empresa_id)
 }
 
 function addCargosAndEspecialidades($empresa_id){
-    // try{
+    try{
 
         $conn = new bd();
         $conn->conectar();
         $mysqli = $conn->mysqli;
 
-        $stmt_cargos = $mysqli->prepare("SELECT addCargoToDemoAccount(?)");
-        $stmt_cargos->bind_param("i", $empresa_id);
 
-        $result = $stmt_cargos->execute();
 
-        // return $result;
-        if(!$result){
+        if(!execCargoProcedure($empresa_id)){
             return false;
         }
-        
-        $stmt_especialidades = $mysqli->prepare("SELECT addEspecialidadToDemoAccount(?)");
-        $stmt_especialidades->bind_param("i", $empresa_id);
-        $result_esp = $stmt_especialidades->execute();
-        // return $result_esp;
-        if(!$result_esp){        
-            $stmt_delete_especialidades = $mysqli->prepare("DELETE FROM especialidad where empresa_id = ?");
-            $stmt_delete_especialidades->bind_param("i", $empresa_id);
-            $result = $stmt_delete_especialidades->execute();
+
+
+        if(!execEspecProcedure($empresa_id)){
+            deleteCargoProcedure($empresa_id);
+
+            $conn->desconectar();
             return false;
         }
-        $conn->desconectar();
+
         return true;
 
-    // }
-    // catch(Exception $e){
-    //     $conn->desconectar();
-    //     return false;
-    // }
+    }
+    catch(Exception $e){
+        $conn->desconectar();
+        return false;
+    }
+}
+
+function execCargoProcedure($empresa_id){
+    $conn = new bd();
+    $conn->conectar();
+    $mysqli = $conn->mysqli;
+
+    $stmt_cargos = $mysqli->prepare("SELECT addCargoToDemoAccount(?)");
+    $stmt_cargos->bind_param("i", $empresa_id);
+
+    $result = $stmt_cargos->execute();
+
+    // return $result;
+    if(!$result){
+        $conn->desconectar();
+        return false;
+    }
+    $conn->desconectar();
+    return true;
+}
+
+function deleteCargoProcedure($empresa_id){
+
+    $conn = new bd();
+    $conn->conectar();
+    $mysqli = $conn->mysqli;
+
+    $stmt_delete_especialidades = $mysqli->prepare("DELETE FROM especialidad where empresa_id = ?");
+    $stmt_delete_especialidades->bind_param("i", $empresa_id);
+    $result = $stmt_delete_especialidades->execute();
+    $conn->desconectar();
+}
+function execEspecProcedure($empresa_id){
+    $conn = new bd();
+    $conn->conectar();
+    $mysqli = $conn->mysqli;
+
+    $stmt_especialidades = $mysqli->prepare("SELECT addEspecialidadToDemoAccount(?)");
+    $stmt_especialidades->bind_param("i", $empresa_id);
+    $result_esp = $stmt_especialidades->execute();
+    $conn->desconectar();
+    return $result_esp;
 }
 
 function getCatsHasItem_demoAccount($empresa_id)
@@ -690,4 +714,40 @@ function getCatsHasItem_demoAccount($empresa_id)
     }
 }
 
+function removeDemoAccount($empresa_id){
+    
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
 
+        $now = date('Y-m-d H:i:s');
+        $buss_data = [];
+
+        $stmt = $mysqli->prepare("CALL removeDemoData(?,?);");
+        $stmt->bind_param("is", $empresa_id,$now);
+        $stmt->execute();
+
+        $stmt = $mysqli->prepare("SELECT datediff(CURDATE(),e.createdAt) AS diff ,e.demo_active, bl.bus_logo_name as bl
+        FROM empresa e 
+        LEFT JOIN businessLogo bl on bl.bus_logo_id  = e.bus_logo_id 
+        WHERE e.id = ?;");
+        $stmt->bind_param("i", $empresa_id);
+        $stmt->execute();
+        $responseBussData = $stmt->get_result();
+
+        while ($data = $responseBussData->fetch_object()) {
+            $buss_data = $data;
+        };
+        if(session_id() == '') {
+            session_start();
+        }
+        $_SESSION['buss_data'] = $buss_data;
+        $conn->desconectar();
+        return true;
+    } catch (Exception $err) {
+        $conn->desconectar();
+        return false;
+    }
+
+}

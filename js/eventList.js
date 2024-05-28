@@ -157,7 +157,7 @@ async function printAllProjects(_projectList,isAdmSort) {
                 </div>
             </td>
             <td data-order="${timeStamp}"><p class="--eventDates-evl">${getEventListDate(evento.fecha_inicio, evento.fecha_termino)}</p> </td>
-            <td> <p class="event-status ${evento.estado}">${eventStatus[0].toUpperCase()}${eventStatus.slice(1)}</p> </td>
+            <td class="--ev-status-ch"> <p class="event-status ${evento.estado}">${eventStatus[0].toUpperCase()}${eventStatus.slice(1)}</p> </td>
             <td class="ownerCircleContainer"> <div class="ownerCircle"> <p>${eventOwner}</p> </div> </td>
             <td>
                 <div class="-eve-list-inf-ctn">
@@ -264,6 +264,76 @@ function subDayToDate(date, daysToSub) {
 };
 
 function getEventListDate(initDate, finishDate) {
+
+    moment.lang('es', {
+        months: 'Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre'.split('_'),
+        monthsShort: 'Ene_Feb_Mar_Abr_May_Jun_Jul_Ago_Sep_Oct_Nov_Dic'.split('_'),
+        weekdays: 'Domingo_Lunes_Martes_Miercoles_Jueves_Viernes_Sabado'.split('_'),
+        weekdaysShort: 'Dom._Lun._Mar._Mier._Jue._Vier._Sab.'.split('_'),
+        weekdaysMin: 'Do_Lu_Ma_Mi_Ju_Vi_Sa'.split('_')
+      }
+    );
+
+    console.log(initDate);
+    console.log(finishDate);
+    console.log(moment(initDate).isValid());
+    console.log('moment(finishDate).isValid()',moment('0000-00-00').isValid());
+
+
+    let initIsValid = moment(initDate).isValid(); 
+    let finishIsValid = moment(finishDate).isValid();
+
+    if(!initIsValid && !finishIsValid){
+        return '';
+    }
+
+    const INIT_DATE = moment(initDate);
+    const FINISH_DATE = moment(finishDate);
+
+    console.log('lolg',INIT_DATE)
+    console.log('lolg',FINISH_DATE)
+    
+    let initMonth= INIT_DATE.format('MMM');
+    let initDay= INIT_DATE.format('DD');
+    console.log('lolg',initMonth)
+    console.log('lolg',initDay)
+
+    let finishMonth= FINISH_DATE.format('MMM');
+    let finishDay= FINISH_DATE.format('DD');
+
+    if(moment(INIT_DATE).format('YYYY-MM-DD')  === moment(FINISH_DATE).format('YYYY-MM-DD')){
+        return `${initMonth}-${initDay}`
+    }
+
+    if(moment(INIT_DATE).format('YYYY-MM-DD')  !== moment(FINISH_DATE).format('YYYY-MM-DD')){
+        return `${initMonth}-${initDay}, ${finishMonth}-${finishDay}`
+    }
+    if (initMonth === finishMonth) {
+        return `${initDay}, ${finishDay} ${initMonth}`;
+    }
+
+    if (finishDate === '' || finishDate === null) {
+        return `${dateNumber_init} ${month_init}`;
+    }
+
+
+
+    // let date = moment(INIT_DATE); 
+    // let year = moment(INIT_DATE,'YY'); 
+    // let day = moment(INIT_DATE,'DD'); 
+    // let month = moment(INIT_DATE,'MMM'); 
+    // console.log(INIT_DATE)
+    // console.log(INIT_DATE,'YY')
+    // console.log(INIT_DATE,'DD')
+    // console.log(INIT_DATE,'MMM')
+
+
+    // return '1-1-1'
+    
+    
+    
+    return 
+
 
 
 

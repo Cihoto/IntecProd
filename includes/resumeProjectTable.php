@@ -1,3 +1,106 @@
+<div class="--payment-status-container">
+    <div class="--payment-section">
+        <div class="form-group col-lg-4 col-12">
+            <label for="event_payment_method" class="inputLabel">*Tipo de evento</label>
+            <select style="width: 100%;" id="event_payment_method" name="event_payment_method" type="text" class="form-select input-lg s-Select">
+                <option value="1">Seleccione</option>
+                <option value="1">Con documento</option>
+                <option value="0">Sin documento </option>
+            </select>
+        </div>
+
+        <div class="--ev-payment-perc">
+            <p>Estado de pago</p>
+            <div class="--perc-container" id="-p-bar-bk">
+                <div class="--perc-view" id="-p-bar-pr">
+
+                </div>
+            </div>
+            <p id="--literal-percentage" class="--number">0%</p>
+        </div>
+        <div class="--ev-pay-check">
+            <input type="checkbox" value="1" class="switch" id="evBilled">
+            <p>Facturado</p>
+        </div>
+        <div class="--ev-pay-credited">
+            <div class="--ev-pay-check">
+                <input type="checkbox" value="1" class="switch" id='evPaid'>
+                <p>Pagado</p>
+            </div>
+            <div class="--ev-pay-check">
+                <input type="checkbox" value="1" class="switch" id='evCredited'>
+                <p>Abonado</p>
+            </div>
+            <input type="text" id="creditedAmount">
+        </div>
+    </div>
+
+    <div class="--payment-resume-section">
+        <div style="height: 180px; overflow-x: scroll;width: 75%;scrollbar-width: none;">
+
+        <table class="-resume-table-S -r-t-income" id="evPaymentResume">
+            <thead>
+                <tr>
+                    <th>
+                        <p>Historial de abonos</p>
+                    </th>
+                    <th></th>
+                    <th>
+                        <p id="-payment-total-credited" style="text-align:end;">$0</p>
+                    </th>
+                </tr>
+                <tr class="--secondaryTitle">
+                    <th><p>Fecha</p></th>
+                    <th><p>usuario</p></th>
+                    <th><p>Monto</p></th>
+                    <th class='--table-action'></th>
+                </tr>
+            </thead>
+
+            <tbody >
+
+                <!-- <tr>
+                    <td><p>2024-12-12</p></td>
+                    <td><p>jose loyola</p></td>
+                    <td><p>102200000</p></td>
+                    <td class='--table-action --t-act'><img src="../assets/svg/trashCan.svg" alt=""></td>
+                </tr>
+                <tr>
+                    <td><p>2024-12-12</p></td>
+                    <td><p>jose loyola</p></td>
+                    <td><p>102200000</p></td>
+                </tr>
+                <tr>
+                    <td><p>2024-12-12</p></td>
+                    <td><p>jose loyola</p></td>
+                    <td><p>102200000</p></td>
+                </tr>
+                <tr>
+                    <td><p>2024-12-12</p></td>
+                    <td><p>jose loyola</p></td>
+                    <td><p>102200000</p></td>
+                </tr>
+                <tr>
+                    <td><p>2024-12-12</p></td>
+                    <td><p>jose loyola</p></td>
+                    <td><p>102200000</p></td>
+                </tr> -->
+                    <!-- <tr>
+                                <td><p></p></td>
+                                <td><p>Audio</p></td>
+                                <td><p></p></td>
+                                <td><p>$900000</p></td>
+                            </tr> -->
+                </tbody>
+        </table>
+        </div>
+    </div>
+    <!-- <button id="clickmetestButton">clickme</button> -->
+</div>
+
+<script src="../js/ProjectResume/creditedPercentage.js  "></script>
+
+
 <!-- <div class="container" style="margin: 0px;"> -->
 <div class="documentPdfSelector">
     <p style="margin: 0px!important;">Selecciona para descargar</p>
@@ -51,25 +154,37 @@
 
 </div>
 
-<div class="--resumeContainer">
+<div class="--resumeContainer --jus-ctn-sp">
     <div class="--resume-data-container">
         <!-- <div class="event-info-resume">
 
         </div> -->
 
         <table id="eventInfoResume">
-            <thead> 
-                    
+            <thead>
+
             </thead>
             <tbody>
                 <tr>
-                    <td class="-r-td-left"><p class="--r-title">Evento:</p><p class="--r-info --h-text-flex-75" id="projectNameResume"></p></td>
-                    <td class="-r-td-right"><p class="--r-title">Cliente:</p><p class="--r-info --h-text-flex-25" id="clienteProjectResume"></p></td>
-                    
+                    <td class="-r-td-left">
+                        <p class="--r-title">Evento:</p>
+                        <p class="--r-info --h-text-flex-75" id="projectNameResume"></p>
+                    </td>
+                    <td class="-r-td-right">
+                        <p class="--r-title">Cliente:</p>
+                        <p class="--r-info --h-text-flex-25" id="clienteProjectResume"></p>
+                    </td>
+
                 </tr>
                 <tr>
-                    <td class="-r-td-left"><p class="--r-title">Dirección:</p><p class="--r-info --h-text-flex-75" id="lugarProjectResume"></p></td>
-                    <td class="-r-td-right"><p class="--r-title">Fecha:</p><p class="--r-info --h-text-flex-25" id="fechaProjectResume"></p></td>
+                    <td class="-r-td-left">
+                        <p class="--r-title">Dirección:</p>
+                        <p class="--r-info --h-text-flex-75" id="lugarProjectResume"></p>
+                    </td>
+                    <td class="-r-td-right">
+                        <p class="--r-title">Fecha:</p>
+                        <p class="--r-info --h-text-flex-25" id="fechaProjectResume"></p>
+                    </td>
                 </tr>
                 <!-- <tr>
                     <td></td>
@@ -132,7 +247,7 @@
                 </div>
         </div> -->
 
-        <div class="resumeProjectTables" >
+        <div class="resumeProjectTables">
 
             <div id="resumeEventTableContainer">
                 <table class="-resume-table-S -r-t-income" id="total-productResume">
@@ -143,7 +258,9 @@
                             </th>
                             <th></th>
                             <th></th>
-                            <th><p id="totalPrice-equipos">$0</p></th>
+                            <th>
+                                <p id="totalPrice-equipos">$0</p>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -170,7 +287,7 @@
                         
                         </tfoot>
                 </table> -->
-                        <!-- <tr>
+                <!-- <tr>
                             <td><p>Random</p></td>
                             <td><p></p></td>
                             <td><p></p></td>
@@ -187,17 +304,23 @@
                             </th>
                             <th></th>
                             <th></th>
-                            <th><p id="totalCost-project"></p></th>
+                            <th>
+                                <p id="totalCost-project"></p>
+                            </th>
                         </tr>
                     </thead>
                 </table>
                 <table class="-resume-table-S -r-t-costs secondary" id="total-personalResume">
                     <thead>
                         <tr>
-                            <th><p>Personas</p></th>
+                            <th>
+                                <p>Personas</p>
+                            </th>
                             <th></th>
                             <th></th>
-                            <th><p id="totalPersonal-resumeProject"></p></th>
+                            <th>
+                                <p id="totalPersonal-resumeProject"></p>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -215,10 +338,18 @@
                 <table class="-resume-table-S -r-t-costs secondary" id="total-vehiculosResume">
                     <thead>
                         <tr>
-                            <th><p>Vehículos</p></th>
-                            <th><p></p></th>
-                            <th><p></p></th>
-                            <th><p id="totalVehicles-resumeProject">$0</p></th>
+                            <th>
+                                <p>Vehículos</p>
+                            </th>
+                            <th>
+                                <p></p>
+                            </th>
+                            <th>
+                                <p></p>
+                            </th>
+                            <th>
+                                <p id="totalVehicles-resumeProject">$0</p>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -241,10 +372,18 @@
                 <table class="-resume-table-S -r-t-costs secondary" id="total-SubArriendosResume">
                     <thead>
                         <tr>
-                            <th><p>Sub Arriendos</p></th>
-                            <th><p></p></th>
-                            <th><p></p></th>
-                            <th><p id="totalSubArriendos-resume"></p></th>
+                            <th>
+                                <p>Sub Arriendos</p>
+                            </th>
+                            <th>
+                                <p></p>
+                            </th>
+                            <th>
+                                <p></p>
+                            </th>
+                            <th>
+                                <p id="totalSubArriendos-resume"></p>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -262,20 +401,28 @@
                 <table class="-resume-table-S -r-t-costs secondary" id="total-otherCostsResume">
                     <thead>
                         <tr>
-                            <th><p>Otros</p></th>
-                            <th><p></p></th>
-                            <th><p></p></th>
-                            <th><p id="totalOtherCosts-resume"></p></th>
+                            <th>
+                                <p>Otros</p>
+                            </th>
+                            <th>
+                                <p></p>
+                            </th>
+                            <th>
+                                <p></p>
+                            </th>
+                            <th>
+                                <p id="totalOtherCosts-resume"></p>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- <tbody> -->
-                            <!-- <tr> -->
-                                <!-- <td><p>Random</p></td> -->
-                                <!-- <td><p></p></td> -->
-                                <!-- <td><p></p></td> -->
-                                <!-- <td><p>$35.000</p></td> -->
-                            <!-- </tr> -->
+                        <!-- <tr> -->
+                        <!-- <td><p>Random</p></td> -->
+                        <!-- <td><p></p></td> -->
+                        <!-- <td><p></p></td> -->
+                        <!-- <td><p>$35.000</p></td> -->
+                        <!-- </tr> -->
                         <!-- </tbody> -->
                         <!--DINAMYC CONTENT -->
                     </tbody>
@@ -285,16 +432,28 @@
                 <table class="-resume-table-S -r-t-income">
                     <thead>
                         <tr>
-                            <th><p>Utilidad evento</p></th>
+                            <th>
+                                <p>Utilidad evento</p>
+                            </th>
                             <th></th>
                             <th></th>
-                            <th><p id="utilidadEvento">$0</p></th>
+                            <th>
+                                <p id="utilidadEvento">$0</p>
+                            </th>
                         </tr>
                         <tr>
-                            <th><p>Margen operacional</p></th>
-                            <th><p></p></th>
-                            <th><p></p></th>
-                            <th><p id="margfenOperacional">$0</p></th>
+                            <th>
+                                <p>Margen operacional</p>
+                            </th>
+                            <th>
+                                <p></p>
+                            </th>
+                            <th>
+                                <p></p>
+                            </th>
+                            <th>
+                                <p id="margfenOperacional">$0</p>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -343,7 +502,7 @@
         </button> -->
     </div>
 
-    <div class="saveProject">
+    <div class="saveProject --mo-hide-ev-save">
         <button class="s-Button createOrContinue" id="" style="width: 170px;">
             <p class="s-P">guardar</p>
         </button>

@@ -1,3 +1,7 @@
+<?php 
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -282,10 +286,16 @@
 
 
     <section class="pdfHeader">
-        <div>
-            <img src="./PDF_images/intec-logo.png" alt="" width="220px" height="130px">
-        </div>
+        <div style="margin: 15px 0px;">
+            <!-- <img src="./PDF_images/intec-logo.png" alt="" width="220px" height="130px"> -->
+            <?php  if(!file_exists("./bussLogo/b".$_SESSION['empresa_id']."l".$_SESSION['buss_data']->bl)):?>
+                <div style="width: 220px;height: 85px;">
 
+                </div>
+            <?php else:?>
+                <img src="./bussLogo/b<?php echo $_SESSION["empresa_id"];?>l<?php echo $_SESSION['buss_data']->bl;?>" alt="" width="220px" height="85px">
+            <?php endif;?>
+        </div>
         <div class="header-data-container">
 
             <div class="dataQuote" style="float: left;width: 300px;background-color: #EDF6F6;">

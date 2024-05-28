@@ -11,13 +11,13 @@
     <li class="nav-item" role="presentation">
         <a class="nav-link" id="vehicle-tab" data-bs-toggle="tab" href="#vehicle" role="tab" aria-controls="vehicle" aria-selected="true">Vehículo</a>
     </li>
-    <li class="nav-item" role="presentation">
+    <li class="nav-item --mo-hide" role="presentation">
         <a class="nav-link" id="venta-tab" data-bs-toggle="tab" href="#venta" role="tab" aria-controls="venta" aria-selected="false">Venta</a>
     </li>
-    <li class="nav-item" role="presentation">
+    <li class="nav-item --mo-hide" role="presentation">
         <a class="nav-link" id="costo-tab" data-bs-toggle="tab" href="#costo" role="tab" aria-controls="costo" aria-selected="false">Costo</a>
     </li>
-    <li class="nav-item" role="presentation">
+    <li class="nav-item --mo-hide" role="presentation">
         <a class="nav-link" id="resumen-tab" data-bs-toggle="tab" href="#resumen" role="tab" aria-controls="resumen" aria-selected="false">Resumen</a>
     </li>
 </ul>
@@ -176,7 +176,7 @@
                             <p class="s-P-g">Guardar Borrador</p>
                         </button> -->
                     </div>
-                    <div class="saveProject">
+                    <div class="saveProject --mo-hide-ev-save">
                         <button class="s-Button createOrContinue" id="createProject" style="width: 170px;">
                             <p class="s-P">guardar</p>
                         </button>

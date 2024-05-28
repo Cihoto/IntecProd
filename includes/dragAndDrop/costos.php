@@ -124,7 +124,7 @@
         </button> -->
     </div>
 
-    <div class="saveProject">
+    <div class="saveProject --mo-hide-ev-save">
         <button class="s-Button createOrContinue" id="" style="width: 170px;">
             <p class="s-P">guardar</p>
         </button>

@@ -14,8 +14,8 @@ header("Pragma: no-cache");
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php
-require_once('./includes/head.php');
+<?php 
+    require_once('./includes/head.php');
 ?>
 
 <body>
@@ -27,7 +27,7 @@ require_once('./includes/head.php');
 
         <div id="main">
             <header class="page-header">
-                <?php require_once('./includes/headerBreadCrumb.php')?>
+                <?php require_once('./includes/headerBreadCrumb.php') ?>
 
                 <!-- <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
@@ -63,20 +63,20 @@ require_once('./includes/head.php');
 
                             <div class="--eventList-searchBar">
                                 <!-- <div class="--eventList-searchBar"> -->
-                                    <div class="form-group" style="margin-bottom: 0px;">
-                                        <label for="event_status" class="inputLabel">Estado</label>
-                                        <select  id="eventListSelector" name="" type="text" class="form-select">
-                                            <option value="exe">Futuros</option>
-                                            <option value="all">Todos</option>
-                                            <option value="draft">Borradores</option>
-                                            <option value="sells">Ventas</option>
-                                            <option value="op">Operaciones</option>
-                                            <option value="adm">Administración</option>
-                                        </select>
-                                    </div>
+                                <div class="form-group" style="margin-bottom: 0px;">
+                                    <label for="event_status" class="inputLabel">Estado</label>
+                                    <select id="eventListSelector" name="" type="text" class="form-select">
+                                        <option value="exe">Futuros</option>
+                                        <option value="all">Todos</option>
+                                        <option value="draft">Borradores</option>
+                                        <option value="sells">Ventas</option>
+                                        <option value="op">Operaciones</option>
+                                        <option value="adm">Administración</option>
+                                    </select>
+                                </div>
 
                                 <!-- </div> -->
-                                <input readonly type="text" id="calendarInput"  placeholder="Filtrar por fecha">
+                                <input readonly type="text" id="calendarInput" placeholder="Filtrar por fecha">
 
                             </div>
 
@@ -241,6 +241,42 @@ require_once('./includes/head.php');
     </div>
     </div>
 
+
+    <div id="statusMenuList-evl" class="optionLimiter">
+        <section id="statusMenuHeader">
+            <div id="headerOptionsContent">
+                <img src="./assets/svg/bookMark.svg" alt="">
+                <div class="listItemHeaderText">
+                    <p class="header">Etiquetas de estado</p>
+                    <p class="bottom">Puedes cambiar el estado de tu evento en todo momento</p>
+                </div>
+            </div>
+        </section>
+        <div class="d-flex" style="width: 100%;margin:-13px 0px;padding: 0px;">
+            <div class="divider">1</div>
+        </div>
+        <section class="statusMenuOptions">
+            <button status_id="1" class="event-status-btn borrador">
+                <p>Borrador</p>
+            </button>
+            <button status_id="4" class="event-status-btn cotizado">
+                <p>Cotizado</p>
+            </button>
+            <button status_id="2" class="event-status-btn confirmado">
+                <p>Confirmado</p>
+            </button>
+            <button status_id="3" class="event-status-btn finalizado">
+                <p>Finalizado</p>
+            </button>
+            <button status_id="5" class="event-status-btn cerrado">
+                <p>Cerrado</p>
+            </button>
+            <button status_id="6" class="event-status-btn No_va" style="border-radius: 0px 0px 5px 5px;">
+                <p>No va</p>
+            </button>
+        </section>
+    </div>
+
 </body>
 
 <script src="/js/eventList.js"></script>
@@ -258,8 +294,9 @@ require_once('./includes/head.php');
     caches.keys().then((keyList) => Promise.all(keyList.map((key) => caches.delete(key))));
     const EMPRESA_ID = <?php echo $empresaId; ?>;
     const ROL_ID = <?php echo json_encode($rol_id); ?>;
+    const EVENT_STATUS_CHANGER = document.getElementById('statusMenuList-evl');
 
-    function alertSomthings(){
+    function alertSomthings() {
         alert('SomeThing');
     }
 
@@ -301,7 +338,7 @@ require_once('./includes/head.php');
             })
         }
 
-        
+
     });
 
     $('#event_status').on('change', async function() {
@@ -329,8 +366,25 @@ require_once('./includes/head.php');
                 color: eventColor,
             }
         });
-        
+
         renderCalendar(_allCalendarEvents);
+    });
+
+    let statusWasOpen = false;
+    $(document).on('click',function(e){
+
+        if($('#statusMenuList-evl').hasClass('active') && statusWasOpen){
+
+            let target = $(this).closest('.optionLimiter');
+
+            if(target.length === 0){
+                EVENT_STATUS_CHANGER.classList.remove('active')
+                statusWasOpen = false;
+            }
+            return 
+        }
+
+        statusWasOpen = true 
     })
 
 
@@ -405,7 +459,15 @@ require_once('./includes/head.php');
         let wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, ws_name);
         XLSX.writeFile(wb, "SheetJS.xlsx");
-    })
+    });
+
+
+
+    let selectedStatusId = 0;
+    let selectedStatus = '';
+    let selectedEventId = 0;
+    let selectedEventStatusContainer ;
+    let previousStatus = '' ;
 
     $(document).on('click', '.eventListRow td', function() {
 
@@ -439,9 +501,72 @@ require_once('./includes/head.php');
             return
         }
 
+
+        if(closestTd.hasClass('--ev-status-ch')){
+            // return
+
+            let eventId = closestTd.closest('tr').attr('event_id');
+            selectedStatusId = 0;
+            selectedStatus = '';
+            selectedEventId = 0;
+            previousStatus = '';
+            selectedEventStatusContainer = $(this).find('p');
+            previousStatus = $(this).find('p').attr('class').split(' ')[1];
+            selectedEventId = EVENT_ID;
+
+            let position = this.getBoundingClientRect();
+
+            EVENT_STATUS_CHANGER.classList.add('active');
+            
+            EVENT_STATUS_CHANGER.style.top = `${position.top}px`;
+            EVENT_STATUS_CHANGER.style.left = `${position.left}px`;
+            EVENT_STATUS_CHANGER.style.right = `${position.right}px`;
+            EVENT_STATUS_CHANGER.style.bottom = `${position.bottom}px`;
+
+            // alert(`you are changing ther status of ${eventId}  this event`);
+            return;
+        };
+
+        
+        if(statusWasOpen){
+            return;
+        }
+
         project_id_to_search = EVENT_ID;
         window.location = `/miEvento.php?event_id=${EVENT_ID}`;
     });
+
+    $(document).on('click','.event-status-btn',function(){
+        selectedStatusId =  $(this).attr('status_id');
+        let classList = $(this).attr('class').split(' ');
+
+        selectedStatus = classList[1];
+
+
+        // change front class on status container in selected event row
+        console.log('previousStatus',previousStatus);
+        $(selectedEventStatusContainer)
+        .removeClass(previousStatus)
+        .addClass(selectedStatus)
+        .text(`${capitalizeFirstLetter(selectedStatus)}`);
+
+        const EVENT_STATUS_RESPONSE = $.ajax({
+            type: "POST",
+            url: "ws/proyecto/proyecto.php",
+            dataType: 'json',
+            data: JSON.stringify({
+                "action": "updateEventStatusFromEventList",
+                "status_id": selectedStatusId,
+                "empresa_id": EMPRESA_ID,
+                "event_id": selectedEventId
+            }),
+            success: function(response) {
+                console.log(response)
+            }
+        })
+
+       
+    })
 
     $(document).on('click', '.deletedEvent td', function() {
 
@@ -526,7 +651,7 @@ require_once('./includes/head.php');
         });
     }
 
-    function createCalendar(){
+    function createCalendar() {
 
         const options = {
             input: true,
@@ -550,22 +675,22 @@ require_once('./includes/head.php');
                         self.HTMLInputElement.value = `${self.selectedDates[0]} — ${self.selectedDates[self.selectedDates.length - 1]}`
                         let filtered_dates = filtrarPorRangoDeFechas(_projectsToList, init_date(self.selectedDates[0]), end_date(self.selectedDates[self.selectedDates.length - 1]));
                         _filteredProjects = filtered_dates;
-                        console.log('FILTRO DE EVENTOS PARA LAS FECHAS',_filteredProjects)
+                        console.log('FILTRO DE EVENTOS PARA LAS FECHAS', _filteredProjects)
                         printAllProjects(filtered_dates);
                     } else if (self.selectedDates[0]) {
                         self.HTMLInputElement.value = self.selectedDates[0];
                         let filtered_dates = filtrarPorRangoDeFechas(_projectsToList, init_date(self.selectedDates[0]), init_date(self.selectedDates[0]));
                         _filteredProjects = filtered_dates;
-                        console.log('FILTRO DE EVENTOS PARA LAS FECHAS',_filteredProjects)
+                        console.log('FILTRO DE EVENTOS PARA LAS FECHAS', _filteredProjects)
                         printAllProjects(filtered_dates);
                     } else {
                         self.HTMLInputElement.value = ""
                         _filteredProjects = [];
-                        console.log('FILTRO DE EVENTOS PARA LAS FECHAS',_filteredProjects)
+                        console.log('FILTRO DE EVENTOS PARA LAS FECHAS', _filteredProjects)
                         printAllProjects(_projectsToList);
 
                     }
-                    
+
                 },
                 // changeToInput(e, calendar, self) {
                 //     console.log(self)
@@ -576,7 +701,7 @@ require_once('./includes/head.php');
         }
 
         const calendarInput = new VanillaCalendar("#calendarInput", options);
-        
+
         calendarInput.init();
     }
 </script>
@@ -590,10 +715,11 @@ require_once('./includes/head.php');
         padding: 45px;
     }
 
-    #allProjectTable-list_length{
+    #allProjectTable-list_length {
         margin-bottom: 16px;
     }
-    #allProjectTable-list_filter{
+
+    #allProjectTable-list_filter {
         margin-bottom: 16px;
         margin-right: 0px;
 

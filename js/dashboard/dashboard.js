@@ -406,47 +406,47 @@ function setIncomeResumePercentaje(data) {
     // $('#dash-amountIncomePercentaje').addClass(data.class)
 }
 
-$('.eventStatusSortDash').on('click', async function () {
+// $('.eventStatusSortDash').on('click', async function () {
 
-    $('.eventStatusSortDash').prop('checked', false);
-    $(this).prop('checked', true);
-    const STATUS = $(this).val()
-    let request =
-    {
-        "status": STATUS,
-        "date": $('#fechaInicio').val(),
-        "type": $('#eventTypeSelect').val()
-    }
-    const eventos = await getEventsForDashboard(request, EMPRESA_ID);
-    _dashEvents = eventos.events;
-    printEventOnDashTable()
-});
+//     $('.eventStatusSortDash').prop('checked', false);
+//     $(this).prop('checked', true);
+//     const STATUS = $(this).val()
+//     let request =
+//     {
+//         "status": STATUS,
+//         "date": $('#fechaInicio').val(),
+//         "type": $('#eventTypeSelect').val()
+//     }
+//     const eventos = await getEventsForDashboard(request, EMPRESA_ID);
+//     _dashEvents = eventos.events;
+//     printEventOnDashTable()
+// });
 
-$('#fechaInicio').on('change', async function () {
-    const STATUS = $('.eventStatusSortDash:checked').val();
-    let request =
-    {
-        "status": STATUS,
-        "date": $('#fechaInicio').val(),
-        "type": $('#eventTypeSelect').val()
-    }
-    const eventos = await getEventsForDashboard(request, EMPRESA_ID);
-    _dashEvents = eventos.events;
-    printEventOnDashTable()
-});
+// $('#fechaInicio').on('change', async function () {
+//     const STATUS = $('.eventStatusSortDash:checked').val();
+//     let request =
+//     {
+//         "status": STATUS,
+//         "date": $('#fechaInicio').val(),
+//         "type": $('#eventTypeSelect').val()
+//     }
+//     const eventos = await getEventsForDashboard(request, EMPRESA_ID);
+//     _dashEvents = eventos.events;
+//     printEventOnDashTable()
+// });
 
-$('#eventTypeSelect').on('change', async function () {
-    const STATUS = $('.eventStatusSortDash:checked').val();
-    let request =
-    {
-        "status": STATUS,
-        "date": $('#fechaInicio').val(),
-        "type": $('#eventTypeSelect').val()
-    }
-    const eventos = await getEventsForDashboard(request, EMPRESA_ID);
-    _dashEvents = eventos.events;
-    printEventOnDashTable()
-});
+// $('#eventTypeSelect').on('change', async function () {
+//     const STATUS = $('.eventStatusSortDash:checked').val();
+//     let request =
+//     {
+//         "status": STATUS,
+//         "date": $('#fechaInicio').val(),
+//         "type": $('#eventTypeSelect').val()
+//     }
+//     const eventos = await getEventsForDashboard(request, EMPRESA_ID);
+//     _dashEvents = eventos.events;
+//     printEventOnDashTable()
+// });
 
 async function getDashResume(empresa_id) {
 
@@ -466,6 +466,149 @@ async function getDashResume(empresa_id) {
         }
     })
 }
+
+
+
+
+// chart
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    getAnualIncome(EMPRESA_ID);
+    console.log('kjajajaj')
+
+  });
+
+
+
+
+
+
+
+  function getAnualIncome(empresa_id) {
+    fetch('ws/finance/getAnualIncomeResume.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          request: {
+            empresa_id: empresa_id
+          }
+        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error en la solicitud 1');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Manejar la respuesta exitosa aquí
+        console.log(data);
+
+
+        const CHART_DATA = data.anualIncome.map((row) => {
+          return {
+            'month': row.month,
+            'totalMonthIncome': parseInt(row.total_month_income),
+            'totalEventCount': row.total_event_count
+          }
+        });
+
+        console.log('CHART_DATA', CHART_DATA)
+        renderChartAnualIncome(CHART_DATA);
+      })
+      .catch(error => {
+        // Manejar errores aquí
+        console.error('Error en la solicitud:', error);
+      });
+  }
+
+
+
+  function formatNumber(value) {
+  value /= 1000_000;
+  return `${Math.floor(value)}M`;
+}
+
+
+  function renderChartAnualIncome(chartData) {
+    // Chart Options
+    const options = {
+      // Container: HTML Element to hold the chart
+        //   height:{}
+      height : 540,
+      container: document.getElementById('myChart'),
+      data: chartData,
+      title: { text: "Eventos" },
+      series: [
+        // Existing 'Bar' Series, using 'iceCreamSales' data-points
+        {
+          type: 'bar',
+          CornerRadius: 20,
+          xKey: 'month',
+          yKey: 'totalEventCount',
+          direction: 'vertical',
+          yName: 'Venta',
+          fill: '#FFF',
+          label: {
+            formatter: ({ value }) => `${value}`,
+            color: 'black'
+          },
+          strokeWidth: 10,
+          lineDash: [0,15],
+        },
+        {
+          type: 'line',
+          xKey: 'month',
+          yKey: 'totalMonthIncome',
+          stroke:'#6136AB',
+          strokeWidth : 2,
+          strokeOpacity: .3,
+          lineDash: [8,3],
+          marker:{
+            shape:'diamond',
+            size: 8,
+            fill: '#6136AB'
+          }
+        }
+      ],
+      axes: [{
+          type: 'category',
+          position: 'bottom'
+        },
+        {
+          type: 'number',
+          position: 'right',
+          keys: ['totalMonthIncome'],
+          label: {
+            formatter: ({ value }) => formatNumber(value),
+          },
+        //   tick: {
+        //     minSpacing: 1,
+        //   },
+          gridLine: {
+            enabled: false,
+          },
+        },
+        {
+          type: 'number',
+          position: 'left',
+          keys: ['totalEventCount'],
+          gridLine: {
+            enabled: false,
+          },
+        },
+      ],
+      background: {
+        fill: 'linear-gradient(358deg, #069B99 1.07%, #0BBEBB 61.75%, #10E5E1 108.47%)',
+      },
+    };
+
+    // Create Chart
+    const chart = agCharts.AgCharts.create(options);
+
+  }
 
 
 

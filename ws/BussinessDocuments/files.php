@@ -1,3 +1,8 @@
+
+
+
+
+
 <?php
 session_start();
 $empresa_id = $_SESSION["empresa_id"];
@@ -21,3 +26,22 @@ if (move_uploaded_file($_FILES['files']['tmp_name'], $rutaArchivo)){
 } else {
     echo 'Error al subir el archivo.';
 }
+
+
+
+
+
+
+// return successReq('Logo guardado correctamente');
+
+
+
+
+
+
+// echo $target_path;
+// $files = ;
+
+
+
+

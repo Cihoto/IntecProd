@@ -500,7 +500,7 @@ function getEspecialidad($empresaId)
     $conn = new bd();
     $conn->conectar();
     $especialidades = [];
-    $queryGetEspecialidad = "SELECT id, especialidad FROM especialidad e WHERE empresa_id = $empresaId and IsDelete = 0";
+    $queryGetEspecialidad = "SELECT id, especialidad FROM especialidad e WHERE empresa_id = $empresaId and IsDelete = 0 OR IsDelete IS NULL";
     $responseBd = $conn->mysqli->query($queryGetEspecialidad);
 
     while ($dataEspecialidad = $responseBd->fetch_object()) {

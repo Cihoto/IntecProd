@@ -1,6 +1,9 @@
 <div class="">
-
-    <div class=" col-12" style="max-height: 350px; overflow-y: scroll;overflow-x: hidden; scrollbar-width: none; ">
+    <!-- vvv demo reminder hidden by default and show and append button when client has no own data vvv-->
+    <div class="--demo-btn-container" id='vehReminder'>
+    </div>
+    <!-- ^^^^ do not remove ^^^^ -->
+    <div class=" col-12" style="max-height: 350px; overflow-y: scroll;overflow-x: hidden; scrollbar-width: none; " id="veaLCtn">
         <div>
             <div class="formHeader" style="margin-left:18px ;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -92,7 +95,7 @@
                 </table>
             </div>
             <div class="--openSelectedPersonalContainer">
-                <button class="floatingButton" id="openSelectedVehicles" onclick="openSelectedVehicles()">
+                <button class="floatingButton --mo-hide" id="openSelectedVehicles" onclick="openSelectedVehicles()">
                     <p>Agregados</p>
                 </button>
             </div>
@@ -107,7 +110,7 @@
         </button> -->
     </div>
 
-    <div class="saveProject">
+    <div class="saveProject --mo-hide-ev-save">
         <button class="s-Button createOrContinue" id="" style="width: 170px;">
             <p class="s-P">guardar</p>
         </button>

@@ -1,8 +1,5 @@
 <?php
-
-if(session_id() == '') {
-    session_start();
-}
+ob_start();
 if(!isset($_SESSION['empresa_id'])){
     header("Location: login.php");
     die();
@@ -10,7 +7,7 @@ if(!isset($_SESSION['empresa_id'])){
 
     $empresaId = $_SESSION["empresa_id"];
 }
-
+ob_end_flush();
 // $empresaId = 1;
 ?>
 

@@ -195,6 +195,18 @@ async function getAllProjectData(event_id, empresa_id) {
         const SELECTED_PRODUCTS_FORMATTED = parseTextToArray(EVENT_JSON.selected_prods_json);
         const SELECTED_VEHICLES_FORMATTED = parseTextToArray(EVENT_JSON.selectedVehicles_json);
 
+        console.log('EVENT_JSON.creditedBalance',EVENT_JSON.creditedBalance);
+
+        if(EVENT_JSON.creditedBalance !== ''){
+            let creditedBalance  = JSON.parse(EVENT_JSON.creditedBalance);
+            // SET PAYMENT_DATA VARIABLE ON
+            payment_data = creditedBalance ;
+
+            checkifEventIsCompletePaid();
+            printMyCreditedRecords();
+        }  
+    
+
         console.log('SELECTED_PERSONAL_FORMATTED',SELECTED_PERSONAL_FORMATTED);
         console.log('SELECTED_PRODUCTS_FORMATTED',SELECTED_PRODUCTS_FORMATTED);
         console.log('SELECTED_VEHICLES_FORMATTED',SELECTED_VEHICLES_FORMATTED);
@@ -489,23 +501,13 @@ function parseTextToArray(txtArray){
         return [];
     }else{
         let parseArray = JSON.parse(txtArray);
+
         while(!Array.isArray(parseArray)){
 
             parseArray = JSON.parse(txtArray);
         }
 
-        // let secondParsed = JSON.parse(parseArray);
-
-        console.log('RESPONSE DE FORMT ARRAY', parseArray)
-
-
         return parseArray;
 
-        SELECTED_PRODUCTS = secondParsed;
-        _selectedProducts = SELECTED_PRODUCTS;
-        
-        SELECTED_PERSONAL = JSON.parse(txtArray);
-
-        return [1]
     }
 }

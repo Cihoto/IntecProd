@@ -95,10 +95,7 @@ function setEgresos(){
     $('#total-personalResume tbody tr').remove();
 
 
-    console.log('allSelectedPersonal',allSelectedPersonal)
-    console.log('allSelectedPersonal',allSelectedPersonal)
-    console.log('allSelectedPersonal',allSelectedPersonal)
-    console.log('allSelectedPersonal',allSelectedPersonal)
+    // console.log('allSelectedPersonal',allSelectedPersonal);
 
     let totalPersonal = 0;
     allSelectedPersonal.forEach((personal)=>{
@@ -293,11 +290,11 @@ function setIngresos(){
                 'categorie':selectedProd.categorie,
                 'value':parseInt(selectedProd.value),
                 'isEdited':false
-            })
+            });
         }else{
             const categorieOnTotalPerItem = totalPerItem.equipos.find((item)=>{
                 return item.categorie === selectedProd.categorie
-            })
+            });
             if(categorieOnTotalPerItem){
                 if(categorieOnTotalPerItem.isEdited === false){
                     categorieOnTotalPerItem.value += selectedProd.value;
@@ -359,6 +356,11 @@ function printAllResumeIncome(){
     let iva = parseInt(total) * 0.19;
     let totalPlusIva = total + iva;
     _totalIngresos = total;
+    
+    //SET TOTAL TO BE CREDITED ON TOP OF RESUME TAB 
+    payment_data.totalIncomeToCredit = totalPlusIva; 
+
+
     $('#totalOthers').text(CLPFormatter(totalOthers));
     $('#netoVenta').text(CLPFormatter(total));
     $('#ivaVenta').text(CLPFormatter(iva));

@@ -273,7 +273,9 @@ function LogUser($request)
         
     }
 
-    $queryGetLogin = "SELECT * FROM usuario u WHERE LOWER(user) = LOWER('$correo') and LOWER(password)= LOWER('$cred_pass->password')";
+    $queryGetLogin = "SELECT * FROM usuario u 
+    WHERE LOWER(user) = LOWER('$correo') 
+    AND LOWER(password) = LOWER('$cred_pass->password')";
 
     if ($responseBd = $conn->mysqli->query($queryGetLogin)) {
         if ($responseBd->num_rows > 0) {
@@ -284,6 +286,7 @@ function LogUser($request)
             }
             $personalIds = [];
             $user_name = [];
+            $buss_data = [];
 
             $queryGetPersonalId = "SELECT per.id as 'persona_id',
                  u.id as 'usuario_id',
@@ -299,6 +302,11 @@ function LogUser($request)
                 INNER JOIN persona per on per.id = p.persona_id 
                 where u.id = $usuario_id;";
 
+            $queryGetBussData = "SELECT datediff(CURDATE(),e.createdAt) AS diff ,e.demo_active, bl.bus_logo_name as bl
+            FROM empresa e 
+            LEFT JOIN businessLogo bl on bl.bus_logo_id  = e.bus_logo_id 
+            WHERE e.id = $empresa_id";
+
             session_start();
             if ($responseBd = $conn->mysqli->query($queryGetPersonalId)) {
                 while ($row = $responseBd->fetch_object()) {
@@ -311,6 +319,12 @@ function LogUser($request)
                     $user_name = $row->user_name;
                 }
                 $_SESSION['user_name'] = $user_name;
+            }
+            if ($responseBd = $conn->mysqli->query($queryGetBussData)) {
+                while ($data = $responseBd->fetch_object()) {
+                    $buss_data = $data;
+                }
+                $_SESSION['buss_data'] = $buss_data;
             }
 
             $queryGetRol = "SELECT r.id as rol_id, r.rol, u.id FROM usuario u  

@@ -364,7 +364,9 @@ async function getEventsDashboard(empresa_id) {
         }),
         dataType: 'json',
         success: function (response) {
+
             _dashEvents = response;
+
         },
         error: function (response) {
             // console.log(response.responseText);
@@ -393,7 +395,8 @@ function getEventsForDashboard(request, empresa_id) {
 let _dashEvents = [];
 
 function printNoEventsAvailableDash() {
-    const table = $('#dash-event-table')
+    
+    const table = $('#dash-event-table');
 
     let tr = `<tr style="justify-content:center;">
         <td style="padding:16px;border:none;">Sin eventos disponibles</td> 

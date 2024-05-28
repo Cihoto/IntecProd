@@ -1,5 +1,12 @@
 <div class="dragableItems">
-    <div class="--prodListContainer">
+
+    <!-- vvv demo reminder hidden by default and show and append button when client has no own data vvv-->
+    <div class="--demo-btn-container" id='prodReminder'>
+    </div>
+    <!-- ^^^^ do not remove ^^^^ -->
+
+ 
+    <div class="--prodListContainer" id="palCtn">
         <div id="productListResponsiveHeader">
             <div class="--search-container">
                 <div class="form-group --mb-0 --top">
@@ -8,7 +15,7 @@
                 </div>
                 <img src="./assets/svg/searchLent.svg" alt="" style="margin-top: 15px;">
             </div>
-            <button id="openSelectedProdsMobile" class="floatingButton">
+            <button id="openSelectedProdsMobile" class="floatingButton --mo-hide">
                 <p>Agregados</p>
             </button>
         </div>
@@ -88,7 +95,7 @@
             </button> -->
         </div>
 
-        <div class="saveProject">
+        <div class="saveProject --mo-hide-ev-save">
             <button class="s-Button createOrContinue" id="" style="width: 170px;">
                 <p class="s-P">guardar</p>
             </button>
@@ -115,7 +122,7 @@
         $('#tableProducts_wrapper').removeClass('--mo-active');
         // $('#openSelectedProdsMobile').css('display','none');
         $('#productListResponsiveHeader').removeClass('--mo-active')
-        // .css('display','none');
+            // .css('display','none');
     }
     function closeSelectedProdsMobile(){
         $('.--selProdContainer').removeClass('--mo-active');

@@ -64,7 +64,6 @@ require_once('./includes/head.php');
 
 
                     <div class="status-options-container">
-
                         <button status_id="1" class="event-status-btn borrador" id="status-button">
                             <p>Borrador</p>
                         </button>
@@ -131,19 +130,15 @@ require_once('./includes/head.php');
     </div>
     <!-- END  -->
 
-    <?php require_once('./includes/footer.php'); ?>
-    <?php require_once('./includes/footerScriptsJs.php'); ?>
-
-
-
+    <?php require_once('./includes/footer.php');?>
+    <?php require_once('./includes/footerScriptsJs.php');?>
+    <?php require_once('./includes/bottomBar.php'); ?>
 
     <!-- require Modal -->
-    <?php require_once('./includes/Modal/direccion.php') ?>
-    <?php require_once('./includes/Modal/cliente.php') ?>
+    <?php require_once('./includes/Modal/direccion.php');?>
+    <?php require_once('./includes/Modal/cliente.php');?>
     <!-- FIN require Modal -->
-    <?php require_once('./includes/footerScriptsJs.php') ?>
-
-
+    <?php require_once('./includes/footerScriptsJs.php');?>
 
     <!-- SIDEMENUS -->
     <?php require_once('./includes/sidemenu/viewUploadedFiles.php'); ?>
@@ -153,7 +148,7 @@ require_once('./includes/head.php');
 
 
     <!-- REQUIRE FORM ARRIENDOS -->
-    <?php require_once('./includes/forms/arriendosForm.php') ?>
+    <?php require_once('./includes/forms/arriendosForm.php');?>
 
     </div>
     </div>
@@ -189,16 +184,21 @@ require_once('./includes/head.php');
     <script src="./js/evento/eventoController.js"></script>
     <script src="./js/rendiciones.js"></script>
     <script src="./js/otherCosts.js"></script>
-    <script src="/js/bottomBar.js"></script>
-    <script src="/js/factSheet.js"></script>
-    <script src="/js/evento/viewUploadedFiles.js"></script>
-    <script src="/js/evento/eventComments.js"></script>
+    <script src="./js/bottomBar.js"></script>
+    <script src="./js/bottomBar/assignedElementsSelector.js"></script>
+    <script src="./js/factSheet.js"></script>
+    <script src="./js/evento/viewUploadedFiles.js"></script>
+    <script src="./js/evento/eventComments.js"></script>
     
     
     <!-- HEADER CONTROLLER -->
     <script src="/js/pageHeader/breadCrumb.js"></script>
     <script src="/js/pageHeader/searchBar.js"></script>
-
+    
+    <!-- DEMO ACCOUNT ACTIVATOR CONTROLLER -->
+    <script src="./js/pageHeader/demoAccountButton.js"></script>
+    <script src="./js/demoAccount/activateDemoFromEvents.js"></script>
+    
 
     <!-- VALIDATE FORM -->
     <script src="./js/validateForm/addNewFreeLance.js"></script>
@@ -222,7 +222,7 @@ require_once('./includes/head.php');
     let EMPRESA_ID = <?php echo $empresaId; ?>;
     const PERSONAL_IDS = <?php echo $personal_ids; ?>;
 
-    console.log(PERSONAL_IDS);
+    console.log('PERSONAL_IDS',PERSONAL_IDS);
 
     let eventIsCreated = false;
 

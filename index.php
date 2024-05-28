@@ -1,5 +1,18 @@
 <?php
-session_start();
+ob_start();
+if(session_id() == '') {
+    session_start();
+}
+
+if(!isset($_SESSION['empresa_id'])){
+    header("Location: login.php");
+    die();
+}else{
+  $empresaId = $_SESSION["empresa_id"];
+}
+
+ob_end_flush();
+// session_start();
 $isDetails = true;
 //Variables que manipulan condiciones if en Form proyecto
 $detalle = true;
@@ -15,8 +28,8 @@ $active = 'dashboard';
 
 <body>
 
-  <script src="./assets/js/initTheme.js"></script>
   <?php require_once('./includes/Constantes/empresaId.php') ?>
+  <script src="./assets/js/initTheme.js"></script>
 
   <?php require_once('./includes/Constantes/rol.php') ?>
   <div id="app">
@@ -29,19 +42,13 @@ $active = 'dashboard';
 
         <header class="page-header">
 
-
           <?php require_once('./includes/headerBreadCrumb.php') ?>
-
-
-
+          
           <div class="personalInformation-user">
-
             <div class="welcome-container">
-
               <p class="user-welcome">Hola, <strong class="user-name"><?php echo $_SESSION['user_name'] ?></strong></p>
             </div>
             <p class="user-tip">Consulta el estado de tus eventos</p>
-
           </div>
         </header>
 
@@ -106,8 +113,10 @@ $active = 'dashboard';
 
             </div>
             <div id="dash-event-housing">
-              <p class="dstheader">Próximos eventos</p>
-              <form id="dash-event-menu">
+                    <div id="myChart" style="border-radius: 10px;"></div>
+
+              <!-- <p class="dstheader">Próximos eventos</p>
+              <form id="dash-event-menu"> -->
                 <!-- <div id="dash-event-status">
                     <label for="" id="dash-searchBy">Buscar por:</label>
                     <div class="select-status-container">
@@ -127,7 +136,7 @@ $active = 'dashboard';
                       <label for="">Finalizados</label>
                     </div>
                   </div> -->
-                <div class="row justify-content-between">
+                <!-- <div class="row justify-content-between"> -->
                   <!-- <div class="dash-filter-event">
                     <div class="select-area-dashEvent">
                       <div class="form-group" style="width: 180px;">
@@ -155,9 +164,9 @@ $active = 'dashboard';
                     </svg>
                     <p class="s-P-g">Filtros</p>
                   </button> -->
-                </div>
-              </form>
-
+                <!-- </div>
+              </form> -->
+<!-- 
               <table class="" id="dash-event-table">
                 <thead>
                   <tr>
@@ -172,7 +181,7 @@ $active = 'dashboard';
                 </tbody>
                 <tfoot>
                 </tfoot>
-              </table>
+              </table> -->
 
             </div>
           </div>
@@ -251,10 +260,22 @@ $active = 'dashboard';
   <script src="./js/sortTable/eventSort.js"></script>
   <script src="./js/valuesValidator/validator.js"></script>
 
+  
+  <!-- SIDEMENU -->
+
+  <?php include_once('./includes/sidemenu/bussinessConfigSideMenu.php');?>
+
+
   <!-- GLOBAL FUNCTIONS -->
   <script src="./js/Funciones/openEventFromTables.js"></script>
   <script src="./js/pageHeader/breadCrumb.js"></script>
   <script src="./js/pageHeader/searchBar.js"></script>
+  <script src="./js/demoAccount/demoAccountCreation.js"></script>
+  <script src="./js/demoAccount/demoAccountDelete.js"></script>
+  <script src="./js/pageHeader/demoAccountButton.js"></script>
+
+
+
 
 </body>
 

@@ -97,7 +97,7 @@
         </button> -->
     </div>
 
-    <div class="saveProject">
+    <div class="saveProject --mo-hide-ev-save">
         <button class="s-Button-p" style="width: 200px!important;"  id="generateQuotes" >
             <p class="s-P-g" style="margin-top: 5px;">Generar cotización</p>
             <img src="../../assets/svg/downloadIcon.svg" alt="">

@@ -1,5 +1,9 @@
 <div>
-    <div class="col-12 " style="max-height: 800px; overflow-y: scroll;overflow-x: hidden;">
+    <!-- vvv demo reminder hidden by default and show and append button when client has no own data vvv-->
+        <div class="--demo-btn-container" id='perReminder'>
+    </div>
+    <!-- ^^^^ do not remove ^^^^ -->
+    <div class="col-12 " style="max-height: 800px; overflow-y: scroll;overflow-x: hidden;" id="peralCtn">
         <div class="row">
             <div class="formHeader" style="margin-left:18px ;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -9,7 +13,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="--personalContainer-listSelected">
+            <div class="--personalContainer-listSelected" >
                 <div class="--personalListSelector">
                     <div class="searchRow" id="searchRowPersonal" style="margin-bottom: 20px;">
                         <div class="form-group" style="margin-bottom: 0px;">
@@ -82,7 +86,7 @@
                     </table>
                 </div>
                 <div class="--openSelectedPersonalContainer">
-                    <button class="floatingButton" id="openSelectesdPersonal" onclick="openSelectedPersonal()">
+                    <button class="floatingButton --mo-hide" id="openSelectesdPersonal" onclick="openSelectedPersonal()">
                         <p>Agregados</p>
                     </button>
                 </div>
@@ -98,7 +102,7 @@
         </button> -->
     </div>
 
-    <div class="saveProject">
+    <div class="saveProject --mo-hide-ev-save">
         <button class="s-Button createOrContinue" id="" style="width: 170px;">
             <p class="s-P">guardar</p>
         </button>

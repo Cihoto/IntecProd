@@ -76,3 +76,11 @@ function convertFormToJSON(form) {
 
 
 
+function getDateFormatted(date){
+
+    let now = moment(date);
+    return  now.format('DD-MM-YYYY').replaceAll('-','/');
+}
+
+
+

@@ -216,22 +216,30 @@ async function getAssignedElements() {
       }
     })
   }
+let prodReady = false;
+let perReady = false;
+let vReady = false;
+let checkIfDemoIsNeeded = false;
 
-
+function checkIfDemoIsExecutable(){
+  if(prodReady && perReady && vReady){
+    checkIfDemoIsNeeded = true
+  }
+} 
 
   // ADD PACKAGE TO PROJECT ON PLUS ICON ON PACKAGE LIST
-  $(document).ready(async function(){
+$(document).ready(async function(){
 
-  await GetEspecialidadByBussiness(EMPRESA_ID);
+   GetEspecialidadByBussiness(EMPRESA_ID);
 
   appendPersonalOptions();
   
-  fillProductsTable();
+  await fillProductsTable();
   // FillAllProducts();
   FillStandardPackages();
   $('#tableResume').DataTable({})
   //fillvehiculos
-  FillVehiculos(EMPRESA_ID);
+  await FillVehiculos(EMPRESA_ID);
   appendVehiclesFilters();
   // Fill Clientes
   FillClientes(EMPRESA_ID);
@@ -246,10 +254,11 @@ async function getAssignedElements() {
   // CLEAR LOCALSTORGE
   localStorage.clear();
   // FILL REGIONES
-  GetAllPersonal(EMPRESA_ID);
+  await GetAllPersonal(EMPRESA_ID);
   FillRegiones(EMPRESA_ID);
 
 
+  activateDemoFromEvents();
 
   getAllMyProviders(EMPRESA_ID);
 

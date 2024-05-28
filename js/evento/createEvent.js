@@ -83,7 +83,7 @@ async function SaveOrUpdateEvent() {
 
   console.log('allSelectedPersonal',allSelectedPersonal)
   console.log('selectedVehicles',selectedVehicles)
-  await insertOrUpdateEventData_json(event_data.event_id,totalPerItem,_selectedProducts,allSelectedPersonal,selectedVehicles);
+  await insertOrUpdateEventData_json(event_data.event_id,totalPerItem,_selectedProducts,allSelectedPersonal,selectedVehicles,payment_data);
 
   if(_tempCommentList.length > 0){
     const COMMENT_RESPONSE = await addAndAssignCommentsToEvent(_tempCommentList, EMPRESA_ID, event_data.event_id);
@@ -210,7 +210,7 @@ const requestRendicion = allRendiciones
   const REQUEST_INCOME_COST ={
     "event_id":event_data.event_id,
     "ingreso": _totalIngresos,
-    "costo": _totalEgresos   
+    "costo": _totalEgresos
   }
   const responseIncomeAndCosts =  await insertOrUpdateIncomeAndCosts(REQUEST_INCOME_COST);
 
@@ -242,7 +242,7 @@ function createNewEvent(requestProject){
   })
 }
 
-function insertOrUpdateEventData_json(event_id, totalPerItem,selectedProducts,allSelectedPersonal,selectedVehicles){
+function insertOrUpdateEventData_json(event_id, totalPerItem,selectedProducts,allSelectedPersonal,selectedVehicles,creditedBalance){
   return $.ajax({
     type: "POST",
     url: 'ws/proyecto/proyecto.php',
@@ -252,6 +252,7 @@ function insertOrUpdateEventData_json(event_id, totalPerItem,selectedProducts,al
       'selectedProducts': selectedProducts,
       'allSelectedPersonal': allSelectedPersonal,
       'selectedVehicles': selectedVehicles,
+      'creditedBalance': creditedBalance,
       'action': "insertOrUpdateEventData_json",
     }),
     dataType: 'json',

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -293,7 +295,7 @@
 
     <section class="pdfHeader">
         <div>
-            <img src="./PDF_images/intec-logo.png" alt="" width="220px" height="130px">
+            <img src="../BussinessDocuments/" alt="" width="220px" height="130px">
         </div>
 
         <!-- <div class="header-data-container">

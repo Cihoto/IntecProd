@@ -405,7 +405,6 @@ async function GetAllPersonal(empresaId) {
         }),
         success: function (response) {
             allPersonal = response;
-
             allPersonal = allPersonal.map((personal) => {
                 return {
                     'cargo': personal.cargo,

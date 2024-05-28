@@ -38,7 +38,14 @@ const BREADCRUMB_CONTENT = [
         'breadCrumbHeaderTitle': 'Crear evento'
     },
     {
-
+        'page': 'finances',
+        'breadCrumb': `<li class="breadcrumb-item">
+                <a class="txtDec-no" href="./eventos.php">
+                    <img src="./assets/svg/breadCrumbFinance.svg" alt=""> 
+                    Finanzas
+                </a>
+            </li>` ,
+        'breadCrumbHeaderTitle': 'Crear evento'
     }
 ]
 

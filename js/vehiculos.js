@@ -368,7 +368,6 @@ function FillVehiculos(empresaId) {
             empresaId: empresaId
         }),
         success: function (response) {
-
             allVehicles = response.map((vehicle) => {
                 return {
                     'id': vehicle.id,

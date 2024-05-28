@@ -25,6 +25,19 @@ function FillProductos(empresaId) {
       empresaId: empresaId
     }),
     success: function (response) {
+
+      document.getElementById('palCtn').style.display = 'none';
+      // document.getElementById('tableProducts').style.display = 'none';
+
+      
+
+
+      if(response.length === 0){
+
+        return 
+      }
+
+      return
       response.forEach(producto => {
         let td = `
           <td class="productId --res-del" style="display:none">${producto.id}</td>
@@ -692,7 +705,6 @@ let _searchProductValue = "";
 // NO TAKEN PRODUCTS OR SELECTED PRODUCTS HAS BEEN DISCOUNT YET
 async function GetAllMyProducts() {
   const allMyProds = await GetAllProductsByBussiness(EMPRESA_ID);
-
   // console.table('allMyProds.data',allMyProds.data);
   _productos = allMyProds.data.map((producto) => {
     return {
@@ -942,6 +954,13 @@ function setCategoriesAndSubCategories() {
 
 function printAllProductsOnTable(searchValue, indexTab) {
   
+    // if(_productos.length === 0){
+    //   document.getElementById('palCtn').style.display = 'none';
+    //   document.getElementById('palCtn').style.display = 'flex';
+    //   return;
+    // }
+  
+  
 
   if ($.fn.DataTable.isDataTable('#tableProducts')) {
 
@@ -983,6 +1002,8 @@ function printAllProductsOnTable(searchValue, indexTab) {
 
 
 function printAllProductsOnTableFromPrevSearch(searchValue, indexTab) {
+
+
 
 
 

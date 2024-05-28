@@ -20,7 +20,8 @@ if ($_POST) {
             $selectedProducts = $data->selectedProducts;
             $allSelectedPersonal = $data->allSelectedPersonal;
             $selectedVehicles = $data->selectedVehicles;
-            $result = json_encode(insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles));
+            $creditedBalance = $data->creditedBalance;
+            $result = json_encode(insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles, $creditedBalance));
             break;
         case 'getProjectResume':
             $request = $data->request;
@@ -135,6 +136,12 @@ if ($_POST) {
             $empresa_id = $data->empresa_id;
             $result = json_encode(returnEventToList($empresa_id, $event_id));
             break;
+        case 'updateEventStatusFromEventList':
+            $status_id = $data->status_id;
+            $empresa_id = $data->empresa_id;
+            $event_id = $data->event_id;
+            $result = json_encode(updateEventStatusFromEventList($status_id,$empresa_id,$event_id));
+            break;
         default:
             $result = false;
             break;
@@ -226,7 +233,7 @@ function addProject($request)
 }
 
 
-function insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles)
+function insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles, $creditedBalance)
 {
     try {
         $conn = new bd();
@@ -239,11 +246,11 @@ function insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProduct
         $result = $stmt->get_result();
 
         if ($result->num_rows === 0) {
-            return insertEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles);
+            return insertEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles, $creditedBalance);
         }
 
         $conn->desconectar();
-        return updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles);
+        return updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles,$creditedBalance);
     } catch (Exception $e) {
         $conn->desconectar();
         return false;
@@ -251,15 +258,15 @@ function insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProduct
 }
 
 
-function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $selectedPersonal, $selectedVehicles)
+function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $selectedPersonal, $selectedVehicles,$creditedBalance)
 {
     try {
         $conn = new bd();
         $conn->conectar();
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.event_data 
-        (event_id, selected_prods_json, totalPerItem_json,selectedPersonal_json,selectedVehicles_json) VALUES
-        (?, ?, ?,?,?);");
+        (event_id, selected_prods_json, totalPerItem_json,selectedPersonal_json,selectedVehicles_json,creditedBalance) VALUES
+        (?, ?, ?,?,?,?);");
 
         $totalPerItem = json_encode($totalPerItem);
 
@@ -280,12 +287,14 @@ function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $sele
             $selectedVehicles = json_encode($selectedVehicles);
         }
 
+        $creditedBalance = json_encode($creditedBalance);
+
 
         $selectedProducts = json_encode($selectedProducts);
         $selectedPersonal = json_encode($selectedPersonal);
         $selectedVehicles = json_encode($selectedVehicles);
 
-        $stmt->bind_param("issss",  $event_id, $selectedProducts, $totalPerItem, $selectedPersonal, $selectedVehicles);
+        $stmt->bind_param("isssss",  $event_id, $selectedProducts, $totalPerItem, $selectedPersonal, $selectedVehicles,$creditedBalance);
         $stmt->execute();
         $conn->desconectar();
         return true;
@@ -295,22 +304,27 @@ function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $sele
     }
 }
 
-function updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles)
+function updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles,$creditedBalance)
 {
     try {
         $conn = new bd();
         $conn->conectar();
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("UPDATE u136839350_intec.event_data 
-        SET selected_prods_json= ? , totalPerItem_json= ?  ,selectedPersonal_json = ? ,selectedVehicles_json = ? WHERE event_id= ?;");
+        SET selected_prods_json= ? , 
+        totalPerItem_json= ?,
+        selectedPersonal_json = ?,
+        selectedVehicles_json = ?,
+        creditedBalance = ? WHERE event_id= ?;");
 
         $totalPerItem = json_encode($totalPerItem);
         $selectedProducts = json_encode($selectedProducts);
 
         $allSelectedPersonal = json_encode($allSelectedPersonal);
         $selectedVehicles = json_encode($selectedVehicles);
+        $creditedBalance = json_encode($creditedBalance);
 
-        $stmt->bind_param("ssssi", $selectedProducts, $totalPerItem, $allSelectedPersonal, $selectedVehicles, $event_id);
+        $stmt->bind_param("sssssi", $selectedProducts, $totalPerItem, $allSelectedPersonal, $selectedVehicles,$creditedBalance,$event_id);
         $stmt->execute();
         $conn->desconectar();
         return true;
@@ -1856,3 +1870,23 @@ function returnEventToList($empresa_id, $event_id)
         return false;
     }
 }
+
+function updateEventStatusFromEventList($status_id,$empresa_id,$event_id){
+    try {
+        $conn = new bd();
+        $conn->conectar();
+        $mysqli = $conn->mysqli;
+
+        $stmt = $mysqli->prepare("UPDATE proyecto set status_id = ?  WHERE empresa_id = ? and id = ? ;");
+
+        $stmt->bind_param("sii", $status_id,$empresa_id, $event_id);
+        $stmt->execute();
+
+        $conn->desconectar();
+        return true;
+    } catch (Exception $err) {
+        $conn->desconectar();
+        return false;
+    }
+}
+
