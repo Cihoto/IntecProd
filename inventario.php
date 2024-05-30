@@ -1,31 +1,46 @@
 <?php
-require_once('./ws/bd/bd.php');
-$conn = new bd();
-$conn->conectar();
+// require_once('./ws/bd/bd.php');
+// $conn = new bd();
+// $conn->conectar();
 
-$categorias = [];
+// $categorias = [];
 
-$queryProductos = 'Select c.nombre , i.item, p.nombre, mo.modelo, p.precio_arriendo from producto p 
-                    INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id 
-                    INNER JOIN categoria c on c.id =p.categoria_has_item_id 
-                    INNER JOIN item i on i.id  = p.categoria_has_item_id 
-                    INNER JOIN marca m on m.id = p.marca_id
-                    INNER JOIN modelo mo on mo.marca_id = m.id 
-                    WHERE p.empresa_id = 1';
+// $queryProductos = 'Select c.nombre , i.item, p.nombre, mo.modelo, p.precio_arriendo from producto p 
+//                     INNER JOIN categoria_has_item chi on chi.id = p.categoria_has_item_id 
+//                     INNER JOIN categoria c on c.id =p.categoria_has_item_id 
+//                     INNER JOIN item i on i.id  = p.categoria_has_item_id 
+//                     INNER JOIN marca m on m.id = p.marca_id
+//                     INNER JOIN modelo mo on mo.marca_id = m.id 
+//                     WHERE p.empresa_id = 1';
 
-$queryCategorias = 'select c.nombre ,c.id  from categoria c';
-// inner join categoria_has_item chi on chi.categoria_id = c.id 
-// INNER JOIN producto p on p.categoria_has_item_id  = chi.id 
-// where p.empresa_id = 1
-// group by c.nombre ';
+// $queryCategorias = 'select c.nombre ,c.id  from categoria c';
+// // inner join categoria_has_item chi on chi.categoria_id = c.id 
+// // INNER JOIN producto p on p.categoria_has_item_id  = chi.id 
+// // where p.empresa_id = 1
+// // group by c.nombre ';
 
 
-if ($categoriasBdResponse = $conn->mysqli->query($queryCategorias)) {
-    while ($dataCategorias = $categoriasBdResponse->fetch_object()) {
-        $categorias[] =  $dataCategorias;
-    }
-} else {
+// if ($categoriasBdResponse = $conn->mysqli->query($queryCategorias)) {
+//     while ($dataCategorias = $categoriasBdResponse->fetch_object()) {
+//         $categorias[] =  $dataCategorias;
+//     }
+// } else {
+// }
+
+ob_start();
+if (session_id() == '') {
+  session_start();
 }
+
+if (!isset($_SESSION['empresa_id'])) {
+  header("Location: login.php");
+  die();
+} else {
+  $empresaId = $_SESSION["empresa_id"];
+}
+
+ob_end_flush();
+$title = "Intec - Eventos"
 ?>
 
 <!DOCTYPE html>

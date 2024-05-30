@@ -21,7 +21,9 @@ if ($_POST) {
             $allSelectedPersonal = $data->allSelectedPersonal;
             $selectedVehicles = $data->selectedVehicles;
             $creditedBalance = $data->creditedBalance;
-            $result = json_encode(insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles, $creditedBalance));
+            $_subRentsToAssign = $data->_subRentsToAssign;
+            $_allMyOtherCosts = $data->_allMyOtherCosts;
+            $result = json_encode(insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles, $creditedBalance,$_subRentsToAssign,$_allMyOtherCosts));
             break;
         case 'getProjectResume':
             $request = $data->request;
@@ -233,7 +235,7 @@ function addProject($request)
 }
 
 
-function insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles, $creditedBalance)
+function insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles, $creditedBalance,$_subRentsToAssign,$_allMyOtherCosts)
 {
     try {
         $conn = new bd();
@@ -246,11 +248,11 @@ function insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProduct
         $result = $stmt->get_result();
 
         if ($result->num_rows === 0) {
-            return insertEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles, $creditedBalance);
+            return insertEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles, $creditedBalance,$_subRentsToAssign,$_allMyOtherCosts);
         }
 
         $conn->desconectar();
-        return updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles,$creditedBalance);
+        return updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles,$creditedBalance,$_subRentsToAssign,$_allMyOtherCosts);
     } catch (Exception $e) {
         $conn->desconectar();
         return false;
@@ -258,15 +260,15 @@ function insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProduct
 }
 
 
-function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $selectedPersonal, $selectedVehicles,$creditedBalance)
+function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $selectedPersonal, $selectedVehicles,$creditedBalance,$_subRentsToAssign,$_allMyOtherCosts)
 {
     try {
         $conn = new bd();
         $conn->conectar();
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.event_data 
-        (event_id, selected_prods_json, totalPerItem_json,selectedPersonal_json,selectedVehicles_json,creditedBalance) VALUES
-        (?, ?, ?,?,?,?);");
+        (event_id, selected_prods_json, totalPerItem_json,selectedPersonal_json,selectedVehicles_json,creditedBalance,subRent_json,otherCost_json) VALUES
+        (?, ?, ?,?,?,?,?,?);");
 
         $totalPerItem = json_encode($totalPerItem);
 
@@ -293,8 +295,11 @@ function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $sele
         $selectedProducts = json_encode($selectedProducts);
         $selectedPersonal = json_encode($selectedPersonal);
         $selectedVehicles = json_encode($selectedVehicles);
+        $_subRentsToAssign = json_encode($_subRentsToAssign);
+        $_allMyOtherCosts = json_encode($_allMyOtherCosts);
 
-        $stmt->bind_param("isssss",  $event_id, $selectedProducts, $totalPerItem, $selectedPersonal, $selectedVehicles,$creditedBalance);
+
+        $stmt->bind_param("isssssss",  $event_id, $selectedProducts, $totalPerItem, $selectedPersonal, $selectedVehicles,$creditedBalance,$_subRentsToAssign,$_allMyOtherCosts);
         $stmt->execute();
         $conn->desconectar();
         return true;
@@ -304,7 +309,7 @@ function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $sele
     }
 }
 
-function updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles,$creditedBalance)
+function updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles,$creditedBalance,$_subRentsToAssign,$_allMyOtherCosts)
 {
     try {
         $conn = new bd();
@@ -315,7 +320,10 @@ function updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelec
         totalPerItem_json= ?,
         selectedPersonal_json = ?,
         selectedVehicles_json = ?,
-        creditedBalance = ? WHERE event_id= ?;");
+        creditedBalance = ?,
+        subRent_json = ?,
+        otherCost_json = ?
+        WHERE event_id= ?;");
 
         $totalPerItem = json_encode($totalPerItem);
         $selectedProducts = json_encode($selectedProducts);
@@ -323,8 +331,10 @@ function updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelec
         $allSelectedPersonal = json_encode($allSelectedPersonal);
         $selectedVehicles = json_encode($selectedVehicles);
         $creditedBalance = json_encode($creditedBalance);
+        $_subRentsToAssign = json_encode($_subRentsToAssign);
+        $_allMyOtherCosts = json_encode($_allMyOtherCosts);
 
-        $stmt->bind_param("sssssi", $selectedProducts, $totalPerItem, $allSelectedPersonal, $selectedVehicles,$creditedBalance,$event_id);
+        $stmt->bind_param("sssssssi", $selectedProducts, $totalPerItem, $allSelectedPersonal, $selectedVehicles,$creditedBalance,$_subRentsToAssign,$_allMyOtherCosts,$event_id);
         $stmt->execute();
         $conn->desconectar();
         return true;

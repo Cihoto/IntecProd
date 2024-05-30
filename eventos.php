@@ -1,16 +1,20 @@
 <?php
+
+ob_start();
+if(session_id() == '') {
+    session_start();
+}
+
+if(!isset($_SESSION['empresa_id'])){
+    header("Location: login.php");
+    die();
+}else{
+  $empresaId = $_SESSION["empresa_id"];
+}
+
+ob_end_flush();
 $active = "eventos";
-$title = "Mis Eventos";
-header_remove('ETag');
-header_remove('Pragma');
-header_remove('Cache-Control');
-header_remove('Last-Modified');
-header_remove('Expires');
-header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
+$title = "Intec - Mis Eventos";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -370,21 +374,31 @@ header("Pragma: no-cache");
         renderCalendar(_allCalendarEvents);
     });
 
-    let statusWasOpen = false;
+    let statusIsOpen = false;
+
     $(document).on('click',function(e){
 
-        if($('#statusMenuList-evl').hasClass('active') && statusWasOpen){
+        console.log(`$('#statusMenuList-evl').hasClass('active')`,$('#statusMenuList-evl').hasClass('active'));
+        console.log('statusIsOpen',statusIsOpen);
+
+        if($('#statusMenuList-evl').hasClass('active') == true  && statusIsOpen){
 
             let target = $(this).closest('.optionLimiter');
 
             if(target.length === 0){
                 EVENT_STATUS_CHANGER.classList.remove('active')
-                statusWasOpen = false;
+                statusIsOpen = false;
+            }else{
+                statusIsOpen = true;
             }
             return 
         }
 
-        statusWasOpen = true 
+
+        if($('#statusMenuList-evl').hasClass('active')){
+            statusIsOpen = true 
+        }
+
     })
 
 
@@ -527,8 +541,9 @@ header("Pragma: no-cache");
             return;
         };
 
-        
-        if(statusWasOpen){
+            console.log(statusIsOpen);
+
+        if(statusIsOpen){
             return;
         }
 

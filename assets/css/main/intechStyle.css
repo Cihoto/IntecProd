@@ -126,6 +126,7 @@ body {
   }
 }
 
+
 .-usr-name {
   display: flex;
   width: 32px;
@@ -158,6 +159,7 @@ body {
   display: flex;
   width: 200px;
   height: 100px;
+  z-index: 1000;
 }
 
 #topUserMenu {
@@ -4025,7 +4027,7 @@ textarea {
       border-right: 1px solid var(--Line-table, #DDDDE1);
     }
     th:nth-child(1){
-      padding-left: 50px;
+      padding-left: 67px;
       width: 20%;
     }
     th:nth-child(2),
@@ -4062,6 +4064,85 @@ textarea {
 
 
   tbody{
+
+    .-event-data-info{
+      height: 1px;
+      td:nth-child(1){
+        /* background-color: red; */
+        display: table-cell !important;
+        height: inherit;
+        /* border: 1px solid #000; */
+        /* width: 100px; */
+      }
+
+      .--ev-detailsOnTable{
+        display: flex;
+        width: 100%;
+        height: 100%;
+        flex-direction: row;
+        gap: 24px;
+        align-items: start;
+        /* background-color: rebeccapurple; */
+      }
+      .--ev-det-icon-ctn{
+        display: flex;
+        padding-left: 115px;
+        height: 150px;
+        /* background-color: rgba(255, 0, 0, 0.187); */
+        justify-content: end;
+      }
+      .--ev-det-info-ctn{
+        width: 90%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        /* background-color: rgba(0, 0, 255, 0.108); */
+      }
+
+      .--ev-det-group{
+        display: flex;
+        flex-direction: row;
+
+        p:nth-child(1){
+          width: 45%;
+        }
+
+        p:nth-child(2){
+          width: 55%;
+        }
+      }
+
+      .--ev-det-title{
+        padding: 6px;
+        margin: 0px !important;
+        color: var(--Cyan-dark, #069B99);
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 22px;
+        letter-spacing: 0.46px;
+      }
+      .--ev-det-desc{
+        color: var(--Text-primary, #2C2D33);
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 22px;
+        letter-spacing: 0.46px;
+      }
+      .ev-det-info-general{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 40%;
+
+      }
+      .ev-det-info-finances{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
     tr.active{
       p{
         color: green;
@@ -4090,7 +4171,7 @@ textarea {
     td:nth-child(1){
       display: flex;
       flex-direction: row;
-      /* gap: 4px; */
+      gap: 16px;
       align-items: center;
 
       button{
@@ -4101,9 +4182,15 @@ textarea {
         align-items: center;
         width: 50px;
       }
-      /* .--data-details-fnc{
 
-      } */
+      .--data-details-fnc{
+        svg.--show-data{
+          transform: rotate(90deg);
+        }
+        svg{
+          transition: all .5s ease;
+        }
+      }
 
     }
     td:nth-child(2),
@@ -4119,8 +4206,20 @@ textarea {
     td:nth-child(6){
       margin: auto;
     }
-
   }
+}
+
+.-fn-card{
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 12px 24px;
+  width: 250px;
+
+  border-radius: var(--1, 8px);
+  background: var(--Color-3, #FFF);
+  box-shadow: 0px 4px 10px -1px rgba(0, 0, 0, 0.08), 0px 2px 4px -1px rgba(0, 0, 0, 0.04);
 }
 
 

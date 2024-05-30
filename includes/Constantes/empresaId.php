@@ -1,13 +1,13 @@
 <?php
-ob_start();
-if(!isset($_SESSION['empresa_id'])){
-    header("Location: login.php");
-    die();
-}else{
+// ob_start();
+// if(!isset($_SESSION['empresa_id'])){
+//     header("Location: login.php");
+//     die();
+// }else{
 
-    $empresaId = $_SESSION["empresa_id"];
-}
-ob_end_flush();
+//     $empresaId = $_SESSION["empresa_id"];
+// }
+// ob_end_flush();
 // $empresaId = 1;
 ?>
 

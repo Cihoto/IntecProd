@@ -890,8 +890,6 @@ function setCategoriesAndSubCategories() {
 
   _selectedProducts.forEach((selectedProd) => {
 
-
-
     const subCatExists = _allMySubCats.find((subcat) => {
       if (subcat.subcategoria === selectedProd.item && subcat.categoria === selectedProd.categoria) {
         return subcat

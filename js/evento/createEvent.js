@@ -32,6 +32,12 @@ $('#inputProjectName').on('click', function () {
 })
 
 async function SaveOrUpdateEvent() {
+
+
+  console.log('_subRentsToAssign',_subRentsToAssign);
+  console.log('_allMyOtherCosts',_allMyOtherCosts);
+
+  // return 
   
   clearBottomBar();
   initBottomBar();
@@ -83,7 +89,7 @@ async function SaveOrUpdateEvent() {
 
   console.log('allSelectedPersonal',allSelectedPersonal)
   console.log('selectedVehicles',selectedVehicles)
-  await insertOrUpdateEventData_json(event_data.event_id,totalPerItem,_selectedProducts,allSelectedPersonal,selectedVehicles,payment_data);
+  await insertOrUpdateEventData_json(event_data.event_id,totalPerItem,_selectedProducts,allSelectedPersonal,selectedVehicles,payment_data,_subRentsToAssign,_allMyOtherCosts);
 
   if(_tempCommentList.length > 0){
     const COMMENT_RESPONSE = await addAndAssignCommentsToEvent(_tempCommentList, EMPRESA_ID, event_data.event_id);
@@ -242,18 +248,20 @@ function createNewEvent(requestProject){
   })
 }
 
-function insertOrUpdateEventData_json(event_id, totalPerItem,selectedProducts,allSelectedPersonal,selectedVehicles,creditedBalance){
+function insertOrUpdateEventData_json(event_id, totalPerItem, selectedProducts, allSelectedPersonal, selectedVehicles, creditedBalance, _subRentsToAssign, _allMyOtherCosts){
   return $.ajax({
     type: "POST",
     url: 'ws/proyecto/proyecto.php',
     data: JSON.stringify({
+      'action': "insertOrUpdateEventData_json",
       'event_id': event_id,
       'totalPerItem': totalPerItem,
       'selectedProducts': selectedProducts,
       'allSelectedPersonal': allSelectedPersonal,
       'selectedVehicles': selectedVehicles,
       'creditedBalance': creditedBalance,
-      'action': "insertOrUpdateEventData_json",
+      '_subRentsToAssign': _subRentsToAssign,
+      '_allMyOtherCosts': _allMyOtherCosts
     }),
     dataType: 'json',
     success: function (data) {

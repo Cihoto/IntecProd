@@ -49,9 +49,9 @@ function printAllMyProviders() {
         $(element).append(new Option("", ""))
         if ($(element).val() === "") {
             _allMyProviders.forEach((provider) => {
-                let name = provider.nombre_fantasia; 
+                let name = provider.nombre_fantasia;
 
-                if(name === ""){
+                if (name === "") {
                     name = provider.nombre
                 }
                 $(element).append(new Option(`${name}`, provider.id))
@@ -61,9 +61,9 @@ function printAllMyProviders() {
     $('.allProvidersSelect').select2();
 }
 
-$('#subArriendo-Heading').on('click',function(){
+$('#subArriendo-Heading').on('click', function () {
     printAllMyProviders();
-}) 
+})
 
 function AddSubArriendo() {
 
@@ -269,12 +269,12 @@ async function AddArriendoToTable(element) {
     }
 }
 
-function resetClientForm(){
+function resetClientForm() {
     $('#sideclientForm')[0].reset();
 }
 
-async function printNewRow_subRent(){
-    await  setAllMyProviders(EMPRESA_ID);
+async function printNewRow_subRent() {
+    await setAllMyProviders(EMPRESA_ID);
     $('#subarriendosTable tbody tr').remove();
     $('#mySelect2').select2('destroy');
     console.log("SET ALL MY PROVIDERS", _allMyProviders);
@@ -282,12 +282,12 @@ async function printNewRow_subRent(){
 
     _subRentsToAssign.forEach((subRent) => {
         let options = "";
-        
+
         _allMyProviders.forEach((provider) => {
 
             let name = provider.nombre_fantasia;
 
-            if(name === ""){
+            if (name === "") {
                 name = provider.nombre
             };
 
@@ -326,11 +326,11 @@ async function printNewRow_subRent(){
 
         $('#subarriendosTable tbody').append(tr);
     })
-    let newOpt =`<option value=""></option>`;
+    let newOpt = `<option value=""></option>`;
     _allMyProviders.forEach((provider) => {
-        let name = provider.nombre_fantasia; 
+        let name = provider.nombre_fantasia;
 
-        if(name === ""){
+        if (name === "") {
             name = provider.nombre
         }
         newOpt += `<option value="${provider.id}">${name} </option>`
@@ -368,18 +368,18 @@ async function printNewRow_subRent(){
     });
 }
 
-$('#AddNewProvider').on('click',function(){
+$('#AddNewProvider').on('click', function () {
     // $('#newProvider-Modal').modal('show');
     $('#providerSideMenu').addClass('active');
 
 })
-$('#closeProviderSideMenu').on('click',function(){
+$('#closeProviderSideMenu').on('click', function () {
     // $('#newProvider-Modal').modal('show');
     $('#providerSideMenu').removeClass('active');
 
 })
 
-$('#triggerNewProvider').on('click',function(){
+$('#triggerNewProvider').on('click', function () {
     $('#createNewProvider').trigger('click');
 });
 
@@ -455,3 +455,20 @@ $(document).on('click', '.removeSubArriendo', function () {
 
 
 
+// let algo = {
+//     "personal": [{ "contract": "Indefinido", "value": 1450000 }],
+//     "equipos": [
+//         {
+//             "categorie": "CAT NOT EXIST 2",
+//             "value": 8000,
+//             "isEdited": false
+//         },
+//         {
+//             "categorie": "CAT NOT EXIST 3",
+//             "value": 0,
+//             "isEdited": false
+//         }
+//     ],
+//     "vehiculos": [],
+//     "otros": []
+// }

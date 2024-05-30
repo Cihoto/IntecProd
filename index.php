@@ -1,13 +1,13 @@
 <?php
 ob_start();
-if(session_id() == '') {
-    session_start();
+if (session_id() == '') {
+  session_start();
 }
 
-if(!isset($_SESSION['empresa_id'])){
-    header("Location: login.php");
-    die();
-}else{
+if (!isset($_SESSION['empresa_id'])) {
+  header("Location: login.php");
+  die();
+} else {
   $empresaId = $_SESSION["empresa_id"];
 }
 
@@ -23,7 +23,6 @@ $detalle = true;
 <?php
 require_once('./includes/head.php');
 $active = 'dashboard';
-
 ?>
 
 <body>
@@ -43,7 +42,7 @@ $active = 'dashboard';
         <header class="page-header">
 
           <?php require_once('./includes/headerBreadCrumb.php') ?>
-          
+
           <div class="personalInformation-user">
             <div class="welcome-container">
               <p class="user-welcome">Hola, <strong class="user-name"><?php echo $_SESSION['user_name'] ?></strong></p>
@@ -113,11 +112,11 @@ $active = 'dashboard';
 
             </div>
             <div id="dash-event-housing">
-                    <div id="myChart" style="border-radius: 10px;"></div>
+              <div id="myChart" style="border-radius: 10px;"></div>
 
               <!-- <p class="dstheader">Próximos eventos</p>
               <form id="dash-event-menu"> -->
-                <!-- <div id="dash-event-status">
+              <!-- <div id="dash-event-status">
                     <label for="" id="dash-searchBy">Buscar por:</label>
                     <div class="select-status-container">
                       <input type="radio" class="eventStatusSortDash" value="all" checked>
@@ -136,8 +135,8 @@ $active = 'dashboard';
                       <label for="">Finalizados</label>
                     </div>
                   </div> -->
-                <!-- <div class="row justify-content-between"> -->
-                  <!-- <div class="dash-filter-event">
+              <!-- <div class="row justify-content-between"> -->
+              <!-- <div class="dash-filter-event">
                     <div class="select-area-dashEvent">
                       <div class="form-group" style="width: 180px;">
                         <label for="fechaInicio" class="inputLabel dateLabel">Fecha</label>
@@ -158,15 +157,15 @@ $active = 'dashboard';
                       </select>
                     </div>
                   </div> -->
-                  <!-- <button class="s-Button-w" style="margin-top: 10px;">
+              <!-- <button class="s-Button-w" style="margin-top: 10px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
                       <path d="M17 2.75H2L8 9.845V14.75L11 16.25V9.845L17 2.75Z" stroke="#069B99" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                     <p class="s-P-g">Filtros</p>
                   </button> -->
-                <!-- </div>
+              <!-- </div>
               </form> -->
-<!-- 
+              <!-- 
               <table class="" id="dash-event-table">
                 <thead>
                   <tr>
@@ -260,10 +259,10 @@ $active = 'dashboard';
   <script src="./js/sortTable/eventSort.js"></script>
   <script src="./js/valuesValidator/validator.js"></script>
 
-  
+
   <!-- SIDEMENU -->
 
-  <?php include_once('./includes/sidemenu/bussinessConfigSideMenu.php');?>
+  <?php include_once('./includes/sidemenu/bussinessConfigSideMenu.php'); ?>
 
 
   <!-- GLOBAL FUNCTIONS -->

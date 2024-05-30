@@ -3,35 +3,41 @@ let EVENT_TABLE_DATA = [];
 
 // COPY FROM RESUME PROJECT
 const PERCENTAJE_COLORS = {
-    'red': {
-        background: '#ffcccc',
-        progressBar: '#ff0000'
-    },
-    'yellow': {
-        background: '#fbf0d0',
-        progressBar: '#F2C94C'
-    },
-    'green': {
-        background: '#b3ffb3',
-        progressBar: '#00cc00'
-    }
+  'red': {
+    background: '#ffcccc',
+    progressBar: '#ff0000'
+  },
+  'yellow': {
+    background: '#fbf0d0',
+    progressBar: '#F2C94C'
+  },
+  'green': {
+    background: '#b3ffb3',
+    progressBar: '#00cc00'
+  }
 }
 
 
 function renderFinancialEventDetails(eventDetails) {
 
-    eventDetails.forEach((eventRow) => {
-        let newRow = document.createElement('tr');
-        newRow.innerHTML = createNewRow(eventRow);
-        newRow.setAttribute('event_id', eventRow.event_id);
-        FINANCE_EVENT_DETAIL_TABLE_BODY.appendChild(newRow);
-    });
+
+
+  while (FINANCE_EVENT_DETAIL_TABLE_BODY.firstChild) {
+    FINANCE_EVENT_DETAIL_TABLE_BODY.removeChild(FINANCE_EVENT_DETAIL_TABLE_BODY.firstChild);
+  }
+
+  eventDetails.forEach((eventRow) => {
+    let newRow = document.createElement('tr');
+    newRow.innerHTML = createNewRow(eventRow);
+    newRow.setAttribute('event_id', eventRow.eventId);
+    FINANCE_EVENT_DETAIL_TABLE_BODY.appendChild(newRow);
+  });
 
 }
 
 function createNewRow(eventRow) {
 
-    const nuevaFilaHtml = `
+  const nuevaFilaHtml = `
     <tr>
       <td>
         <button class="--data-details-fnc">
@@ -73,65 +79,333 @@ function createNewRow(eventRow) {
     </tr>`;
 
 
-    return nuevaFilaHtml;
+  return nuevaFilaHtml;
 }
 
 
 function getWorth(totalIncome, costs) {
-    return CLPFormatter(totalIncome - costs);
+  return CLPFormatter(totalIncome - costs);
 }
 
 function createProgressBar(eventData) {
 
 
-    const CREDITED_BALANCE = eventData;
-    console.log(CREDITED_BALANCE)
-    console.log(CREDITED_BALANCE)
-    console.log(CREDITED_BALANCE)
+  const CREDITED_BALANCE = eventData;
 
+  if (CREDITED_BALANCE === '' || CREDITED_BALANCE === null || CREDITED_BALANCE === 'null') {
 
-    if (CREDITED_BALANCE === '' || CREDITED_BALANCE === null) {
+    return `<div class="--finance-perc-container" >
+          <div class="--finance-perc-view">
+          </div>
+      </div>`;
+  }
 
-        return `<div class="--finance-perc-container" >
-            <div class="--finance-perc-view">
-            </div>
-        </div>`;
-    }
-    eventData = JSON.parse(eventData);
+  eventData = JSON.parse(eventData);
 
-    let progressColor = []; 
-    if(eventData.currentPercentage < 33){
-        progressColor = PERCENTAJE_COLORS.red;
-    }
-    if(eventData.currentPercentage >= 33 && eventData.currentPercentage <= 66){
-        progressColor = PERCENTAJE_COLORS.yellow;
-    }
-    if(eventData.currentPercentage >= 66){
-        progressColor = PERCENTAJE_COLORS.green;
-    }
+  let progressColor = [];
+  if (eventData.currentPercentage < 33) {
+    progressColor = PERCENTAJE_COLORS.red;
+  }
 
+  if (eventData.currentPercentage >= 33 && eventData.currentPercentage <= 66) {
+    progressColor = PERCENTAJE_COLORS.yellow;
+  }
 
+  if (eventData.currentPercentage >= 66) {
+    progressColor = PERCENTAJE_COLORS.green;
+  }
 
-    let backgroundColor = `background-color:${progressColor.background};`;
-    let barColor = `background-color:${progressColor.progressBar};width:${eventData.currentPercentage}%;`;
+  let backgroundColor = `background-color:${progressColor.background};`;
+  let barColor = `background-color:${progressColor.progressBar};width:${eventData.currentPercentage}%;`;
 
-    return `<div class="--finance-perc-container" style="${backgroundColor}">
-        <div style="${barColor} class="--finance-perc-view" style="${barColor}">
-        </div>
-    </div>`;
+  return `<div class="--finance-perc-container" style="${backgroundColor}">
+    <div style="${barColor} class="--finance-perc-view" style="${barColor}">
+    </div>
+  </div>`;
+
+}
+
+function resetAllArrows() {
+
+  $('.--show-data').each((index, arrow) => {
+    // $('.--show-data').css('tranform', 'rotate(-90deg)');
+    $('.--show-data').removeClass('.--show-data')
+  })
 
 }
 
 
-$(document).on('click','.redirectToEvent',function(){
+function createNewEventDetail(event_data) {
+
+console.log('NEW DETAILS DATA ', event_data);
+
+const CREDITED_AMOUNTS = setCreditedAmountsAndData(event_data.creditedBalance);
+const COSTS = setEventCosts(event_data.otherCost_json,event_data.selectedPersonal_json,event_data.selectedVehicles_json,event_data.selected_prods_json,event_data.subRent_json)
+return `<tr class="-event-data-info" evId_dt="${event_data.eventId}">
+  <td colspan="6">
+    <div class="--ev-detailsOnTable">
+
+      <div class="--ev-det-icon-ctn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M11.25 7.5L15 11.25L11.25 15" stroke="#069B99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 3V8.25C3 9.04565 3.31607 9.80871 3.87868 10.3713C4.44129 10.9339 5.20435 11.25 6 11.25H15" stroke="#069B99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+
+      <div class="--ev-det-info-ctn">
+
+        <div class="ev-det-info-general">
+          <div class="--ev-det-group">
+            <p class="--ev-det-title">Cliente</p>
+            <p class="--ev-det-desc">${setClientNameOnEventDetail(event_data.client_name, event_data.df_client_name)}</p>
+          </div>
+
+          <div class="--ev-det-group">
+            <p class="--ev-det-title">DTE</p>
+            <p class="--ev-det-desc">${CREDITED_AMOUNTS.dte}</p>
+          </div>
+
+          <div class="--ev-det-group">
+            <p class="--ev-det-title">Ingresado/Facturado</p>
+            <p class="--ev-det-desc">${CREDITED_AMOUNTS.billed}</p>
+          </div>
+
+          <div class="--ev-det-group">
+            <p class="--ev-det-title">Estado de pago</p>
+            <p class="--ev-det-desc">${CREDITED_AMOUNTS.paymentStatus}</p>
+          </div>
+
+          <div class="--ev-det-group">
+            <p class="--ev-det-title">Abono</p>
+            <p class="--ev-det-desc">${CREDITED_AMOUNTS.creditedAmount}</p>
+          </div>
+
+        </div>
+
+        <div class="ev-det-info-general ">
+          <div class="--ev-det-group">
+            <p class="--ev-det-title">Total Costos:</p>
+            <p class="--ev-det-desc">${CLPFormatter(COSTS.total)}</p>
+          </div>
+          <div class="--ev-det-group">
+            <p class="--ev-det-title">Vehículos</p>
+            <p class="--ev-det-desc">${CLPFormatter(COSTS.vehicle)}</p>
+          </div>
+
+          <div class="--ev-det-group">
+            <p class="--ev-det-title">Sub Arriendos</p>
+            <p class="--ev-det-desc">${CLPFormatter(COSTS.subRent)}</p>
+          </div>
+
+          <div class="--ev-det-group">
+            <p class="--ev-det-title">Otros</p>
+            <p class="--ev-det-desc">${CLPFormatter(COSTS.otherProds)}</p>
+          </div>
+
+          <div class="--ev-det-group">
+            <p class="--ev-det-title">Personas</p>
+            <p class="--ev-det-desc">${CLPFormatter(COSTS.personal)}</</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </td>
+</tr>`;
+}
 
 
-    console.log(this)
-    let evId = $(this).closest('tr').attr('event_id');
+function setClientNameOnEventDetail(client_name, df_client_name) {
 
-    // alert(evId)
-    window.location = `./miEvento.php?event_id=${evId}`;
-});
+  if (client_name === "" || client_name === null) {
+    return ''
+  }
+
+  if (df_client_name == "" || df_client_name === null) {
+    return client_name
+  }
+
+  return `${client_name} - ${df_client_name}`
+
+}
+
+
+function setCreditedAmountsAndData(creditedData) {
+
+
+  let CREDITED_BALANCE_ARRAY = {
+    'dte': 'No',
+    'billed': 'No',
+    'paymentStatus': '',
+    'creditedAmount': '$0'
+  }
+
+  if (creditedData === '' || creditedData === null || creditedData === 'null') {
+
+    return CREDITED_BALANCE_ARRAY;
+  }
+
+  creditedData = JSON.parse(creditedData);
+
+  if (creditedData.hasDocument) {
+    CREDITED_BALANCE_ARRAY.dte = 'Sí';
+  }
+
+  if (creditedData.isBilled) {
+    CREDITED_BALANCE_ARRAY.billed = 'Sí';
+  }
+
+  if (creditedData.isPaid) {
+    CREDITED_BALANCE_ARRAY.paymentStatus = 'Pagado';
+    CREDITED_BALANCE_ARRAY.creditedAmount = CLPFormatter(creditedData.totalIncomeToCredit);
+  } else {
+    CREDITED_BALANCE_ARRAY.paymentStatus = 'Abonado';
+    CREDITED_BALANCE_ARRAY.creditedAmount = CLPFormatter(creditedData.creditedTotal);
+  }
+
+  return CREDITED_BALANCE_ARRAY;
+}
+
+
+function setEventCosts(others,personal,vehicles,prod,subRent){
+
+let costData = {
+  'otherProds' : getOtherProdsCost(others),
+  'personal' : getPersonalCost(personal),
+  'subRent' : getSubRentCost(subRent),
+  'vehicle' : getVehiclesCost(vehicles),
+  'total': 0
+}
+
+  costData.total = setTotalCosts(costData);
+
+  console.log(costData)
+
+  return costData
+}
+function setTotalCosts(costs){
+
+  return  costs.otherProds + costs.personal + costs.subRent + costs.vehicle;
+}
+
+
+function getVehiclesCost(vehicleInfo){
+  let vehicleData = JSONisValid(vehicleInfo);
+  if(!vehicleData){
+    return 0;
+  }
+
+  console.log('vehicleData',vehicleData);
+
+
+  const TOTAL_VEHICLES = vehicleData.map((vehicle)=>{
+    return parseInt(vehicle.cantidadViajes) * parseInt(vehicle.tripValue);
+  });
+
+  return addNumberArray(TOTAL_VEHICLES); 
+
+
+}
+
+function getSubRentCost(subRentObj){
+  let subRentData = JSONisValid(subRentObj);
+  if(!subRentData){
+    return 0;
+  }
+
+  console.log('subRentData',subRentData);
+
+  const TOTAL_SUBRENT = subRentData.map((subRent)=>{
+    return parseInt(subRent.valor);
+  });
+
+  return addNumberArray(TOTAL_SUBRENT); 
+
+
+}
+
+function getPersonalCost(personalObj){
+  let personalData = JSONisValid(personalObj);
+
+  console.log('SUBRENTTTTT', personalData)
+  if(!personalData){
+    return 0;
+  }
+
+  console.log('personalData',personalData);
+
+
+  const TOTAL_PERSONAL = personalData.map((personal)=>{
+
+    if(personal.contrato.toUpperCase() === 'FREELANCE'){
+      return parseInt(personal.neto)
+    }else{
+
+      return parseInt(personal.neto) * parseInt(personal.horasTrabajadas);
+    }
+  });
+
+  console.log(TOTAL_PERSONAL)
+
+  return addNumberArray(TOTAL_PERSONAL); 
+
+
+}
+
+function getOtherProdsCost(othersObj){
+  let othersData = JSONisValid(othersObj);
+
+  if(!othersData){
+    return 0;
+  }
+  const TOTAL_OTHERS = othersData.map((other)=>{
+    return parseInt(other.monto);
+  });
+
+  return addNumberArray(TOTAL_OTHERS); 
+}
+
+
+function JSONisValid(strJSON){
+
+  
+  if (strJSON === '' || strJSON === null || strJSON === 'null' || strJSON === '[]') {
+    return false;
+  } 
+  console.log("!");
+  // strJSON = JSON.parse(strJSON); 
+  console.log(strJSON)
+  for (let index = 0; index < 10; index++) {
+    console.log('index',index);
+
+    if(!Array.isArray(strJSON)){
+      strJSON = JSON.parse(strJSON); 
+    }else{
+      break
+    }
+  }
+
+  if(!Array.isArray(strJSON)){
+    return false;
+  }
+  return strJSON;
+}
+
+
+function addNumberArray(numArr){
+  let total = 0;
+
+  numArr.forEach((num)=>{
+    total +=  num;
+  })
+
+  return total;
+}
 
 
 
+function removeEventDetails(event_id){
+
+  console.log($(`.-event-data-info[evId_dt="${event_id}"]`));
+  $(`.-event-data-info[evId_dt="${event_id}"]`).remove();
+}

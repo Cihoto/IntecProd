@@ -1,21 +1,19 @@
 <head>
-
+  
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='expires' content='0'>
+<meta http-equiv='pragma' content='no-cache'>
 
 <?php 
-if(session_id() == '') {
-  session_start();
-}
-if (isset($title)) :?>
-  <title>   <?php echo $title?> </title>
+  if (isset($title)) :?>
+    <title>   <?php echo $title?> </title>
 <?php else:?>
   <title>DashBoard - Intec</title>
 <?php endif;?>
 
-  <!-- <meta http-equiv='cache-control' content='no-cache'>
-  <meta http-equiv='expires' content='0'>
-  <meta http-equiv='pragma' content='no-cache'>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+
 
   <link rel="stylesheet" href="./assets/css/main/app.css" />
   <!-- <link rel="stylesheet" href="./assets/css/main/app-dark.css" /> -->
@@ -86,3 +84,5 @@ if (isset($title)) :?>
 
   <script src="https://cdn.jsdelivr.net/npm/ag-charts-community@9.0.0/dist/umd/ag-charts-community.js"></script>
 </head>
+
+

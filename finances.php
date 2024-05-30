@@ -1,8 +1,17 @@
 <?php
-session_start();
-$isDetails = true;
-//Variables que manipulan condiciones if en Form proyecto
-$detalle = true;
+ob_start();
+if(session_id() == '') {
+    session_start();
+}
+
+if(!isset($_SESSION['empresa_id'])){
+    header("Location: login.php");
+    die();
+}else{
+  $empresaId = $_SESSION["empresa_id"];
+}
+
+ob_end_flush();
 $title = "Intec - Finanzas"
 ?>
 <!DOCTYPE html>
@@ -36,18 +45,21 @@ $active = 'finance';
 
       <div id="myChart"></div>
 
+      <div class="-fn-card">
+        <button class="--f-button" onclick="openFinancesEventsDetails()">
+          <div class="--f-btn-icon">
+            <img src="./assets/svg/financeLogo.svg" alt="">
+          </div>
+          <p>
+            Detalle eventos
+          </p>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M6.75 13.5L11.25 9L6.75 4.5" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
 
-      <button class="--f-button" onclick="openFinancesEventsDetails()">
-        <div class="--f-btn-icon">
-          <img src="./assets/svg/financeLogo.svg" alt="">
-        </div>
-        <p>
-          Detalle eventos
-        </p>
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-          <path d="M6.75 13.5L11.25 9L6.75 4.5" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
+
 
     </div>
   </div>
