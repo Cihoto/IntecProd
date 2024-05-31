@@ -1,41 +1,19 @@
 <?php
 
-require_once('./ws/bd/bd.php');
-$conn = new bd();
-$conn->conectar();
-
-//AFTER SET EMPRESAID WITH SESSION();
-$empresaId = 1;
-$vehiculos = [];
-
-
-
-
-$queryVehiculos = "SELECT v.id , v.patente, CONCAT(p.nombre,' ',p.apellido) as nombre  FROM vehiculo v 
-                    LEFT JOIN persona p ON p.id =v.persona_id 
-                    INNER JOIN empresa e on e.id  = v.empresa_id 
-                    WHERE e.id = $empresaId ";
-
-// $queryDuenoAuto = 'SELECT CONCAT(p.nombre ," ", p.apellido) as nombre FROM personal p 
-//                     INNER JOIN empresa e on e.id = p.empresa_id 
-//                     where e.id = 1 GROUP BY p.nombre';
-
-
-//BUILD VEHICULOS ARRAY
-if ($responseBdVehiculo = $conn->mysqli->query($queryVehiculos)) {
-    while ($datVehiculos = $responseBdVehiculo->fetch_objecT()) {
-        $vehiculos[] = $datVehiculos;
-    }
+ob_start();
+if (session_id() == '') {
+  session_start();
 }
 
-// print_r($vehiculos);
+if (!isset($_SESSION['empresa_id'])) {
+  header("Location: login.php");
+  die();
+} else {
+  $empresaId = $_SESSION["empresa_id"];
+}
+$active = 'administracion';
+$title = 'Intec - Vehículos';
 
-//BUILD DATA AUTODUENO
-// if($responsebdDueno = $conn->mysqli->query($queryDuenoAuto)){
-//     while($dataDueno = $responsebdDueno->fetch_objecT()){
-//         $vehiculoAsignacion [] = $dataDueno;
-//     }
-// }
 ?>
 
 <!DOCTYPE html>
@@ -102,170 +80,7 @@ $active = 'vehiculos';
                     </tfoot>
                 </table>
             </div>
-
-            
-            <!-- <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
-                    <i class="bi bi-justify fs-3"></i>
-                </a>
-            </header>
-            <div class="page-header" style="margin-bottom: 30px;">
-                <div style="display:flex; align-items: center; ">
-                    <h3 style="margin-right: 50px">Vehiculos</h3>
-                    <a id="download-Excel" style="height: 20px; line-height: 20px;font-size: 30px;" href="./ExcelFiles/Vehiculos.xlsx" download="Carga Masiva Vehículo"><i class="fa-solid fa-file-excel" style="color: #1D6F42; "></i></a>
-                </div>
-            </div>
-
-            <input type="number" class=""> -->
-
-            <!-- pp  (in_array("13", $rol_id) || in_array("1", $rol_id) ||  in_array("2", $rol_id))? -->
-            <!-- <div class="col-8 col-lg-3 col-sm-4">
-                <div class="card">
-                    <div class="row">
-                        <div class="col-6">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#xlarge">
-                                Agregar vehículo
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <button type="button" id="addVehicle" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#xlarge">
-                                Agregar Vehículos masivo
-                            </button>
-                            <input class="form-control form-control-sm" id="excel_input" type="file" />
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- ;?> -->
-            <!-- <div class="page-content">
-
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body px-4 py-4">
-                                    <table class="table" id="tableVehiculo" class="display" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th style="text-align: center; display:none">ID</th>
-                                                <th style="text-align: center;">Patente</th>
-                                                <th style="text-align: center;">Dueño</th>
-                                                <th style="text-align: center;">Documentos</th>
-                                                <th style="text-align: center;">Kilmetraje</th>
-                                                <th style="text-align: center;">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <
-                                            foreach ($vehiculos as $vehiculo) {
-                                                echo '<tr>';
-                                                echo '<td class="id_vehiculo" style="display:none">' . $vehiculo->id . '</td>';
-                                                echo '<td class="patente" align=center>' . $vehiculo->patente . '</td>';
-                                                echo '<td align=center>' . $vehiculo->nombre . '</td>';
-                                                echo '<td align=center>Documentos</td>';
-                                                echo '<td align=center>Kilometraje</td>';
-                                                echo '<td align=center><i class="fa-solid fa-trash deleteVehiculo"></i><i style="left-margin:5px" class="fa-solid fa-pencil"></i></td>';
-                                                echo '</tr>';
-                                            }
-                                            ?>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td style="text-align: center; display:none">ID</td>
-                                                <td style="text-align: center;">Patente</td>
-                                                <td style="text-align: center;">Dueño</td>
-                                                <td style="text-align: center;">Documentos</td>
-                                                <td style="text-align: center;">Kilmetraje</td>
-                                                <td style="text-align: center;">Acciones</td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-        </div>
-
-        <!-- <div class="modal fade" id="masivavehicleCreation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Desea ingresar esta información</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <table class="table" id="eexcelTable">
-                            <thead>
-
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-
-                    </div>
-                    <div class="modal-footer">
-                        <div class="row">
-                            <button type="button" id="modalClose" class="col-md-3 col-12 btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button class="btn btn-success col-md-4 col-12" id="saveExcelDatssa">Guardar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- FIN modal masiva -->
-
-        <!-- modal agregar personal -->
-        <!-- <div class="modal fade text-left w-100" id="xlarge" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" style="align-items: center;">
-                            Agregar Vehiculo
-                        </h3>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        </button>
-                        <p style="align-self: start;">* (campo obligatorio)</p>
-                        <i data-feather="x"></i>
-                    </div>
-                    <form id="addVehiculo">
-                        <div class="modal-body">
-                            <div class="row ">
-                                <div class="col-12 col-md-6">
-                                    <label for="patente">Patente: *</label>
-                                    <input name="patente" id="patente" type="text" placeholder="Patente *" class="form-control" />
-                                </div>
-
-                                <div class="col-12 col-md-6">
-                                    <label for="asignacion_Select">Dueño:</label>
-                                    <select name="asignacion_Select" class="form-control" id="asignacion_Select">
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <div class="row justify-content-center">
-                                <div class="col-6">
-                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                        Cerrar
-                                    </button>
-                                </div>
-                                <div class="col-6">
-                                    <input type="submit" value="Agregar" class=" btn btn-info">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div> -->
-        <!-- end modal -->
+        
         <?php require_once('./includes/footer.php') ?>
     </div>
     </div>

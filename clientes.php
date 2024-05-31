@@ -1,4 +1,19 @@
 <?php 
+
+ob_start();
+if (session_id() == '') {
+  session_start();
+}
+
+if (!isset($_SESSION['empresa_id'])) {
+  header("Location: login.php");
+  die();
+} else {
+  $empresaId = $_SESSION["empresa_id"];
+}
+$active = 'administracion';
+$title = 'Intec - Administración';
+
 header_remove('ETag');
 header_remove('Pragma');
 header_remove('Cache-Control');

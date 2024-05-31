@@ -13,16 +13,16 @@ let eventListDashMobile = document.getElementById('eventListdashMobile');
 let createNewEventDashMobile = document.getElementById('dashCreateNewEventMobile');
 
 
-eventListDashMobile.addEventListener("click",openEventList);
-createNewEventDashMobile.addEventListener("click",openCreateNewEvent);
+eventListDashMobile.addEventListener("click", openEventList);
+createNewEventDashMobile.addEventListener("click", openCreateNewEvent);
 
 
-function openCreateNewEvent(){
+function openCreateNewEvent() {
     location.href = "./miEvento.php";
 
 }
 
-function openEventList(){
+function openEventList() {
     location.href = "./eventos.php";
 
 }
@@ -45,18 +45,18 @@ $(document).ready(async function () {
 
     const resumeDataDashboard = await getDashResume(EMPRESA_ID);
 
-    console.log('resumeDataDashboard',resumeDataDashboard)
-    console.log('resumeDataDashboard',resumeDataDashboard)
-    console.log('resumeDataDashboard',resumeDataDashboard)
+    console.log('resumeDataDashboard', resumeDataDashboard)
+    console.log('resumeDataDashboard', resumeDataDashboard)
+    console.log('resumeDataDashboard', resumeDataDashboard)
     const resumeDataQtty = resumeDataDashboard.event_quanity_cur_last_month;
     const resumeDataIncome = resumeDataDashboard.incomeResume;
     const currentMonthIncome = resumeDataDashboard.currentMonthIncome;
 
     // const quantityResumePercentajes = getDifferencePercentajeBetweenData_CurMonth_LastMonth(resumeDataQtty.total_last_month, resumeDataQtty.total_current_month);
     // setQuantityResumePercentaje(quantityResumePercentajes);
-    
-    setQuantityResumePercentaje(resumeDataQtty.total_current_month,currentMonthIncome.currentMonthIncome == undefined ? 0 :currentMonthIncome.currentMonthIncome,resumeDataQtty.currentLeftEvents);
-    
+
+    setQuantityResumePercentaje(resumeDataQtty.total_current_month, currentMonthIncome.currentMonthIncome == undefined ? 0 : currentMonthIncome.currentMonthIncome, resumeDataQtty.currentLeftEvents);
+
     // SET DIFFERENCE BTEWEEN INCOME FROM ACTUAL MONTH AND LAST MONTH EVENTS
 
     const incomeResumePercentajes = getDifferencePercentajeBetweenData_CurMonth_LastMonth(resumeDataIncome.last_month_income, resumeDataIncome.actual_income_month)
@@ -99,21 +99,21 @@ $(document).ready(async function () {
 });
 
 
-function getToday(){
+function getToday() {
     let today = new Date();
-    console.log("today",today);
-    let year = today.getFullYear(); 
-    let day =  today.getDate();
+    console.log("today", today);
+    let year = today.getFullYear();
+    let day = today.getDate();
     let month = today.getMonth() + 1;
-    console.log("today",day);
-    console.log("today",year);
-    console.log("today",month);
+    console.log("today", day);
+    console.log("today", year);
+    console.log("today", month);
     if (month < 10) {
         month = `0${month}`;
     }
     if (day < 10) {
         day = `0${day}`;
-    }   
+    }
 
     return `${year}-${month}-${day}`
 
@@ -200,14 +200,14 @@ async function setcalendar() {
                         HTMLButtonElement.style.color = 'white'
                     }
                 } else {
-                   
+
                 }
 
             },
             clickDay(event, self,) {
                 console.log(self.selectedDates);
 
-                if(self.selectedDates.length === 0){
+                if (self.selectedDates.length === 0) {
                     return
                 }
                 printDailyEvents(self.selectedDates[0])
@@ -218,7 +218,7 @@ async function setcalendar() {
     calendar.init();
 }
 
-function addDayToDate(date,daysToAdd){
+function addDayToDate(date, daysToAdd) {
 
     let tempday = new Date(date);
     tempday.setDate(tempday.getDate() + daysToAdd);
@@ -226,7 +226,7 @@ function addDayToDate(date,daysToAdd){
 
 };
 
-function subDayToDate(date,daysToSub){
+function subDayToDate(date, daysToSub) {
 
     let tempday = new Date(date);
     tempday.setDate(tempday.getDate() - daysToSub);
@@ -257,8 +257,8 @@ async function printDailyEvents(dayToSearch) {
 
     let dateNumber = TITLE_DATE.toLocaleDateString("es-Cl", DATE_OPTIONS_DAY);
 
-    console.log("fullDay",fullDay)
-    console.log("dateNumber",dateNumber)
+    console.log("fullDay", fullDay)
+    console.log("dateNumber", dateNumber)
 
     $('.today-p').text(`Hoy, ${fullDay.slice(0, 1).toUpperCase() + fullDay.slice(1, fullDay.length)} ${dateNumber} `);
 
@@ -275,11 +275,11 @@ async function printDailyEvents(dayToSearch) {
 
 
 
-    const TODAY_EVENTS = await getEventDay(dayToSearch,EMPRESA_ID);
+    const TODAY_EVENTS = await getEventDay(dayToSearch, EMPRESA_ID);
 
-    console.log('TODAY_EVENTS',TODAY_EVENTS);
-    console.log('TODAY_EVENTS',TODAY_EVENTS);
-    console.log('TODAY_EVENTS',TODAY_EVENTS);
+    console.log('TODAY_EVENTS', TODAY_EVENTS);
+    console.log('TODAY_EVENTS', TODAY_EVENTS);
+    console.log('TODAY_EVENTS', TODAY_EVENTS);
 
     const LIST_CONTAINER = $('#daily-event-list');
     let bgClass = "bg-cyan";
@@ -288,22 +288,22 @@ async function printDailyEvents(dayToSearch) {
     TODAY_EVENTS.data.forEach((event) => {
         let color = '';
 
-        if(event.status_id == 1){ color = '#939395'}
-        if(event.status_id == 4){ color = '#2F80ED'}
-        if(event.status_id == 2){ color = '#27AE60'}
-        if(event.status_id == 3){ color = '#7445C4'}
-        if(event.status_id == 5){ color = '#EB5757'}
-        if(event.status_id == 6){ color = 'linear-gradient(352.5deg, rgba(235,87,87,1) 0%, rgba(224,85,97,1) 50%, #2D85FB 50%)'};
+        if (event.status_id == 1) { color = '#939395' }
+        if (event.status_id == 4) { color = '#2F80ED' }
+        if (event.status_id == 2) { color = '#27AE60' }
+        if (event.status_id == 3) { color = '#7445C4' }
+        if (event.status_id == 5) { color = '#EB5757' }
+        if (event.status_id == 6) { color = 'linear-gradient(352.5deg, rgba(235,87,87,1) 0%, rgba(224,85,97,1) 50%, #2D85FB 50%)' };
 
 
         let eventOwner = "";
-        if(event.owner !== null){
+        if (event.owner !== null) {
 
             let eventOwnerArray = event.owner.split(' ');
 
-            if(eventOwnerArray.length > 1){
+            if (eventOwnerArray.length > 1) {
                 eventOwner = `${eventOwnerArray[0][0].toUpperCase()}${eventOwnerArray[1][0].toUpperCase()}`
-            }else{
+            } else {
                 eventOwner = `${eventOwnerArray[0][0].toUpperCase()}`
             }
         }
@@ -314,7 +314,7 @@ async function printDailyEvents(dayToSearch) {
             bgClass = "bg-violet"
         };
 
-        
+
         let section = `<div class="event-data-container " style="background:${color};" event_id="${event.id}">
           <div class="--dly-ev-data-body">
             <div class="--dly-logo">
@@ -333,8 +333,8 @@ async function printDailyEvents(dayToSearch) {
     })
 }
 
-$(document).on('click','.event-data-container',function(){
-    const EVENT_ID =  $(this).attr('event_id');
+$(document).on('click', '.event-data-container', function () {
+    const EVENT_ID = $(this).attr('event_id');
     openEvent(EVENT_ID);
 });
 
@@ -353,14 +353,14 @@ function todayEvents() {
         }
     })
 }
-function getEventDay(date,empresa_id) {
+function getEventDay(date, empresa_id) {
     return $.ajax({
         type: "POST",
         url: 'ws/proyecto/proyecto.php',
         data: JSON.stringify({
             action: "getEventDay",
             'date': date,
-            'empresa_id' : empresa_id
+            'empresa_id': empresa_id
         }),
         dataType: 'json',
         success: function (response) {
@@ -390,7 +390,7 @@ function getDifferencePercentajeBetweenData_CurMonth_LastMonth(lastMonthValue, c
     }
 }
 
-function setQuantityResumePercentaje(eventAmountCurrentMonth,currentMonthIncome,currentLeftEvents) {
+function setQuantityResumePercentaje(eventAmountCurrentMonth, currentMonthIncome, currentLeftEvents) {
     $('#eventAmountCurrentMonth').text(`${eventAmountCurrentMonth}`)
     $('#dash-amountIncome').text(`${CLPFormatter(currentMonthIncome)}`);
     $('#currentMonthLeftEvents').text(`${currentLeftEvents}`)
@@ -454,7 +454,7 @@ async function getDashResume(empresa_id) {
         type: "POST",
         url: 'ws/proyecto/proyecto.php',
         data: JSON.stringify({
-            'empresa_id': empresa_id, 
+            'empresa_id': empresa_id,
             'action': "getDashResume"
         }),
         dataType: 'json',
@@ -472,143 +472,134 @@ async function getDashResume(empresa_id) {
 
 // chart
 
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function (event) {
     getAnualIncome(EMPRESA_ID);
     console.log('kjajajaj')
 
-  });
+});
 
-
-
-
-
-
-
-  function getAnualIncome(empresa_id) {
+function getAnualIncome(empresa_id) {
     fetch('ws/finance/getAnualIncomeResume.php', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          request: {
-            empresa_id: empresa_id
-          }
+            request: {
+                empresa_id: empresa_id
+            }
         })
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error en la solicitud 1');
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Manejar la respuesta exitosa aquí
-        console.log(data);
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la solicitud 1');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Manejar la respuesta exitosa aquí
+            console.log(data);
 
 
-        const CHART_DATA = data.anualIncome.map((row) => {
-          return {
-            'month': row.month,
-            'totalMonthIncome': parseInt(row.total_month_income),
-            'totalEventCount': row.total_event_count
-          }
+            const CHART_DATA = data.anualIncome.map((row) => {
+                return {
+                    'month': row.month,
+                    'totalMonthIncome': parseInt(row.total_month_income),
+                    'totalEventCount': row.total_event_count
+                }
+            });
+
+            console.log('CHART_DATA', CHART_DATA)
+            renderChartAnualIncome(CHART_DATA);
+        })
+        .catch(error => {
+            // Manejar errores aquí
+            console.error('Error en la solicitud:', error);
         });
-
-        console.log('CHART_DATA', CHART_DATA)
-        renderChartAnualIncome(CHART_DATA);
-      })
-      .catch(error => {
-        // Manejar errores aquí
-        console.error('Error en la solicitud:', error);
-      });
-  }
-
-
-
-  function formatNumber(value) {
-  value /= 1000_000;
-  return `${Math.floor(value)}M`;
 }
 
+function formatNumber(value) {
+    value /= 1000_000;
+    return `${Math.floor(value)}M`;
+}
 
-  function renderChartAnualIncome(chartData) {
+function renderChartAnualIncome(chartData) {
     // Chart Options
     const options = {
-      // Container: HTML Element to hold the chart
+        // Container: HTML Element to hold the chart
         //   height:{}
-      height : 540,
-      container: document.getElementById('myChart'),
-      data: chartData,
-      title: { text: "Eventos" },
-      series: [
-        // Existing 'Bar' Series, using 'iceCreamSales' data-points
-        {
-          type: 'bar',
-          CornerRadius: 20,
-          xKey: 'month',
-          yKey: 'totalEventCount',
-          direction: 'vertical',
-          yName: 'Venta',
-          fill: '#FFF',
-          label: {
-            formatter: ({ value }) => `${value}`,
-            color: 'black'
-          },
-          strokeWidth: 10,
-          lineDash: [0,15],
+        height: 540,
+        container: document.getElementById('myChart'),
+        data: chartData,
+        title: { text: "Eventos" },
+        series: [
+            // Existing 'Bar' Series, using 'iceCreamSales' data-points
+            {
+                type: 'bar',
+                CornerRadius: 20,
+                xKey: 'month',
+                yKey: 'totalEventCount',
+                direction: 'vertical',
+                yName: 'Venta',
+                fill: '#FFF',
+                label: {
+                    formatter: ({ value }) => `${value}`,
+                    color: 'black'
+                },
+                strokeWidth: 10,
+                lineDash: [0, 15],
+            },
+            {
+                type: 'line',
+                xKey: 'month',
+                yKey: 'totalMonthIncome',
+                stroke: '#6136AB',
+                strokeWidth: 2,
+                strokeOpacity: .3,
+                lineDash: [8, 3],
+                marker: {
+                    shape: 'diamond',
+                    size: 8,
+                    fill: '#6136AB'
+                }
+            }
+        ],
+        axes: [{
+            type: 'category',
+            position: 'bottom'
         },
         {
-          type: 'line',
-          xKey: 'month',
-          yKey: 'totalMonthIncome',
-          stroke:'#6136AB',
-          strokeWidth : 2,
-          strokeOpacity: .3,
-          lineDash: [8,3],
-          marker:{
-            shape:'diamond',
-            size: 8,
-            fill: '#6136AB'
-          }
-        }
-      ],
-      axes: [{
-          type: 'category',
-          position: 'bottom'
+            type: 'number',
+            position: 'right',
+            keys: ['totalMonthIncome'],
+            label: {
+                formatter: ({ value }) => formatNumber(value),
+            },
+            //   tick: {
+            //     minSpacing: 1,
+            //   },
+            gridLine: {
+                enabled: false,
+            },
         },
         {
-          type: 'number',
-          position: 'right',
-          keys: ['totalMonthIncome'],
-          label: {
-            formatter: ({ value }) => formatNumber(value),
-          },
-        //   tick: {
-        //     minSpacing: 1,
-        //   },
-          gridLine: {
-            enabled: false,
-          },
+            type: 'number',
+            position: 'left',
+            keys: ['totalEventCount'],
+            gridLine: {
+                enabled: false,
+            },
         },
-        {
-          type: 'number',
-          position: 'left',
-          keys: ['totalEventCount'],
-          gridLine: {
-            enabled: false,
-          },
+        ],
+        background: {
+            fill: 'linear-gradient(358deg, #069B99 1.07%, #0BBEBB 61.75%, #10E5E1 108.47%)',
         },
-      ],
-      background: {
-        fill: 'linear-gradient(358deg, #069B99 1.07%, #0BBEBB 61.75%, #10E5E1 108.47%)',
-      },
     };
 
     // Create Chart
     const chart = agCharts.AgCharts.create(options);
 
-  }
+}
 
 
 
