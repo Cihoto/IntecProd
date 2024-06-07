@@ -24,6 +24,7 @@ function getFinanceEventDetail(empresa_id) {
     console.log(data);
     EVENT_TABLE_DATA = data.eventDetails;
     renderFinancialEventDetails(data.eventDetails);
+    setAllMyCustomers(data.eventDetails);
 
   })
   .catch(error => {

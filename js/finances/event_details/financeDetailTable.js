@@ -1,5 +1,7 @@
 const FINANCE_EVENT_DETAIL_TABLE_BODY = document.querySelector('#financeEventDetail tbody');
+const TOTAL_INCOME = document.getElementById('totalEvents');
 let EVENT_TABLE_DATA = [];
+let total_income = 0;
 
 // COPY FROM RESUME PROJECT
 const PERCENTAJE_COLORS = {
@@ -20,8 +22,6 @@ const PERCENTAJE_COLORS = {
 
 function renderFinancialEventDetails(eventDetails) {
 
-
-
   while (FINANCE_EVENT_DETAIL_TABLE_BODY.firstChild) {
     FINANCE_EVENT_DETAIL_TABLE_BODY.removeChild(FINANCE_EVENT_DETAIL_TABLE_BODY.firstChild);
   }
@@ -32,6 +32,8 @@ function renderFinancialEventDetails(eventDetails) {
     newRow.setAttribute('event_id', eventRow.eventId);
     FINANCE_EVENT_DETAIL_TABLE_BODY.appendChild(newRow);
   });
+
+  calculateTotalIncome(eventDetails)
 
 }
 
@@ -55,13 +57,7 @@ function createNewRow(eventRow) {
         </button>
         <p>${eventRow.event_name}</p>
         <button>
-          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
-            <path d="M11 1.5H5C4.60218 1.5 4.22064 1.65804 3.93934 1.93934C3.65804 2.22064 3.5 2.60218 3.5 3V15C3.5 15.3978 3.65804 15.7794 3.93934 16.0607C4.22064 16.342 4.60218 16.5 5 16.5H14C14.3978 16.5 14.7794 16.342 15.0607 16.0607C15.342 15.7794 15.5 15.3978 15.5 15V6L11 1.5Z" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M12.5 12.75H6.5" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M12.5 9.75H6.5" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M8 6.75H7.25H6.5" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M11 1.5V6H15.5" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
+          ${getifEventHasDocuments(eventRow.creditedBalance)}
         </button>
         <button class="redirectToEvent">
           <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
@@ -72,9 +68,9 @@ function createNewRow(eventRow) {
         </button>
       </td>
       <td>${getDateFormatted(eventRow.event_init_date)}</td>
+      <td>${CLPFormatter(eventRow.event_income)}</td>
       <td>${CLPFormatter(eventRow.event_cost)}</td>
       <td>${getWorth(eventRow.event_income, eventRow.event_cost)}</td>
-      <td>${CLPFormatter(eventRow.event_income)}</td>
       <td>${createProgressBar(eventRow.creditedBalance)}</td>
     </tr>`;
 
@@ -82,6 +78,23 @@ function createNewRow(eventRow) {
   return nuevaFilaHtml;
 }
 
+
+function calculateTotalIncome(events) {
+
+  let income = 0;
+  events.forEach((ev) => {
+    if (ev.event_income === "" || ev.event_income === null || ev.event_income === undefined) {
+      income += 0;
+    } else {
+      income += parseInt(ev.event_income);
+    }
+  });
+
+  total_income = income;
+
+
+  TOTAL_INCOME.textContent = CLPFormatter(income);
+}
 
 function getWorth(totalIncome, costs) {
   return CLPFormatter(totalIncome - costs);
@@ -137,11 +150,11 @@ function resetAllArrows() {
 
 function createNewEventDetail(event_data) {
 
-console.log('NEW DETAILS DATA ', event_data);
 
-const CREDITED_AMOUNTS = setCreditedAmountsAndData(event_data.creditedBalance);
-const COSTS = setEventCosts(event_data.otherCost_json,event_data.selectedPersonal_json,event_data.selectedVehicles_json,event_data.selected_prods_json,event_data.subRent_json)
-return `<tr class="-event-data-info" evId_dt="${event_data.eventId}">
+  const CREDITED_AMOUNTS = setCreditedAmountsAndData(event_data.creditedBalance);
+  const COSTS = setEventCosts(event_data.otherCost_json, event_data.selectedPersonal_json, event_data.selectedVehicles_json, event_data.selected_prods_json, event_data.subRent_json);
+
+  return `<tr class="-event-data-info" evId_dt="${event_data.eventId}">
   <td colspan="6">
     <div class="--ev-detailsOnTable">
 
@@ -156,7 +169,7 @@ return `<tr class="-event-data-info" evId_dt="${event_data.eventId}">
 
         <div class="ev-det-info-general">
           <div class="--ev-det-group">
-            <p class="--ev-det-title">Cliente</p>
+            <p class="--ev-det-title --py">Cliente</p>
             <p class="--ev-det-desc">${setClientNameOnEventDetail(event_data.client_name, event_data.df_client_name)}</p>
           </div>
 
@@ -184,7 +197,7 @@ return `<tr class="-event-data-info" evId_dt="${event_data.eventId}">
 
         <div class="ev-det-info-general ">
           <div class="--ev-det-group">
-            <p class="--ev-det-title">Total Costos:</p>
+            <p class="--ev-det-title --py">Total Costos:</p>
             <p class="--ev-det-desc">${CLPFormatter(COSTS.total)}</p>
           </div>
           <div class="--ev-det-group">
@@ -229,7 +242,6 @@ function setClientNameOnEventDetail(client_name, df_client_name) {
 
 }
 
-
 function setCreditedAmountsAndData(creditedData) {
 
 
@@ -267,145 +279,182 @@ function setCreditedAmountsAndData(creditedData) {
 }
 
 
-function setEventCosts(others,personal,vehicles,prod,subRent){
+function setEventCosts(others, personal, vehicles, prod, subRent) {
 
-let costData = {
-  'otherProds' : getOtherProdsCost(others),
-  'personal' : getPersonalCost(personal),
-  'subRent' : getSubRentCost(subRent),
-  'vehicle' : getVehiclesCost(vehicles),
-  'total': 0
-}
+  let costData = {
+    'otherProds': getOtherProdsCost(others),
+    'personal': getPersonalCost(personal),
+    'subRent': getSubRentCost(subRent),
+    'vehicle': getVehiclesCost(vehicles),
+    'total': 0
+  }
 
   costData.total = setTotalCosts(costData);
 
-  console.log(costData)
-
   return costData
 }
-function setTotalCosts(costs){
 
-  return  costs.otherProds + costs.personal + costs.subRent + costs.vehicle;
+function setTotalCosts(costs) {
+
+  return costs.otherProds + costs.personal + costs.subRent + costs.vehicle;
 }
 
-
-function getVehiclesCost(vehicleInfo){
+function getVehiclesCost(vehicleInfo) {
   let vehicleData = JSONisValid(vehicleInfo);
-  if(!vehicleData){
+  if (!vehicleData) {
     return 0;
   }
 
-  console.log('vehicleData',vehicleData);
-
-
-  const TOTAL_VEHICLES = vehicleData.map((vehicle)=>{
+  const TOTAL_VEHICLES = vehicleData.map((vehicle) => {
     return parseInt(vehicle.cantidadViajes) * parseInt(vehicle.tripValue);
   });
 
-  return addNumberArray(TOTAL_VEHICLES); 
+  return addNumberArray(TOTAL_VEHICLES);
 
 
 }
 
-function getSubRentCost(subRentObj){
+function getSubRentCost(subRentObj) {
   let subRentData = JSONisValid(subRentObj);
-  if(!subRentData){
+  if (!subRentData) {
     return 0;
   }
 
-  console.log('subRentData',subRentData);
 
-  const TOTAL_SUBRENT = subRentData.map((subRent)=>{
+  const TOTAL_SUBRENT = subRentData.map((subRent) => {
     return parseInt(subRent.valor);
   });
 
-  return addNumberArray(TOTAL_SUBRENT); 
+  return addNumberArray(TOTAL_SUBRENT);
 
 
 }
 
-function getPersonalCost(personalObj){
+function getPersonalCost(personalObj) {
   let personalData = JSONisValid(personalObj);
 
-  console.log('SUBRENTTTTT', personalData)
-  if(!personalData){
+  if (!personalData) {
     return 0;
   }
 
-  console.log('personalData',personalData);
 
+  const TOTAL_PERSONAL = personalData.map((personal) => {
 
-  const TOTAL_PERSONAL = personalData.map((personal)=>{
-
-    if(personal.contrato.toUpperCase() === 'FREELANCE'){
+    if (personal.contrato.toUpperCase() === 'FREELANCE') {
       return parseInt(personal.neto)
-    }else{
+    } else {
 
       return parseInt(personal.neto) * parseInt(personal.horasTrabajadas);
     }
   });
 
-  console.log(TOTAL_PERSONAL)
-
-  return addNumberArray(TOTAL_PERSONAL); 
+  return addNumberArray(TOTAL_PERSONAL);
 
 
 }
 
-function getOtherProdsCost(othersObj){
+function getOtherProdsCost(othersObj) {
   let othersData = JSONisValid(othersObj);
 
-  if(!othersData){
+  if (!othersData) {
     return 0;
   }
-  const TOTAL_OTHERS = othersData.map((other)=>{
+  const TOTAL_OTHERS = othersData.map((other) => {
     return parseInt(other.monto);
   });
 
-  return addNumberArray(TOTAL_OTHERS); 
+  return addNumberArray(TOTAL_OTHERS);
 }
 
+function JSONisValid(strJSON) {
 
-function JSONisValid(strJSON){
-
-  
   if (strJSON === '' || strJSON === null || strJSON === 'null' || strJSON === '[]') {
     return false;
-  } 
+  }
   console.log("!");
-  // strJSON = JSON.parse(strJSON); 
+  strJSON = JSON.parse(strJSON);
   console.log(strJSON)
   for (let index = 0; index < 10; index++) {
-    console.log('index',index);
+    // console.log('index',index);
 
-    if(!Array.isArray(strJSON)){
-      strJSON = JSON.parse(strJSON); 
-    }else{
+    if (!Array.isArray(strJSON)) {
+      strJSON = JSON.parse(strJSON);
+    } else {
       break
     }
   }
 
-  if(!Array.isArray(strJSON)){
+  if (!Array.isArray(strJSON)) {
     return false;
   }
   return strJSON;
 }
 
-
-function addNumberArray(numArr){
+function addNumberArray(numArr) {
   let total = 0;
 
-  numArr.forEach((num)=>{
-    total +=  num;
+  numArr.forEach((num) => {
+    total += num;
   })
 
   return total;
 }
 
-
-
-function removeEventDetails(event_id){
+function removeEventDetails(event_id) {
 
   console.log($(`.-event-data-info[evId_dt="${event_id}"]`));
   $(`.-event-data-info[evId_dt="${event_id}"]`).remove();
+}
+
+function setRowSelected(row) {
+
+  console.log(row)
+  $(row).closest('tr').addClass('--act-show-data')
+}
+
+
+function getifEventHasDocuments(str_financeObj) {
+
+  console.log('str_financeObj', str_financeObj);
+
+
+  // let creditedBalance = JSONisValid(str_financeObj);
+
+  if (str_financeObj === '' || str_financeObj === null || str_financeObj === 'null') {
+
+    return ``;
+  }
+
+  str_financeObj = JSON.parse(str_financeObj);
+
+  console.log('str_financeObj 102938019380193801923801928301928301', str_financeObj);
+
+  if(str_financeObj.hasDocument === ''){
+    return '';
+  }
+  if (str_financeObj.hasDocument) {
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+    <path d="M11 1.5H5C4.60218 1.5 4.22064 1.65804 3.93934 1.93934C3.65804 2.22064 3.5 2.60218 3.5 3V15C3.5 15.3978 3.65804 15.7794 3.93934 16.0607C4.22064 16.342 4.60218 16.5 5 16.5H14C14.3978 16.5 14.7794 16.342 15.0607 16.0607C15.342 15.7794 15.5 15.3978 15.5 15V6L11 1.5Z" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M12.5 12.75H6.5" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M12.5 9.75H6.5" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  />
+    <path d="M8 6.75H7.25H6.5" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11 1.5V6H15.5" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  />
+    </svg>`
+  }
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+  <g clip-path="url(#clip0_2089_28414)">
+    <path d="M9.54004 16.5C13.6822 16.5 17.04 13.1421 17.04 9C17.04 4.85786 13.6822 1.5 9.54004 1.5C5.3979 1.5 2.04004 4.85786 2.04004 9C2.04004 13.1421 5.3979 16.5 9.54004 16.5Z" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.54004 9H12.54" stroke="#8B8D97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_2089_28414">
+      <rect width="18" height="18" fill="white" transform="translate(0.540039)"/>
+    </clipPath>
+  </defs>
+</svg>`;
+
+
+  // if(){}
+
 }

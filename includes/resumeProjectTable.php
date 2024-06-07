@@ -3,7 +3,7 @@
         <div class="form-group col-lg-4 col-12">
             <label for="event_payment_method" class="inputLabel">*Tipo de evento</label>
             <select style="width: 100%;" id="event_payment_method" name="event_payment_method" type="text" class="form-select input-lg s-Select">
-                <option value="1">Seleccione</option>
+                <option value="">Seleccione</option>
                 <option value="1">Con documento</option>
                 <option value="0">Sin documento </option>
             </select>

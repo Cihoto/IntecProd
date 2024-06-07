@@ -46,6 +46,11 @@ const PERCENTAJE_COLORS = {
 }
 
 EVE_PAYMENT_METHOD.addEventListener('change',function(){
+    if(this.value === ''){
+        payment_data.hasDocument = '';
+        console.log(payment_data.hasDocument);
+        return 
+    }
     if(this.value === '1'){
         payment_data.hasDocument = true;
         return 

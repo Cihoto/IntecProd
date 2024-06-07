@@ -257,8 +257,11 @@
     <a href="./finances.php" class="sidebar-link sidebar-in">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
         <g clip-path="url(#clip0_1957_52303)">
-          <path d="M12 1.61328V23.6133" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M17 5.61328H9.5C8.57174 5.61328 7.6815 5.98203 7.02513 6.63841C6.36875 7.29479 6 8.18502 6 9.11328C6 10.0415 6.36875 10.9318 7.02513 11.5882C7.6815 12.2445 8.57174 12.6133 9.5 12.6133H14.5C15.4283 12.6133 16.3185 12.982 16.9749 13.6384C17.6313 14.2948 18 15.185 18 16.1133C18 17.0415 17.6313 17.9318 16.9749 18.5882C16.3185 19.2445 15.4283 19.6133 14.5 19.6133H6" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M12 1.61328V23.6133" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M17 5.61328H9.5C8.57174 5.61328 7.6815 5.98203 7.02513 6.63841C6.36875 7.29479 6 8.18502 6 9.11328C6 10.0415 
+          6.36875 10.9318 7.02513 11.5882C7.6815 12.2445 8.57174 12.6133 9.5 12.6133H14.5C15.4283 12.6133 16.3185 
+          12.982 16.9749 13.6384C17.6313 14.2948 18 15.185 18 16.1133C18 17.0415 17.6313 17.9318 16.9749 18.5882C16.3185 
+          19.2445 15.4283 19.6133 14.5 19.6133H6" stroke="#00B4B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </g>
         <defs>
           <clipPath id="clip0_1957_52303">
