@@ -210,11 +210,11 @@ $active = 'inventario';
         // getCatsFromInventory();
 
         const subCats = await GetItems();
-        console.log('SUBCATSS',subCats);
-        console.log('SUBCATSS',subCats);
-        console.log('SUBCATSS',subCats);
-        console.log('SUBCATSS',subCats);
-        console.log('SUBCATSS',subCats);
+        console.log('SUBCATSS', subCats);
+        console.log('SUBCATSS', subCats);
+        console.log('SUBCATSS', subCats);
+        console.log('SUBCATSS', subCats);
+        console.log('SUBCATSS', subCats);
         printAllSubcatsOnProdData(subCats);
 
         fileInput.addEventListener('change', function() {
@@ -247,11 +247,11 @@ $active = 'inventario';
                 json.forEach(cat => {
                     let opt = $(select).append(new Option(capitalizeFirstLetter(cat.nombre), cat.id))
                 });
-                console.log('getCatsFromInventory',json);
-                console.log('getCatsFromInventory',json);
-                console.log('getCatsFromInventory',json);
-                console.log('getCatsFromInventory',json);
-                console.log('getCatsFromInventory',json);
+                console.log('getCatsFromInventory', json);
+                console.log('getCatsFromInventory', json);
+                console.log('getCatsFromInventory', json);
+                console.log('getCatsFromInventory', json);
+                console.log('getCatsFromInventory', json);
             })
             .catch((err) => console.log(err));
     }
@@ -275,10 +275,10 @@ $active = 'inventario';
                 json.forEach(cat => {
                     let opt = $(select).append(new Option(capitalizeFirstLetter(cat.marca), cat.id))
                 });
-                console.log('getBrandFromInventory',json)
-                console.log('getBrandFromInventory',json)
-                console.log('getBrandFromInventory',json)
-                console.log('getBrandFromInventory',json)
+                console.log('getBrandFromInventory', json)
+                console.log('getBrandFromInventory', json)
+                console.log('getBrandFromInventory', json)
+                console.log('getBrandFromInventory', json)
             })
             .catch((err) => console.log(err));
     }
