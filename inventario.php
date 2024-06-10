@@ -163,7 +163,7 @@ $active = 'inventario';
 
     function getCatsFromInventory(empresa_id) {
 
-        fetch('/ws/productos/GetCategories.php', {
+        fetch('ws/productos/GetCategories.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -192,7 +192,7 @@ $active = 'inventario';
     function getBrandFromInventory() {
 
 
-        fetch('/ws/productos/GetBrands.php', {
+        fetch('ws/productos/GetBrands.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
