@@ -30,6 +30,11 @@ $active = 'inventario';
 </body>
 
 <script>
+
+
+document.addEventListener("DOMContentLoaded", (event) => {
+    getCatsFromInventory(2)
+});
     function getCatsFromInventory(empresa_id) {
 
 fetch('/ws/productos/getCategories.php', {
