@@ -137,9 +137,9 @@ $active = 'inventario';
     <script src="./js/validateForm/createNewProductSideMenu.js"></script>
 </body>
 <script>
-    // const IDEMPRESA = document.getElementById('empresaId').textContent;
-    // const EMPRESA_ID = $('#empresaId').text();
-    const EMPRESA_ID = 2;
+    const IDEMPRESA = <?php echo $empresaId; ?>;
+    const EMPRESA_ID = <?php echo $empresaId; ?>;
+    // const EMPRESA_ID = 2;
 
 
     // let _allCats = [];
