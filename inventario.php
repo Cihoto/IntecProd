@@ -24,7 +24,6 @@ $active = 'inventario';
 <body>
     <?php include_once('./includes/Constantes/empresaId.php') ?>
     <?php include_once('./includes/Constantes/rol.php') ?>
-    <script src="./assets/js/initTheme.js"></script>
     <div id="app">
 
         <?php require_once('./includes/sidebar.php');?>
@@ -55,9 +54,9 @@ $active = 'inventario';
                     </div>
 
                     <div class="row justify-content-end col-7" style="margin:0px; gap :8px;">
-                        <button class="s-Button" id="buttonProductoUnitario" onclick="openCreateProdSideMenu()">
+                        <!-- <button class="s-Button" id="buttonProductoUnitario" onclick="openCreateProdSideMenu()">
                             <p class="s-P">Agregar nuevo producto</p>
-                        </button>
+                        </button> -->
                         <button class="s-Button" id="buttonProductosMasiva">
                             <p class="s-P">Agregar producto masivo</p>
                         </button>
@@ -99,42 +98,7 @@ $active = 'inventario';
 
     <?php require_once('./includes/footerScriptsJs.php') ?>
 
-    <!-- Side Menu -->
-    <?php require_once('./includes/sidemenu/productoMasivaSideMenu.php') ?>
-    <?php require_once('./includes/sidemenu/addNewProductSideMenu.php') ?>
-
-    <!-- Validador intec -->
-    <script src="./js/valuesValidator/validator.js"></script>
-
-    <!-- Validate.js -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
-
-    <!-- xlsx Reader -->
-    <script src="js/xlsxReader.js"></script>
-    <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
-
-    <!-- JS FUNCTIONS REFERENCES -->
-    <script src="/js/valuesValidator/validator.js"></script>
-    <script src="/js/inventory/invTable/printInvTable.js"></script>
-    <script src="/js/inventory/catsAndSubcats/catAndSubcatsSelector.js"></script>
-    <script src="/js/inventory/invHandlers.js"></script>
-
-
-
-    <!-- <script src="/js/categorias.js"></script>
-    <script src="/js/marca.js"></script> -->
-    <!-- <script src="/js/item.js"></script> -->
-    <script src="/js/bottomBar.js"></script>
-
-
-    <!-- PROD GET UPDATE FUNCTIONS -->
-    <script src="./js/products/getProductInfo.js"></script>
-    <!-- PRODS SIDE MENUS -->
-    <?php require_once('./includes/sidemenu/productDataSideMenu.php'); ?>
-    <!-- UPDATE PRODUCT FORM VALIDATION -->
-    <script src="./js/validateForm/updateProduct.js"></script>
-    <!-- FORM VALIDATION -->
-    <script src="./js/validateForm/createNewProductSideMenu.js"></script>
+   
 </body>
 <script>
     const IDEMPRESA = <?php echo $empresaId; ?>;
