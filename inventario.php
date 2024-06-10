@@ -53,7 +53,21 @@ $active = 'inventario';
 ?>
 
 <body>
- 
+    <?php include_once('./includes/Constantes/empresaId.php') ?>
+    <?php include_once('./includes/Constantes/rol.php') ?>
+    <script src="./assets/js/initTheme.js"></script>
+    <div id="app">
+
+        <?php
+        require_once('./includes/sidebar.php');
+        ?>
+
+        <div id="main">
+
+            <?php require_once('./includes/footer.php') ?>
+        </div>
+    </div>
+
     <?php require_once('./includes/footerScriptsJs.php') ?>
 
 
@@ -96,8 +110,9 @@ $active = 'inventario';
     <!-- <script src="./js/validateForm/createNewProductSideMenu.js"></script> -->
 </body>
 <script>
-    const IDEMPRESA = document.getElementById('empresaId').textContent;
-    const EMPRESA_ID = $('#empresaId').text();
+    // const IDEMPRESA = document.getElementById('empresaId').textContent;
+    // const EMPRESA_ID = $('#empresaId').text();
+    const EMPRESA_ID = 2;
 
 
     // let _allCats = [];
