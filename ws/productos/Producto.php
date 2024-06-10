@@ -440,15 +440,14 @@ function addProdsMasiva($requestProds, $empresa_id)
         // "precioCompra"
         // "precioArriendo"
         // 'sku'    
+        
         foreach ($requestProds as $key => $request) {
             $catHasSub_id = '';
             $marca_id = "NULL";
 
-
             $queryGetCatHasSub = "SELECT * FROM categoria_has_item chi 
             WHERE chi.categoria_id = $request->categoria_id 
             AND chi.item_id = $request->subCat_id;";
-
 
             if ($response = $conn->mysqli->query($queryGetCatHasSub)) {
                 $request->categoria_id = intval($request->categoria_id);

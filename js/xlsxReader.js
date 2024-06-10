@@ -190,6 +190,9 @@ async function xlsxReadandWrite(arrayHead){
             for(i = 0 ; i < rowCount ; i++){
                 td += `<tr>`
                 cell = xlsxRow[i]
+                console.log('cell',cell);
+                console.log('cell',cell);
+                console.log('cell',cell);
                 
                 let tempTrComponents = [];
                 for (j = 0 ; j < arrayCount ; j ++){
@@ -277,7 +280,6 @@ async function xlsxReadandWrite(arrayHead){
             tBody = td;
             table = [tHead , tBody]
             return {"table" : table, "headers": tHeadData ,"body" : tBodyData}
-
 
         }else{
             return {"error" : true, "message" : "El archivo cargado no es el corespondiente, por favor descargue nuestro excel tipo"}

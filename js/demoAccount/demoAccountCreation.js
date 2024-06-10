@@ -1,7 +1,46 @@
 
+function newDemoAccount(){
+    
+    let array = {
+        "categoria": value[0],
+        "item": value[1],
+        "categoria_id": CAT_EXISTS.id,
+        "subCat_id": SUBCAT_EXISTS.id,
+        "nombre": value[2],
+        "marca": value[3],
+        "modelo": value[4],
+        "stock": value[5],
+        "precioCompra": value[6] === "" ? 0 : value[6],
+        "precioArriendo": value[7] === "" ? 0 : value[7],
+        'sku': ""
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 async function activateDemoDataonNewAccount(empresaId) {
+
+    addProductsMasivaonDemoAccount()
+    return 
 
     const DEMOACCOUNT = await createDemoAccount(empresaId);
     // console.log('DEMOACCOUNT', DEMOACCOUNT);

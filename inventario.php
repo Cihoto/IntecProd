@@ -186,10 +186,6 @@ $active = 'inventario';
         
         const catsSubCats = await getCatsAndSubCatsByBussiness(EMPRESA_ID);
         console.log('catsSubCats',catsSubCats);
-        console.log('catsSubCats',catsSubCats);
-        console.log('catsSubCats',catsSubCats);
-        console.log('catsSubCats',catsSubCats);
-        console.log('catsSubCats',catsSubCats);
         const prods = await getAllMyProductsToList(EMPRESA_ID);
 
         if (catsSubCats.success) {
@@ -203,10 +199,6 @@ $active = 'inventario';
         }
         if (prods) {
             _allProductsToList = prods;
-            console.log('_allProductsToList',_allProductsToList);
-            console.log('_allProductsToList',_allProductsToList);
-            console.log('_allProductsToList',_allProductsToList);
-            console.log('_allProductsToList',_allProductsToList);
             console.log('_allProductsToList',_allProductsToList);
             printMyProducts();
         }
@@ -325,7 +317,7 @@ $active = 'inventario';
     $('#excel_input').on('change', async function() {
         const exInput = document.getElementById('excel_input');
 
-        console.log($(exInput).files)
+        console.log($(exInput).files);
 
         const extension = GetFileExtension()
         if (extension == "xlsx") {
@@ -584,7 +576,6 @@ $active = 'inventario';
                     "precioCompra": value[6] === "" ? 0 : value[6],
                     "precioArriendo": value[7] === "" ? 0 : value[7],
                     'sku': ""
-
                 }
                 return returnArray
             }
