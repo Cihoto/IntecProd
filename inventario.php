@@ -219,25 +219,48 @@ $active = 'inventario';
 
 
 
+    // function getCatsFromInventory() {
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "ws/categoria_item/categoria.php",
+    //         data: JSON.stringify({
+    //             action: "getCategorias",
+    //             empresaId: IDEMPRESA
+    //         }),
+    //         dataType: 'json',
+    //         success: async function(data) {
+    //             let select = $('#categoriaSelect')
+    //             data.forEach(cat => {
+    //                 let opt = $(select).append(new Option(capitalizeFirstLetter(cat.nombre), cat.id))
+    //             })
+    //         },
+    //         error: function(response) {
+
+    //             console.log(response.responseText);
+
+    //         }
+    //     })
+
+
+
+        
+    // }
+
+
     function getCatsFromInventory() {
-        $.ajax({
+        return $.ajax({
             type: "POST",
-            url: "ws/categoria_item/categoria.php",
-            data: JSON.stringify({
-                action: "getCategorias",
-                empresaId: IDEMPRESA
-            }),
+            url: "ws/productos/Producto.php",
             dataType: 'json',
-            success: async function(data) {
-                let select = $('#categoriaSelect')
-                data.forEach(cat => {
-                    let opt = $(select).append(new Option(capitalizeFirstLetter(cat.nombre), cat.id))
-                })
+            data: JSON.stringify({
+                "action": "addProdsMasiva",
+                'empresaId': EMPRESA_ID
+            }),
+            success: function(response) {
+
             },
-            error: function(response) {
-
-                console.log(response.responseText);
-
+            error: function(error) {
+                console.log(error);
             }
         })
     }

@@ -1,8 +1,5 @@
 <?php
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
+
 if ($_POST) {
     require_once('../bd/bd.php');
 
@@ -44,10 +41,10 @@ function GetCategorias($empresaId){
     $response = [];
 
     $querySelectCategorias ="SELECT c.id,c.nombre  from categoria c 
-INNER JOIN categoria_has_item chi on chi.categoria_id = c.id 
-INNER JOIN producto p on p.categoria_has_item_id =chi.id 
-where p.empresa_id = $empresaId
-GROUP BY c.nombre";
+    INNER JOIN categoria_has_item chi on chi.categoria_id = c.id 
+    INNER JOIN producto p on p.categoria_has_item_id =chi.id 
+    where p.empresa_id = $empresaId
+    GROUP BY c.nombre";
 
     // return $querySelectCategorias; 
 
