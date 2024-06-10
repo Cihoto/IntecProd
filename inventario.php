@@ -68,7 +68,7 @@ $active = 'inventario';
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <circle cx="6" cy="6" r="6" fill="#069B99" />
                     </svg>
-                    <p class="header-P">Aquí puedes ver, editar el inventario123123</p>
+                    <p class="header-P">Aquí puedes ver, editar el inventario</p>
                 </div>
                 <div class="row justify-content-between align-items-center">
 
@@ -177,24 +177,28 @@ $active = 'inventario';
     const EMPRESA_ID = $('#empresaId').text();
 
 
-    let _allCats = [];
-    let _allSubCats_ = [];
+    // let _allCats = [];
+    // let _allSubCats_ = [];
     
-    let tempCats = [];
-    let tempSubCats = [];
+    // let tempCats = [];
+    // let tempSubCats = [];
     const fileInput = document.getElementById('excel_input');
     const fileNameDisplay = document.getElementById('fileName');
     const fileLabel = document.getElementById('fileLabel');
 
     $(document).ready(async function() {
-        
+
         getCatsFromInventory(EMPRESA_ID);
         getBrandFromInventory();
 
 
-
+        console.log(1);
         getCatsAndSubCatsByBussiness(EMPRESA_ID);
-        const prods = await getAllMyProductsToList(EMPRESA_ID);
+        console.log(2);
+        getAllMyProductsToList(EMPRESA_ID);
+        console.log(3);
+        GetItems();
+        console.log(4);
 
         // if (catsSubCats.success) {
         //     _allCats = catsSubCats.cats
@@ -215,13 +219,7 @@ $active = 'inventario';
 
         // getCatsFromInventory();
 
-        const subCats = await GetItems();
-        console.log('SUBCATSS', subCats);
-        console.log('SUBCATSS', subCats);
-        console.log('SUBCATSS', subCats);
-        console.log('SUBCATSS', subCats);
-        console.log('SUBCATSS', subCats);
-        printAllSubcatsOnProdData(subCats);
+
 
         fileInput.addEventListener('change', function() {
             const fileName = fileInput.files[0].name;
@@ -1089,15 +1087,7 @@ $active = 'inventario';
         });
     }
 
-    function printAllSubcatsOnProdData() {
-        $('#subCatProd option').remove();
-        $('#subCatProd').append(new Option("Todas", "all"))
-        _allSubCategoriesForProdData.forEach((subcat) => {
 
-            let option2 = new Option(subcat.item, subcat.id);
-            $('#subCatProd').append(option2);
-        });
-    }
 
 
 

@@ -1,6 +1,6 @@
 <?php
 
-if ($_POST) {
+if ($_POST || $_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once('../bd/bd.php');
     header('Content-Type: application/json');
 

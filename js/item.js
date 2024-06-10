@@ -1,6 +1,6 @@
-let _allSubCategoriesForProdData = []
+let _allSubCategoriesForProdData_ = []
 
-async function GetItems(){
+async function GetItemss(){
     return $.ajax({
         type: "POST",
         url: "/ws/categoria_item/item.php",
