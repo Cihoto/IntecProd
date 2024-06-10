@@ -12,7 +12,7 @@ if (!isset($_SESSION['empresa_id'])) {
     $empresaId = $_SESSION["empresa_id"];
 }
 ob_end_flush();
-$title = "Intec - Eventos"
+$title = "Intec - Eventos";
 ?>
 
 <!DOCTYPE html>
