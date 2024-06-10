@@ -257,7 +257,8 @@ $active = 'inventario';
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                empresaId: EMPRESA_ID
+                empresaId: EMPRESA_ID,
+                action: "getCategorias",
             })
         })
         .then((response) => response.json())
