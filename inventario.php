@@ -163,14 +163,13 @@ $active = 'inventario';
 
 
     <!-- PROD GET UPDATE FUNCTIONS -->
-    <script src="./js/products/getProductInfo.js"></script>
+    <!-- <script src="./js/products/getProductInfo.js"></script> -->
     <!-- PRODS SIDE MENUS -->
-    <?php require_once('./includes/sidemenu/productDataSideMenu.php'); ?>
+    <!-- <php require_once('./includes/sidemenu/productDataSideMenu.php'); ?> -->
     <!-- UPDATE PRODUCT FORM VALIDATION -->
-    <script src="./js/validateForm/updateProduct.js"></script>
-
+    <!-- <script src="./js/validateForm/updateProduct.js"></script> -->
     <!-- FORM VALIDATION -->
-    <script src="./js/validateForm/createNewProductSideMenu.js"></script>
+    <!-- <script src="./js/validateForm/createNewProductSideMenu.js"></script> -->
 </body>
 <script>
     const IDEMPRESA = document.getElementById('empresaId').textContent;
