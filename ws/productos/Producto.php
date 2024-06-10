@@ -1,7 +1,7 @@
 <?php
 session_start();
 if ($_POST) {
-    $empresaId = 1;
+    // $empresaId = 1;
     require_once('../bd/bd.php');
 
     $json = file_get_contents('php://input');
@@ -1213,27 +1213,4 @@ function insertOrUpdateStock($prodId, $stock)
 }
 
 
-function GetCategorias($empresaId){
-    
-    $conn = new bd();
-    $conn->conectar();
 
-    $response = [];
-
-    $querySelectCategorias ="SELECT c.id,c.nombre  from categoria c 
-    INNER JOIN categoria_has_item chi on chi.categoria_id = c.id 
-    INNER JOIN producto p on p.categoria_has_item_id =chi.id 
-    where p.empresa_id = $empresaId
-    GROUP BY c.nombre";
-
-    // return $querySelectCategorias; 
-
-    $responseBd = $conn->mysqli->query($querySelectCategorias);
-
-    while($dataResponseBd = $responseBd->fetch_object()){
-        $response []= $dataResponseBd;
-    }
-
-    return $response;
-
-}

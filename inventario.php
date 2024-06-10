@@ -180,6 +180,7 @@ $active = 'inventario';
 
     $(document).ready(async function() {
 
+
         $('#closePordDataSideMenu').on('click', function() {
             $('#productDataSideMenu').removeClass('active');
         })
@@ -206,8 +207,10 @@ $active = 'inventario';
             fixedHeader: true
         });
 
-        getCatsFromInventory();
-        GetMarca();
+        // getCatsFromInventory();
+        getCatsFromInventory(EMPRESA_ID);
+
+        getBrandFromInventory();
         const subCats = await GetItems();
         printAllSubcatsOnProdData(subCats);
 
@@ -218,75 +221,50 @@ $active = 'inventario';
     });
 
 
+    function getCatsFromInventory(empresa_id) {
 
-    // function getCatsFromInventory() {
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "ws/categoria_item/categoria.php",
-    //         data: JSON.stringify({
-    //             action: "getCategorias",
-    //             empresaId: IDEMPRESA
-    //         }),
-    //         dataType: 'json',
-    //         success: async function(data) {
-    //             let select = $('#categoriaSelect')
-    //             data.forEach(cat => {
-    //                 let opt = $(select).append(new Option(capitalizeFirstLetter(cat.nombre), cat.id))
-    //             })
-    //         },
-    //         error: function(response) {
-
-    //             console.log(response.responseText);
-
-    //         }
-    //     })
-
-
-
-
-    // }
-
-
-
-
-    function getCatsFromInventory() {
-
-        fetch('./ws/productos/Producto.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                empresaId: EMPRESA_ID,
-                action: "getCategorias",
+        fetch('./ws/productos/GetCategories.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    empresaId: empresa_id,
+                    action: "getCategorias",
+                })
             })
-        })
-        .then((response) => response.json())
-        .then((json) => {
-            // insertProds(json)
-            let select = $('#categoriaSelect')
-            json.forEach(cat => {
-                let opt = $(select).append(new Option(capitalizeFirstLetter(cat.nombre), cat.id))
+            .then((response) => response.json())
+            .then((json) => {
+                // insertProds(json)
+                let select = $('#categoriaSelect')
+                json.forEach(cat => {
+                    let opt = $(select).append(new Option(capitalizeFirstLetter(cat.nombre), cat.id))
+                })
             })
-        })
-        .catch((err) => console.log(err));
+            .catch((err) => console.log(err));
+    }
+
+    function getBrandFromInventory() {
 
 
-        // return $.ajax({
-        //     type: "POST",
-        //     url: "ws/productos/Producto.php",
-        //     dataType: 'json',
-        //     data: JSON.stringify({
-        //         "action": "addProdsMasiva",
-        //         'empresaId': EMPRESA_ID
-        //     }),
-        //     success: function(response) {
-
-        //     },
-        //     error: function(error) {
-        //         console.log(error);
-        //     }
-        // })
+        fetch('./ws/categoria_item/marca.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    action: "getMarca",
+                    empresaId: IDEMPRESA
+                })
+            })
+            .then((response) => response.json())
+            .then((json) => {
+                let select = $('#marcaSelect')
+                data.forEach(cat => {
+                    let opt = $(select).append(new Option(capitalizeFirstLetter(cat.marca), cat.id))
+                })
+            })
+            .catch((err) => console.log(err));
     }
 
 
