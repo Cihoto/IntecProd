@@ -3,7 +3,7 @@ let _allSubCategoriesForProdData = []
 async function GetItems(){
     return $.ajax({
         type: "POST",
-        url: "ws/categoria_item/item.php",
+        url: "/ws/categoria_item/item.php",
         data: JSON.stringify({
             action: "getItems",
             empresaId:EMPRESA_ID
