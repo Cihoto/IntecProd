@@ -227,7 +227,7 @@ $active = 'inventario';
     function getBrandFromInventory() {
 
 
-        fetch('/ws/productos/g etBrands.php', {
+        fetch('/ws/productos/getBrands.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
