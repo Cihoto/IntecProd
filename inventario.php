@@ -29,14 +29,14 @@
 
 ob_start();
 if (session_id() == '') {
-  session_start();
+    session_start();
 }
 
 if (!isset($_SESSION['empresa_id'])) {
-  header("Location: login.php");
-  die();
+    header("Location: login.php");
+    die();
 } else {
-  $empresaId = $_SESSION["empresa_id"];
+    $empresaId = $_SESSION["empresa_id"];
 }
 
 ob_end_flush();
@@ -159,7 +159,7 @@ $active = 'inventario';
     <!-- PROD GET UPDATE FUNCTIONS -->
     <script src="./js/products/getProductInfo.js"></script>
     <!-- PRODS SIDE MENUS -->
-    <?php require_once('./includes/sidemenu/productDataSideMenu.php');?>
+    <?php require_once('./includes/sidemenu/productDataSideMenu.php'); ?>
     <!-- UPDATE PRODUCT FORM VALIDATION -->
     <script src="./js/validateForm/updateProduct.js"></script>
 
@@ -180,12 +180,12 @@ $active = 'inventario';
 
     $(document).ready(async function() {
 
-        $('#closePordDataSideMenu').on('click',function(){
+        $('#closePordDataSideMenu').on('click', function() {
             $('#productDataSideMenu').removeClass('active');
         })
-        
+
         const catsSubCats = await getCatsAndSubCatsByBussiness(EMPRESA_ID);
-        console.log('catsSubCats',catsSubCats);
+        console.log('catsSubCats', catsSubCats);
         const prods = await getAllMyProductsToList(EMPRESA_ID);
 
         if (catsSubCats.success) {
@@ -195,17 +195,17 @@ $active = 'inventario';
             tempSubCats = catsSubCats.allSubCats;
 
             printMyCats();
-            
+
         }
         if (prods) {
             _allProductsToList = prods;
-            console.log('_allProductsToList',_allProductsToList);
+            console.log('_allProductsToList', _allProductsToList);
             printMyProducts();
         }
         $('#example').DataTable({
             fixedHeader: true
         });
-        
+
         getCatsFromInventory();
         GetMarca();
         const subCats = await GetItems();
@@ -218,28 +218,29 @@ $active = 'inventario';
     });
 
 
-    
-    function getCatsFromInventory(){
-    $.ajax({
-        type: "POST",
-        url: "ws/categoria_item/categoria.php",
-        data: JSON.stringify({
-            action: "getCategorias",
-            empresaId:IDEMPRESA
-        }),
-        dataType: 'json',
-        success: async function(data) {
-            let select = $('#categoriaSelect')
-            data.forEach(cat=>{
-                let opt  = $(select).append(new Option(capitalizeFirstLetter(cat.nombre), cat.id))
-            })
-        },error:function(response){
 
-            console.log(response.responseText);
+    function getCatsFromInventory() {
+        $.ajax({
+            type: "POST",
+            url: "ws/categoria_item/categoria.php",
+            data: JSON.stringify({
+                action: "getCategorias",
+                empresaId: IDEMPRESA
+            }),
+            dataType: 'json',
+            success: async function(data) {
+                let select = $('#categoriaSelect')
+                data.forEach(cat => {
+                    let opt = $(select).append(new Option(capitalizeFirstLetter(cat.nombre), cat.id))
+                })
+            },
+            error: function(response) {
 
-        }
-    })
-}
+                console.log(response.responseText);
+
+            }
+        })
+    }
 
 
 
@@ -380,19 +381,19 @@ $active = 'inventario';
         )
     });
 
-    function setNoCatOrNoSubCat(){
-        $('#excelTable tbody tr').each((index, tr)=>{
+    function setNoCatOrNoSubCat() {
+        $('#excelTable tbody tr').each((index, tr) => {
 
-            if($(tr).find('td:eq(0)').text() === ''){
+            if ($(tr).find('td:eq(0)').text() === '') {
                 $(tr).find('td:eq(0)').text('Sin categoría');
                 $(tr).find('td:eq(0)').removeClass('err')
             }
-            if($(tr).find('td:eq(1)').text() === ''){
-                $(tr).find('td:eq(1)').text('Sin Subcategoría') 
+            if ($(tr).find('td:eq(1)').text() === '') {
+                $(tr).find('td:eq(1)').text('Sin Subcategoría')
                 $(tr).find('td:eq(1)').removeClass('err')
             }
 
-                
+
         });
     }
 
@@ -608,7 +609,7 @@ $active = 'inventario';
             return item !== undefined
         });
 
-        console.log('arrayRequest',arrayRequest);
+        console.log('arrayRequest', arrayRequest);
 
         addProdsOnMasiveExcel(arrayRequest);
     });
@@ -1053,7 +1054,7 @@ $active = 'inventario';
         });
     }
 
-    function printAllSubcatsOnProdData(){
+    function printAllSubcatsOnProdData() {
         $('#subCatProd option').remove();
         $('#subCatProd').append(new Option("Todas", "all"))
         _allSubCategoriesForProdData.forEach((subcat) => {
@@ -1073,7 +1074,7 @@ $active = 'inventario';
 
         _allProductsToList.forEach((producto, index) => {
 
-            if(producto.subcategoria == null){
+            if (producto.subcategoria == null) {
                 producto.subcategoria = ''
             }
             let tr = `<tr product_id="${producto.product_id}">
@@ -1094,7 +1095,7 @@ $active = 'inventario';
                 "scrollX": false,
                 "autoWidth": false,
                 lengthMenu: [5, 10, 20, 50, 100, 200, 500],
-                pageLength:100,
+                pageLength: 100,
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",
