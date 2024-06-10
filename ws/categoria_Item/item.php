@@ -2,6 +2,7 @@
 
 if ($_POST) {
     require_once('../bd/bd.php');
+    header('Content-Type: application/json');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);

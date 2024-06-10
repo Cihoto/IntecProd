@@ -37,7 +37,7 @@
             $response []= $dataResponseBd;
             
         }
-
+        
         return $response;
 
     }

@@ -1,33 +1,23 @@
 <?php
 
+require_once('../bd/bd.php');
 header('Content-Type: application/json');
-if ($_POST) {
-    require_once('../bd/bd.php');
 
-    $json = file_get_contents('php://input');
-    $data = json_decode($json);
-    $action = $data->action;
-    
-    if(isset($data->vehicleData)){
-        $datav = $data->vehicleData;
-    }
+$json = file_get_contents('php://input');
+$data = json_decode($json);
 
-    switch ($action) {
-        case 'getMarca':
-            $empresaId = $data->empresaId;
-            $marcas = GetMarcas($empresaId);
-            echo json_encode($marcas);
-            break;
-        default:
-            echo 'Invalid action.';
-            break;
-    }
 
+if (isset($data->empresaId)) {
+    echo json_encode(GetMarcas($data->empresaId));
+} else {
+    echo json_encode(['error' => 'Invalid input']);
 }
+
+// return json_encode(GetCategorias($data->empresaId));
 
 
 function GetMarcas($empresaId){
-    
+
     $conn = new bd();
     $conn->conectar();
     $response = [];
@@ -45,4 +35,3 @@ function GetMarcas($empresaId){
     return $response;
 
 }
-?>

@@ -180,10 +180,10 @@ $active = 'inventario';
 
     $(document).ready(async function() {
 
+        getCatsFromInventory(EMPRESA_ID);
+        getBrandFromInventory();
 
-        $('#closePordDataSideMenu').on('click', function() {
-            $('#productDataSideMenu').removeClass('active');
-        })
+
 
         const catsSubCats = await getCatsAndSubCatsByBussiness(EMPRESA_ID);
         console.log('catsSubCats', catsSubCats);
@@ -208,16 +208,23 @@ $active = 'inventario';
         });
 
         // getCatsFromInventory();
-        getCatsFromInventory(EMPRESA_ID);
 
-        getBrandFromInventory();
         const subCats = await GetItems();
+        console.log('SUBCATSS',subCats);
+        console.log('SUBCATSS',subCats);
+        console.log('SUBCATSS',subCats);
+        console.log('SUBCATSS',subCats);
+        console.log('SUBCATSS',subCats);
         printAllSubcatsOnProdData(subCats);
 
         fileInput.addEventListener('change', function() {
             const fileName = fileInput.files[0].name;
             fileNameDisplay.textContent = `Archivo seleccionado: ${fileName}`;
         });
+
+        $('#closePordDataSideMenu').on('click', function() {
+            $('#productDataSideMenu').removeClass('active');
+        })
     });
 
 
@@ -239,7 +246,12 @@ $active = 'inventario';
                 let select = $('#categoriaSelect')
                 json.forEach(cat => {
                     let opt = $(select).append(new Option(capitalizeFirstLetter(cat.nombre), cat.id))
-                })
+                });
+                console.log('getCatsFromInventory',json);
+                console.log('getCatsFromInventory',json);
+                console.log('getCatsFromInventory',json);
+                console.log('getCatsFromInventory',json);
+                console.log('getCatsFromInventory',json);
             })
             .catch((err) => console.log(err));
     }
@@ -247,7 +259,7 @@ $active = 'inventario';
     function getBrandFromInventory() {
 
 
-        fetch('./ws/categoria_item/marca.php', {
+        fetch('ws/productos/GetBrands.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -260,9 +272,13 @@ $active = 'inventario';
             .then((response) => response.json())
             .then((json) => {
                 let select = $('#marcaSelect')
-                data.forEach(cat => {
+                json.forEach(cat => {
                     let opt = $(select).append(new Option(capitalizeFirstLetter(cat.marca), cat.id))
-                })
+                });
+                console.log('getBrandFromInventory',json)
+                console.log('getBrandFromInventory',json)
+                console.log('getBrandFromInventory',json)
+                console.log('getBrandFromInventory',json)
             })
             .catch((err) => console.log(err));
     }
