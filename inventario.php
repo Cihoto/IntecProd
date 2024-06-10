@@ -68,7 +68,7 @@ $active = 'inventario';
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <circle cx="6" cy="6" r="6" fill="#069B99" />
                     </svg>
-                    <p class="header-P">Aquí puedes ver, editar el inventario</p>
+                    <p class="header-P">Aquí puedes ver, editar el inventario123123</p>
                 </div>
                 <div class="row justify-content-between align-items-center">
 
