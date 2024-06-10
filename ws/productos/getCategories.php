@@ -1,10 +1,10 @@
     <?php
 
-    // require_once('../bd/bd.php');
+    require_once('../bd/bd.php');
     // header('Content-Type: application/json');
 
 
-    error_log('categoria.php accessed at ' . date('Y-m-d H:i:s'));
+    // error_log('categoria.php accessed at ' . date('Y-m-d H:i:s'));
     header('Content-Type: application/json');
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
@@ -14,11 +14,11 @@
     $data = json_decode($json);
 
 
-    // if (isset($data->empresaId)) {
-    //     echo json_encode(GetCategorias($data->empresaId));
-    // } else {
-    //     echo json_encode(['error' => 'Invalid input']);
-    // }
+    if (isset($data->empresaId)) {
+        echo json_encode(GetCategorias($data->empresaId));
+    } else {
+        echo json_encode(['error' => 'Invalid input']);
+    }
 
     // return json_encode(GetCategorias($data->empresaId));
 

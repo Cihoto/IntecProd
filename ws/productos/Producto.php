@@ -1,15 +1,15 @@
 <?php
-session_start();
-if ($_POST) {
-    // $empresaId = 1;
-    require_once('../bd/bd.php');
+// session_start();
 
+if ($_POST || $_SERVER['REQUEST_METHOD'] === 'POST') {
+    // $empresaId = 1;
     $json = file_get_contents('php://input');
     $data = json_decode($json);
+    require_once('../bd/bd.php');
+
+
     $action = $data->action;
-
-
-
+    
     // Realiza la acción correspondiente según el valor de 'action'
     switch ($action) {
         case 'sortProducts':
