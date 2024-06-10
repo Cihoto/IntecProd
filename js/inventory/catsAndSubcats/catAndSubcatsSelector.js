@@ -55,7 +55,7 @@ function getCatsAndSubCatsByBussiness(empresa_id) {
 
 function GetItems() {
 
-    fetch('ws/categoria_Item/item.php', {
+    fetch('/ws/categoria_Item/item.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
