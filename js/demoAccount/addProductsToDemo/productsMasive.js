@@ -11,8 +11,6 @@ function addProductsMasivaonDemoAccount(){
 
 // function insert
 
-
-
 function insertProds(request){
     fetch('./ws/productos/demoAccountProd/addMasivaAccount.php', {
         method: 'POST',

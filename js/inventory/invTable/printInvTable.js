@@ -20,8 +20,6 @@ function getAllMyProductsToList(empresa_id) {
             console.log('getAllMyProductsToList', json);
             _allProductsToList = json;
             printMyProducts();
-            console.log('getAllMyProductsToList', json);
-            console.log('getAllMyProductsToList', json);
         })
         .catch((err) => console.log(err));
 }

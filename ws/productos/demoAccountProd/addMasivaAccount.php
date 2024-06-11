@@ -173,7 +173,7 @@ foreach ($request as $requestProd) {
 
     $stmt->execute();
 }
-
+$conn->desconectar();
 echo json_encode(["status" => "success", "message" => "Request processed successfully"]);
 ?>
 

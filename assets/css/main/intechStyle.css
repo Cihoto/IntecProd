@@ -52,6 +52,32 @@ body {
 } */
 
 
+.borderlessBtn{
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+
+
+}
+
+.borderlessBtn {
+  /* border: none; */
+  /* background: none; */
+  cursor: pointer;
+  
+  display: flex;
+  padding: 10px 20px;
+  background-color: none;
+  color: white;
+  border: none;
+  border-radius: 5px;
+
+}
+
+
 
 .dropdown-menu li {
   position: relative;

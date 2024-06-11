@@ -58,7 +58,7 @@ $('#updateProdFormSideMenu_').validate({
         event.preventDefault();
 
 
-        console.log('ESTOY ACTUALIZANDO EL PRODUCTO')
+        console.log('ESTOY ACTUALIZANDO EL PRODUCTO');
 
         if (!_executeUpdateProduct) {
             return;
@@ -76,7 +76,7 @@ $('#updateProdFormSideMenu_').validate({
         }
 
         try{
-            const RESPONSE_UPDATE_PRODUCT = await updateProductFromSideMenu(UPDATEPRODUCTREQUEST, EMPRESA_ID,_selectedProdId);
+            const RESPONSE_UPDATE_PRODUCT = await updateProductSideMenu(UPDATEPRODUCTREQUEST, EMPRESA_ID,_selectedProdId);
 
             if(!RESPONSE_UPDATE_PRODUCT.success){
                 Swal.fire({
@@ -116,7 +116,7 @@ $('#updateProdFormSideMenu_').validate({
 //     submitHandler: function() { alert("Submitted!") }
 //   });
 
-async function updateProductFromSideMenu(request, empresa_id, product_id) {
+async function updateProductSideMenu(request, empresa_id, product_id) {
     return $.ajax({
         type: "POST",
         url: "ws/productos/Producto.php",

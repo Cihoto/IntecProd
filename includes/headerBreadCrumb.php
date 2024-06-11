@@ -125,6 +125,7 @@ if( $demo_active == 1){
 <script src="./js/pageHeader/configMenu/updateBussinessLogo.js"></script>
 <script src="./js/pageHeader/configMenu/openConfigMenu.js"></script>
 <script src="../js/demoAccount/addProductsToDemo/productsMasive.js"></script>
+<script src="../js/demoAccount/addPersonalToDemo/personalMasive.js"></script>
 
 
 <script>

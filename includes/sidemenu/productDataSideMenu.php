@@ -15,6 +15,11 @@
             </svg>
             <p class="header-P" id="productName"></p>
         </div>
+        <div style="display: flex;justify-content: end;">
+            <button id="deleteProductBtn" class="borderlessBtn">
+                <img src="/assets/svg/trashCan-red.svg" alt="">
+            </button>
+        </div>
         <form id="updateProdFormSideMenu_">
             <div class="modal-body">
                 <div class="row justify-conetent-end">
@@ -95,7 +100,7 @@
                 <button type="button" id="addUsuario" class="btn btn-success ml-1 col-4">
                     <span class="d-none d-sm-block">Crear usuario</span>
                 </button> -->
-                <button type="submit" class="s-Button" id="buttonProductosMasiva">
+                <button type="submit" class="s-Button" id="">
                     <p class="s-P">Guardar Cambios</p>
                 </button>
             </div>

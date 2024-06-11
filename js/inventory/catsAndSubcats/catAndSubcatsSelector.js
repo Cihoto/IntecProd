@@ -20,11 +20,6 @@ function getCatsAndSubCatsByBussiness(empresa_id) {
         .then((response) => response.json())
         .then((catsSubCats) => {
             console.log('getCatsAndSubCatsByBussiness', catsSubCats);
-            console.log('getCatsAndSubCatsByBussiness', catsSubCats);
-            console.log('getCatsAndSubCatsByBussiness', catsSubCats);
-            console.log('getCatsAndSubCatsByBussiness', catsSubCats);
-            console.log('getCatsAndSubCatsByBussiness', catsSubCats);
-            console.log('getCatsAndSubCatsByBussiness', catsSubCats);
 
             if (catsSubCats.success) {
                 _allCats = catsSubCats.cats

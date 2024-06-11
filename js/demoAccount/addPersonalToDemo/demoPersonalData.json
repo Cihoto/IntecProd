@@ -1,0 +1,57 @@
+[
+    {
+        "name": "Juan Perez",
+        "rut": "12345678-9",
+        "mail": "correo1@gmail.com",
+        "number": 9912345678,
+        "persona_id": 123,
+        "salary": 700000,
+        "cargo": "Técnico",
+        "specialism": "Sonidista",
+        "tipo_contrato_id": 4
+    },
+    {
+        "name": "Pedro Soto",
+        "rut": "12345678-8",
+        "mail": "correo2@gmail.com",
+        "number": 9912345679,
+        "persona_id": 124,
+        "salary": 1200000,
+        "cargo": "Jefe Técnico",
+        "specialism": "De todo",
+        "tipo_contrato_id": 4
+    },
+    {
+        "name": "Diego Tapia",
+        "rut": "12345678-7",
+        "mail": "correo3@gmail.com",
+        "number": 9912345680,
+        "persona_id": 125,
+        "salary": 7000000,
+        "cargo": "Bodeguero",
+        "specialism": "Bodeguero",
+        "tipo_contrato_id": 6
+    },
+    {
+        "name": "Jhon Doe",
+        "rut": "12345678-6",
+        "mail": "correo4@gmail.com",
+        "number": 9912345681,
+        "persona_id": 126,
+        "salary": 0,
+        "cargo": "Freelance",
+        "specialism": "Iluminador",
+        "tipo_contrato_id": 5
+    },
+    {
+        "name": "Jenny Doe",
+        "rut": "12345678-5",
+        "mail": "correo5@gmail.com",
+        "number": 9912345682,
+        "persona_id": 127,
+        "salary": 0,
+        "cargo": "Freelance",
+        "specialism": "Visualista",
+        "tipo_contrato_id": 5
+    }
+]

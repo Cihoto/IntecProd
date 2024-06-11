@@ -115,6 +115,8 @@ $active = 'inventario';
     <!-- JS FUNCTIONS REFERENCES -->
     <script src="/js/valuesValidator/validator.js"></script>
     <script src="/js/inventory/invTable/printInvTable.js"></script>
+    <script src="/js/inventory/invTable/showProdData.js"></script>
+    <script src="/js/inventory/prodData/deleteProduct.js"></script>
     <script src="/js/inventory/catsAndSubcats/catAndSubcatsSelector.js"></script>
     <script src="/js/inventory/invHandlers.js"></script>
 
@@ -127,7 +129,7 @@ $active = 'inventario';
 
 
     <!-- PROD GET UPDATE FUNCTIONS -->
-    <script src="./js/products/getProductInfo.js"></script>
+    <!-- <script src="./js/products/getProductInfo.js"></script> -->
     <!-- PRODS SIDE MENUS -->
     <?php require_once('./includes/sidemenu/productDataSideMenu.php'); ?>
     <!-- UPDATE PRODUCT FORM VALIDATION -->
@@ -151,18 +153,12 @@ $active = 'inventario';
     const fileLabel = document.getElementById('fileLabel');
 
     $(document).ready(async function() {
-
+        
         getCatsFromInventory(EMPRESA_ID);
         getBrandFromInventory();
-
-
-        console.log(1);
         getCatsAndSubCatsByBussiness(EMPRESA_ID);
-        console.log(2);
         getAllMyProductsToList(EMPRESA_ID);
-        console.log(3);
         GetItems();
-        console.log(4);
 
         // if (catsSubCats.success) {
         //     _allCats = catsSubCats.cats
@@ -215,11 +211,11 @@ $active = 'inventario';
                 json.forEach(cat => {
                     let opt = $(select).append(new Option(capitalizeFirstLetter(cat.nombre), cat.id))
                 });
-                console.log('getCatsFromInventory', json);
-                console.log('getCatsFromInventory', json);
-                console.log('getCatsFromInventory', json);
-                console.log('getCatsFromInventory', json);
-                console.log('getCatsFromInventory', json);
+                // console.log('getCatsFromInventory', json);
+                // console.log('getCatsFromInventory', json);
+                // console.log('getCatsFromInventory', json);
+                // console.log('getCatsFromInventory', json);
+                // console.log('getCatsFromInventory', json);
             })
             .catch((err) => console.log(err));
     }
@@ -243,10 +239,10 @@ $active = 'inventario';
                 json.forEach(cat => {
                     let opt = $(select).append(new Option(capitalizeFirstLetter(cat.marca), cat.id))
                 });
-                console.log('getBrandFromInventory', json)
-                console.log('getBrandFromInventory', json)
-                console.log('getBrandFromInventory', json)
-                console.log('getBrandFromInventory', json)
+                // console.log('getBrandFromInventory', json)
+                // console.log('getBrandFromInventory', json)
+                // console.log('getBrandFromInventory', json)
+                // console.log('getBrandFromInventory', json)
             })
             .catch((err) => console.log(err));
     }
@@ -1007,7 +1003,6 @@ $active = 'inventario';
         })
     }
 
-
     async function insertSubCatOnArr(arrCats, empresa_id) {
         return $.ajax({
             type: "POST",
@@ -1027,40 +1022,36 @@ $active = 'inventario';
         })
     }
 
-
-
     $('#buttonProductosMasiva').on('click', function() {
         $('#masivaProductoSideMenu').addClass('active')
-    })
+    });
+
     $('#closeMasivaProductos').on('click', function() {
         $('#masivaProductoSideMenu').removeClass('active')
-    })
+    });
+
     $('#buttonProductoUnitario').on('click', function() {
         $('#productoUnitarioCreation').modal('show');
     });
 
-
-
-
     function printSubCats(filtered) {
+
         $('#subcatSelect option').remove();
-        $('#subcatSelect').append(new Option("Todas", "all"))
+        $('#subcatSelect').append(new Option("Todas", "all"));
         filtered.forEach((subcat) => {
             let option = new Option(subcat.item, subcat.subcat_id);
             $('#subcatSelect').append(option);
         });
     }
 
-
-
-
-
-
-
-
-
-
-
+    function printSubcatsOnProdSideMenu(filtered){
+        $('#subCatProd option').remove();
+        $('#subCatProd').append(new Option("Todas", "all"))
+        filtered.forEach((subcat) => {
+            let option = new Option(subcat.item, subcat.subcat_id);
+            $('#subCatProd').append(option);
+        });
+    }
 
 
 

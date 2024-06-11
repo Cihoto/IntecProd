@@ -19,27 +19,10 @@ function newDemoAccount(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 async function activateDemoDataonNewAccount(empresaId) {
-
-    addProductsMasivaonDemoAccount()
+    addPersonalMasivaToDemoAccount();
+    addProductsMasivaonDemoAccount();
+    
     return 
 
     const DEMOACCOUNT = await createDemoAccount(empresaId);

@@ -48,6 +48,8 @@ $('#productosCreateUnitario').validate({
     submitHandler: function() {
         event.preventDefault();
 
+        // console.log('CREATING NEW PROADUCT');
+
         let NombreProducto = $('#inputNombreProducto').val();
         let categoriaSelect = $('#categoriaSelect selectedIndex').text();
         let marcaSelect = $('#marcaSelect selectedIndex').text();

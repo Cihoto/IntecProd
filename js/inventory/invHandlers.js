@@ -45,4 +45,11 @@ $('#subcatSelect').on("change", function () {
     // _allProductsToList = prods.data;
 
     // printMyProducts();
-})
+});
+
+
+$(document).on('click', '#closePordDataSideMenu', function () {
+
+    $('#productDataSideMenu').removeClass('active');
+    
+});
