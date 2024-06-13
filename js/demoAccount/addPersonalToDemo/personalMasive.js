@@ -1,13 +1,14 @@
-function addPersonalMasivaToDemoAccount(){
-    fetch('./js/demoAccount/addPersonalToDemo/cargo_especialidad.json')
-    .then((response) => response.json())
-    .then((json) => {
-
-        console.log('json',json);
-        insertPersonal(json.cargos,json.specialism);
-        
-    })
-    .catch((err)=>console.log(err));
+async function addPersonalMasivaToDemoAccount(){
+   try {
+        const response = await fetch('./js/demoAccount/addPersonalToDemo/cargo_especialidad.json');
+        const json = await response.json();
+        console.log('json', json);
+        const INSERTED_PERSONAL = await insertPersonal(json.cargos, json.specialism);
+        console.log('INSERTED_PERSONAL', INSERTED_PERSONAL);
+        return INSERTED_PERSONAL;
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 
@@ -61,14 +62,19 @@ async function insertspecialism(specialisms, empresa_id) {
 }
 
 
+/**
+ * Inserts personal data into the demo account.
+ *
+ * @param {Array} cargos - The array of cargos.
+ * @param {Array} specialisms - The array of specialisms.
+ * @returns {Promise<void>} - A promise that resolves when the personal data is inserted successfully.
+ * @throws {Error} - If any of the fetch requests fail or if the personal data cannot be obtained.
+ */
 async function insertPersonal(cargos,specialisms) {
     console.log('cargos',cargos);
     try {
         // Ejecutar los primeros dos fetch en paralelo
         const [responseCargo, responseSpecialism] = await Promise.all([insertCargos(cargos,EMPRESA_ID),insertspecialism(specialisms, EMPRESA_ID)]);
-
-        console.log('responseCargo',responseCargo);
-        console.log('responseSpecialism',responseSpecialism);
 
         // Verificar que ambas respuestas sean correctas
         if (!responseCargo.success || !responseSpecialism.success) {
@@ -92,20 +98,14 @@ async function insertPersonal(cargos,specialisms) {
             throw new Error('No se ha podido obtener la información del personal');
         }
 
-        console.log('PERSONAL_DATA',PERSONAL_DATA);
-        console.log('PERSONAL_DATA',PERSONAL_DATA);
-        console.log('PERSONAL_DATA',PERSONAL_DATA);
-        console.log('PERSONAL_DATA',PERSONAL_DATA);
-        console.log('PERSONAL_DATA',PERSONAL_DATA);
-        console.log('PERSONAL_DATA',PERSONAL_DATA);
-        console.log('PERSONAL_DATA',PERSONAL_DATA);
-
-        // Convertir la respuesta a JSON
+        // Ejecutar el cuarto fetch
         const RESPONSE_CREATE_DEMO_PERSONAL = await insertPersonalOnDemoAcc(PERSONAL_DATA,DATA_SPECIALISM,DATA_CARGOS,EMPRESA_ID);
 
         console.log('RESPONSE_CREATE_DEMO_PERSONAL',RESPONSE_CREATE_DEMO_PERSONAL);
-        console.log('RESPONSE_CREATE_DEMO_PERSONAL',RESPONSE_CREATE_DEMO_PERSONAL);
-        console.log('RESPONSE_CREATE_DEMO_PERSONAL',RESPONSE_CREATE_DEMO_PERSONAL);
+
+
+        return RESPONSE_CREATE_DEMO_PERSONAL;
+      
         // Manejar la respuesta final
         
     } catch (error) {
@@ -116,20 +116,20 @@ async function insertPersonal(cargos,specialisms) {
 
 
 
-function getPersonalDemoData(){
+async function getPersonalDemoData(){
     const PERSONAL_JSON = fetch('./js/demoAccount/addPersonalToDemo/demoPersonalData.json')
-    .then((response) => response.json())
-    .then((json) => {
+        .then((response) => response.json())
+        .then((json) => {
 
-        return json;
-        
-    })
-    .catch((err)=>console.log(err));
+            return json;
+            
+        })
+        .catch((err)=>console.log(err));
 
     return PERSONAL_JSON;
 }
 
-function deleteCargosEspecialidad(empresa_id){
+async function deleteCargosEspecialidad(empresa_id){
     const RESPONSE_DELETE_C_AND_SPEC = fetch('./ws/personal/demoAccount/deleteCargoEspecialism.php', {
         method: 'POST',
         headers: {
@@ -151,28 +151,27 @@ function deleteCargosEspecialidad(empresa_id){
 
     return RESPONSE_DELETE_C_AND_SPEC;
 }
-function insertPersonalOnDemoAcc(personalData, specialismData, cargoData,empresa_id){
-    const RESPONSE_DELETE_C_AND_SPEC = fetch('./ws/personal/demoAccount/insertDemoPersonal.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(
-            {
-                'empresaId':empresa_id,
-                'personalData':personalData,
-                'specialismData':specialismData,
-                'cargoData':cargoData,
-            }
-        )
-    })
-    .then(response => response.json())
-    .then(responseDelete => {
-        return responseDelete
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
 
-    return RESPONSE_DELETE_C_AND_SPEC;
+
+async function insertPersonalOnDemoAcc(personalData, specialismData, cargoData, empresa_id) {
+    try {
+        const response = await fetch('./ws/personal/demoAccount/insertDemoPersonal.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'empresaId': empresa_id,
+                'personalData': personalData,
+                'specialismData': specialismData,
+                'cargoData': cargoData,
+            })
+        });
+
+        const responseData = await response.json();
+        return responseData.data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw new Error('Failed to insert personal data on demo account');
+    }
 }

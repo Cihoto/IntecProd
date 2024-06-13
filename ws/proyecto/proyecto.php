@@ -408,7 +408,7 @@ function getProjectResume($request)
         INNER JOIN proyecto p on p.id = phv.proyecto_id 
         WHERE p.id = $idProject";
 
-            $queryPersonalAsignados = "SELECT p.id ,CONCAT(per.nombre,' ',per.apellido) as nombre,
+            $queryPersonalAsignados = "SELECT p.id ,CONCAT(per.nombre,' ',per.apellido) as nombre,per.nombre as personalName,
         c.cargo , e.especialidad, php.costo, tc.contrato 
         from personal p 
         INNER JOIN persona per on per.id = p.persona_id 
@@ -940,6 +940,10 @@ function getAllMyProjects_list_toExecute($empresa_id)
     // return $queryProyectos;
     return $projects;
 }
+
+
+
+
 
 
 

@@ -171,6 +171,7 @@ require_once('./includes/head.php');
     <script src="/js/evento/createEvent.js"></script>
     <script src="/js/evento/eventoController.js"></script>
     <script src="/js/map.js"></script> -->
+    <script src="./js/evento/eventoController.js"></script>
 
     <script src="./js/const/projectToSearch.js"></script>
     <script src="./js/Funciones/NewProject.js"></script>
@@ -194,7 +195,6 @@ require_once('./includes/head.php');
     <script src="./js/filesUpload.js"></script>
     <script src="./js/evento/getEventData.js"></script>
     <script src="./js/productos.js"></script>
-    <script src="./js/evento/eventoController.js"></script>
     <script src="./js/rendiciones.js"></script>
     <script src="./js/otherCosts.js"></script>
     <script src="./js/bottomBar.js"></script>

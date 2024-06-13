@@ -269,9 +269,7 @@ $active = 'dashboard';
   <script src="./js/Funciones/openEventFromTables.js"></script>
   <script src="./js/pageHeader/breadCrumb.js"></script>
   <script src="./js/pageHeader/searchBar.js"></script>
-  <script src="./js/demoAccount/demoAccountCreation.js"></script>
-  <script src="./js/demoAccount/demoAccountDelete.js"></script>
-  <script src="./js/pageHeader/demoAccountButton.js"></script>
+
 
 
 

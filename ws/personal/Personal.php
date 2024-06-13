@@ -530,7 +530,7 @@ function getPersonal($empresaId){
         $conn = new bd();
         $conn->conectar();
         $personal =  [];
-        $queryPersonal = "SELECT  p.id, p.cargo_id, CONCAT(per.nombre ,' ',per.apellido) as nombre,
+        $queryPersonal = "SELECT  p.id, p.cargo_id, CONCAT(per.nombre ,' ',per.apellido) as nombre,per.nombre as personalName,
                                 c.cargo,per.rut, e.especialidad, p.neto, tc.contrato, p.IsDelete
                             FROM personal p
                             INNER JOIN persona per on per.id = p.persona_id 

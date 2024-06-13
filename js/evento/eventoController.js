@@ -229,17 +229,15 @@ function checkIfDemoIsExecutable(){
 
   // ADD PACKAGE TO PROJECT ON PLUS ICON ON PACKAGE LIST
 $(document).ready(async function(){
-
-   GetEspecialidadByBussiness(EMPRESA_ID);
-
-  appendPersonalOptions();
-  
+  await GetAllPersonal(EMPRESA_ID);
+  await FillVehiculos(EMPRESA_ID);
   await fillProductsTable();
+  GetEspecialidadByBussiness(EMPRESA_ID);
+  appendPersonalOptions();
   // FillAllProducts();
   FillStandardPackages();
   $('#tableResume').DataTable({})
   //fillvehiculos
-  await FillVehiculos(EMPRESA_ID);
   appendVehiclesFilters();
   // Fill Clientes
   FillClientes(EMPRESA_ID);
@@ -254,7 +252,6 @@ $(document).ready(async function(){
   // CLEAR LOCALSTORGE
   localStorage.clear();
   // FILL REGIONES
-  await GetAllPersonal(EMPRESA_ID);
   FillRegiones(EMPRESA_ID);
 
 

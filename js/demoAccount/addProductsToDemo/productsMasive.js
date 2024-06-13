@@ -1,33 +1,42 @@
+async function addProductsMasivaonDemoAccount() {
+    try {
+        const response = await fetch('./js/demoAccount/addProductsToDemo/demoProds.json');
+        const json = await response.json();
+        console.log('json',json);
+        console.log('json',json);
+        console.log('json',json);
+        console.log('json',json);
+        console.log('json',json);
+        const INSERTED_PRODUCTS = await insertProds(json);
+        console.log('INSERTED_PRODUCTS',INSERTED_PRODUCTS);
+        return INSERTED_PRODUCTS;
 
-function addProductsMasivaonDemoAccount(){
-    fetch('./js/demoAccount/addProductsToDemo/demoProds.json')
-    .then((response) => response.json())
-    .then((json) => {
-        insertProds(json)
-    })
-    .catch((err)=>console.log(err));
+    } catch (error) {
+        console.log(error);
+    }
 }
 
+async function insertProds(request) {
+    try {
+        const response = await fetch('./ws/productos/demoAccountProd/addMasivaAccount.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ request: request, empresaId: EMPRESA_ID })
+        });
 
-// function insert
+        const PRODUCTS = await response.json();
+        console.log('PRODUCTS',PRODUCTS);
 
-function insertProds(request){
-    fetch('./ws/productos/demoAccountProd/addMasivaAccount.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({request:request,empresaId:EMPRESA_ID})
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            console.log('Request processed successfully:', data.message);
+        if (PRODUCTS.status === 'success') {
+            console.log('Request Products insersetion processed successfully:', PRODUCTS.message);
+            console.log('Request processed successfully:', PRODUCTS.data);
         } else {
-            console.error('Error processing request:', data.message);
+            console.error('Error processing request products insertion:', PRODUCTS.message);
         }
-    })
-    .catch(error => {
+        return PRODUCTS.data;
+    } catch (error) {
         console.error('Error:', error);
-    });
+    }
 }

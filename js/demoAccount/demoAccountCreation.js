@@ -20,10 +20,23 @@ function newDemoAccount(){
 
 
 async function activateDemoDataonNewAccount(empresaId) {
-    addPersonalMasivaToDemoAccount();
-    addProductsMasivaonDemoAccount();
-    
-    return 
+    // addProductsMasivaonDemoAccount()
+    const [PERSONAL,PRODUCTS,VEHICLES,CLIENTS] = await Promise.all([
+        addPersonalMasivaToDemoAccount(),
+        addProductsMasivaonDemoAccount(),
+        addVehiclesMasiveOnDemoAccount(),
+        addClientsMasiveOnDemoAccount()
+    ]);
+
+    console.log('PERSONAL',PERSONAL);
+    console.log('PRODUCTS',PRODUCTS);
+    console.log('VEHICLES',VEHICLES);
+    console.log('CLIENTS',CLIENTS);
+
+
+
+    await addEventsMasiveOnDemoAccount(PERSONAL,PRODUCTS,VEHICLES,CLIENTS);
+    return true
 
     const DEMOACCOUNT = await createDemoAccount(empresaId);
     // console.log('DEMOACCOUNT', DEMOACCOUNT);

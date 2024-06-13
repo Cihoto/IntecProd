@@ -1,0 +1,18 @@
+[
+    {
+        "patente": "AABB11",
+        "ownCar": 1,
+        "tripValue": 20000,
+        "tipoVehiculo_id": 7,
+        "brand": 58,
+        "model": 708
+    },
+    {
+        "patente": "AABB22",
+        "ownCar": 0,
+        "tripValue": 100000,
+        "tipoVehiculo_id": 6,
+        "brand": 58,
+        "model": 707
+    }
+]

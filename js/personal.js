@@ -405,6 +405,15 @@ async function GetAllPersonal(empresaId) {
         }),
         success: function (response) {
             allPersonal = response;
+            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
+            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
+            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
+            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
+            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
+            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
+            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
+            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
+            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
             allPersonal = allPersonal.map((personal) => {
                 return {
                     'cargo': personal.cargo,
@@ -415,6 +424,7 @@ async function GetAllPersonal(empresaId) {
                     'rut': personal.rut,
                     'neto': personal.neto,
                     'nombre': personal.nombre,
+                    'personalName': personal.personalName,
                     'isPicked': false,
                     'isSelected': false,
                     'horasTrabajadas': 0,
@@ -510,9 +520,19 @@ function FillPersonal(empresaId) {
     })
 }
 
+function setPersonalName(name,personalName) {
+    if (name === "" || name === null || name === undefined) {
+        return personalName;
+    }
+    return name;
+}
+
 function fillPersonal() {
+    
 
     allPersonal.forEach((personal) => {
+
+        personal.nombre = setPersonalName(personal.nombre,personal.personalName);
         let tr = `<tr personal_id="${personal.id}">
             <td> <p class="--h-text-flex">${personal.nombre}</p></td>
             <td>${personal.rut}</td>
@@ -543,6 +563,9 @@ function printFilterDataAllPersonal(personalArray) {
     })
 
     filteredPersonalByContract.forEach((filterPersonal) => {
+
+        filteredPersonal.nombre = setPersonalName(filterPersonal.nombre,filterPersonal.personalName);
+
         let tr = `<tr personal_id="${filterPersonal.id}">
             <td><p class="--h-text-flex">${filterPersonal.nombre}</p></td>
             <td>${filterPersonal.contrato}</td>
@@ -734,14 +757,49 @@ function changePersonalAmount(personal_id, newCost) {
 }
 
 function AddSelectedPersonal(personal_id) {
+
+    console.log("BUSNCAO ESTE ID EN PERSONAL", personal_id)
+    console.log("BUSNCAO ESTE ID EN PERSONAL", personal_id)
+    console.log("BUSNCAO ESTE ID EN PERSONAL", personal_id)
+    console.log("BUSNCAO ESTE ID EN PERSONAL", personal_id)
+    console.log("BUSNCAO ESTE ID EN PERSONAL", personal_id)
+    console.log("BUSNCAO ESTE ID EN PERSONAL", allPersonal)
+    console.log("BUSNCAO ESTE ID EN PERSONAL", allPersonal)
+    console.log("BUSNCAO ESTE ID EN PERSONAL", allPersonal)
+    console.log("BUSNCAO ESTE ID EN PERSONAL", allPersonal)
+    console.log("BUSNCAO ESTE ID EN PERSONAL", allPersonal)
+
+
+
     const personal = allPersonal.find((personal) => {
         if (personal.id === personal_id) {
             return true;
         }
     });
+    console.log('EXISTS',personal);
+    console.log('EXISTS',personal);
+    console.log('EXISTS',personal);
+    console.log('EXISTS',personal);
+    console.log('EXISTS',personal);
+    console.log('EXISTS',personal);
+    console.log('EXISTS',personal);
+    console.log('EXISTS',personal);
+    console.log('EXISTS',personal);
+    console.log('EXISTS',personal);
+    console.log('EXISTS',personal);
     if (personal) {
         personal.isSelected = true;
         allSelectedPersonal.push(personal);
+        console.log('allSelectedPersonal',allSelectedPersonal);
+        console.log('allSelectedPersonal',allSelectedPersonal);
+        console.log('allSelectedPersonal',allSelectedPersonal);
+        console.log('allSelectedPersonal',allSelectedPersonal);
+        console.log('allSelectedPersonal',allSelectedPersonal);
+        console.log('allSelectedPersonal',allSelectedPersonal);
+        console.log('allSelectedPersonal',allSelectedPersonal);
+        console.log('allSelectedPersonal',allSelectedPersonal);
+        console.log('allSelectedPersonal',allSelectedPersonal);
+        console.log('allSelectedPersonal',allSelectedPersonal);
     }
 
 
@@ -771,11 +829,35 @@ function printAllSelectedPersonal() {
     $('.personalResumeTable').remove();
     $('#searchAllPersonal option').remove();
     // selectedPersonalSideResume
+
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+    console.log("allSelectedPersonal", allSelectedPersonal);
+
     allPersonal.forEach((personal) => {
 
         if(personal.isDelete == 1){
             return;
         }
+
+        personal.nombre = setPersonalName(personal.nombre,personal.personalName);
+
         // const personalExists = allSelectedPersonal.find((personalSelected)=>{
         //     if(personalSelected.id === personal.id){
         //         return true;
@@ -806,6 +888,7 @@ function printAllSelectedPersonal() {
     });
 
     allSelectedPersonal.forEach((personal) => {
+
         let personalStatus = "";
         if (personal.isSelected) {
             personalStatus = ""
@@ -863,21 +946,37 @@ function printAllSelectedPersonal() {
     });
 
 
-    console.log('_allEspecialidades',_allEspecialidades);
-    console.log('_allEspecialidades',_allEspecialidades);
-    console.log('_allEspecialidades',_allEspecialidades);
+    // console.log('_allEspecialidades',_allEspecialidades);
+    // console.log('_allEspecialidades',_allEspecialidades);
+    // console.log('_allEspecialidades',_allEspecialidades);
 
-    _allEspecialidades.forEach((especialidad)=>{
+    // let temp_allEspecialidades = _allEspecialidades.map((especialidad)=>{   
+    //     return {
+    //         especialidad: especialidad.especialidad
+    //     }
+    // });
+
+    let uniqueEspecialidad = [...new Set(_allEspecialidades.map((especialidad)=>{return especialidad.especialidad}))];
+    // console.log('uniqueEspecialidad', uniqueEspecialidad);
+
+
+
+    uniqueEspecialidad.forEach((especialidad)=>{
         const SELECTED_PERSONAL_BY_ESPECIALIDAD = allSelectedPersonal.filter((selectedPersonal)=>{
-            return especialidad.especialidad.toLowerCase() === selectedPersonal.especialidad.toLowerCase();
+            return especialidad.toLowerCase() === selectedPersonal.especialidad.toLowerCase();
         });
 
-        console.log('SELECTED_PERSONAL_BY_ESPECIALIDAD',SELECTED_PERSONAL_BY_ESPECIALIDAD);
-        console.log('SELECTED_PERSONAL_BY_ESPECIALIDAD.length',SELECTED_PERSONAL_BY_ESPECIALIDAD.length);
+
+        // const uniqueSelectedPersonal = [...new Set(SELECTED_PERSONAL_BY_ESPECIALIDAD)];
+        // console.log('uniqueSelectedPersonal', SELECTED_PERSONAL_BY_ESPECIALIDAD);
+        // console.log('SELECTED_PERSONAL_BY_ESPECIALIDAD.length',SELECTED_PERSONAL_BY_ESPECIALIDAD.length);
 
         if(SELECTED_PERSONAL_BY_ESPECIALIDAD.length > 0){
 
-            let espSelectedPersonal = `<tr><td colspan="2" class="--selPers-esp"><p>${especialidad.especialidad}</p></td></tr>`
+            
+
+
+            let espSelectedPersonal = `<tr><td colspan="2" class="--selPers-esp"><p>${especialidad}</p></td></tr>`
             $('#selectedPersonalSideResume tbody').append(espSelectedPersonal);
 
             SELECTED_PERSONAL_BY_ESPECIALIDAD.forEach((selectedPers)=>{

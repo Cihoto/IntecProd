@@ -43,7 +43,7 @@ function showModalAddDemoData(){
                 return createNewDemoAccount
             } catch (error) {
                 Swal.showValidationMessage(`Ha ocurrido un error, se revertirán los cambios efectuados.`);
-                Swal.showValidationMessage(`Error found: ${error}`);
+                // Swal.showValidationMessage(`Error found: ${error}`);
             }
         },
         allowOutsideClick: () => !Swal.isLoading()
@@ -53,8 +53,8 @@ function showModalAddDemoData(){
                 if(result.value === true){
                     
                     SWAL_DEMO_CONFIRM.fire({
-                        title: "Deleted!",
-                        text: "Your file has been deleted.",
+                        title: "Excelente!",
+                        text: "Tus datos demo han sido agregados exitosamente.",
                         icon: "success"
                     });
                 }
@@ -103,7 +103,10 @@ function showModalDeleteDemoData(){
                         title: "Excelente!",
                         text: "Tus datos demo han sido eliminados exitosamente.",
                         icon: "success"
+                    }).then(() => {
+                        location.reload();
                     });
+
                 }
             // }, 2500);
         } 

@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="--s-input">
-                    <label for="passInput" class="inputLabel">Buscar</label>
+                    <label for="passInput" class="inputLabel">Contraseña</label>
                     <input id="passInput" name="password" type="password" class="" value="">
                     <div class="--msg"><p id="passMessage"></p></div>
                 </div>

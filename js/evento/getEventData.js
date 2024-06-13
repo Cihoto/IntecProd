@@ -175,6 +175,7 @@ async function getAllProjectData(event_id, empresa_id) {
     }
 
     if (responseGetData.asignados.eventData_json.length > 0) {
+
         const EVENT_JSON = responseGetData.asignados.eventData_json[0];
 
         console.log('EVENT_JSON',EVENT_JSON); 
@@ -316,6 +317,10 @@ async function getAllProjectData(event_id, empresa_id) {
 
         
     }else{
+        console.log('responseGetData.asignados.productos',responseGetData.asignados.productos);
+        console.log('responseGetData.asignados.productos',responseGetData.asignados.productos);
+        console.log('responseGetData.asignados.productos',responseGetData.asignados.productos);
+        console.log('responseGetData.asignados.productos',responseGetData.asignados.productos);
 
         responseGetData.asignados.productos.forEach(producto => {
             const productsToAdd = [{
@@ -323,18 +328,38 @@ async function getAllProjectData(event_id, empresa_id) {
                 'quantityToAdd': producto.cantidad
             }];
             setSelectedProduct_AddNewProducts(productsToAdd);
-            printAllProductsOnTable();
-            printAllSelectedProducts();
-            setIngresos();
         });
+        printAllProductsOnTable();
+        printAllSelectedProducts();
+        setIngresos();
+
+
+        console.log('responseGetData.asignados.personal',responseGetData.asignados.personal)
+        console.log('responseGetData.asignados.personal',responseGetData.asignados.personal)
+        console.log('responseGetData.asignados.personal',responseGetData.asignados.personal)
+        console.log('responseGetData.asignados.personal',responseGetData.asignados.personal)
+        console.log('responseGetData.asignados.personal',responseGetData.asignados.personal)
+        console.log('responseGetData.asignados.personal',responseGetData.asignados.personal)
         
         if (responseGetData.asignados.personal.length > 0) {
             responseGetData.asignados.personal.forEach(personal => {
+                if(personal.nombre === "" || personal.nombre === undefined || personal.nombre === null || personal.nombre === 'NULL' || personal.nombre === 'null'){
+                    personal.nombre = personal.personalName;
+                }   
                 AddSelectedPersonal(personal.id);
             });
-            printAllSelectedPersonal();
         } else { }
+        printAllSelectedPersonal();
 
+
+
+        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
+        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
+        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
+        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
+        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
+        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
+        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
         if (responseGetData.asignados.vehiculos.length > 0) {
             responseGetData.asignados.vehiculos.forEach(vehiculo => {
 

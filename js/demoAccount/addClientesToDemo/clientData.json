@@ -1,0 +1,52 @@
+[
+    {
+        "razon_social": "Intec SPA",
+        "nombre_fantasia": "INTEC",
+        "rut_df": "76.666.666-6",
+        "direccion_df": "Av. Tabancura 1515, of 222. Vitacura",
+        "mail_df": "finanzas@intec.cl",
+        "persona_contacto": "Jose Tomas Mora",
+        "nombre": "Jose Tomas Mora",
+        "rut": "20136448-5",
+        "mail": "josetomas@intec.cl",
+        "number": "991659028"
+    },
+    {
+        "razon_social": "NULL",
+        "nombre_fantasia": "NOVIOS",
+        "rut_df": "584878487",
+        "direccion_df": "NULL",
+        "mail_df": "nosamamos@gmail.com",
+        "persona_contacto": "John Doe",
+        "nombre": "John Dow",
+        "rut": "584878487",
+        "mail": "nosamamos@gmail.com",
+        "number": "991234568"
+    },
+    {
+        
+        "razon_social": "Ilustre Municipalidad de Pucón",
+        "nombre_fantasia": "Municipalidad de Pucón",
+        "rut_df": "53333333-3",
+        "direccion_df": "Pucón",
+        "mail_df": "pordebajito@pucon.cl",
+        "persona_contacto": "",
+        "nombre": "",
+        "rut": "",
+        "mail": "",
+        "number":""
+    },
+    {
+        "razon_social": "NULL",
+        "nombre_fantasia": "Andrónico Luksic",
+        "rut_df": "9999999-9",
+        "direccion_df": "Colina 1, Colina",
+        "mail_df": "soymillonario@gmail.com",
+        "persona_contacto": "Andrónico",
+        "nombre": "Andrónico",
+        "rut": "584878487",
+        "mail": "soymillonario@gmail.com",
+        "number": "991234567"
+    }
+
+]

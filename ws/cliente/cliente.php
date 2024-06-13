@@ -489,8 +489,8 @@ function getClienteById($request)
         df.correo,
         p.telefono
          FROM cliente c 
-            INNER JOIN persona p on p.id = c.persona_id_contacto 
-            INNER JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
+            LEFT JOIN persona p on p.id = c.persona_id_contacto 
+            LEFT JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
             where c.id = $clienteId";
 
     if ($responseBd = $conn->mysqli->query($query)) {

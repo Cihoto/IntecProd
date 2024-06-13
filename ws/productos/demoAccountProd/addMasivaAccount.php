@@ -79,7 +79,7 @@ require_once('../../bd/bd.php');
 //     }
 
 
-    
+
 //     $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.producto
 //     (nombre, `desc`, marca_id, categoria_has_item_id, codigo_barra, precio_compra, 
 //     precio_arriendo, createAt, modifiedAt, IsDelete, deleteAt, empresa_id, is_demo) 
@@ -112,6 +112,7 @@ $mysqli = $conn->mysqli;
 
 $now = date('Y-m-d H:i:s');
 $today = date('Y-m-d');
+$response = [];
 
 // Obtener todas las marcas de la base de datos
 $brands = [];
@@ -165,20 +166,38 @@ foreach ($request as $requestProd) {
     $stmt = $mysqli->prepare("INSERT INTO producto
         (nombre, `desc`, marca_id, categoria_has_item_id, codigo_barra, precio_compra, 
         precio_arriendo, createAt, modifiedAt, IsDelete, deleteAt, empresa_id, is_demo)
-        VALUES (?, NULL, ?, ?, '11211', ?, ?, ?, NULL, NULL, NULL, ?, 1)");
+        VALUES (?, NULL, ?, ?, '11211', ?, ?, ?, NULL, 0, NULL, ?, 1)");
 
-    $stmt->bind_param("siiiisi", $requestProd->productName, $brandId, $requestProd->chiId,
-                      $requestProd->purchPrice, $requestProd->rentPrice, $today,
-                      $data->empresaId);
+    $stmt->bind_param(
+        "siiiisi",
+        $requestProd->productName,
+        $brandId,
+        $requestProd->chiId,
+        $requestProd->purchPrice,
+        $requestProd->rentPrice,
+        $today,
+        $data->empresaId
+    );
 
     $stmt->execute();
+    $prodId = $stmt->insert_id;
+
+    $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.inventario (producto_id, cantidad, createAt) 
+    VALUES(?, ?, ?)");
+    $stmt->bind_param("iis", $prodId, $requestProd->stock, $today);
+    $stmt->execute();
+
+
+    $response[] = [
+        "productName" => $requestProd->productName,
+        "brandId" => $brandId,
+        "chiId" => $requestProd->chiId,
+        "purchPrice" => $requestProd->purchPrice,
+        "rentPrice" => $requestProd->rentPrice,
+        "today" => $today,
+        "stock" => $requestProd->stock,
+        "productId" => $prodId
+    ];
 }
 $conn->desconectar();
-echo json_encode(["status" => "success", "message" => "Request processed successfully"]);
-?>
-
-
-
-
-
-
+echo json_encode(["status" => "success", "message" => "Request processed successfully", "data" => $response]);

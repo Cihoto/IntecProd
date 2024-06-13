@@ -1,0 +1,761 @@
+[
+    {
+        "nombre_proyecto": "Fiesta fin de año INTEC",
+        "fecha_inicio": "-3",
+        "fecha_termino": "-3",
+        "observaciones": "Aquí podemos escribir lo que queramos",
+        "createAt": "8/21/2023",
+        "cliente": "INTEC",
+        "cliente_id": 0,
+        "empresa_id": "2",
+        "owner": "124",
+        "status_id": "3",
+        "ADDRESS": "Teatro la cupula",
+        "event_type_id": "1",
+        "personalToAssign": [
+            {
+                "personalId": 0,
+                "salary": 0,
+                "workedHours": 0,
+                "name": "Juan Perez"
+            },
+            {
+                "personalId": 0,
+                "salary": 0,
+                "workedHours": 0,
+                "name": "Pedro Soto"
+            },
+            {
+                "personalId": 0,
+                "salary": 80000,
+                "workedHours": 0,
+                "name": "Jhon Doe"
+            }
+        ],
+        "productsToAssign": [
+            {
+                "prodId": 0,
+                "quantity": 30,
+                "prodName": "Par Led RGBW 18*12w",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 16,
+                "prodName": "Cabeza Movil Beam 230w 7r",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Consola Iluminación Titan One + PC",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 16,
+                "prodName": "Line Array Das AERO12",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 8,
+                "prodName": "Sub Bajo Das EVENT218",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Consola Midas M32",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Shure QLXD Beta 58 Inalambrico",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 48,
+                "prodName": "Pantalla Led P3.9 Outdoor",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Video Procesador NOVA",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 8,
+                "prodName": "Truss 2M aluminio",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 4,
+                "prodName": "Torre Fenix Magara 300 6m",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Tablero Trifásico 32amp 6x16",
+                "totalProd": 0
+            }
+        ],
+        "vehiclesToAssign": [
+            {
+                "vehicleId": 0,
+                "plate": "AABB11",
+                "tripCount": 2,
+                "tripPrice": 20000
+            },
+            {
+                "vehicleId": 0,
+                "plate": "AABB22",
+                "tripCount": 2,
+                "tripPrice": 100000
+            }
+        ],"othersSellToAssign":[
+            {
+                "sellName": "Generador 50kva",
+                "quantity": 1,
+                "totalPrice": 300000
+            }
+        ],"otherCostsToAssign":[
+            {
+                "id.evento": 31,
+                "costName": "Colaciones",
+                "quantity": 2,
+                "totalPrice": 60000
+            },
+            {
+                "id.evento": 31,
+                "costName": "Pilas",
+                "quantity": 3,
+                "totalPrice": 5000
+            }
+        ]
+    },
+    {
+        "nombre_proyecto": "Lanzamiento Software",
+        "fecha_inicio": "-2",
+        "fecha_termino": "-2",
+        "observaciones": "Aquí podemos escribir lo que queramos",
+        "createAt": "8/30/2023",
+        "cliente": "INTEC",
+        "cliente_id": 0,
+        "empresa_id": "2",
+        "owner": "124",
+        "status_id": "3",
+        "ADDRESS": "Movistar Arena",
+        "event_type_id": "1",
+        "personalToAssign": [
+            {
+                "personalId": 0,
+                "salary": 0,
+                "workedHours": 0,
+                "name": "Juan Perez"
+            },
+            {
+                "personalId": 0,
+                "salary": 0,
+                "workedHours": 0,
+                "name": "Pedro Soto"
+            },
+            {
+                "personalId": 0,
+                "salary": 100000,
+                "workedHours": 0,
+                "name": "Jenny Doe"
+            }
+        ],
+        "productsToAssign": [
+            {
+                "prodId": 0,
+                "quantity": 8,
+                "prodName": "Par Led RGBW 18*12w",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 4,
+                "prodName": "Cabeza Movil Beam 230w 7r",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Consola Iluminación Titan One + PC",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 4,
+                "prodName": "Line Array Das AERO12",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Sub Bajo Das EVENT218",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Consola Midas M32",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Shure QLXD Beta 58 Inalambrico",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 24,
+                "prodName": "Pantalla Led P3.9 Outdoor",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Video Procesador NOVA",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Retornos Das EVENT12",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 4,
+                "prodName": "Truss 2M aluminio",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Torre Fenix Magara 300 6m",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Tablero Trifásico 32amp 6x16",
+                "totalProd": 0
+            }
+        ],
+        "vehiclesToAssign": [
+            {
+                "vehicleId": 0,
+                "plate": "AABB11",
+                "tripCount": 2,
+                "tripPrice": 20000
+            },
+            {
+                "vehicleId": 0,
+                "plate": "AABB22",
+                "tripCount": 2,
+                "tripPrice": 150000
+            }
+        ],"othersSellToAssign":[
+            {
+                "sellName": "Generador 50kva",
+                "quantity": 1,
+                "totalPrice": 300000
+            }
+        ],"otherCostsToAssign":[
+            {
+                "costName": "Colaciones",
+                "quantity": 1,
+                "totalPrice": 76000
+            },
+            {
+                "costName": "Uber",
+                "quantity": 1,
+                "totalPrice": 17000
+            },
+            {
+                "costName": "Gaffer",
+                "quantity": 1,
+                "totalPrice": 10000
+            }
+        ]
+    },
+    {
+        "nombre_proyecto": "Matrimonio John y Jenny Doe",
+        "fecha_inicio": "+2",
+        "fecha_termino": "+2",
+        "observaciones": "Aquí podemos escribir lo que queramos",
+        "createAt": "8/30/2023",
+        "cliente": "NOVIOS",
+        "cliente_id": 0,
+        "empresa_id": "2",
+        "owner": "124",
+        "status_id": "2",
+        "ADDRESS": "Espacio Riesco",
+        "event_type_id": "4",
+        "personalToAssign": [
+            {
+                "personalId": 0,
+                "salary": 0,
+                "workedHours": 0,
+                "name": "Juan Perez"
+            },
+            {
+                "personalId": 0,
+                "salary": 0,
+                "workedHours": 0,
+                "name": "Pedro Soto"
+            },
+            {
+                "personalId": 0,
+                "salary": 80000,
+                "workedHours": 0,
+                "name": "Jhon Doe"
+            }
+        ],
+        "productsToAssign": [
+            {
+                "prodId": 0,
+                "quantity": 16,
+                "prodName": "Par Led RGBW 18*12w",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 8,
+                "prodName": "Cabeza Movil Beam 230w 7r",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Consola Iluminación Titan One + PC",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Sub Bajo Das EVENT218",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Consola Midas M32",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Shure QLXD Beta 58 Inalambrico",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 6,
+                "prodName": "Retornos Das EVENT12",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 4,
+                "prodName": "Truss 2M aluminio",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Torre Fenix Magara 300 6m",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Tablero Trifásico 32amp 6x16",
+                "totalProd": 0
+            }
+        ],
+        "vehiclesToAssign": [
+            {
+                "vehicleId": 0,
+                "plate": "AABB11",
+                "tripCount": 2,
+                "tripPrice": 20000
+            }
+
+        ],"othersSellToAssign":[
+            {
+                "sellName": "Generador 50kva",
+                "quantity": 1,
+                "totalPrice": 300000
+            }
+        ],"otherCostsToAssign":[
+            {
+                "costName": "Colaciones",
+                "quantity": 1,
+                "totalPrice": 100000
+            },
+            {
+                "costName": "Uber",
+                "quantity": 1,
+                "totalPrice": 25000
+            }
+        ]
+    },
+    {
+        "nombre_proyecto": "Fiestas Patrias",
+        "fecha_inicio": "+3",
+        "fecha_termino": "+3",
+        "observaciones": "Aquí podemos escribir lo que queramos",
+        "createAt": "12/21/2023",
+        "cliente": "Municipalidad de Pucón",
+        "cliente_id": 0,
+        "empresa_id": "2",
+        "owner": "124",
+        "status_id": "2",
+        "ADDRESS": "Parque O'Higgins",
+        "event_type_id": "2",
+        "personalToAssign": [
+            {
+                "personalId": 0,
+                "salary": 0,
+                "workedHours": 0,
+                "name": "Juan Perez"
+            },
+            {
+                "personalId": 0,
+                "salary": 0,
+                "workedHours": 0,
+                "name": "Pedro Soto"
+            },
+            {
+                "personalId": 0,
+                "salary": 100000,
+                "workedHours": 0,
+                "name": "Jenny Doe"
+            }
+        ],
+        "productsToAssign": [
+            {
+                "prodId": 0,
+                "quantity": 50,
+                "prodName": "Par Led RGBW 18*12w",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 20,
+                "prodName": "Cabeza Movil Beam 230w 7r",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Consola Iluminación Titan One + PC",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 16,
+                "prodName": "Line Array Das AERO12",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 8,
+                "prodName": "Sub Bajo Das EVENT218",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Consola Midas M32",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Kit micrófonos batería shure",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Shure QLXD Beta 58 Inalambrico",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 96,
+                "prodName": "Pantalla Led P3.9 Outdoor",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Video Procesador NOVA",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 8,
+                "prodName": "Retornos Das EVENT12",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 12,
+                "prodName": "Truss 2M aluminio",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 4,
+                "prodName": "Torre Fenix Magara 300 6m",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Tablero Trifásico 32amp 6x16",
+                "totalProd": 0
+            }
+        ],
+        "vehiclesToAssign": [
+            {
+                "vehicleId": 0,
+                "plate": "AABB22",
+                "tripCount": 4,
+                "tripPrice": 120000
+            }
+        ],"othersSellToAssign":[
+            {
+                "sellName": "Generador 50kva",
+                "quantity": 1,
+                "totalPrice": 300000
+            }
+        ],"otherCostsToAssign":[
+            {
+                "costName": "Colaciones",
+                "quantity": 1,
+                "totalPrice": 250000
+            }
+        ]
+    },
+    {
+        "nombre_proyecto": "Año Nuevo Muni Pucón",
+        "fecha_inicio": "+5",
+        "fecha_termino": "+5",
+        "observaciones": "Aquí podemos escribir lo que queramos",
+        "createAt": "12/10/2023",
+        "cliente": "Municipalidad de Pucón",
+        "cliente_id": 0,
+        "empresa_id": "2",
+        "owner": "124",
+        "status_id": "4",
+        "ADDRESS": "Parque Bicentenario Vitacura",
+        "event_type_id": "3",
+        "personalToAssign": [
+            {
+                "personalId": 0,
+                "salary": 0,
+                "workedHours": 0,
+                "name": "Juan Perez"
+            },
+            {
+                "personalId": 0,
+                "salary": 0,
+                "workedHours": 0,
+                "name": "Pedro Soto"
+            },
+            {
+                "personalId": 0,
+                "salary": 100000,
+                "workedHours": 0,
+                "name": "Jenny Doe"
+            }
+        ],
+        "productsToAssign": [
+            {
+                "prodId": 0,
+                "quantity": 30,
+                "prodName": "Par Led RGBW 18*12w",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 16,
+                "prodName": "Cabeza Movil Beam 230w 7r",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Consola Iluminación Titan One + PC",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 12,
+                "prodName": "Line Array Das AERO12",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 6,
+                "prodName": "Sub Bajo Das EVENT218",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Consola Midas M32",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Kit micrófonos batería shure",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Shure QLXD Beta 58 Inalambrico",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 60,
+                "prodName": "Pantalla Led P3.9 Outdoor",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Video Procesador NOVA",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 6,
+                "prodName": "Retornos Das EVENT12",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 10,
+                "prodName": "Truss 2M aluminio",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 4,
+                "prodName": "Torre Fenix Magara 300 6m",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Tablero Trifásico 32amp 6x16",
+                "totalProd": 0
+            }
+        ],
+        "vehiclesToAssign" : [
+            {
+                "vehicleId": 0,
+                "plate": "AABB22",
+                "tripCount": 2,
+                "tripPrice": 100000
+            }
+        ],"othersSellToAssign":[
+            {
+                "sellName": "3 Días de evento",
+                "quantity": 1,
+                "totalPrice": 4000000
+            }
+        ],"otherCostsToAssign":[
+            {
+                "costName": "Colaciones",
+                "quantity": 1,
+                "totalPrice": 150000
+            },
+            {
+                "costName": "Uber",
+                "quantity": 1,
+                "totalPrice": 60000
+            }
+        ]
+    },
+    {
+        "nombre_proyecto": "Cumpleaños de Luksic",
+        "fecha_inicio": "+6",
+        "fecha_termino": "+6",
+        "observaciones": "Aquí podemos escribir lo que queramos",
+        "createAt": "12/10/2023",
+        "cliente": "Andrónico Luksic",
+        "cliente_id": 0,
+        "empresa_id": "2",
+        "owner": "124",
+        "status_id": "4",
+        "ADDRESS": "Parque Arauco",
+        "event_type_id": "7",
+        "personalToAssign": [
+            {
+                "personalId": 0,
+                "salary": 0,
+                "workedHours": 0,
+                "name": "Pedro Soto"
+            }
+        ],
+        "productsToAssign": [
+            {
+                "prodId": 0,
+                "quantity": 4,
+                "prodName": "Par Led RGBW 18*12w",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 1,
+                "prodName": "Consola Midas M32",
+                "totalProd": 0
+            },
+            {
+                "prodId": 0,
+                "quantity": 2,
+                "prodName": "Retornos Das EVENT12",
+                "totalProd": 0
+            }
+        ],
+        "vehiclesToAssign": [
+            {
+                "vehicleId": 0,
+                "plate": "AABB11",
+                "tripCount": 2,
+                "tripPrice": 20000
+            }
+        ],"othersSellToAssign":[
+            {
+                "sellName": "Generador 50kva",
+                "quantity": 1,
+                "totalPrice": 300000
+            }
+        ],"otherCostsToAssign":[
+
+        ]
+    }
+]
+
+
+

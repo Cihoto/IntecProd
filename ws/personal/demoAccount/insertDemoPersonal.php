@@ -28,7 +28,7 @@ $today = date('Y-m-d');
 
 $cargos = [];
 
-
+$response = [];
 
 
 foreach ($personalData as $key => $personal) {
@@ -90,6 +90,23 @@ foreach ($personalData as $key => $personal) {
     );
 
     $stmt->execute();
+
+    $response [] = [
+        "name" => $personal->name,
+        "rut" => $personal->rut,
+        "mail" => $personal->mail,
+        "number" => $personal->number,
+        "persona_id" => $personaId,
+        "salary" => $personal->salary,
+        "cargo" => $personal->cargo,
+        "specialism" => $personal->specialism,
+        "tipo_contrato_id" => $personal->tipo_contrato_id,
+        "neto" => $personal->salary,
+        "empresa_id" => $empresaId,
+        "is_demo" => 1,
+        "personalId" => $stmt->insert_id
+    ];
+    
 }
 $conn->desconectar();
-echo json_encode(["success" => true]);
+echo json_encode(["success" => true, "message" => "Request processed successfully", "data" => $response]);

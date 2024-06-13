@@ -1,15 +1,15 @@
 <?php   
 $demo_activator_button_text = 'Cargar datos demo';
 
-if(!isset($_SESSION['buss_data'])){
-    session_destroy();
-}
+// if(!isset($_SESSION['buss_data'])){
+//     session_destroy();
+// }
 
-if(!isset($_SESSION['buss_data']->diff)){
-    session_destroy();
-}
-
-$demo_active = $_SESSION['buss_data']->demo_active ;
+// if(!isset($_SESSION['buss_data']->diff)){
+//     session_destroy();
+// }
+echo '<script>console.log("1123123123123123",'. json_encode($_SESSION['buss_data']) .')</script>';
+$demo_active = $_SESSION['buss_data']->demo_active;
 $diff = $_SESSION['buss_data']->diff;
 
 $demo_available = true;
@@ -124,8 +124,15 @@ if( $demo_active == 1){
 
 <script src="./js/pageHeader/configMenu/updateBussinessLogo.js"></script>
 <script src="./js/pageHeader/configMenu/openConfigMenu.js"></script>
+<script src="../js/demoAccount/demoAccountCreation.js"></script>
 <script src="../js/demoAccount/addProductsToDemo/productsMasive.js"></script>
 <script src="../js/demoAccount/addPersonalToDemo/personalMasive.js"></script>
+<script src="../js/demoAccount/addVehiclesDemo/vehiclesMasive.js"></script>
+<script src="../js/demoAccount/addClientesToDemo/clientsMasive.js"></script>
+<script src="../js/demoAccount/addEventsToDemo/EventsMasiva.js"></script>
+
+<script src="./js/demoAccount/demoAccountDelete.js"></script>
+<script src="./js/pageHeader/demoAccountButton.js"></script>
 
 
 <script>
