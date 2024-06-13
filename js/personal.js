@@ -831,24 +831,6 @@ function printAllSelectedPersonal() {
     // selectedPersonalSideResume
 
     console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
-    console.log("allSelectedPersonal", allSelectedPersonal);
 
     allPersonal.forEach((personal) => {
 
@@ -980,6 +962,10 @@ function printAllSelectedPersonal() {
             $('#selectedPersonalSideResume tbody').append(espSelectedPersonal);
 
             SELECTED_PERSONAL_BY_ESPECIALIDAD.forEach((selectedPers)=>{
+
+                if(selectedPers.nombre === "" || selectedPers.nombre === null || selectedPers.nombre === undefined){
+                    selectedPers.nombre = selectedPers.personalName;
+                }
 
                 let personalStatus = "";
                 if (selectedPers.isSelected) {
