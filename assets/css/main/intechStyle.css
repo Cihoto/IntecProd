@@ -4842,7 +4842,7 @@ label.dateLabel {
 
 
 #dash-event-housing {
-  width: 796px;
+  display: flex;
   height: 582px;
   padding: var(--none, 0px);
   align-items: center;
@@ -4966,8 +4966,8 @@ label.dateLabel {
   display: inline-flex;
   padding: var(--none, 0px);
   align-items: flex-start;
-  gap: var(--3, 18px);
-  width: 796px;
+  gap: 65px;
+  width: 860px;
   margin-bottom: 20px;
 }
 
@@ -8060,6 +8060,7 @@ span.bkt {
     flex-shrink: 0;
     overflow-x: scroll;
     padding: 1px;
+    gap: 16px;
   }
 
   #dash-event-table {

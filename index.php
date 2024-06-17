@@ -112,7 +112,7 @@ $active = 'dashboard';
 
             </div>
             <div id="dash-event-housing">
-              <div id="myChart" style="border-radius: 10px;"></div>
+              <canvas id="myChart" style="background: linear-gradient(358deg, #069B99 1.07%, #0BBEBB 61.75%, #10E5E1 108.47%);border-radius: calc(20px - 8px);height: 425px;"></canvas>
 
               <!-- <p class="dstheader">Próximos eventos</p>
               <form id="dash-event-menu"> -->
@@ -258,7 +258,13 @@ $active = 'dashboard';
   <script src="./js/dashboard/dashboard.js"></script>
   <script src="./js/sortTable/eventSort.js"></script>
   <script src="./js/valuesValidator/validator.js"></script>
+  <!-- <script src="./js/calendar.js"></script> -->
 
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- include js chart -->
+  <script src="./js/chart/renderChart.js"></script>
 
   <!-- SIDEMENU -->
 

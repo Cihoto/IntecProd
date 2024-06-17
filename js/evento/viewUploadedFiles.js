@@ -361,6 +361,13 @@ function deleteFile(file_data, empresa_id) {
 }
 
 function deleteAssignedFileFromServer(file_id, empresa_id,event_id,file_name) {
+
+    console.log(file_id);
+    console.log(empresa_id);
+    console.log(event_id);
+    console.log(file_name);
+
+
     return $.ajax({
         type: "POST",
         url: 'ws/BussinessDocuments/deleteAssignedFile.php',
@@ -372,6 +379,7 @@ function deleteAssignedFileFromServer(file_id, empresa_id,event_id,file_name) {
         }),
         dataType: 'json',
         success: function (response) {
+            console.log(response)
         }, error: function (response) {
             // console.log(response)
         }

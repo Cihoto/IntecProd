@@ -67,15 +67,18 @@
   </script>
 
 
-  <!-- VANILLA CALENDAR -->
-  <link href="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/build/vanilla-calendar.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/build/vanilla-calendar.min.js" defer></script>
-
+<!-- cahrt js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- LOTTIEFILES -->
 
   <!-- MOMENT JS -->
   <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
 
+
+
+  <!-- VANILLA CALENDAR -->
+  <link href="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/build/vanilla-calendar.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/build/vanilla-calendar.min.js" defer></script>
 
   <!-- CHARTIST -->
   <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">

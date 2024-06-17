@@ -28,6 +28,8 @@ function deleteAssignedFile($file_name,$file_id,$empresa_id,$event_id){
 
         $target_path = $absolute_path."\documents\buss$empresa_id\Ev$event_id\bsd$file_name";
 
+        return $target_path;
+
         // return file_exists($target_path);
 
         if (!file_exists($target_path)){

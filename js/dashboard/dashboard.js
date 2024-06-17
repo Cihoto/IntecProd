@@ -509,8 +509,10 @@ function getAnualIncome(empresa_id) {
                 }
             });
 
-            console.log('CHART_DATA', CHART_DATA)
-            renderChartAnualIncome(CHART_DATA);
+            console.log('CHART_DATA', CHART_DATA);
+            const DATA = setChartData(CHART_DATA);
+            renderChart(DATA);
+            // renderChartAnualIncome(CHART_DATA);
         })
         .catch(error => {
             // Manejar errores aquí
@@ -525,79 +527,81 @@ function formatNumber(value) {
 
 function renderChartAnualIncome(chartData) {
     // Chart Options
-    const options = {
-        // Container: HTML Element to hold the chart
-        //   height:{}
-        height: 540,
-        container: document.getElementById('myChart'),
-        data: chartData,
-        title: { text: "Eventos" },
-        series: [
-            // Existing 'Bar' Series, using 'iceCreamSales' data-points
-            {
-                type: 'bar',
-                CornerRadius: 20,
-                xKey: 'month',
-                yKey: 'totalEventCount',
-                direction: 'vertical',
-                yName: 'Venta',
-                fill: '#FFF',
-                label: {
-                    formatter: ({ value }) => `${value}`,
-                    color: 'black'
-                },
-                strokeWidth: 10,
-                lineDash: [0, 15],
-            },
-            {
-                type: 'line',
-                xKey: 'month',
-                yKey: 'totalMonthIncome',
-                stroke: '#6136AB',
-                strokeWidth: 2,
-                strokeOpacity: .3,
-                lineDash: [8, 3],
-                marker: {
-                    shape: 'diamond',
-                    size: 8,
-                    fill: '#6136AB'
-                }
-            }
-        ],
-        axes: [{
-            type: 'category',
-            position: 'bottom'
-        },
-        {
-            type: 'number',
-            position: 'right',
-            keys: ['totalMonthIncome'],
-            label: {
-                formatter: ({ value }) => formatNumber(value),
-            },
-            //   tick: {
-            //     minSpacing: 1,
-            //   },
-            gridLine: {
-                enabled: false,
-            },
-        },
-        {
-            type: 'number',
-            position: 'left',
-            keys: ['totalEventCount'],
-            gridLine: {
-                enabled: false,
-            },
-        },
-        ],
-        background: {
-            fill: 'linear-gradient(358deg, #069B99 1.07%, #0BBEBB 61.75%, #10E5E1 108.47%)',
-        },
-    };
+    // agCharts is a wrapper for charting libraries, like Highcharts, Chart.js, etc.
+    // const options = {
+    //     // Container: HTML Element to hold the chart
+    //     //   height:{}
+    //     height: 540,
+    //     container: document.getElementById('myChart'),
+    //     data: chartData,
+    //     title: { text: "Eventos" },
+    //     series: [
 
-    // Create Chart
-    const chart = agCharts.AgCharts.create(options);
+    //         {
+    //             type: 'bar',
+    //             xKey: 'month',
+    //             yKey: 'totalEventCount',
+    //             cornerRadius: 10,
+    //             direction: 'vertical',
+    //             yName: 'Venta',
+    //             fill: '#FFF',
+    //             label: {
+    //                 formatter: ({ value }) => `${value}`,
+    //                 color: 'black'
+    //             },
+    //             strokeWidth: 10,
+    //             lineDash: [0, 15],
+    //         },
+    //         {
+    //             type: 'line',
+    //             xKey: 'month',
+    //             yKey: 'totalMonthIncome',
+    //             stroke: '#6136AB',
+    //             strokeWidth: 2,
+    //             strokeOpacity: .3,
+    //             lineDash: [8, 3],
+    //             marker: {
+    //                 shape: 'diamond',
+    //                 size: 8,
+    //                 fill: '#6136AB'
+    //             },
+    //             cornerRadius: 10
+    //         }
+    //     ],
+    //     axes: [{
+    //         type: 'category',
+    //         position: 'bottom'
+    //     },
+    //     {
+    //         type: 'number',
+    //         position: 'right',
+    //         keys: ['totalMonthIncome'],
+    //         label: {
+    //             formatter: ({ value }) => formatNumber(value),
+    //         },
+    //         //   tick: {
+    //         //     minSpacing: 1,
+    //         //   },
+    //         gridLine: {
+    //             enabled: false,
+    //         },
+    //     },
+    //     {
+    //         type: 'number',
+    //         position: 'left',
+    //         keys: ['totalEventCount'],
+    //         gridLine: {
+    //             enabled: false,
+    //         },
+    //     },
+    //     ],
+    //     background: {
+    //         fill: 'linear-gradient(358deg, #069B99 1.07%, #0BBEBB 61.75%, #10E5E1 108.47%)',
+    //     },
+    // };
+
+    // // Create Chart
+    // const chart = agCharts.AgCharts.create(options);
 
 }
 
