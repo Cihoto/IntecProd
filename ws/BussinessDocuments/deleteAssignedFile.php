@@ -25,12 +25,7 @@ function deleteAssignedFile($file_name,$file_id,$empresa_id,$event_id){
 
         $absolute_path = getcwd();
 
-
-        $target_path = $absolute_path."\documents\buss$empresa_id\Ev$event_id\bsd$file_name";
-
-        return $target_path;
-
-        // return file_exists($target_path);
+        $target_path = $absolute_path."/documents/buss".$empresa_id."/Ev".$event_id."/bsd".$file_name;
 
         if (!file_exists($target_path)){
             return array('error'=>true,'message'=>'El documento no existe');
