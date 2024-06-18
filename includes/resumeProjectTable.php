@@ -1,65 +1,23 @@
 <div class="--payment-status-container">
     <div class="--payment-section">
-        <div class="form-group col-lg-4 col-12">
+        <div class="form-group col-lg-4 col-12" style="margin-top: -14px;margin-bottom: 0px;">
             <label for="event_payment_method" class="inputLabel">*Tipo de evento</label>
-            <select style="width: 100%;" id="event_payment_method" name="event_payment_method" type="text" class="form-select input-lg s-Select">
+            <select id="event_payment_method" name="event_payment_method" type="text" class="form-select input-lg s-Select">
                 <option value="">Seleccione</option>
                 <option value="1">Con documento</option>
                 <option value="0">Sin documento </option>
             </select>
         </div>
 
-        <div class="--ev-payment-perc">
-            <p>Estado de pago</p>
-            <div class="--perc-container" id="-p-bar-bk">
-                <div class="--perc-view" id="-p-bar-pr">
+        <button class="s-Button" id="" style="width: 170px;" onclick="openCreditedBalance()">
+            <p class="s-P">Estado financiero</p>
+        </button>
 
-                </div>
-            </div>
-            <p id="--literal-percentage" class="--number">0%</p>
-        </div>
-        <div class="--ev-pay-check">
-            <input type="checkbox" value="1" class="switch" id="evBilled">
-            <p>Facturado</p>
-        </div>
-        <div class="--ev-pay-credited">
-            <div class="--ev-pay-check">
-                <input type="checkbox" value="1" class="switch" id='evPaid'>
-                <p>Pagado</p>
-            </div>
-            <div class="--ev-pay-check">
-                <input type="checkbox" value="1" class="switch" id='evCredited'>
-                <p>Abonado</p>
-            </div>
-            <input type="text" id="creditedAmount">
-        </div>
+
     </div>
 
-    <div class="--payment-resume-section">
-        <div style="height: 180px; overflow-x: scroll;width: 75%;scrollbar-width: none;">
-
-        <table class="-resume-table-S -r-t-income" id="evPaymentResume">
-            <thead>
-                <tr>
-                    <th>
-                        <p>Historial de abonos</p>
-                    </th>
-                    <th></th>
-                    <th>
-                        <p id="-payment-total-credited" style="text-align:end;">$0</p>
-                    </th>
-                </tr>
-                <tr class="--secondaryTitle">
-                    <th><p>Fecha</p></th>
-                    <th><p>usuario</p></th>
-                    <th><p>Monto</p></th>
-                    <th class='--table-action'></th>
-                </tr>
-            </thead>
-
-            <tbody >
-
-                <!-- <tr>
+    
+    <!-- <tr>
                     <td><p>2024-12-12</p></td>
                     <td><p>jose loyola</p></td>
                     <td><p>102200000</p></td>
@@ -85,20 +43,15 @@
                     <td><p>jose loyola</p></td>
                     <td><p>102200000</p></td>
                 </tr> -->
-                    <!-- <tr>
+    <!-- <tr>
                                 <td><p></p></td>
                                 <td><p>Audio</p></td>
                                 <td><p></p></td>
                                 <td><p>$900000</p></td>
                             </tr> -->
-                </tbody>
-        </table>
-        </div>
-    </div>
     <!-- <button id="clickmetestButton">clickme</button> -->
 </div>
 
-<script src="../js/ProjectResume/creditedPercentage.js  "></script>
 
 
 <!-- <div class="container" style="margin: 0px;"> -->
@@ -488,9 +441,6 @@
 
     <!-- </div> -->
 </div>
-
-
-
 
 
 

@@ -158,6 +158,7 @@ require_once('./includes/head.php');
     <?php require_once('./includes/sidemenu/newFreelanceSideMenu.php'); ?>
     <?php require_once('./includes/sidemenu/eventComments.php'); ?>
     <?php require_once('./includes/sidemenu/vehicleSideMenu.php'); ?>
+    <?php require_once('./includes/sidemenu/resumeCreditedBalance.php'); ?>
 
 
     <!-- REQUIRE FORM ARRIENDOS -->
@@ -186,6 +187,7 @@ require_once('./includes/head.php');
     <script src="./js/ProjectResume/projectResume.js"></script>
     <script src="./js/ProjectResume/viatico.js"></script>
     <script src="./js/ProjectResume/subArriendo.js"></script>
+    <script src="./js/ProjectResume/creditedPercentage.js"></script>
     <script src="./js/Funciones/assigments.js"></script>
     <script src="./js/cotizacion.js"></script>
     <script src="./js/provider.js"></script>

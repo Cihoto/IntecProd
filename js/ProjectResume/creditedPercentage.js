@@ -112,6 +112,9 @@ EVE_IS_CREDITED_RADIOBTN.addEventListener('click',function(){
 
 CREDITED_AMOUNT_INPUT.addEventListener('focusout',(e)=>{
 
+    console.log(1);
+    console.log('payment_data',payment_data);
+    console.log('payment_data.totalIncomeToCredit',payment_data.totalIncomeToCredit);
     if(payment_data.totalIncomeToCredit === 0){
         e.target.value = '';
         return
@@ -127,6 +130,8 @@ CREDITED_AMOUNT_INPUT.addEventListener('focusout',(e)=>{
 });
 
 function addCreditedAmount(creditedAmountToAdd){
+    console.log(creditedAmountToAdd);
+    console.log(2);
 
     payment_data.creditedTotal += parseInt(creditedAmountToAdd);
 
@@ -243,12 +248,17 @@ function printMyCreditedRecords(){
     updateTotalCreditedPayments()
     $('#evPaymentResume tbody tr').remove();
 
+    console.log($('#evPaymentResume'))
+    console.log($('#evPaymentResume'))
+    console.log($('#evPaymentResume'))
+    console.log($('#evPaymentResume'))
+
     payment_data.credited_records.forEach((credited)=>{
         let tr =`<tr crediId="${credited.iId}">
             <td><p>${credited.registerDate}</p></td>
             <td><p>${credited.registerUser.user_name}</p></td>
             <td><p>${credited.amount}</p></td>
-            <td class='--table-action --t-act deleteCreditedPayment'><img class="deleteCreditedPayment" src="../assets/svg/trashCan.svg" alt=""></td>
+            <td class='--t-act deleteCreditedPayment'><img class="deleteCreditedPayment" src="../assets/svg/trashCan.svg" alt=""></td>
         </tr>`
         $('#evPaymentResume tbody').append(tr);
     });
