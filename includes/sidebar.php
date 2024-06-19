@@ -313,7 +313,7 @@
         echo '<li class="sidebar-item">';
       }
       ?>
-      <a href="/test3.php" class="sidebar-link">
+      <a href="./test3.php" class="sidebar-link">
         <i class="fa-solid fa-infinity"></i>
         <!-- <i class="bi bi-person-check"></i> -->
         <span>Pruebas 3</span>
