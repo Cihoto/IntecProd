@@ -5,7 +5,7 @@
 /vendor
 *inserttest.sql
 *test2.php
-*test3.php
+# *test3.php
 BACKUPINVENTARIO.PHP
 BACKUPINVENTARIO copy.PHP
 # the fuelphp document
