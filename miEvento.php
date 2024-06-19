@@ -160,6 +160,8 @@ require_once('./includes/head.php');
     <?php require_once('./includes/sidemenu/vehicleSideMenu.php'); ?>
     <?php require_once('./includes/sidemenu/resumeCreditedBalance.php'); ?>
 
+    
+
 
     <!-- REQUIRE FORM ARRIENDOS -->
     <?php require_once('./includes/forms/arriendosForm.php');?>

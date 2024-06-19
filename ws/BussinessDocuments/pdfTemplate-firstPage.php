@@ -101,6 +101,49 @@ session_start();
             border-spacing: 0;
         }
 
+        .--cu{
+            color: var(--Disable-text, #8B8D97);
+            font-feature-settings: 'clig' off, 'liga' off;
+            font-family: Roboto;
+            font-size: 8px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 143%; /* 11.44px */
+            letter-spacing: 0.17px;
+        }
+
+        .-cuAmount{
+            display:inline-block;
+            margin-right:10px;
+            text-align:end;
+
+        }
+
+        /* #quoteDetailsTable {
+            tr{
+                display: flex;
+                width:100%;
+            }
+            thead th{
+                th:nth-child(1){
+                    width: 80%;
+                }
+                th:nth-child(2){
+                    width: 20%;
+                }
+            }
+            tbody tr{
+                th:nth-child(1),
+                th:nth-child(2)
+                {
+                    width: 40%;
+                }
+                th:nth-child(3){
+                    width: 20%;
+                }
+            }
+        } */
+
         #quoteDetailsTable td {
             padding: 0px;
         }
@@ -345,7 +388,7 @@ session_start();
     <table id="quoteDetailsTable">
         <thead>
             <tr>
-                <th style="background-color: #069B99; width: 80%;padding: 15px; border-radius: 15px 0px 0px 0px;text-align:start;" colspan="2">
+                <th style="background-color: #069B99; width: 80%;padding: 15px; border-radius: 15px 0px 0px 0px;text-align:start;" colspan="3">
                     <p style="color: #FCFCFC!important;
                     font-feature-settings: 'clig' off, 'liga' off;
                     font-size: 16px;
@@ -382,12 +425,14 @@ session_start();
                     echo "<tr class='categorieQuote'>
                         <td class='categorie-quote'  style='padding:6px;'><p style='margin: 0px 0px 0px 10px;'>". ucfirst($item->categoria)."</p></td>
                         <td class='categorie-quote' style='padding:6px;'></td>
+                        <td></td>
                         <td class='categorie-quote' style='text-align: center;padding:6px'>$item->total_categoria</td>
                     </tr>";
                     foreach ($item->productos as $key => $prod) {
                         echo "<tr>
                             <td class='item-quote' style='text-align: right;'><p style='margin: 0px 20px 0px 0px;'>". $prod->quantityToAdd."</td>
-                            <td class='item-quote' style='text-align: left;'> ".ucfirst($prod->nombre)."</p></td>
+                            <td class='item-quote' style='text-align: left;max-width:180px;overflow:hidden'> ".ucfirst($prod->nombre)."</p></td>
+                            <td class='item-quote' style='text-align: left ;'> ".ucfirst($prod->comentario)."</p></td>
                             <td></td>
                         </tr>`;";
                     } 
@@ -422,6 +467,11 @@ session_start();
         <img class="svgLogo" style="margin-left: 210px;z-index: -2;" src="./PDF_svg/bar3.svg" alt="3asdqw2e12ed">
         <img class="right-logo" src="./PDF_svg/bar4.svg" alt="4d1d12">
         <img class="right-logo" width="100" style="right: -60px;" src="./PDF_svg/bar5.svg" alt="5d12d12">
+
+
+         A-123456789-B-123456789-C-123456789-D-123456789-E-123456789-F-123456789-E-
+
+          A-123456789-B-123456789-C-123456789-D-123456789-E-123456789-F-123456789-E-
     </div> -->
 
     {{ footer }}

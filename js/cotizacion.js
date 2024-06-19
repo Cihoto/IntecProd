@@ -50,6 +50,7 @@ $('#generateQuotes').on('click',async function(){
             <td>${CLPFormatter(itemProd.value)}</td>
         </tr>`;
         _selectedProducts.forEach((selectedProd)=>{
+
             if(selectedProd.categoria === itemProd.categorie){
                 tr += `<tr>
                     <td style="text-align:end;">${selectedProd.quantityToAdd}</td>
@@ -57,6 +58,7 @@ $('#generateQuotes').on('click',async function(){
                     <td></td>
                 </tr>`;
             }
+            
         })
         
         const productos = _selectedProducts.filter((productos)=>{

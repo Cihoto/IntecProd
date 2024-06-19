@@ -2304,6 +2304,58 @@ textarea {
 
 
 .tableCatsAnsResume {
+  margin-left: 150px;
+  input{
+    width: 100%;
+  }
+  thead{
+    th:nth-child(1),
+    th:nth-child(2),
+    th:nth-child(3),
+    th:nth-child(4),
+    th:nth-child(5){
+      justify-content: center;
+      width: 17%;
+    }
+    th:nth-child(6){
+      width: 5%;
+    }
+  }
+  tbody{
+    td:nth-child(1),
+    td:nth-child(2),
+    td:nth-child(3),
+    td:nth-child(4),
+    td:nth-child(5){
+      width: 17%;
+    }
+    td:nth-child(6){
+      width: 5%;
+    }
+  
+  }
+  tfoot{
+    td{
+      display: flex;
+      justify-content: end;
+      text-align: end;
+      width: 16%;
+    }
+
+    td:nth-child(6){
+      justify-content: center;
+      input{
+        width: 50%;
+      }
+    }
+    p{
+      margin: 0px !important;
+    }
+
+  }
+}
+
+.tableCatsAnsResume{
   display: flex;
   width: 100%;
   padding: var(--none, 0px);
@@ -2312,9 +2364,9 @@ textarea {
   border-radius: var(--none, 0px);
 }
 
-.tableCatsAnsResume thead tr {
+.tableCatsAnsResume thead tr{
   display: flex;
-  width: 100%;
+  width: calc(100% - 150px);
   padding: var(--none, 0px);
   align-items: center;
   gap: var(--1, 8px);
@@ -2335,7 +2387,7 @@ textarea {
 .tableCatsAnsResume tbody tr,
 .tableCatsAnsResume tfoot tr {
   display: flex;
-  width: 100%;
+  width: calc(100% - 150px);
   padding: var(--none, 0px);
   align-items: center;
   gap: var(--1, 8px);
@@ -2343,12 +2395,11 @@ textarea {
 
 
 .tableCatsAnsResume thead th,
-.tableCatsAnsResume tbody td,
-.tableCatsAnsResume tfoot td {
+.tableCatsAnsResume tbody td{
   display: flex;
   width: 20%;
   height: 52px;
-  padding: 16px;
+  padding: 6px 16px;
   justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
@@ -3145,6 +3196,7 @@ textarea {
 #ventaContainer {
   height: 700px;
   overflow: auto;
+  overflow-x: hidden;
   /* background-color: #069b995f; */
 }
 
@@ -7746,6 +7798,19 @@ span.bkt {
     text-transform: uppercase;
     margin: 0px !important;
 
+  }
+}
+
+.--secondary-action-btn.gBtn{
+
+  p{
+    color: var(--Cyan-dark, #069B99)!important;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.17px;
   }
 }
 

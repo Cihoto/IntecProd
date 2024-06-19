@@ -856,7 +856,8 @@ function setSelectedProduct_AddNewProducts(prodsToAdd) {
         'cantidad': parseInt(actualProdStatus.cantidad),
         'disponibles': parseInt(actualProdStatus.disponibles),
         'faltantes': actualProdStatus.faltantes,
-        'quantityToAdd': prodToAdd.quantityToAdd
+        'quantityToAdd': prodToAdd.quantityToAdd,
+        'comentario': ''
       });
 
     } else {
@@ -1106,6 +1107,9 @@ function printAllSelectedProducts() {
             <th> 
               <p>Total</p>
             </th>
+            <th> 
+              <p>Comentarios</p>
+            </th>
             <th></th>
           </tr>
           </thead>
@@ -1116,8 +1120,9 @@ function printAllSelectedProducts() {
               <td></td>
               <td></td>
               <td></td>
-              <td><p class="col-lg-5  col-6" style="text-align:end;">Subtotal</p></td>
-              <td><input type="text" categorie_name="${categoria.categoria.replaceAll(' ', '_')}" class="col-lg-4 col-6 relativeCategorieValue" id="subtotalCategoria-${categoria.categoria.replaceAll(' ', '_')}"></td>
+              <td></td>
+              <td><p class="col-lg-6  col-10" style="text-align:end;">Subtotal</p></td>
+              <td><input type="text" categorie_name="${categoria.categoria.replaceAll(' ', '_')}" class="col-lg-6 col-10 relativeCategorieValue" id="subtotalCategoria-${categoria.categoria.replaceAll(' ', '_')}"></td>
             </tr>
           </tfoot>
       </table>`
@@ -1136,6 +1141,7 @@ function printAllSelectedProducts() {
           <td class="cuTd"><input type="text" class="product-price" value="${CLPFormatter(prod.precio_arriendo)}"></td>
           <td class="cantTd"><input type="number" class="addProdInputResume" min="1" max="" value="${prod.quantityToAdd}"/></td>
           <td class="totalTd"><input type="text" class="totalProdInputResume" min="1" max="" value="${CLPFormatter(total)}"/></td>
+          <td class="saleProdComment"><input type="text" class="saleProdCommentInput"/></td>
           <td style="color:red;cursor:pointer;"><i class="fa-solid fa-trash removePrd"></i></td>
         </tr>`)
 
@@ -1413,8 +1419,43 @@ $(document).on('blur', '.totalProdInputResume', function () {
   printAllSelectedProducts();
   setIngresos();
   $(this).val(CLPFormatter(valor));
-})
+});
 
+// capture value on inpt saleProdCommentInput
+$(document).on('blur', '.saleProdCommentInput', function () {
+
+  console.log('1827391823')
+
+  const comentario = $(this).val();
+  console.log('console.log(comentario)',comentario);
+  const product_id = $(this).closest('tr').attr('product_id');
+
+  const PROD_EXISTS = _selectedProducts.find((prod) => {
+
+    return prod.id == product_id;
+  });
+
+  if (!PROD_EXISTS) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Ups!',
+      text: 'Ha ocurrido un error',
+      showConfirmButton: false,
+      showCancelButton: false,
+      timer: 2000
+    });
+    return
+  }
+
+  console.log('PROD_EXISTS',PROD_EXISTS);
+  
+  PROD_EXISTS.comentario = comentario;
+
+  console.log('PROD_EXISTS',PROD_EXISTS);
+  console.log('_selectedProducts', _selectedProducts);
+
+  
+});
 
 
 $(document).on('click', '.quantityProductInput', function () {
