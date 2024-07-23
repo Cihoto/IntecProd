@@ -255,6 +255,14 @@
                                 timer: 2000
                             })
                         }
+                    }else{
+                        Swal.fire({
+                            icon: "error",
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+                    
                     }
                 }
             })
