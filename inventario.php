@@ -541,12 +541,19 @@ $active = 'inventario';
         confirmCatsAndSubCats = true;
         restoreMasivaSideMenu();
 
-        const catsSubCats = await getCatsAndSubCatsByBussiness(EMPRESA_ID);
+        const catsSubcategories = await catsSubCats(EMPRESA_ID);
+        console.log('catsSubcategories', catsSubcategories);
+        console.log('catsSubcategories', catsSubcategories);
+        console.log('catsSubcategories', catsSubcategories);
+        console.log('catsSubcategories', catsSubcategories);
+        console.log('catsSubcategories', catsSubcategories);
+
+
         tempSubCats = [];
         tempCat = [];
-        if (catsSubCats.success) {
-            tempCat = catsSubCats.cats
-            tempSubCats = catsSubCats.allSubCats;
+        if (catsSubcategories.success) {
+            tempCat = catsSubcategories.cats
+            tempSubCats = catsSubcategories.allSubCats;
         }
         const arrayRequest = preRequest.map(function(value) {
 

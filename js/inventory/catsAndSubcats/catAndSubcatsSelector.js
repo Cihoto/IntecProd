@@ -47,6 +47,25 @@ function getCatsAndSubCatsByBussiness(empresa_id) {
     // });
 }
 
+async function catsSubCats(empresa_id) {
+    try {
+        const response = await fetch('ws/productos/Producto.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action: "getCatsAndSubCatsByBussiness",
+                empresa_id: empresa_id
+            })
+        });
+        const catsSubCats = await response.json();
+        return catsSubCats;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 
 function GetItems() {
 

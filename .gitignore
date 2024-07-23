@@ -8,6 +8,11 @@
 # *test3.php
 BACKUPINVENTARIO.PHP
 BACKUPINVENTARIO copy.PHP
+*.json
+/test5.php
+/test4.php
+/dailyBookMovs.js
+Clay/
 # the fuelphp document
 # you may install these packages with `oil package`.
 # http://fuelphp.com/docs/packages/oil/package.html

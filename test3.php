@@ -27,8 +27,12 @@ require_once('./includes/head.php');
 
             <h1>API TEST</h1>
 
+
         </div>
     </div>
+
+
+
 
 
     <?php require_once('./includes/footer.php'); ?>
@@ -116,10 +120,29 @@ require_once('./includes/head.php');
 
     function getBankMovements() {
         console.log('GET BANK MOVEMENTS')
-        fetch('http://api.clay.cl/v1/cuentas_bancarias/movimientos/?numero_cuenta=63741369&rut_empresa=77604901&limit=200&offset=0&fecha_desde=2020-01-01', {
-                mode: 'cors',
+        fetch('https://api.clay.cl/v1/cuentas_bancarias/movimientos/?numero_cuenta=63741369&rut_empresa=77604901&limit=200&offset=0&fecha_desde=2024-06-01', {
+                method: 'GET',
+                origin: 'localhost:8080',
+                mode: 'no-cors',
                 headers: {
-                    'Access-Control-Allow-Origin': '*'
+                    "Content-Type": "application/json",
+                    "Token": '656a2d470829e2e05ad570831701457223956677'
+                }
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch((error) => console.error('Error:', error));
+    }
+
+
+
+    function getBankMovements() {
+        console.log('GET BANK MOVEMENTS')
+        fetch('http://api.clay.cl/v1/cuentas_bancarias/movimientos/?numero_cuenta=63741369&rut_empresa=77604901&limit=200&offset=0&fecha_desde=2020-01-01', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Token': '9NVElUwIrrQPXFU0VSVD9zfeP5i2PWAbrONlc0lQM-0TfHj0a6AQ2wbI-eg01mTj_ZnZLV6q4d2hLU86AXntfY',
                 },
             })
             .then(response => response.json())

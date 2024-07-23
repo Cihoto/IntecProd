@@ -2305,57 +2305,67 @@ textarea {
 
 .tableCatsAnsResume {
   margin-left: 150px;
-  input{
+
+  input {
     width: 100%;
   }
-  thead{
+
+  thead {
+
     th:nth-child(1),
     th:nth-child(2),
     th:nth-child(3),
     th:nth-child(4),
-    th:nth-child(5){
+    th:nth-child(5) {
       justify-content: center;
       width: 17%;
     }
-    th:nth-child(6){
+
+    th:nth-child(6) {
       width: 5%;
     }
   }
-  tbody{
+
+  tbody {
+
     td:nth-child(1),
     td:nth-child(2),
     td:nth-child(3),
     td:nth-child(4),
-    td:nth-child(5){
+    td:nth-child(5) {
       width: 17%;
     }
-    td:nth-child(6){
+
+    td:nth-child(6) {
       width: 5%;
     }
-  
+
   }
-  tfoot{
-    td{
+
+  tfoot {
+    td {
       display: flex;
       justify-content: end;
       text-align: end;
       width: 16%;
     }
 
-    td:nth-child(6){
+    td:nth-child(6) {
       justify-content: center;
-      input{
+
+      input {
         width: 50%;
       }
     }
-    p{
+
+    p {
       margin: 0px !important;
     }
 
   }
 }
 
-.tableCatsAnsResume{
+.tableCatsAnsResume {
   display: flex;
   width: 100%;
   padding: var(--none, 0px);
@@ -2364,7 +2374,7 @@ textarea {
   border-radius: var(--none, 0px);
 }
 
-.tableCatsAnsResume thead tr{
+.tableCatsAnsResume thead tr {
   display: flex;
   width: calc(100% - 150px);
   padding: var(--none, 0px);
@@ -2395,7 +2405,7 @@ textarea {
 
 
 .tableCatsAnsResume thead th,
-.tableCatsAnsResume tbody td{
+.tableCatsAnsResume tbody td {
   display: flex;
   width: 20%;
   height: 52px;
@@ -4308,15 +4318,7 @@ textarea {
         width: 50px;
       }
 
-      .--data-details-fnc {
-        svg.--show-data {
-          transform: rotate(90deg);
-        }
 
-        svg {
-          transition: all .5s ease;
-        }
-      }
 
     }
 
@@ -4361,6 +4363,21 @@ textarea {
 
   }
 }
+
+
+.--data-details-fnc {
+  svg.--show-data {
+    transform: rotate(90deg);
+  }
+
+  svg {
+    transition: all .5s ease;
+  }
+}
+
+
+
+
 
 .-fn-card {
   margin-top: 4px;
@@ -5532,10 +5549,290 @@ input.switch:active::before {
 }
 
 
+.--ev-detailsOnTable {
+  display: flex;
+  .--ev-balance-details{
+    display: flex;
+    justify-content: center;
+    width: 56px;
+  }
+}
+
+#balanceTableVertical {
+
+  .btnTd{
+    width: 40px;
+  }
+  .futureDate{
+    background-color: rgba(255, 0, 0, 0.048)!important;
+  }
+
+  .selectableRow {
+    cursor: pointer;
+    transition: all .3s ease;
+  }
+  .selectableRow:hover {
+    background-color: #7a7a7a14;
+  }
+
+  thead th{
+    color: var(--Text-primary, #2C2D33);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.17px;
+  }
+
+  tbody td {
+    color: var(--text-primary, rgba(0, 0, 0, 0.87));
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 143%;
+    letter-spacing: 0.17px;
+  }
 
 
+  td button {
+    border: none;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 53px;
+  }
+
+  td.positive {
+    font-weight: 700;
+    color: var(--Green-Green-400, #48BB78);
+  }
+
+  td.negative {
+    font-weight: 700;
+    color: var(--Red-Stop, #EB5757);
+  }
+}
+
+.horizontalContainer{
+  display: flex;
+  width: 100%;
+  overflow-x: scroll;
+}
+#balanceTableHorizontal{
+  thead tr{
+    display: flex;
+    width: 100%;
+  }
+  th:nth-child(1){
+    width: 100px;
+  }
+  thead th{
+    width: 200px;
+  }
+}
 
 
+/* .-bankMovementsContainer {
+  border-top: 1px solid black!important;
+  border-bottom: 1px solid black!important;
+} */
+
+.--balanceDetails {
+  width: 100%;
+  margin-left: 16px;
+
+  tr {
+    display: flex;
+    width: 100%;
+
+
+    th,
+    td {
+      width: 15%;
+      padding: 3px 16px;
+    }
+
+    td:nth-child(1) {
+      font-weight: 500!important;
+    }
+    
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 20%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 10%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    
+    th:nth-child(4),
+    td:nth-child(4){
+      width: 20%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+      width: 35%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+
+  thead {
+    margin-bottom: 16px;
+
+    th {
+      border-bottom: none !important;
+    }
+  }
+
+
+  tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    tr {
+      border-radius: 6px;
+      border: 1px solid var(--Line-table, #DDDDE1);
+    }
+
+    tr.positive {
+
+      background: var(--Green-Green-100, #e3f9f1ad);
+      border: 1px solid var(--Green-Green-400, #d1f1df);
+    }
+
+    tr.negative {
+      background: var(--Red-Stop-100, #f9e3e363);
+      border: 1px solid var(--Red-Stop-400, #f1d1d1);
+
+    }
+  }
+}
+.--futureMovements {
+  width: 100%;
+  margin-left: 16px;
+
+  tr {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+
+
+    th,
+    td {
+      padding: 3px 16px;
+      
+    }
+
+    td{
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    td:nth-child(1) {
+      font-weight: 500!important;
+    }
+    
+
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 13%;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2){
+      text-align: center;
+      width: 10%;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3),
+    th:nth-child(4),
+    td:nth-child(4){
+      width: 25%;
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+      width: 12%;
+    }
+  }
+
+
+  thead {
+    margin-bottom: 16px;
+
+    th {
+      border-bottom: none !important;
+    }
+  }
+
+
+  tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    tr {
+      border-radius: 6px;
+      border: 1px solid var(--Line-table, #DDDDE1);
+    }
+
+    tr.positive {
+
+      background: var(--Green-Green-100, #e3f9f1ad);
+      border: 1px solid var(--Green-Green-400, #d1f1df);
+    }
+
+    tr.negative {
+      background: var(--Red-Stop-100, #f9e3e363);
+      border: 1px solid var(--Red-Stop-400, #f1d1d1);
+
+    }
+  }
+}
+
+.bankResumeIncome{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 16px;
+
+}
+
+
+.bankmovements {
+  height: 1px;
+
+  .--bankMovement {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    gap: 24px;
+    align-items: start;
+  }
+}
 
 /* padding: 10px 16px!important; */
 
@@ -7700,47 +7997,62 @@ span.bkt {
 
     display: flex;
     width: 100%;
-    th{
+
+    th {
       /* width: 33%; */
       border: 1px solid var(--Line-table, #DDDDE1);
       background: var(--Disable-button-background, #EDEDED);
-      p{
+
+      p {
         text-align: start;
-      };
+      }
+
+      ;
     }
+
     th:nth-child(1) {
       padding-right: 16px;
     }
+
     th:nth-child(1),
     th:nth-child(2),
-    th:nth-child(3){
+    th:nth-child(3) {
       width: 31%;
-    } 
-    th:nth-child(4){
+    }
+
+    th:nth-child(4) {
       width: 7%
     }
   }
+
   tbody tr {
 
     display: flex;
     width: 100%;
-    td{
+
+    td {
       /* width: 33%; */
       border: 1px solid var(--Line-table, #DDDDE1);
       background: #F9F9F9;
-      p{
+
+      p {
         text-align: start;
-      };
+      }
+
+      ;
     }
+
     td:nth-child(1) {
       padding-right: 16px;
     }
+
     td:nth-child(1),
     td:nth-child(2),
-    td:nth-child(3){
+    td:nth-child(3) {
       width: 31%;
-    } 
-    td:nth-child(4){
+    }
+
+    td:nth-child(4) {
       width: 7%
     }
   }
@@ -7801,10 +8113,10 @@ span.bkt {
   }
 }
 
-.--secondary-action-btn.gBtn{
+.--secondary-action-btn.gBtn {
 
-  p{
-    color: var(--Cyan-dark, #069B99)!important;
+  p {
+    color: var(--Cyan-dark, #069B99) !important;
     font-feature-settings: 'clig' off, 'liga' off;
     font-size: 14px;
     font-style: normal;
