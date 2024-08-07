@@ -11,8 +11,6 @@ function renderMyHorizontalView(monthsToSearch = [1,2,3,4,5,6,7,8,9,10,11,12]){
     let allDaysOnCurrentMonth = getAllDaysOnMonth(monthsToSearch);
     // console.log('allDaysOnCurrentMonth',allDaysOnCurrentMonth);
     createHorizontalTableHead(table,allDaysOnCurrentMonth);
-    // const movementsOnMonth = getMovementsOnMonth();
-    // getMovementsOnMonth()
 }
 
 
@@ -20,9 +18,10 @@ function createHorizontalTableHead(table,allDaysOnCurrentMonth){
     let tr = document.createElement("tr");
     let th = document.createElement("th");
 
-    th.innerHTML = "Días";
-    tr.appendChild(th);
+    th.innerHTML = "Fecha";
 
+    tr.appendChild(th);
+    tr.classList.add('table-primary-tr');
 
     allDaysOnCurrentMonth.forEach(date => {
         // console.log(date)

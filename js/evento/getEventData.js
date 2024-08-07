@@ -317,10 +317,7 @@ async function getAllProjectData(event_id, empresa_id) {
 
         
     }else{
-        console.log('responseGetData.asignados.productos',responseGetData.asignados.productos);
-        console.log('responseGetData.asignados.productos',responseGetData.asignados.productos);
-        console.log('responseGetData.asignados.productos',responseGetData.asignados.productos);
-        console.log('responseGetData.asignados.productos',responseGetData.asignados.productos);
+       
 
         responseGetData.asignados.productos.forEach(producto => {
             const productsToAdd = [{
@@ -332,14 +329,6 @@ async function getAllProjectData(event_id, empresa_id) {
         printAllProductsOnTable();
         printAllSelectedProducts();
         setIngresos();
-
-
-        console.log('responseGetData.asignados.personal',responseGetData.asignados.personal)
-        console.log('responseGetData.asignados.personal',responseGetData.asignados.personal)
-        console.log('responseGetData.asignados.personal',responseGetData.asignados.personal)
-        console.log('responseGetData.asignados.personal',responseGetData.asignados.personal)
-        console.log('responseGetData.asignados.personal',responseGetData.asignados.personal)
-        console.log('responseGetData.asignados.personal',responseGetData.asignados.personal)
         
         if (responseGetData.asignados.personal.length > 0) {
             responseGetData.asignados.personal.forEach(personal => {
@@ -351,33 +340,11 @@ async function getAllProjectData(event_id, empresa_id) {
         } else { }
         printAllSelectedPersonal();
 
-
-
-        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
-        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
-        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
-        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
-        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
-        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
-        console.log('responseGetData.asignados.vehiculos',responseGetData.asignados.vehiculos)
         if (responseGetData.asignados.vehiculos.length > 0) {
             responseGetData.asignados.vehiculos.forEach(vehiculo => {
 
                 
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
-                console.log("estoe stoy buscando en vehiculos",vehiculo)
+
                 addVehicle(vehiculo.id)
             });
         } else { }
@@ -516,23 +483,53 @@ async function getAllProjectData(event_id, empresa_id) {
 
 
 function parseTextToArray(txtArray){
-    console.log('txtArray funcoin',txtArray);
-    if(txtArray === '"[]"' || txtArray === '[]' || txtArray === ""){
-        // console.log('PARSED 13109328019823',txtArray)
-        // txtArray = [];
+    console.log('ESTO ENTRA',txtArray);
 
-        console.log("RETORNO DE3 ARRAY VACIO")
-        console.log("RETORNO DE3 ARRAY VACIO")
-        return [];
-    }else{
-        let parseArray = JSON.parse(txtArray);
-
-        while(!Array.isArray(parseArray)){
-
-            parseArray = JSON.parse(txtArray);
+    try {
+        let jsonObject = JSON.parse(txtArray);
+        while(!Array.isArray(jsonObject)){
+            jsonObject = JSON.parse(jsonObject);
         }
-
-        return parseArray;
-
+        console.log("ESTO SALE",    jsonObject);
+        return jsonObject;
+    } catch (error) {
+        console.error("Error parsing JSON:", error);
     }
+
+    // try{
+    //     if(txtArray === '"[]"' || txtArray === '[]' || txtArray === ""){
+    //         // console.log('PARSED 13109328019823',txtArray)
+    //         // txtArray = [];
+    
+    //         console.log("RETORNO DE3 ARRAY VACIO")
+    //         console.log("RETORNO DE3 ARRAY VACIO")
+    //         return [];
+    //     }else{
+    //         let parseArray = JSON.parse(txtArray);
+    //         let counter = 0;
+    //         // while(!Array.isArray(parseArray) || counter > 10){
+    
+    //         //     counter++;
+    //         //     parseArray = JSON.parse(txtArray);
+    //         //     console.log('COUNTER',counter)
+                
+    //         // }
+
+    //         for(let i = 0; i < i > 10 ; i++ ){
+    //             if(Array.isArray(parseArray)){
+    //                 break;
+    //             }
+    //             parseArray = JSON.parse(parseArray);
+    //             console.log(parseArray);
+    //             console.log(i)
+    //         }   
+            
+    //         return parseArray;
+    
+    //     }
+    // }catch(e){
+    //     console.log('ERROR PARSE',e)
+    // }
+    
+    
 }

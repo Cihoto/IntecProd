@@ -473,25 +473,16 @@ function getClientesByEmpresa($request)
 }
 function getClienteById($request)
 {
-
     $conn = new bd();
     $conn->conectar();
     $clientes = [];
     $clienteId = $request;
 
-    $query = "SELECT c.id,
-        df.nombre_fantasia,
-        df.razon_social,
-        df.rut,
-        p.nombre,
-        df.persona_contacto,
-        p.email,
-        df.correo,
-        p.telefono
-         FROM cliente c 
-            LEFT JOIN persona p on p.id = c.persona_id_contacto 
-            LEFT JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
-            where c.id = $clienteId";
+    $query = "SELECT c.id, df.nombre_fantasia, df.razon_social, df.rut, p.nombre, df.persona_contacto, p.email, df.correo, p.telefono
+        FROM cliente c 
+        LEFT JOIN persona p on p.id = c.persona_id_contacto 
+        LEFT JOIN datos_facturacion df on df.id = c.datos_facturacion_id 
+        WHERE c.id = $clienteId";
 
     if ($responseBd = $conn->mysqli->query($query)) {
         while ($dataResponse = $responseBd->fetch_object()) {

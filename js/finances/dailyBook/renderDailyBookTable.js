@@ -4,14 +4,12 @@ let bankMov;
 let matchData;
 let libroDiario;
 let allDailyMovesWithBankMovement = [];
-
-
-
+let bhe = [];
 
 window.addEventListener("load", async (event) => {
-    renderMyHorizontalView();
-
-    console.log('jsonMmovs', movs);
+    let monthsToSearch = [1,2,3,4,5,6,7,8,9,10,11,12];
+    getAllDaysOnMonth(monthsToSearch);
+    // console.log('jsonMmovs', movs);
 
     const filteredMovs = movs.map((movement) => {
         if (movement.data.length === 0) {
@@ -21,49 +19,64 @@ window.addEventListener("load", async (event) => {
         }
     });
 
-
-
-    // bankMov = await fetch('ws/Clay/getBankMovements.php')
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //         return data
-    //     })
-    //     .catch((error) => console.log(error));
+    bankMov = await fetch('ws/Clay/getBankMovements.php')
+    .then((response) => response.json())
+    .then((data) => {
+        return data
+    })
+    .catch((error) => console.log(error));
     // pDom.innerText = JSON.stringify(bankMov);
 
-    bankMov = await fetch('bankMovements2024.json')
-        .then((response) => response.json())
-        .then((data) => {
-            return data
-        })
-        .catch((error) => console.log(error));
-    console.log('bankMov', bankMov);
-
-    // let matchData____ = await fetch('ws/Clay/getAllMatchesBankMovements.php')
+    // bankMov = await fetch('bankMovements2024.json')
     //     .then((response) => response.json())
     //     .then((data) => {
     //         return data
     //     })
     //     .catch((error) => console.log(error));
+    // console.log('bankMov', bankMov);
+
+    matchData = await fetch('ws/Clay/getAllMatchesBankMovements.php')
+    .then((response) => response.json())
+    .then((data) => {
+        return data
+    })
+    .catch((error) => console.log(error));
     // console.log('matchData____', matchData____);
     // pDom.innerText = JSON.stringify(matchData____);
 
-    matchData = await fetch('matchData2024.json')
+    // matchData = await fetch('matchData2024.json')
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //         return data
+    //     })
+    //     .catch((error) => console.log(error));
+    // console.log('matchData', matchData);
+
+
+
+    let libroDiario_ = await fetch('libroDiario2024.json')
         .then((response) => response.json())
         .then((data) => {
             return data
         })
         .catch((error) => console.log(error));
-    console.log('matchData', matchData);
-
-    libroDiario = await fetch('libroDiario2024.json')
-        .then((response) => response.json())
-        .then((data) => {
-            return data
-        })
-        .catch((error) => console.log(error));
-
+        console.log('libroDiario_', libroDiario_);
+    libroDiario = await fetch('ws/Clay/getDailyBookMovements.php')
+    .then((response) => response.json())
+    .then((data) => {
+        return data
+    })
+    .catch((error) => console.log(error));
     console.log('libroDiario', libroDiario);
+
+    // libroDiario = await fetch('ws/Clay/getDailyBookMovements.php')
+    // .then((response) => response.json())
+    // .then((data) => {
+    //     return data
+    // })
+    // .catch((error) => console.log(error));
+
+    // console.log('libroDiario', libroDiario);
 
     const allMyDocuments = await fetch('tributarieDocuments.json')
     .then((response) => response.json())
@@ -74,101 +87,56 @@ window.addEventListener("load", async (event) => {
 
     console.log('allMyDocuments', allMyDocuments);
 
-    // libroDiario = await fetch('ws/Clay/getDailyBookMovements.php')
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //         return data
-    //     })
-    //     .catch((error) => console.log(error));
-    // console.log('libroDiario', libroDiario);
+
+
+    bhe = await fetch('bhe.json')
 
     getTotalOutCome(allMyDocuments);
     return;
 
-    const trResumeIncome = document.getElementById('resumeRowIncome');
-    trResumeIncome.addEventListener('click', () => {
-        document.querySelectorAll('.--incomeRow').forEach((element) => { element.classList.toggle('--hide') });
-    });
-    const trResumeOutcome = document.getElementById('resumeRowOutcome');
-    trResumeOutcome.addEventListener('click', () => {
-        document.querySelectorAll('.--outcomeRow').forEach((element) => { element.classList.toggle('--hide') });
-    });
-
-    // get all tr with class codeAccountRow and get click event 
-    const codeAccountRow = document.querySelectorAll('.codeAccountRow');
-    codeAccountRow.forEach((element) => {
-        element.addEventListener('click', () => {
-            console.log('element', element);
-            const getAllMyMovementsOnAccount = allDailyMovesWithBankMovement.find((movements) => {
-                return movements.lvl4 == element.getElementsByTagName('td')[0].getAttribute('lvlCode')
-            });
-
-            if (!getAllMyMovementsOnAccount) {
-                return;
-            }
-            console.log('getAllMyMovementsOnAccount', getAllMyMovementsOnAccount);
-            const allMyMovementsOnAccount = getAllMyMovementsOnAccount.movements.debito.map((element) => {
-                return element.data;
-            });
-            console.log('allMyMovementsOnAccount', allMyMovementsOnAccount);
-            let allMyCustomersOnAccount = [];
-
-            allMyMovementsOnAccount.forEach((movement) => {
-
-                const customerIsOnArray = allMyCustomersOnAccount.find((element) => { return element.rut == movement.rut });
-                if (!customerIsOnArray) {
-                    allMyCustomersOnAccount.push({
-                        'rut': movement.rut,
-                        'name': movement.contraparte,
-                        'movements': []
-                    });
-                }
-                const indexOfCustomer = allMyCustomersOnAccount.map((element) => element.rut).indexOf(movement.rut);
-                allMyCustomersOnAccount[indexOfCustomer].movements.push(movement);
-            });
-
-            console.log('allMyCustomers', allMyCustomersOnAccount);
-
-            allMyCustomersOnAccount.forEach((customer) => {
-                const tr = document.createElement('tr');
-                tr.classList.add('customerRow');
-                let firstTd = `<td><p>${customer.name}</p></td>`;
-
-                let contentTd = '';
-                for (let i = 1; i <= allMyDates.length; i++) {
-                    contentTd += '<td></td>';
-                }
-                tr.innerHTML = `${firstTd}${contentTd}`;
-                tbody.appendChild(tr);
-
-                // append tr after clicked element
-                element.after(tr);
-            })
-
-
-
-        });
-    });
-
-
 });
 
-function dayOfTheYear(date) {
-    return moment(date).dayOfYear();
-}
+
 
 
 
 let noFolioMovements = [];
-let allDaysOnYear = []
+let allDaysOnYear = [];
+let getDocumentOutPaymentDate = [];
+let incomeAccountRows = [];
+let accountData_IncomeNoDocumentWithFolio = [];
+let accountData_OutcomeNoDocumentWithFolio = [];
+let outRows = [];
+let futureDocuments = [];
+let totalDailyBalance = [];
+let incomeAccountCodes = [];
 function getTotalOutCome(allMyDocuments){
 
+    allDaysOnYear = getAllDaysOnYearTemplate();
 
-    const notPaidDocuments = allMyDocuments.data.items.filter((document)=>{return document.pagado == false});
+    const notPaidDocuments = allMyDocuments.data.items.filter((document)=>{
+        return document.pagado == false
+    });
+    futureDocuments = allMyDocuments.data.items.map((document)=>{
+        // add one month to document date
+        const expirationDate = moment(document.fecha_emision,'X').add(1, 'months').format('X');
+        return {
+            ...document,
+            futureDate: expirationDate
+        };
+        if(expirationDate > moment().format('X')){
 
-    console.log('notPaidDocuments',notPaidDocuments);
+        }
+    }).filter((document)=>{return document != undefined});
 
-    const getDocumentOutPaimentDate = notPaidDocuments.filter((document)=>{
+    futureDocuments.forEach((futureDocument)=>{
+        const accType = futureDocument.recibida == true ? 'projectedOutcome' : 'projectedIncome';
+        const dayOfYear = dayOfTheYear(moment(futureDocument.futureDate,'X').format('YYYY-MM-DD'));
+        if(futureDocument.pagada == true){return}
+        allDaysOnYear[accType][dayOfYear - 1].total += parseInt(futureDocument.total.total);
+    })
+
+    getDocumentOutPaymentDate = notPaidDocuments.filter((document)=>{
         let today = moment().format('YYYY-MM-DD');
         let documentDate = moment(document.fecha_emision,'X').format('YYYY-MM-DD');
         // get difference in days between today and document date
@@ -177,27 +145,31 @@ function getTotalOutCome(allMyDocuments){
         return diff > 30;
     });
 
-    console.log('getDocumentOutPaimentDate',getDocumentOutPaimentDate);
-    
+
+
 
     let accountCodes = [];
-    let incomeAccountCodes = [];
-    let outcomeAccountCodes = [];
-
-    allDaysOnYear = getAllDaysOnYearTemplate();
-
+    outRows = [];
     let totalEgresos = 0;
     let totalIngresos = 0;
     const classificatedMovements = classifyAllMovements(bankMov);
+    console.log('classificatedMovements',classificatedMovements);
+    console.log('classificatedMovements',classificatedMovements);
+    console.log('classificatedMovements',classificatedMovements);
+    console.log('classificatedMovements',classificatedMovements);
+    console.log('classificatedMovements',classificatedMovements);
     const incomeBankMovements = classificatedMovements.incomeMovements;
+    console.log('incomeBankMovements',incomeBankMovements);
     const outcomeBankMovements = classificatedMovements.outcomeMovements;
     const noMatchMovements = classificatedMovements.noMatchMovements;
     let noMatch = [];
     // Toma los movimientos de ingreso bancario y busca su match en el matchData
     let incomeMovementsWithMatchInfo = [];
     incomeBankMovements.forEach((bankMovement)=>{
+        console.log('bankMovement',bankMovement);
         const matches = bankMovement.matches;
         // iterar sobre los matches y buscar el match en el matchData
+        console.log('matches',matches);
         const matchInfo = matches.map((bankMatch)=>{
             const dataMatch = matchData.data.items.find(({movimiento_id,folio,fecha_movimiento_humana,monto_match})=>{
                 return movimiento_id === bankMovement.id 
@@ -211,7 +183,6 @@ function getTotalOutCome(allMyDocuments){
                 });
                 return;
             }
-
             return {
                 folio: dataMatch.folio,
                 monto: dataMatch.monto_match,
@@ -224,20 +195,11 @@ function getTotalOutCome(allMyDocuments){
                 abono: dataMatch.abono,
                 rutReceptor: parseInt(`${dataMatch.receptor_obligacion.rut}${dataMatch.receptor_obligacion.dv}`),
                 rutEmisor: parseInt(`${dataMatch.emisor_obligacion.rut}${dataMatch.emisor_obligacion.dv}`),
-            }
-            
+            } 
         });
-
-        // for (let index = 0; index < matchInfo.length; index++) {
-        //     return matchInfo[index];
-        // }
-
         // Buscar info. de match en libro diario
         let arrayToReturn = [];
-        
         const libroDiarioMatch = matchInfo.map((match)=>{
-            // console.log(match.folio)
-
             const libroDiarioMovement = libroDiario.data.items.filter((dailyBookMovement)=>{
                 const bookRut = dailyBookMovement.rut === null ? '' : parseInt(dailyBookMovement.rut.replaceAll('-',''));
                 if(bookRut === '' || bookRut === undefined){
@@ -256,8 +218,10 @@ function getTotalOutCome(allMyDocuments){
                     return;
                 }
                 const folio = parseInt(folio_str.split(' ')[0]);
-                return folio == parseInt(match.folio) 
-                && bookRut == match.rutReceptor;
+                if(match.folio == undefined){
+                    console.log('folio',folio,match.folio,match,matchInfo);
+                }
+                return folio == parseInt(match.folio) && bookRut == match.rutReceptor;
             });
             
             if(libroDiarioMovement.length === 0){
@@ -272,12 +236,9 @@ function getTotalOutCome(allMyDocuments){
             };
             let lvl4 = libroDiarioMovement.find((bookMovement)=>{return bookMovement.ruta.level4.codigo.split('.')[0] == 4});
             const bankMovements = libroDiarioMovement.filter((bookMovement)=>{
-
                 let codes = bookMovement.ruta.level4.codigo.split('.');
-                
                 return codes[0] == 1 && codes[1] == '02';
             });
-
 
             if(lvl4 === undefined){
                 lvl4 = libroDiarioMovement.find((bookMovement)=>{
@@ -298,7 +259,6 @@ function getTotalOutCome(allMyDocuments){
             }
 
         });
-
         libroDiarioMatch.forEach((element)=>{
             if(element){
                 incomeMovementsWithMatchInfo.push(element);
@@ -306,27 +266,40 @@ function getTotalOutCome(allMyDocuments){
                 const accountCode = accountCodes.find((acc)=>{return acc.lvl4 == element.lvl4});
                 if(accountCode){
                     return;
-                }
+                };
                 console.log('element.lvl4',element.lvl4);
-                accountCodes.push({
+                const accountCodesData = {
                     lvl4: element.lvl4,
                     lvl4Name: element.lvlName,
-                })
+                }
+
+                accountCodes.push(accountCodesData);
+                incomeAccountCodes.push(accountCodesData);
+                const incomeRow = newIncomeRow(accountCodesData);
+                incomeAccountRows.push(incomeRow);
+                // tbody.appendChild(incomeRow);
             }
         });
     });
-
-    // REMOVE THIS LINES AFTER FINISH
-    // start
-        let sorted = incomeMovementsWithMatchInfo.sort((a,b)=>{return a.folio - b.folio});
-        console.log('incomeMovementsWithMatchInfo',sorted);
-    // end
-
+    
     incomeMovementsWithMatchInfo.forEach((incomeMovement)=>{
+        const accountData = {
+            lvl4: incomeMovement.lvl4,
+            lvlName: incomeMovement.lvlName,
+        }
         incomeMovement.movements.forEach((movement)=>{
             let date = moment(movement.fecha_contabilizacion_humana,'DD-MM-YYYY').format('YYYY-MM-DD');
             const dayOfYear = dayOfTheYear(date);
-            allDaysOnYear.ingresos[dayOfYear - 1].total += parseInt(movement.debito);
+            // allDaysOnYear.ingresos[dayOfYear - 1].total += parseInt(movement.debito);
+            console.log('dayOfYear',dayOfYear);
+            console.log('dayOfYear',dayOfYear);
+            console.log('dayOfYear',dayOfYear);
+            console.log('dayOfYear',dayOfYear);
+            console.log('dayOfYear',dayOfYear);
+            console.log('dayOfYear',accountData);
+            console.log('movment',movement)
+            console.log('=========================');
+            pushIncomeToCalendar(movement,dayOfYear,accountData);
         });
     });
 
@@ -340,7 +313,6 @@ function getTotalOutCome(allMyDocuments){
     outcomeBankMovements.forEach((outcomeMovement)=>{
         const dayday = dayOfTheYear(outcomeMovement.fecha_humana);
         let isSearchDay = false;
-
         if(dayday == 53){
             isSearchDay = true;
         }
@@ -353,16 +325,8 @@ function getTotalOutCome(allMyDocuments){
                 montoInsoluto: insoluto,
             })
         }
-        
-
 
         const matches = outcomeMovement.matches;
-        if(isSearchDay == true){
-            console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-            console.log('outcomeMovement',outcomeMovement);
-            counterOuitCome += outcomeMovement.monto;
-            console.log('matches',matches);
-        }
         const matchInfo = matches.map((bankMatch)=>{
             const dataMatch = matchData.data.items.find(({movimiento_id,folio,fecha_movimiento_humana,monto_match})=>{
                 return movimiento_id === outcomeMovement.id 
@@ -391,24 +355,19 @@ function getTotalOutCome(allMyDocuments){
                 rutEmisor: parseInt(`${dataMatch.emisor_obligacion.rut}${dataMatch.emisor_obligacion.dv}`),
             }
         });
-        
-        
+         
         if(matchInfo[0] == undefined){
             noMatchCounter_OutCome++;
             // skip one loop
             return;
         }
-
         if(isSearchDay == true){
             console.log('matchInfo',matchInfo);
         }
-  
         // Buscar info. de match en libro diario
         let arrayToReturn = [];
         let FoundSeatNumber = false;
         let pushElement = false;
-        // const libroDiarioMatch = matchInfo.map((match)=>{
-
         matchInfo.forEach((match)=>{
 
             let out = {
@@ -419,9 +378,7 @@ function getTotalOutCome(allMyDocuments){
                 lvlName : '',
                 id: 0
             };
-
             let found = false;
-
             const libroDiarioMovement = libroDiario.data.items.filter((dailyBookMovement)=>{
                 const bookRut = dailyBookMovement.rut === null ? '' : parseInt(dailyBookMovement.rut.replaceAll('-',''));
                 if(bookRut === '' || bookRut === undefined){
@@ -444,7 +401,6 @@ function getTotalOutCome(allMyDocuments){
                 && bookRut == match.rutEmisor
                 && (dailyBookMovement.debito == match.monto || dailyBookMovement.credito == match.monto)
             });
-
             if(libroDiarioMovement.length === 0){
                 // console.log('no daily book movement',match.folio);
                 if(isSearchDay == true){
@@ -463,10 +419,7 @@ function getTotalOutCome(allMyDocuments){
                 console.log('match',match);
                 console.log('libroDiarioMovement',libroDiarioMovement);
             }
-
-
             let dailyBookMovements = [];
-
             libroDiarioMovement.forEach((element)=>{
                 const asientoExists = dailyBookMovements.find((dailyBookMovement)=>{
                     return dailyBookMovement.numero_asientos === element.numero_asientos;
@@ -490,7 +443,6 @@ function getTotalOutCome(allMyDocuments){
             if(isSearchDay == true){
                 console.log('esto falta',movementsDataArray);
             }
-
             if(movementsDataArray.length === 0){
                 noDailyBookMovements.push({
                     folio: match.folio,
@@ -535,7 +487,13 @@ function getTotalOutCome(allMyDocuments){
 
                 const accIndex = accountCodes.map((element)=>element.lvl4).indexOf(out.lvl4);
                 if(accIndex === -1){
- 
+                    const outAccData = {
+                        lvl4: out.lvl4,
+                        lvl4Name: out.lvlName,
+                    }
+                    const outRow = newOutRow(out);
+                    outRows.push(outRow);
+                    console.log('outRow',outRow);
                     accountCodes.push({
                         lvl4: out.lvl4,
                         lvl4Name: out.lvlName
@@ -576,11 +534,8 @@ function getTotalOutCome(allMyDocuments){
                         outcomeMovementsWithMatchInfo[indexOfFolio].movements.push(movements);
                     }
                     return
-
-                    outcomeMovementsWithMatchInfo[indexOfFolio].movements.push(movements);
                 })
             });
-           
         });
         if(isSearchDay == true){
             console.log('');
@@ -594,6 +549,8 @@ function getTotalOutCome(allMyDocuments){
     let sortedOut = outcomeMovementsWithMatchInfo.sort((a,b)=>{return a.folio - b.folio});
     console.log('sortedOut',sortedOut);
 
+
+
     console.log('outcomeMovementsWithMatchInfo',outcomeMovementsWithMatchInfo);
     console.log('noMatchCounter_OutCome',noMatchCounter_OutCome);
     console.log('noDailyBookMovements',noDailyBookMovements);
@@ -602,29 +559,27 @@ function getTotalOutCome(allMyDocuments){
     console.log('montosInsolutos',montosInsolutos);
 
 
-    let filter29enero = [];
-    outcomeMovementsWithMatchInfo.filter((element)=>{
-        // console.log('element',element);
-        element.movements.forEach((movement)=>{
-            let date = moment(movement.fecha_contabilizacion_humana,'DD-MM-YYYY').format('YYYY-MM-DD');
-            const dayOfYear = dayOfTheYear(date);
-            if(dayOfYear == 53){
-                filter29enero.push(movement);
-            }
-        });
-    });
-    noDailyBookMovements.forEach(({data})=>{
-        // let date = moment(movement.fecha_contabilizacion_humana,'DD-MM-YYYY').format('YYYY-MM-DD');
-        const dayOfYear = dayOfTheYear(data.fechaMovimiento); 
-        if(dayOfYear == 22){
-            filter29enero.push(data);
-        }
-    })
+    // let filter29enero = [];
+    // outcomeMovementsWithMatchInfo.filter((element)=>{
+    //     // console.log('element',element);
+    //     element.movements.forEach((movement)=>{
+    //         let date = moment(movement.fecha_contabilizacion_humana,'DD-MM-YYYY').format('YYYY-MM-DD');
+    //         const dayOfYear = dayOfTheYear(date);
+    //         if(dayOfYear == 53){
+    //             filter29enero.push(movement);
+    //         }
+    //     });
+    // });
+    // console.log('filter29enero',filter29enero);
 
-    console.log('filter29enero',filter29enero);
+    // noDailyBookMovements.forEach(({data})=>{
+    //     // let date = moment(movement.fecha_contabilizacion_humana,'DD-MM-YYYY').format('YYYY-MM-DD');
+    //     const dayOfYear = dayOfTheYear(data.fechaMovimiento); 
+    //     if(dayOfYear == 22){
+    //         filter29enero.push(data);
+    //     }
+    // })
 
-    const folio699 = outcomeMovementsWithMatchInfo.filter((element)=>{return element.folio === '699'});
-    console.log('folio699',folio699);
 
     outcomeMovementsWithMatchInfo.forEach((outcomeMovement)=>{
         if(!outcomeMovement.movements){
@@ -639,24 +594,17 @@ function getTotalOutCome(allMyDocuments){
         outcomeMovement.movements.forEach((movement,index)=>{
             let date = moment(movement.fecha_contabilizacion_humana,'DD-MM-YYYY').format('YYYY-MM-DD');
             dayOfYear = dayOfTheYear(date);
-            if(movement.fecha_contabilizacion_humana == "22/02/2024"){
-                console.log('movement',movement);
-            }
-
             pushMovementToCalendar(movement,dayOfYear,accountData);
-            if(dayOfYear == 53){
-                console.log('++++++outcomeMovement+++++',outcomeMovement)
-            }
         });
     });
 
-    const accountData_OutcomeNoDocumentWithFolio = {
+    accountData_OutcomeNoDocumentWithFolio = {
         lvl4: '00.00.00.33',
         lvlName: 'Egresos sin documento',
         debito: false
     }
-    const accountData_IncomeNoDocumentWithFolio = {
-        lvl4: '00.00.00.33',
+    accountData_IncomeNoDocumentWithFolio = {
+        lvl4: '00.00.00.44',
         lvlName: 'Ingresos sin documento',
         debito: true
     }
@@ -688,24 +636,8 @@ function getTotalOutCome(allMyDocuments){
 
 
 
-    // render dailyBook table titles
-    const titleTr = setIncomeResumeRow();
-    tbody.appendChild(titleTr);
-    const outComeTr = setOutcomeResumeRow();
-    tbody.appendChild(outComeTr);
-    renderDailyTotalRow(allDaysOnYear);
-
-    const pendingDocumentsTr = setPendingResumeRow();
-    tbody.appendChild(pendingDocumentsTr);
-
-    const totalTr = setTotalRow();
-    tbody.appendChild(totalTr);
-
-    createDailyBalance();
-    const balanceTr = document.querySelectorAll('tbody .resumeRowBalance')[0];
-
     let previousAccountBalance = 18895572;
-    const totalDailyBalance = allMyDates.map((date, index) => {
+    totalDailyBalance = allMyDates.map((date, index) => {
         const totalIncome = allDaysOnYear.ingresos[index].total;
         const totalOutCome = allDaysOnYear.egresos[index].total;
         const total = totalIncome - totalOutCome;
@@ -719,72 +651,171 @@ function getTotalOutCome(allMyDocuments){
         }
     });
 
+    console.log(allDaysOnYear);
+    console.log('noMatchMovements.debito',noMatchMovements.debito)
+    console.log('noMatchMovements.debito',noMatchMovements.credito)
+    console.log("++++++ FINALIZADO +++++++");
+    console.log("++++++ FINALIZADO +++++++");
+    console.log("++++++ FINALIZADO +++++++");
+    console.log("++++++ FINALIZADO +++++++");
+    console.log("++++++ FINALIZADO +++++++");
+    console.log("++++++ FINALIZADO +++++++");
+    console.log("++++++ FINALIZADO +++++++");
 
-    totalDailyBalance.forEach(({ date, totalIncome, totalOutCome, total, previousAccountBalance }, index) => {
-        totalTr.querySelectorAll('td')[index + 1].innerText = getChileanCurrency(total);
-        balanceTr.querySelectorAll('td')[index + 1].innerText = getChileanCurrency(previousAccountBalance);
-    });
-    console.log('totalDailyBalance', totalDailyBalance);
 
     
-    getDocumentOutPaimentDate.forEach((notPaidDocument)=>{
+
+
+    return;
+    // render dailyBook table titles
+    // INCOME
+    const incomeTr = setIncomeResumeRow();
+    tbody.appendChild(incomeTr);
+    // INCOME ACCOUNTS
+    incomeAccountRows.forEach((row)=>{
+        tbody.appendChild(row);
+    });
+    // INCOME NO DOCUMENT
+    const incomeNoDocumentTr = setIncomeNoDocumentRow(accountData_IncomeNoDocumentWithFolio);
+    tbody.appendChild(incomeNoDocumentTr);
+    // Projected Documents
+    const projectedDocumentsTr = setProjectedDocumentsRow();
+    tbody.appendChild(projectedDocumentsTr);
+    // OUT
+    const outComeTr = setOutcomeResumeRow();
+    tbody.appendChild(outComeTr);
+    // OUTA ACCOUNTS
+    outRows.forEach((row)=>{
+        tbody.appendChild(row);
+    });
+    // OUT NO DOCUMENT
+    const outComeNoDocumentTr = setOutNoDocumentRow(accountData_OutcomeNoDocumentWithFolio);
+    tbody.appendChild(outComeNoDocumentTr);
+    // OUT PROJECTED DOCUMENTS
+    const outComeProjectedDocumentsTr = setOutComeProjectedDocumentsRow();
+    tbody.appendChild(outComeProjectedDocumentsTr);
+
+    renderDailyTotalRow(allDaysOnYear);
+
+    const totalTr = setTotalRow();
+    tbody.appendChild(totalTr);
+
+    createDailyBalance();
+    const balanceTr = document.querySelectorAll('tbody .resumeRowBalance')[0];
+
+    // GET ALL TR TYPES
+    const incomeTrResume = document.querySelectorAll('tbody .--incomeRow');
+    const outcomeTrResume = document.querySelectorAll('tbody .--outcomeRow');
+    // alldays on year is an array with 365 objects
+    allDaysOnYear.ingresos.forEach((day,index)=>{
+        const dayOfYear = index + 1;
+        const total = day.total;
+        day.lvlCodes.forEach((lvlCode)=>{
+            let trIndex = 0;
+            incomeTrResume.forEach((element, index) => {
+                const accCode = element.querySelectorAll('td')[0].getAttribute('lvlCode') == lvlCode.lvl4;
+                if (accCode) {
+                    trIndex = index;
+                }
+            });
+            incomeTrResume[trIndex].querySelectorAll('td')[dayOfYear].innerText = getChileanCurrency(total);
+        })
+    })
+    allDaysOnYear.egresos.forEach((day,index)=>{
+        const dayOfYear = index + 1;
+        const total = day.total;
+        day.lvlCodes.forEach((lvlCode)=>{
+            let trIndex = 0;
+            let totalMovements = 0;
+            let objToAdd = 'credito';
+            let codes = lvlCode.lvl4.split('.');
+            if(codes[0] == '00' && codes[1] == '00' && codes[2] == '00' && codes[3] == '33'){
+                objToAdd = 'monto';
+            }
+
+            lvlCode.movements.forEach((movement)=>{
+                totalMovements += parseInt(movement[objToAdd]);
+                outcomeTrResume.forEach((element, index) => {
+                    const accCode = element.querySelectorAll('td')[0].getAttribute('lvlCode') == lvlCode.lvl4;
+                    if (accCode) {
+                        trIndex = index;
+                    }
+                });
+            });
+            outcomeTrResume[trIndex].querySelectorAll('td')[dayOfYear].innerText = getChileanCurrency(totalMovements);
+        })
+    });
+
+    // let previousAccountBalance = 18895572;
+    // const totalDailyBalance = allMyDates.map((date, index) => {
+    //     const totalIncome = allDaysOnYear.ingresos[index].total;
+    //     const totalOutCome = allDaysOnYear.egresos[index].total;
+    //     const total = totalIncome - totalOutCome;
+    //     previousAccountBalance += total;
+    //     return {
+    //         date,
+    //         totalIncome,
+    //         totalOutCome,
+    //         total,
+    //         previousAccountBalance,
+    //     }
+    // });
+
+    // totalDailyBalance.forEach(({ date, totalIncome, totalOutCome, total, previousAccountBalance }, index) => {
+    //     totalTr.querySelectorAll('td')[index + 1].innerText = getChileanCurrency(total);
+    //     balanceTr.querySelectorAll('td')[index + 1].innerText = getChileanCurrency(previousAccountBalance);
+    // });
+    // console.log('totalDailyBalance', totalDailyBalance);
+    
+    getDocumentOutPaymentDate.forEach((notPaidDocument)=>{
         console.log("NOT PAID DOCUMENT",notPaidDocument);
         const dayOfYear = dayOfTheYear(notPaidDocument.fecha_humana_emision);
-
         let today = moment().format('YYYY-MM-DD');
         let documentDate = moment(notPaidDocument.fecha_emision,'X').format('YYYY-MM-DD');
         const expirationDate = moment(documentDate).add(1, 'months').format('YYYY-MM-DD');
-
         console.log('DOCUMENT DATE',documentDate);
         // get difference in days between today and document date
         const diffFromExpiration = moment(today).diff(expirationDate, 'days');
         const diff = moment(today).diff(documentDate, 'days');
-
         // if(diffFromEmissionDate < 0){}
         const weeksToMove = Math.round(diffFromExpiration / 7);
-
-        
-
-
-
-
-        
         const weeksFromEmition = Math.round(diff / 7);
         // ADD DIFF days to document date
         // ADD WEEKS TO DOCUMENT DATE
         const newDate = moment(documentDate).add(weeksFromEmition, 'weeks').format('YYYY-MM-DD');
-        console.log('weeksToMove',weeksToMove);
-        console.log('weeksToMove',weeksToMove);
-        console.log('weeksToMove',weeksToMove);
-        console.log('weeksToMove',weeksToMove);
-        console.log('weeksToMove',weeksToMove);
-        console.log('weeksToMove',weeksToMove);
         const newDayOfYear = dayOfTheYear(newDate);
-
-        
         if(weeksToMove > 1){
-            pendingDocumentsTr.querySelectorAll('td')[newDayOfYear].classList.add('red');
+            projectedDocumentsTr.querySelectorAll('td')[newDayOfYear].classList.add('red');
         }else{
-            pendingDocumentsTr.querySelectorAll('td')[newDayOfYear].classList.add('yellow');
+            projectedDocumentsTr.querySelectorAll('td')[newDayOfYear].classList.add('yellow');
         }
-        pendingDocumentsTr.querySelectorAll('td')[newDayOfYear].innerText = getChileanCurrency(notPaidDocument.total.total);
-        console.log(`pendingDocumentsTr.querySelectorAll('td')[dayOfYear].innerText`,pendingDocumentsTr.querySelectorAll('td')[newDayOfYear]);
-    })
+        projectedDocumentsTr.querySelectorAll('td')[newDayOfYear].innerText = getChileanCurrency(notPaidDocument.total.total);
+        console.log(`projectedDocumentsTr.querySelectorAll('td')[dayOfYear].innerText`,projectedDocumentsTr.querySelectorAll('td')[newDayOfYear]);
+    });
 
+    futureDocuments.forEach((futureDocument)=>{ 
+        const dayOfYear = dayOfTheYear(moment(futureDocument.futureDate,'X').format('YYYY-MM-DD'));
+        if(futureDocument.recibida == true){
+            // outComeProjectedDocumentsTr.querySelectorAll('td')[dayOfYear].classList.add('yellow');
+            outComeProjectedDocumentsTr.querySelectorAll('td')[dayOfYear].innerText = getChileanCurrency(futureDocument.total.total);
+        }else{
+            // projectedDocumentsTr.querySelectorAll('td')[dayOfYear].classList.add('yellow');
+            projectedDocumentsTr.querySelectorAll('td')[dayOfYear].innerText = getChileanCurrency(futureDocument.total.total);
+        }
+    });
 
     console.log('totalEgresos',totalEgresos);
     console.log('totalIngresos',totalIngresos);
     console.log('allDaysOnYear',allDaysOnYear);
     console.log('noMatch',noMatch);
-
-
-
-
 }
-
+let totalcalendar = 0 ;
+let countercounter = 0;
 function pushMovementToCalendar(movement,dayOfYear,accountData){
+   
     let movementType = 'ingresos';
-    let incomeOrOutcome = 'debito'
+    let incomeOrOutcome = 'debito';
+    
     if(!movement.abono){
         movementType = 'egresos';
         incomeOrOutcome = 'credito';
@@ -793,8 +824,8 @@ function pushMovementToCalendar(movement,dayOfYear,accountData){
         incomeOrOutcome = 'monto'
     }
     let totalToAdd = parseInt(movement[incomeOrOutcome]);
+    totalcalendar += totalToAdd;
     allDaysOnYear[movementType][dayOfYear - 1].total += parseInt(totalToAdd);
-
     const codeExists = allDaysOnYear[movementType][dayOfYear - 1].lvlCodes.find((acc)=>acc.lvl4 == accountData.lvl4);
 
     if(!codeExists){
@@ -804,13 +835,63 @@ function pushMovementToCalendar(movement,dayOfYear,accountData){
             total: totalToAdd,
             movements:[]
         });
-        return;
     }
+    
     const accIndex = allDaysOnYear[movementType][dayOfYear - 1].lvlCodes.map((acc)=>acc.lvl4).indexOf(accountData.lvl4);
     allDaysOnYear[movementType][dayOfYear - 1].lvlCodes[accIndex].total += totalToAdd;
-    allDaysOnYear[movementType][dayOfYear - 1].lvlCodes[accIndex].movements.push(movement);
+    allDaysOnYear[movementType][dayOfYear - 1].lvlCodes[accIndex].movements.push(movement); 
 }
 
+
+function pushIncomeToCalendar(movement,dayOfYear,accountData){
+
+    let totalToAdd = parseInt(movement.debito);
+    allDaysOnYear.ingresos[dayOfYear - 1].total += parseInt(totalToAdd);
+
+    const codeExists = allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes.find((acc)=>acc.lvl4 == accountData.lvl4);
+    if(!codeExists){
+        allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes.push({
+            lvl4: accountData.lvl4,
+            lvlName: accountData.lvlName,
+            total: totalToAdd,
+            movements:[]
+        });
+    }
+
+    const accIndex = allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes.map((acc)=>acc.lvl4).indexOf(accountData.lvl4);
+    allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes[accIndex].total += totalToAdd;
+    allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes[accIndex].movements.push(movement); 
+
+    return
+   
+    let movementType = 'ingresos';
+    let incomeOrOutcome = 'debito';
+    
+    if(!movement.abono){
+        movementType = 'egresos';
+        incomeOrOutcome = 'credito';
+    }
+    if(movement.monto){
+        incomeOrOutcome = 'monto'
+    }
+    let totalToAdd_ = parseInt(movement[incomeOrOutcome]);
+    totalcalendar += totalToAdd;
+    allDaysOnYear[movementType][dayOfYear - 1].total += parseInt(totalToAdd);
+    const codeExists_ = allDaysOnYear[movementType][dayOfYear - 1].lvlCodes.find((acc)=>acc.lvl4 == accountData.lvl4);
+
+    if(!codeExists){
+        allDaysOnYear[movementType][dayOfYear - 1].lvlCodes.push({
+            lvl4: accountData.lvl4,
+            lvlName: accountData.lvlName,
+            total: totalToAdd,
+            movements:[]
+        });
+    }
+    
+const accIndex_ = allDaysOnYear[movementType][dayOfYear - 1].lvlCodes.map((acc)=>acc.lvl4).indexOf(accountData.lvl4);
+    allDaysOnYear[movementType][dayOfYear - 1].lvlCodes[accIndex].total += totalToAdd;
+    allDaysOnYear[movementType][dayOfYear - 1].lvlCodes[accIndex].movements.push(movement); 
+}
 
 function getDailyBookMovementsWithBankAccount(dailyBookMovements){
 
@@ -863,39 +944,15 @@ function getDailyBookMovementsWithBankAccount(dailyBookMovements){
         response.push(data);
     });
 
-
     return response;
 }
-
-function renderDailyTotalRow(alldaysOnYear){
-    const incomeTrResume = document.querySelectorAll('tbody .resumeRowIncome');
-    const outComeTrResume = document.querySelectorAll('tbody .resumeRowOutCome');
-    const ingresos = alldaysOnYear.ingresos;
-    const egresos = alldaysOnYear.egresos;
-
-    ingresos.forEach((day)=>{
-        const dayOfYear = dayOfTheYear(day.humanDate);
-        incomeTrResume[0]
-            .querySelectorAll('td')[dayOfYear]
-            .innerText = getChileanCurrency(alldaysOnYear.ingresos[dayOfYear - 1].total);
-    });
-
-    egresos.forEach((day)=>{
-        const dayOfYear = dayOfTheYear(day.humanDate);
-        outComeTrResume[0]
-            .querySelectorAll('td')[dayOfYear]
-            .innerText = getChileanCurrency(alldaysOnYear.egresos[dayOfYear - 1].total);
-    });
-
-}
- 
-
 
 function getAllDaysOnYearTemplate(){
     let movementsByDate = {
         ingresos: [],
         egresos: [],
-        pendientes : []
+        projectedIncome : [],
+        projectedOutcome : []
     };
 
     allMyDates.forEach((date, index) => {
@@ -917,7 +974,7 @@ function getAllDaysOnYearTemplate(){
             ],
             total: 0
         });
-        movementsByDate.pendientes.push({
+        movementsByDate.projectedIncome.push({
             humanDate: date,
             timestamp: timeStampDate,
             movements: [
@@ -925,11 +982,16 @@ function getAllDaysOnYearTemplate(){
             ],
             total: 0,
         });
+        movementsByDate.projectedOutcome.push({
+            humanDate: date,
+            timestamp: timeStampDate,
+            movements: [
 
+            ],
+            total: 0,
+        });
     });
-
     return movementsByDate;
-
 }
 
 
@@ -1649,20 +1711,11 @@ function accToPush(lvl4, lvlName) {
     }
 }
 
-const getChileanCurrency = (value) => {
-
-    if (value < 0) {
-        return `-$${Math.abs(value).toLocaleString('es-CL')}`;
-    } else {
-        return `$${value.toLocaleString('es-CL')}`;
-    }
-    // return value.toLocaleString('es-CL');
-}
 
 const setIncomeResumeRow = () => {
     const tr = document.createElement('tr');
     tr.classList.add('resumeRowIncome', '--headerRow');
-    let firstTd = `<td id="resumeRowIncome">Ingresos</td>`;
+    let firstTd = `<td id="resumeRowIncome">Total ingresos</td>`;
     let contentTd = ''
     for (let i = 1; i <= allMyDates.length; i++) {
         contentTd += '<td></td>';
@@ -1670,10 +1723,44 @@ const setIncomeResumeRow = () => {
     tr.innerHTML = `${firstTd}${contentTd}`;
     return tr;
 }
-const setPendingResumeRow = () => {
+const setIncomeNoDocumentRow = (accountCode) => {
     const tr = document.createElement('tr');
-    tr.classList.add('resumeRowPending', '--headerRow');
-    let firstTd = `<td id="resumeRowPending">Documentos pendientes</td>`;
+    tr.classList.add('codeAccountRow', '--selectableRow', '--incomeRow');
+    let firstTd = `<td lvlCode='${accountCode.lvl4}'>${accountCode.lvlName}</td>`;
+    let contentTd = ''
+    for (let i = 1; i <= allMyDates.length; i++) {
+        contentTd += '<td></td>';
+    }
+    tr.innerHTML = `${firstTd}${contentTd}`;
+    return tr;
+}
+const setProjectedDocumentsRow = () => {
+    const tr = document.createElement('tr');
+    tr.classList.add('codeAccountRow', '--selectableRow', '--incomeRow');
+    tr.id = 'projectedIncomeRow';
+    let firstTd = `<td lvlCode='CSTM.PROJ.003'>Ingresos futuros</td>`;
+    let contentTd = ''
+    for (let i = 1; i <= allMyDates.length; i++) {
+        contentTd += '<td></td>';
+    }
+    tr.innerHTML = `${firstTd}${contentTd}`;
+    return tr;
+}
+const setOutNoDocumentRow = (accountCode) => {
+    const tr = document.createElement('tr');
+    tr.classList.add('codeAccountRow', '--selectableRow', '--outcomeRow');
+    let firstTd = `<td lvlCode='${accountCode.lvl4}'>${accountCode.lvlName}</td>`;
+    let contentTd = ''
+    for (let i = 1; i <= allMyDates.length; i++) {
+        contentTd += '<td></td>';
+    }
+    tr.innerHTML = `${firstTd}${contentTd}`;
+    return tr;
+}
+const setOutComeProjectedDocumentsRow = (accountCode) => {
+    const tr = document.createElement('tr');
+    tr.classList.add('codeAccountRow', '--selectableRow', '--outcomeRow');
+    let firstTd = `<td lvlCode='CSTM.PROJ.004'>Egresos futuros</td>`;
     let contentTd = ''
     for (let i = 1; i <= allMyDates.length; i++) {
         contentTd += '<td></td>';
@@ -1705,6 +1792,29 @@ const setTotalRow = () => {
     tr.innerHTML = `${firstTd}${contentTd}`;
     return tr;
 
+}
+
+function newIncomeRow(accountCode) {
+    const tr = document.createElement('tr');
+    tr.classList.add('codeAccountRow', '--selectableRow', '--incomeRow');
+    let firstTd = `<td lvlCode=${accountCode.lvl4}>${accountCode.lvl4Name}</td>`;
+    let contentTd = ''
+    for (let i = 1; i <= allMyDates.length; i++) {
+        contentTd += '<td></td>';
+    }
+    tr.innerHTML = `${firstTd}${contentTd}`;
+    return tr;
+}
+function newOutRow(accountCode) {
+    const tr = document.createElement('tr');
+    tr.classList.add('codeAccountRow', '--selectableRow', '--outcomeRow');
+    let firstTd = `<td lvlCode=${accountCode.lvl4}>${accountCode.lvlName}</td>`;
+    let contentTd = ''
+    for (let i = 1; i <= allMyDates.length; i++) {
+        contentTd += '<td></td>';
+    }
+    tr.innerHTML = `${firstTd}${contentTd}`;
+    return tr;
 }
 
 function createIncomeRows(allDailyMovesWithBankMovement) {

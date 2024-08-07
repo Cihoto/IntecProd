@@ -405,15 +405,6 @@ async function GetAllPersonal(empresaId) {
         }),
         success: function (response) {
             allPersonal = response;
-            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
-            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
-            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
-            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
-            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
-            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
-            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
-            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
-            console.log('LAKJDSLAKJDLAKJDSLAKDSJLAIKS')
             allPersonal = allPersonal.map((personal) => {
                 return {
                     'cargo': personal.cargo,

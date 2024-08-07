@@ -3,7 +3,7 @@
         <div class="--demo-btn-container" id='perReminder'>
     </div>
     <!-- ^^^^ do not remove ^^^^ -->
-    <div class="col-12 " style="max-height: 800px; overflow-y: scroll;overflow-x: hidden;" id="peralCtn">
+    <div class="col-12 " style="max-height: 800px; overflow-y: scroll;overflow-x: hidden;flex-direction: column;" id="peralCtn">
         <div class="row">
             <div class="formHeader" style="margin-left:18px ;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">

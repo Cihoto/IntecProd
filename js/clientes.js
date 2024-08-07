@@ -144,8 +144,7 @@ $('#clienteSelect').on('change', function () {
   // $('#addCliente p').text("Seleccionar");
   showEditClientControls();
   showSelectedClientForEvent();
-  if (CLIENTE_ID !== "" ) {
-
+  if (CLIENTE_ID !== "" || CLIENTE_ID !== null) {
     $.ajax({
       type: "POST",
       url: "ws/cliente/cliente.php",
