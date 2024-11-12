@@ -16,7 +16,11 @@ function renderPendingCharges(){
         </tr>`;
     tr.innerHTML = theadTr;
     thead.appendChild(tr);
-    const futureCharges = futureDocuments.filter(({pagada,recibida}) =>!recibida);
+    // const futureCharges = futureDocuments.filter(({pagada,recibida}) =>!recibida);
+    // const futureCharges = tributarieDocuments.payments;
+
+    const futureCharges = sortDocumentsByDate('payments');
+
     futureCharges.forEach((futureCharge) => {
         // ADD ONE MONTH TO FUTURE PAYMENT DATE
         let tr = document.createElement('tr');
@@ -50,4 +54,9 @@ function renderPendingCharges(){
         tr.innerHTML = rowHTML;
         tbody.appendChild(tr);
     })  
+}
+
+
+async function getPendingCharges(){
+    const pendingCharges = await get();
 }

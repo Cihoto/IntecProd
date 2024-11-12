@@ -1,14 +1,21 @@
+const dateColumn = document.getElementsByClassName('dateColumn');
+// sorted value by date 0 = default, 1 = asc, 2 = desc
+
+
 function renderPendingPayments(){
     console.log('futureDocuments',futureDocuments)
 
-    const filteredPaid = futureDocuments.filter(({pagado}) => pagado);
-    console.log('filteredPaid',filteredPaid)
+
+    const futurePayments = sortDocumentsByDate('charges');
+
+    // const filteredPaid = futureDocuments.filter(({pagado}) => pagado);
+    // console.log('filteredPaid',filteredPaid)
     
     let tr = document.createElement('tr');
     let theadTr = `
         <tr>
-            <th>Fecha emisión</th>
-            <th>Fecha Pago</th>
+            <th class="dateColumn">Fecha emisión</th>
+            <th class="dateColumn">Fecha Pago</th>
             <th>Proveedor</th>
             <th>N° Factura</th>
             <th>Glosa/Detalle</th>
@@ -20,7 +27,11 @@ function renderPendingPayments(){
         </tr>`
     tr.innerHTML = theadTr;
     thead.appendChild(tr);
-    const futurePayments = futureDocuments.filter(({pagada,recibida}) => recibida);
+    // const futurePayments = futureDocuments.filter(({pagada,recibida}) => recibida);
+    // const futurePayments =  tributarieDocuments.charges;
+    // const sortedByDate = futurePayments.sort((a,b) => a.fecha_emision - b.fecha_emision);
+
+   
     futurePayments.forEach((futurePayment) => {
         // ADD ONE MONTH TO FUTURE PAYMENT DATE
         let tr = document.createElement('tr');
@@ -61,5 +72,12 @@ function renderPendingPayments(){
         tbody.appendChild(tr);
     })  
 }
+
+
+console.log('dateColumn',dateColumn);
+
+
+
+
 
 

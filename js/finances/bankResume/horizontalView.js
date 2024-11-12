@@ -2,14 +2,16 @@
 const table = document.getElementById("bankMovementsTableHorizontal");
 const thead = table.getElementsByTagName("thead")[0];
 const tbody = table.getElementsByTagName("tbody")[0];
+const tfoot = table.getElementsByTagName("tfoot")[0];
+const allMyDatesTr = document.querySelectorAll('.allDates');
 let allReceptors = [];
 
 
-function renderMyHorizontalView(monthsToSearch = [1,2,3,4,5,6,7,8,9,10,11,12]){
+function renderMyHorizontalView(monthsToSearch){
 
     // set all dates on month in thead using moment.js
     let allDaysOnCurrentMonth = getAllDaysOnMonth(monthsToSearch);
-    // console.log('allDaysOnCurrentMonth',allDaysOnCurrentMonth);
+    console.log('allDaysOnCurrentMonth',allDaysOnCurrentMonth);
     createHorizontalTableHead(table,allDaysOnCurrentMonth);
 }
 
@@ -19,15 +21,18 @@ function createHorizontalTableHead(table,allDaysOnCurrentMonth){
     let th = document.createElement("th");
 
     th.innerHTML = "Fecha";
-
     tr.appendChild(th);
     tr.classList.add('table-primary-tr');
+    tr.classList.add('allDates');
 
     allDaysOnCurrentMonth.forEach(date => {
         // console.log(date)
         let th = document.createElement("th");
+        th.classList.add('dateHeader');
+        // doty = DAY OF THE YEAR
         const dayOfYear = moment(date).dayOfYear();
         th.dataset.date = dayOfYear
+        th.setAttribute('doty',dayOfYear)
         // th.dataset.date = moment(date).format('X');
         th.innerHTML = moment(date).format('DD-MM-YYYY');
         tr.appendChild(th);

@@ -373,4 +373,38 @@ Superhávit / Déficit ==>> SUMA SALDO CUENTA CORRIENTE + CUENTAS POR COBRAR -  
 proveedor  num facutra glosa total 
 
 
+Consulta a movimientos bancarios desde el 2024-07-10 retorna valores
+https://api.clay.cl/v1/cuentas_bancarias/movimientos/?numero_cuenta=4449398&rut_empresa=76275907&limit=200&offset=0&fecha_desde=2024-07-10
+En caso de ejecutar la consulta a continuación con fecha desde 2024-07-09, retorna Internal Server Error
+https://api.clay.cl/v1/cuentas_bancarias/movimientos/?numero_cuenta=4449398&rut_empresa=76275907&limit=200&offset=0&fecha_desde=2024-07-09
+
+Por otro lado tenemos las consultas hacia los matches, esta es la URL
+https://api.clay.cl/v1/cuentas_bancarias/matches/?orden=Asc&numero_cuenta=4449398&rut_empresa=76275907&limit=200&offset=0&fecha_match_desde=2024-08-01
+En caso de consultar por desde 2024-07-31, retorna Internal Server Error, en caso de preguntar con fechas inferiores, funciona.
+
+Para consultar documentos tributarios la maxima fecha que puedo usar es el 2024-06-29 como en esta URL
+https://api.clay.cl/v1/obligaciones/documentos_tributarios/?guia_despacho=false&rut_empresa=77604901&fecha_desde=2024-06-29&fecha_hasta=&initialize_until=true&limit=200&offset=10
+En caso de usar una fecha menor como el siguiente ejemplo, Retorna Internal Server Error
+https://api.clay.cl/v1/obligaciones/documentos_tributarios/?guia_despacho=false&rut_empresa=77604901&fecha_desde=2024-06-28&fecha_hasta=&initialize_until=true&limit=200&offset=10
+
+No es tan solo en estas consultas, me encontrado directamente este error desde la pagina de https://api.clay.cl/docs# Swagger UI o PostMan
+
+
+
+REGLAS DE NORMALIZACION DE EXCEL PARA CARGAS FINANCIERAS;
+DTE's en distintos formatos
+FECHA DE EMISIÓN => FECHA_EMISION
+EMITIDO_RECIBIDO => RECIBIDO
+Nº FACTURA => FOLIO
+1er ITEM => ITEM
+RAZÓN SOCIAL => RAZON_SOCIAL
+MONTO EXENTO => MONTO_EXENTO	
+MONTO AFECTO => MONTO_AFECTO	
+MONTO NETO => MONTO_NETO
+19% => IMPUESTO
+OTROS IMPUESTOS => OTROS_IMPUESTOS
+
+
+
+
 

@@ -7,12 +7,15 @@ function printDailyBookTable(tbody,allDaysOnYear,
     futureDocuments,
     totalDailyBalance){
 
-    // renderMyHorizontalView()
+    // renderMyHorizontalView();
 
-    // INCOME
+    console.log('allDaysOnYear',allDaysOnYear);
+
+    // INCOME   
     const incomeTr = setIncomeResumeRow();
     tbody.appendChild(incomeTr);
     // INCOME ACCOUNTS
+    // console.log('incomeAccountRows',incomeAccountRows);
     incomeAccountRows.forEach((row)=>{
         tbody.appendChild(row);
     });
@@ -22,6 +25,13 @@ function printDailyBookTable(tbody,allDaysOnYear,
     // Projected Documents
     const projectedDocumentsTr = setProjectedDocumentsRow();
     tbody.appendChild(projectedDocumentsTr);
+
+    // emptyRow
+
+    let emptyRow1 = setEmptyRow();
+    tbody.appendChild(emptyRow1); 
+
+
     // OUT
     const outComeTr = setOutcomeResumeRow();
     tbody.appendChild(outComeTr);
@@ -38,6 +48,10 @@ function printDailyBookTable(tbody,allDaysOnYear,
 
     renderDailyTotalRow(allDaysOnYear);
 
+    // emptyRow
+    let emptyRow2 = setEmptyRow();
+    tbody.appendChild(emptyRow2); 
+
     const totalTr = setTotalRow();
     tbody.appendChild(totalTr);
 
@@ -48,8 +62,14 @@ function printDailyBookTable(tbody,allDaysOnYear,
     const incomeTrResume = document.querySelectorAll('tbody .--incomeRow');
     const outcomeTrResume = document.querySelectorAll('tbody .--outcomeRow');
     // alldays on year is an array with 365 objects
+    // console.log('allDaysOnYear',allDaysOnYear);
+
     allDaysOnYear.ingresos.forEach((day,index)=>{
-        const dayOfYear = index + 1;
+        console.log('INCOME_DAY',day);
+        const dayOfYear = day.dateIndex;
+        if(dayOfYear == 32){
+            console.log('dayofTheYear',index,dayOfYear,day);
+        }
         const total = day.total;
         day.lvlCodes.forEach((lvlCode)=>{
             let trIndex = 0;
@@ -62,18 +82,29 @@ function printDailyBookTable(tbody,allDaysOnYear,
 
             lvlCode.movements.forEach((movement)=>{
                 totalMovements += parseInt(movement[objToAdd]);
+                
                 incomeTrResume.forEach((element, index) => {
                     const accCode = element.querySelectorAll('td')[0].getAttribute('lvlCode') == lvlCode.lvl4;
                     if (accCode) {
+                        // console.log('accCode',accCode);
+                        // console.log('movement',movement);
+                        trIndex = dayOfTheYear(movement.fecha_contabilizacion_humana);
                         trIndex = index;
                     }
                 });
             });
-            incomeTrResume[trIndex].querySelectorAll('td')[dayOfYear].innerText = getChileanCurrency(totalMovements);
+            const dateIndex = getDateIndex(dayOfYear);
+            if(!dateIndex){
+                return;
+            }
+            console.log(dateIndex);
+
+            incomeTrResume[trIndex].querySelectorAll('td')[dateIndex].innerText = getChileanCurrency(totalMovements);
         })
-    })
+    });
+    // return
     allDaysOnYear.egresos.forEach((day,index)=>{
-        const dayOfYear = index + 1;
+        const dayOfYear = day.dateIndex;
         const total = day.total;
         day.lvlCodes.forEach((lvlCode)=>{
             let trIndex = 0;
@@ -93,12 +124,22 @@ function printDailyBookTable(tbody,allDaysOnYear,
                     }
                 });
             });
-            outcomeTrResume[trIndex].querySelectorAll('td')[dayOfYear].innerText = getChileanCurrency(totalMovements);
+            const dateIndex = getDateIndex(dayOfYear);
+            if(!dateIndex){
+                return;
+            }
+            outcomeTrResume[trIndex].querySelectorAll('td')[dateIndex].innerText = getChileanCurrency(totalMovements);
         })
     });
+    console.log('totalDailyBalance',totalDailyBalance);
     totalDailyBalance.forEach(({ date, totalIncome, totalOutCome, total, previousAccountBalance }, index) => {
-        totalTr.querySelectorAll('td')[index + 1].innerText = getChileanCurrency(total);
-        balanceTr.querySelectorAll('td')[index + 1].innerText = getChileanCurrency(previousAccountBalance);
+        const dayOfYear = dayOfTheYear(date);
+        const dateIndex = getDateIndex(dayOfYear);
+        if(!dateIndex){
+            return;
+        }
+        totalTr.querySelectorAll('td')[dateIndex].innerText = getChileanCurrency(total);
+        balanceTr.querySelectorAll('td')[dateIndex].innerText = getChileanCurrency(previousAccountBalance);
     });
     
     getDocumentOutPaymentDate.forEach((notPaidDocument)=>{
@@ -116,25 +157,41 @@ function printDailyBookTable(tbody,allDaysOnYear,
         // ADD WEEKS TO DOCUMENT DATE
         const newDate = moment(documentDate).add(weeksFromEmition, 'weeks').format('YYYY-MM-DD');
         const newDayOfYear = dayOfTheYear(newDate);
-        if(weeksToMove > 1){
-            projectedDocumentsTr.querySelectorAll('td')[newDayOfYear].classList.add('red');
-        }else{
-            projectedDocumentsTr.querySelectorAll('td')[newDayOfYear].classList.add('yellow');
+        const newDayIndex = getDateIndex(newDayOfYear);
+        if(!newDayIndex){
+            return;
         }
-        projectedDocumentsTr.querySelectorAll('td')[newDayOfYear].innerText = getChileanCurrency(notPaidDocument.total.total);
+        if(weeksToMove > 1){
+            projectedDocumentsTr.querySelectorAll('td')[newDayIndex].classList.add('red');
+        }else{
+            projectedDocumentsTr.querySelectorAll('td')[newDayIndex].classList.add('yellow');
+        }
+        projectedDocumentsTr.querySelectorAll('td')[newDayIndex].innerText = getChileanCurrency(notPaidDocument.total.total);
     });
 
     futureDocuments.forEach((futureDocument)=>{ 
         const dayOfYear = dayOfTheYear(moment(futureDocument.futureDate,'X').format('YYYY-MM-DD'));
+        const dateIndex = getDateIndex(dayOfYear);
+        if(!dateIndex){
+            return;
+        }
         if(futureDocument.recibida == true){
             // outComeProjectedDocumentsTr.querySelectorAll('td')[dayOfYear].classList.add('yellow');
-            outComeProjectedDocumentsTr.querySelectorAll('td')[dayOfYear].innerText = getChileanCurrency(futureDocument.total.total);
+            outComeProjectedDocumentsTr.querySelectorAll('td')[dateIndex].innerText = getChileanCurrency(futureDocument.total.total);
         }else{
             // projectedDocumentsTr.querySelectorAll('td')[dayOfYear].classList.add('yellow');
-            projectedDocumentsTr.querySelectorAll('td')[dayOfYear].innerText = getChileanCurrency(futureDocument.total.total);
+            projectedDocumentsTr.querySelectorAll('td')[dateIndex].innerText = getChileanCurrency(futureDocument.total.total);
         }
     });
+    console.log('totalDailyBalance',totalDailyBalance);
+    console.log('totalDailyBalance',totalDailyBalance);
+    console.log('future',futureDocuments);
+    console.log('future',futureDocuments);
     const CARD_DATA = getMyCardsData(totalDailyBalance,futureDocuments);
+    console.log('CARD_DATA',CARD_DATA);
+    console.log('CARD_DATA',CARD_DATA);
+    console.log('CARD_DATA',CARD_DATA);
+    console.log('CARD_DATA',CARD_DATA);
     setBankResumeData(CARD_DATA);
 }
 
@@ -145,25 +202,86 @@ function renderDailyTotalRow(alldaysOnYear){
     const ingresos = alldaysOnYear.ingresos;
     const egresos = alldaysOnYear.egresos;
 
+    console.log('ingresos',ingresos);
+
+    
+
     ingresos.forEach((day)=>{
         const dayOfYear = dayOfTheYear(day.humanDate);
+        const dateIndex = getDateIndex(dayOfYear);
+        console.log('dateIndex',dateIndex);
+        if(!dateIndex){
+            return;
+        }
+        // console.log('alldaysOnYear.ingresos[dayOfYear - 1]',alldaysOnYear.ingresos[dateIndex - 1])
+        if(!alldaysOnYear.ingresos[dateIndex - 1]){
+            return;
+        }
+        console.log(`incomeTrResume[0].querySelectorAll('td')[dateIndex]`,incomeTrResume[0].querySelectorAll('td')[dateIndex]);
+        if(!incomeTrResume[0].querySelectorAll('td')[dateIndex]){
+            return;
+        }
+        console.log('alldaysOnYear.ingresos[dateIndex].total',alldaysOnYear.ingresos);
+        const dateIndexTotals = alldaysOnYear.ingresos.find((day)=>{return day.dateIndex == dayOfYear});
+        if(!dateIndexTotals){return};
+        console.log('dateIndexTotals',dateIndexTotals);
+        console.log('dateIndexTotals',dateIndexTotals);
+        console.log('dateIndexTotals',dateIndexTotals);
+        console.log(`incomeTrResume[0].querySelectorAll('td')[dateIndex]`,incomeTrResume[0].querySelectorAll('td')[dateIndex])
+        console.log(`dateIndexTotals.total_+!@+_!+_!+_!+_+!_+!_+!_+!_+!_+!_+_!`,dateIndexTotals.total)
         incomeTrResume[0]
-            .querySelectorAll('td')[dayOfYear]
-            .innerText = getChileanCurrency(alldaysOnYear.ingresos[dayOfYear - 1].total);
+            .querySelectorAll('td')[dateIndex]
+            .innerText = getChileanCurrency(dateIndexTotals.total);
     });
 
     egresos.forEach((day)=>{
         const dayOfYear = dayOfTheYear(day.humanDate);
+        const dateIndex = getDateIndex(dayOfYear);
+        if(!dateIndex){
+            return;
+        }
+        if(!alldaysOnYear.egresos[dateIndex - 1]){
+            return;
+        }
+        if(!outComeTrResume[0].querySelectorAll('td')[dateIndex]){
+            return;
+        }
+        const dateIndexTotals = alldaysOnYear.ingresos.find((day)=>{return day.dateIndex == dayOfYear});
+        if(!dateIndexTotals){return};
+
         outComeTrResume[0]
-            .querySelectorAll('td')[dayOfYear]
-            .innerText = getChileanCurrency(alldaysOnYear.egresos[dayOfYear - 1].total);
+            .querySelectorAll('td')[dateIndex]
+            .innerText = getChileanCurrency(dateIndexTotals.total);
     });
+}
+
+function getDateIndex(dayOfTheYear){
+
+    let dateIndex;
+    let found = false;
+
+    // find all th on allMyDatesTr  
+    const allMyDatesTr = document.querySelectorAll('.allDates')[0];
+    // console.log('allMyDatesTr',allMyDatesTr);
+    allMyDatesTr.querySelectorAll('th').forEach((date,index)=>{
+        if(date.getAttribute('doty') == dayOfTheYear){
+            // console.log('date',date);
+            // console.log('DAYOFTHEYEAR',dayOfTheYear);
+            found = true;
+            dateIndex = index;
+        }
+    });
+    console.log('found',found);
+    if(!found){
+        return false
+    }
+    return dateIndex;
 }
 
 
 
 function getMyCardsData(totalDailyBalance,futureDocuments){
-    // console.log('totalDailyBalance',totalDailyBalance);
+    console.log('totalDailyBalance',totalDailyBalance);
 
     const data = {
         currentBankBalance: 0,
@@ -179,10 +297,15 @@ function getMyCardsData(totalDailyBalance,futureDocuments){
 
     const today = moment().format('YYYY-MM-DD');
     const todayIndex = dayOfTheYear(today);
-    // console.log('totalDailyBalance',totalDailyBalance)
-    // console.log('totalDailyBalance[todayIndex - 1]',totalDailyBalance[todayIndex - 1])
-    // console.log('totalDailyBalance[todayIndex - 1]',totalDailyBalance[todayIndex - 1].previousAccountBalance)
-    const todayBalance = totalDailyBalance[todayIndex - 1].previousAccountBalance;
+
+    console.log('totalDailyBalance',totalDailyBalance);
+    console.log('totalDailyBalance.length',totalDailyBalance.length);
+    const lastIndex = totalDailyBalance.length - 1;
+    console.log('totalDailyBalance',totalDailyBalance[lastIndex]);
+    if(!totalDailyBalance[lastIndex]){return}
+    const todayBalance = totalDailyBalance[lastIndex].previousAccountBalance;
+
+    // const todayBalance = totalDailyBalance[todayIndex - 1].previousAccountBalance;
     data.currentBankBalance = todayBalance;
     let totalPendingPayments = 0;
     let totalPendingCharges = 0;
@@ -192,7 +315,6 @@ function getMyCardsData(totalDailyBalance,futureDocuments){
             return;
         }  
         const totalDocument = futureDocument.total.total;
-        console.log('totalDocument',totalDocument)
         if(futureDocument.recibida == true){
             data.pendingCharges.total += parseInt(totalDocument);
             data.pendingCharges.pendingDocuments++;

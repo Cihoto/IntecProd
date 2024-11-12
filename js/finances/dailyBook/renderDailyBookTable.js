@@ -6,11 +6,68 @@ let libroDiario;
 let allDailyMovesWithBankMovement = [];
 let bhe = [];
 
-window.addEventListener("load", async (event) => {
-    let monthsToSearch = [1,2,3,4,5,6,7,8,9,10,11,12];
-    getAllDaysOnMonth(monthsToSearch);
-    // console.log('jsonMmovs', movs);
+const monthsToSearch = moment().format('M');
+console.log('monthsToSearch',monthsToSearch);
+getAllDaysOnMonth([monthsToSearch]);
+console.log('allMyDates',allMyDates);
+// const currentDates = 
+const today = moment().format('YYYY-MM-DD');
+const currentMonthNumber = moment().format('M');
+// get month by month number
+const previousMonth = moment().month(currentMonthNumber - 2).startOf('month').format('YYYY-MM-DD');
+// get first day of the month by month number
+const firstDayOfMonth = moment().month(currentMonthNumber - 1).startOf('month').format('YYYY-MM-DD');
+const currentYear = moment().format('YYYY');
+console.log('firstDayOfMonth',firstDayOfMonth);
+console.log('previousMonth',previousMonth);
 
+const busData = {
+    'busId': 76275907,
+    'bankAcocuntId': 4449398
+}
+
+window.addEventListener("load", async (event) => {
+
+    // FACTUARAS Y MOVIMIENTOS
+    readAllDocumentsFromExcel();
+    // filterDocumentsFromAPI();
+    
+    // FLUJO DE CAJA 
+       
+    getBankMovementsFromExcel();
+
+
+
+
+
+    
+    // const excelResponse = await fetch('/test6.php');
+    // const excelData = await excelResponse.json();
+    // console.log('excelData',excelData);
+    // const allMyDocuments = await readDocumentsData();
+
+
+    
+    // const bankMov = await getBankMovements();
+
+    // console.log('bankMov', bankMov);
+
+    // const matches = await getMatchesMovements();
+    // console.log('matches', matches);
+    
+    // const dailyBookMovements = await getDailyBookMovements();
+    // const tributarieDocuments = await getAllMyDocuments();
+    // console.log('tributarieDocuments', tributarieDocuments);
+    // return
+
+    // getTotalOutCome(allMyDocuments);
+    // getandSetDatafromClay(selectedMonth);
+
+
+
+
+    return;
+    // console.log('jsonMmovs', movs);
     const filteredMovs = movs.map((movement) => {
         if (movement.data.length === 0) {
             return false;
@@ -18,15 +75,8 @@ window.addEventListener("load", async (event) => {
             return movement.data;
         }
     });
-
-    bankMov = await fetch('ws/Clay/getBankMovements.php')
-    .then((response) => response.json())
-    .then((data) => {
-        return data
-    })
-    .catch((error) => console.log(error));
+    // fetch('ws/Clay/getBankMovements.php', 
     // pDom.innerText = JSON.stringify(bankMov);
-
     // bankMov = await fetch('bankMovements2024.json')
     //     .then((response) => response.json())
     //     .then((data) => {
@@ -34,13 +84,15 @@ window.addEventListener("load", async (event) => {
     //     })
     //     .catch((error) => console.log(error));
     // console.log('bankMov', bankMov);
+    
+    // matchData = await fetch('ws/Clay/getAllMatchesBankMovements.php',{})
+    // .then((response) => response.json())
+    // .then((data) => {
+    //     return data
+    // })
+    // .catch((error) => console.log(error));
 
-    matchData = await fetch('ws/Clay/getAllMatchesBankMovements.php')
-    .then((response) => response.json())
-    .then((data) => {
-        return data
-    })
-    .catch((error) => console.log(error));
+    // console.log('matchData',matchData);
     // console.log('matchData____', matchData____);
     // pDom.innerText = JSON.stringify(matchData____);
 
@@ -52,22 +104,21 @@ window.addEventListener("load", async (event) => {
     //     .catch((error) => console.log(error));
     // console.log('matchData', matchData);
 
+    // let libroDiario_ = await fetch('libroDiario2024.json')
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //         return data
+    //     })
+    //     .catch((error) => console.log(error));
+    //console.log('libroDiario_', libroDiario_);
 
-
-    let libroDiario_ = await fetch('libroDiario2024.json')
-        .then((response) => response.json())
-        .then((data) => {
-            return data
-        })
-        .catch((error) => console.log(error));
-        console.log('libroDiario_', libroDiario_);
-    libroDiario = await fetch('ws/Clay/getDailyBookMovements.php')
-    .then((response) => response.json())
-    .then((data) => {
-        return data
-    })
-    .catch((error) => console.log(error));
-    console.log('libroDiario', libroDiario);
+    // libroDiario = await fetch('ws/Clay/getDailyBookMovements.php')
+    //      .then((response) => response.json())
+    //      .then((data) => {
+    //          return data
+    //      })
+    //      .catch((error) => console.log(error));
+    // console.log('libroDiario', libroDiario); 
 
     // libroDiario = await fetch('ws/Clay/getDailyBookMovements.php')
     // .then((response) => response.json())
@@ -77,24 +128,180 @@ window.addEventListener("load", async (event) => {
     // .catch((error) => console.log(error));
 
     // console.log('libroDiario', libroDiario);
+    console.log('allMyDocuments', allMyDocuments);
+    bhe = await fetch('bhe.json')
+    return;
 
-    const allMyDocuments = await fetch('tributarieDocuments.json')
+});
+
+async function getandSetDatafromClay(selectedMonth){
+    // let monthsToSearch = [1,2,3,4,5,6,7,8,9,10,11,12];
+    const monthsToSearch = selectedMonth;
+    console.log('selectedMonth',selectedMonth);
+    console.log('monthsToSearch',monthsToSearch);
+    getAllDaysOnMonth([monthsToSearch]);
+    console.log('allMyDates',allMyDates);
+    // const currentDates = 
+    const today = moment().format('YYYY-MM-DD');
+    const currentMonthNumber = moment().format('M');
+    // get month by month number
+    const previousMonth = moment().month(currentMonthNumber - 2).startOf('month').format('YYYY-MM-DD');
+    // get first day of the month by month number
+    const firstDayOfMonth = moment().month(currentMonthNumber - 1).startOf('month').format('YYYY-MM-DD');
+    const currentYear = moment().format('YYYY');
+    console.log('firstDayOfMonth',firstDayOfMonth);
+    console.log('previousMonth',previousMonth);
+
+    const busData = {
+        'busId': 76275907,
+        'bankAcocuntId': 4449398
+    }
+
+    const localData = await getLocalData();
+
+    bankMov = localData.bankMovements;
+    matchData = localData.matchData;
+    libroDiario = localData.libroDiario;
+    allMyDocuments = localData.allMyDocuments;
+
+    console.log('localData',localData);
+    console.log('allMyDocuments',allMyDocuments);
+
+    console.log('allMyDocuments',allMyDocuments);
+    const sortedBankMovements = bankMov.data.items.sort((a,b)=>{return a.fecha_movimiento - b.fecha_movimiento});
+    const sortedMatchData = matchData.data.items.sort((a,b)=>{return a.fecha_movimiento - b.fecha_movimiento});
+    const sortedLibroDiario = libroDiario.data.items.sort((a,b)=>{return a.fecha_movimiento - b.fecha_movimiento});
+    const sortedAllMyDocuments = allMyDocuments.data.items.sort((a,b)=>{return a.fecha_emision - b.fecha_emision});
+
+    console.log('sortedBankMovements',sortedBankMovements);
+    console.log('sortedMatchData',sortedMatchData);
+    console.log('sortedLibroDiario',sortedLibroDiario);
+    console.log('sortedAllMyDocuments',sortedAllMyDocuments);
+
+    return allMyDocuments;
+
+    // bankMov = await getBankMovements();
+    // matchData = await getMatchesMovements();
+    // libroDiario = await getDailyBookMovements();
+    // const allMyDocuments = await fetch('tributarieDocuments.json')
+    // .then((response) => response.json())
+    // .then((data) => {
+    //     return data
+    // })
+    // .catch((error) => console.log(error));
+
+}
+
+
+
+async function getLocalData(){
+
+    const data = {
+        bankMovements : [],
+        matchData : [],
+        libroDiario : [],
+        allMyDocuments : [],
+    }
+
+    // data.bankMovements = await fetch('bankMovements2024.json')
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //         return data
+    //     })
+    //     .catch((error) => console.log(error));
+
+    // data.matchData = await fetch('matchData2024.json')
+    // .then((response) => response.json())
+    // .then((data) => {
+    //     return data
+    // })
+    // .catch((error) => console.log(error));
+
+    // data.libroDiario = await fetch('libroDiario2024.json')
+    // .then((response) => response.json())
+    // .then((data) => {
+    //     return data
+    // })
+    // .catch((error) => console.log(error));
+
+    // data.allMyDocuments = await fetch('tributarieDocuments.json')
+    // .then((response) => response.json())
+    // .then((data) => {
+    //     return data
+    // })
+    // .catch((error) => console.log(error));
+
+
+    data.bankMovements = await fetch('/CLAYAPIDATA/bankMovements.json')
+        .then((response) => response.json())
+        .then((data) => {
+            return data
+        })
+        .catch((error) => console.log(error));
+
+    data.matchData = await fetch('/CLAYAPIDATA/matchData.json')
     .then((response) => response.json())
     .then((data) => {
         return data
     })
     .catch((error) => console.log(error));
 
-    console.log('allMyDocuments', allMyDocuments);
+    data.libroDiario = await fetch('/CLAYAPIDATA/dailyBook.json')
+    .then((response) => response.json())
+    .then((data) => {
+        return data
+    })
+    .catch((error) => console.log(error));
+
+    data.allMyDocuments = await fetch('/CLAYAPIDATA/tributarieDocuments.json')
+    .then((response) => response.json())
+    .then((data) => {
+        return data
+    })
+    .catch((error) => console.log(error));
 
 
+    // const asd = await fetch('test6.php');
+    // const dataaaa = await asd.json();
 
-    bhe = await fetch('bhe.json')
+    // document.getElementById('matches').innerText = JSON.stringify(dataaaa);
+    
+    
+    // console.log('+!+@!++!+!!++!+!+!+!+!+!+!+!+!+!+',dataaaa);
+    // console.log('+!+@!++!+!!++!+!+!+!+!+!+!+!+!+!+',dataaaa);
+    // console.log('+!+@!++!+!!++!+!+!+!+!+!+!+!+!+!+',dataaaa);
+    // console.log('+!+@!++!+!!++!+!+!+!+!+!+!+!+!+!+',dataaaa);
+    // console.log('+!+@!++!+!!++!+!+!+!+!+!+!+!+!+!+',dataaaa);
+    // console.log('+!+@!++!+!!++!+!+!+!+!+!+!+!+!+!+',dataaaa);
+    // console.log('+!+@!++!+!!++!+!+!+!+!+!+!+!+!+!+',dataaaa);
 
-    getTotalOutCome(allMyDocuments);
-    return;
+    return data;
 
-});
+    // matchData = await fetch('ws/Clay/getAllMatchesBankMovements.php',{})
+    // .then((response) => response.json())
+    // .then((data) => {
+    //     return data
+    // })
+    // .catch((error) => console.log(error));
+    // console.log('matchData',matchData);
+    // console.log('matchData____', matchData____);
+    // pDom.innerText = JSON.stringify(matchData____);
+
+    // libroDiario = await fetch('ws/Clay/getDailyBookMovements.php')
+    //      .then((response) => response.json())
+    //      .then((data) => {
+    //          return data
+    //      })
+    //      .catch((error) => console.log(error));
+    // console.log('libroDiario', libroDiario); 
+
+    // libroDiario = await fetch('ws/Clay/getDailyBookMovements.php')
+    // .then((response) => response.json())
+    // .then((data) => {
+    //     return data
+    // })
+    // .catch((error) => console.log(error));
+}
 
 
 
@@ -110,9 +317,17 @@ let outRows = [];
 let futureDocuments = [];
 let totalDailyBalance = [];
 let incomeAccountCodes = [];
-function getTotalOutCome(allMyDocuments){
-
+let allMyDocuments = [];
+async function getTotalOutCome(){
+    await getandSetDatafromClay(selectedMonth);
+    console.log('selectedMonth',selectedMonth);
+    console.log('selectedMonth',selectedMonth);
+    console.log('selectedMonth',selectedMonth);
     allDaysOnYear = getAllDaysOnYearTemplate();
+    console.log('allDaysOnYear',allDaysOnYear);
+    console.log('allDaysOnYear',allDaysOnYear);
+    console.log('allDaysOnYear',allDaysOnYear);
+    console.log('allDaysOnYear',allDaysOnYear);
 
     const notPaidDocuments = allMyDocuments.data.items.filter((document)=>{
         return document.pagado == false
@@ -124,17 +339,30 @@ function getTotalOutCome(allMyDocuments){
             ...document,
             futureDate: expirationDate
         };
-        if(expirationDate > moment().format('X')){
-
-        }
     }).filter((document)=>{return document != undefined});
 
     futureDocuments.forEach((futureDocument)=>{
         const accType = futureDocument.recibida == true ? 'projectedOutcome' : 'projectedIncome';
         const dayOfYear = dayOfTheYear(moment(futureDocument.futureDate,'X').format('YYYY-MM-DD'));
+
         if(futureDocument.pagada == true){return}
-        allDaysOnYear[accType][dayOfYear - 1].total += parseInt(futureDocument.total.total);
-    })
+        // console.log('dayOfYear',dayOfYear);
+        // console.log(futureDocument);
+        // console.log('=========================',accType,dayOfYear - 1);
+        // console.log(allDaysOnYear);
+        // console.log(allDaysOnYear[accType][dayOfYear - 1]);
+        // console.log('=========================');
+        const accountData = allDaysOnYear[accType].find((acc)=>{return acc.dateIndex == dayOfYear});
+
+        if(!accountData){return}
+
+
+        accountData.total += parseInt(futureDocument.total.total);
+        // if(!allDaysOnYear[accType][dayOfYear - 1]){return}
+
+        // allDaysOnYear[accType][dayOfYear - 1].total += parseInt(futureDocument.total.total);
+
+    });
 
     getDocumentOutPaymentDate = notPaidDocuments.filter((document)=>{
         let today = moment().format('YYYY-MM-DD');
@@ -145,32 +373,26 @@ function getTotalOutCome(allMyDocuments){
         return diff > 30;
     });
 
-
-
-
     let accountCodes = [];
     outRows = [];
     let totalEgresos = 0;
     let totalIngresos = 0;
     const classificatedMovements = classifyAllMovements(bankMov);
     console.log('classificatedMovements',classificatedMovements);
-    console.log('classificatedMovements',classificatedMovements);
-    console.log('classificatedMovements',classificatedMovements);
-    console.log('classificatedMovements',classificatedMovements);
-    console.log('classificatedMovements',classificatedMovements);
     const incomeBankMovements = classificatedMovements.incomeMovements;
-    console.log('incomeBankMovements',incomeBankMovements);
+    // console.log('incomeBankMovements',incomeBankMovements);
     const outcomeBankMovements = classificatedMovements.outcomeMovements;
     const noMatchMovements = classificatedMovements.noMatchMovements;
     let noMatch = [];
     // Toma los movimientos de ingreso bancario y busca su match en el matchData
     let incomeMovementsWithMatchInfo = [];
+
     incomeBankMovements.forEach((bankMovement)=>{
-        console.log('bankMovement',bankMovement);
+        // console.log('bankMovement',bankMovement);
         const matches = bankMovement.matches;
         // iterar sobre los matches y buscar el match en el matchData
-        console.log('matches',matches);
-        const matchInfo = matches.map((bankMatch)=>{
+        // console.log('matches',matches);
+        const matchInfo = matches.map((bankMatch)=>{    
             const dataMatch = matchData.data.items.find(({movimiento_id,folio,fecha_movimiento_humana,monto_match})=>{
                 return movimiento_id === bankMovement.id 
                 && folio === bankMatch.numero 
@@ -197,6 +419,11 @@ function getTotalOutCome(allMyDocuments){
                 rutEmisor: parseInt(`${dataMatch.emisor_obligacion.rut}${dataMatch.emisor_obligacion.dv}`),
             } 
         });
+        // console.log('matchInfo',matchInfo,matches,bankMovement.id,bankMovement);
+        // let show = false;
+        // if(matchInfo[0] == undefined){
+        //     show = true;
+        // }
         // Buscar info. de match en libro diario
         let arrayToReturn = [];
         const libroDiarioMatch = matchInfo.map((match)=>{
@@ -219,7 +446,7 @@ function getTotalOutCome(allMyDocuments){
                 }
                 const folio = parseInt(folio_str.split(' ')[0]);
                 if(match.folio == undefined){
-                    console.log('folio',folio,match.folio,match,matchInfo);
+                    // console.log('folio',folio,match.folio,match,matchInfo);
                 }
                 return folio == parseInt(match.folio) && bookRut == match.rutReceptor;
             });
@@ -257,8 +484,8 @@ function getTotalOutCome(allMyDocuments){
             if(incomeMovementsWithMatchInfo[indexOfFolio].movements === bankMovements){
                 return [];
             }
-
         });
+
         libroDiarioMatch.forEach((element)=>{
             if(element){
                 incomeMovementsWithMatchInfo.push(element);
@@ -291,14 +518,10 @@ function getTotalOutCome(allMyDocuments){
             let date = moment(movement.fecha_contabilizacion_humana,'DD-MM-YYYY').format('YYYY-MM-DD');
             const dayOfYear = dayOfTheYear(date);
             // allDaysOnYear.ingresos[dayOfYear - 1].total += parseInt(movement.debito);
-            console.log('dayOfYear',dayOfYear);
-            console.log('dayOfYear',dayOfYear);
-            console.log('dayOfYear',dayOfYear);
-            console.log('dayOfYear',dayOfYear);
-            console.log('dayOfYear',dayOfYear);
-            console.log('dayOfYear',accountData);
-            console.log('movment',movement)
-            console.log('=========================');
+            // console.log('dayOfYear',dayOfYear);
+            // console.log('dayOfYear',accountData);
+            // console.log('movment',movement)
+            // console.log('=========================');
             pushIncomeToCalendar(movement,dayOfYear,accountData);
         });
     });
@@ -412,7 +635,6 @@ function getTotalOutCome(allMyDocuments){
                     folio: match.folio,
                     data: match
                 });
-
                 return 
             }
             if(isSearchDay == true){
@@ -548,9 +770,6 @@ function getTotalOutCome(allMyDocuments){
 
     let sortedOut = outcomeMovementsWithMatchInfo.sort((a,b)=>{return a.folio - b.folio});
     console.log('sortedOut',sortedOut);
-
-
-
     console.log('outcomeMovementsWithMatchInfo',outcomeMovementsWithMatchInfo);
     console.log('noMatchCounter_OutCome',noMatchCounter_OutCome);
     console.log('noDailyBookMovements',noDailyBookMovements);
@@ -558,19 +777,18 @@ function getTotalOutCome(allMyDocuments){
     console.log('accountCodes',accountCodes);
     console.log('montosInsolutos',montosInsolutos);
 
-
-    // let filter29enero = [];
-    // outcomeMovementsWithMatchInfo.filter((element)=>{
-    //     // console.log('element',element);
-    //     element.movements.forEach((movement)=>{
-    //         let date = moment(movement.fecha_contabilizacion_humana,'DD-MM-YYYY').format('YYYY-MM-DD');
-    //         const dayOfYear = dayOfTheYear(date);
-    //         if(dayOfYear == 53){
-    //             filter29enero.push(movement);
-    //         }
-    //     });
-    // });
-    // console.log('filter29enero',filter29enero);
+    let filter29enero = [];
+    outcomeMovementsWithMatchInfo.filter((element)=>{
+        // console.log('element',element);
+        element.movements.forEach((movement)=>{
+            let date = moment(movement.fecha_contabilizacion_humana,'DD-MM-YYYY').format('YYYY-MM-DD');
+            const dayOfYear = dayOfTheYear(date);
+            if(dayOfYear == 32){
+                filter29enero.push(movement);
+            }
+        });
+    });
+    console.log('filter29enero',filter29enero);
 
     // noDailyBookMovements.forEach(({data})=>{
     //     // let date = moment(movement.fecha_contabilizacion_humana,'DD-MM-YYYY').format('YYYY-MM-DD');
@@ -622,6 +840,23 @@ function getTotalOutCome(allMyDocuments){
         const dayOfYear = dayOfTheYear(noMatchMovement.fecha_humana);
         pushMovementToCalendar(noMatchMovement,dayOfYear,accountData_OutcomeNoDocumentWithFolio);
     });
+
+    const sortedCredito = outcomeMovementsWithMatchInfo.sort((a,b)=>{return a.folio - b.folio});
+    console.log('sortedCredito',sortedCredito);
+
+    // filter 1 de febrero
+    let filter1febrero = [];
+    noMatchMovements.credito.filter((element)=>{
+        const dateIndex = dayOfTheYear(element.fecha_humana);
+        if(dateIndex == 32){
+            filter1febrero.push(element);
+        }
+        // console.log('element+_+_+_+_+_+_+',element);
+    });
+    console.log('filter1febrero',filter1febrero);
+
+
+
     noMatchMovements.debito.forEach((noMatchMovement)=>{
         const dayOfYear = dayOfTheYear(noMatchMovement.fecha_humana);
         pushMovementToCalendar(noMatchMovement,dayOfYear,accountData_IncomeNoDocumentWithFolio);
@@ -631,12 +866,16 @@ function getTotalOutCome(allMyDocuments){
     montosInsolutos.forEach((movement)=>{
         let date = movement.fechaMovimiento;
         const dayOfYear = dayOfTheYear(date);
+        if(!allDaysOnYear.egresos[dayOfYear - 1]){
+            return
+        }
         allDaysOnYear.egresos[dayOfYear - 1].total += parseInt(movement.montoInsoluto);
     });
 
 
 
-    let previousAccountBalance = 18895572;
+    // let previousAccountBalance = 18895572;
+    let previousAccountBalance = 20183502;
     totalDailyBalance = allMyDates.map((date, index) => {
         const totalIncome = allDaysOnYear.ingresos[index].total;
         const totalOutCome = allDaysOnYear.egresos[index].total;
@@ -653,7 +892,14 @@ function getTotalOutCome(allMyDocuments){
 
     console.log(allDaysOnYear);
     console.log('noMatchMovements.debito',noMatchMovements.debito)
-    console.log('noMatchMovements.debito',noMatchMovements.credito)
+    console.log('noMatchMovements.credito',noMatchMovements.credito);
+
+    console.log('totalEgresos',totalEgresos);
+    console.log('totalIngresos',totalIngresos);
+    console.log('allDaysOnYear',allDaysOnYear);
+    console.log('noMatch',noMatch);
+
+    
     console.log("++++++ FINALIZADO +++++++");
     console.log("++++++ FINALIZADO +++++++");
     console.log("++++++ FINALIZADO +++++++");
@@ -804,14 +1050,21 @@ function getTotalOutCome(allMyDocuments){
         }
     });
 
-    console.log('totalEgresos',totalEgresos);
-    console.log('totalIngresos',totalIngresos);
-    console.log('allDaysOnYear',allDaysOnYear);
-    console.log('noMatch',noMatch);
+
 }
 let totalcalendar = 0 ;
 let countercounter = 0;
+let totaltotal = 0;
+let countercoutner = 0;
 function pushMovementToCalendar(movement,dayOfYear,accountData){
+
+     
+
+    // if(!allDaysOnYear.egresos[dayOfYear - 1]){
+    //     return;
+    // }
+
+
    
     let movementType = 'ingresos';
     let incomeOrOutcome = 'debito';
@@ -823,44 +1076,92 @@ function pushMovementToCalendar(movement,dayOfYear,accountData){
     if(movement.monto){
         incomeOrOutcome = 'monto'
     }
+
+    if(dayOfYear == 32  &&  !movement.abono){
+        // console.log('------movement++++',movement);
+        // console.log('------accountData++++',movement);
+        // totaltotal += parseInt(movement[incomeOrOutcome]);
+        // console.log('------parseInt(movement[incomeOrOutcome])++++',parseInt(movement[incomeOrOutcome]));
+        // console.log('---movement+++',movement);
+        // console.log('------totaltotal++++',totaltotal);
+        // countercoutner++;
+        // console.log('------countercoutner++++',countercoutner);
+    }
+
+    const accdata = allDaysOnYear[movementType].find((acc)=>acc.dateIndex == dayOfYear);
+    if(!accdata){return}
+
+
     let totalToAdd = parseInt(movement[incomeOrOutcome]);
     totalcalendar += totalToAdd;
-    allDaysOnYear[movementType][dayOfYear - 1].total += parseInt(totalToAdd);
-    const codeExists = allDaysOnYear[movementType][dayOfYear - 1].lvlCodes.find((acc)=>acc.lvl4 == accountData.lvl4);
+    accdata.total += parseInt(totalToAdd);
+    // allDaysOnYear[movementType][dayOfYear - 1].total += parseInt(totalToAdd);
+    const codeExists = accdata.lvlCodes.find((acc)=>acc.lvl4 == accountData.lvl4);
+    // const codeExists = allDaysOnYear[movementType][dayOfYear - 1].lvlCodes.find((acc)=>acc.lvl4 == accountData.lvl4);
 
     if(!codeExists){
-        allDaysOnYear[movementType][dayOfYear - 1].lvlCodes.push({
+        accdata.lvlCodes.push({
             lvl4: accountData.lvl4,
             lvlName: accountData.lvlName,
             total: totalToAdd,
             movements:[]
         });
+        // accdata.lvlCodes.push({
+        //     lvl4: accountData.lvl4,
+        //     lvlName: accountData.lvlName,
+        //     total: totalToAdd,
+        //     movements:[]
+        // });
     }
     
-    const accIndex = allDaysOnYear[movementType][dayOfYear - 1].lvlCodes.map((acc)=>acc.lvl4).indexOf(accountData.lvl4);
-    allDaysOnYear[movementType][dayOfYear - 1].lvlCodes[accIndex].total += totalToAdd;
-    allDaysOnYear[movementType][dayOfYear - 1].lvlCodes[accIndex].movements.push(movement); 
+    const accIndex = accdata.lvlCodes.map((acc)=>acc.lvl4).indexOf(accountData.lvl4);
+    accdata.lvlCodes[accIndex].total += totalToAdd;
+    accdata.lvlCodes[accIndex].movements.push(movement); 
+    // const accIndex = allDaysOnYear[movementType][dayOfYear - 1].lvlCodes.map((acc)=>acc.lvl4).indexOf(accountData.lvl4);
+    // allDaysOnYear[movementType][dayOfYear - 1].lvlCodes[accIndex].total += totalToAdd;
+    // allDaysOnYear[movementType][dayOfYear - 1].lvlCodes[accIndex].movements.push(movement); 
 }
 
 
 function pushIncomeToCalendar(movement,dayOfYear,accountData){
 
-    let totalToAdd = parseInt(movement.debito);
-    allDaysOnYear.ingresos[dayOfYear - 1].total += parseInt(totalToAdd);
+    const accdata = allDaysOnYear.ingresos.find((acc)=>acc.dateIndex == dayOfYear);
 
-    const codeExists = allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes.find((acc)=>acc.lvl4 == accountData.lvl4);
+    if(!accdata){
+        return
+    }
+
+    // console.log("SI     HAY    ALGOOOOOOOOOOOOOOOOOOOOOOO",movement);
+    // if(!allDaysOnYear.ingresos[dayOfYear - 1]){
+    //     return;
+    // }
+
+    let totalToAdd = parseInt(movement.debito);
+    // allDaysOnYear.ingresos[dayOfYear - 1].total += parseInt(totalToAdd);
+    accdata.total += parseInt(totalToAdd);
+    const codeExists = accdata.lvlCodes.find((acc)=>acc.lvl4 == accountData.lvl4);
+    // const codeExists = allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes.find((acc)=>acc.lvl4 == accountData.lvl4);
     if(!codeExists){
-        allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes.push({
+        accdata.lvlCodes.push({
             lvl4: accountData.lvl4,
             lvlName: accountData.lvlName,
             total: totalToAdd,
             movements:[]
         });
+        // allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes.push({
+        //     lvl4: accountData.lvl4,
+        //     lvlName: accountData.lvlName,
+        //     total: totalToAdd,
+        //     movements:[]
+        // });
     }
 
-    const accIndex = allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes.map((acc)=>acc.lvl4).indexOf(accountData.lvl4);
-    allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes[accIndex].total += totalToAdd;
-    allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes[accIndex].movements.push(movement); 
+    const accIndex = accdata.lvlCodes.map((acc)=>acc.lvl4).indexOf(accountData.lvl4);
+    accdata.lvlCodes[accIndex].total += totalToAdd;
+    accdata.lvlCodes[accIndex].movements.push(movement); 
+    // const accIndex = allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes.map((acc)=>acc.lvl4).indexOf(accountData.lvl4);
+    // allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes[accIndex].total += totalToAdd;
+    // allDaysOnYear.ingresos[dayOfYear - 1].lvlCodes[accIndex].movements.push(movement); 
 
     return
    
@@ -930,11 +1231,18 @@ function getDailyBookMovementsWithBankAccount(dailyBookMovements){
         let lvl4 = dailyBookData.data.find((bookMovement)=>{
             return bookMovement.ruta.level4.codigo.split('.')[0] == 2
         });
+
+        if(lvl4 === undefined){
+            lvl4 = dailyBookData.data.find((bookMovement)=>{
+                return bookMovement.ruta.level4.codigo.split('.')[0] == 3
+            });
+        }
         if(lvl4 === undefined){
             lvl4 = dailyBookData.data.find((bookMovement)=>{
                 return bookMovement.ruta.level4.codigo.split('.')[0] == 1 && bookMovement.ruta.level4.codigo.split('.')[1] != '02'
             });
         }
+        // console.log('lvl4',lvl4,dailyBookData.data);
         data.lvl4 = lvl4.ruta.level4.codigo;
         data.lvlName = lvl4.ruta.level4.nombre;
         data.movements = bookHasBankAccount;
@@ -955,41 +1263,58 @@ function getAllDaysOnYearTemplate(){
         projectedOutcome : []
     };
 
+    console.log('allMyDates',allMyDates);
+
+    const allCategories = ['ingresos','egresos','projectedIncome','projectedOutcome'];
+
     allMyDates.forEach((date, index) => {
         const timeStampDate = moment(date).format('X');
+        const dayOfYear = dayOfTheYear(date);
         // console.log('timeStampDate',timeStampDate);
-        movementsByDate.ingresos.push({
-            humanDate: date,
-            timestamp: timeStampDate,
-            lvlCodes: [
 
-            ],
-            total: 0
-        });
-        movementsByDate.egresos.push({
-            humanDate: date,
-            timestamp: timeStampDate,
-            lvlCodes: [
+        allCategories.forEach((category)=>{
+            movementsByDate[category].push({
+                humanDate: date,
+                dateIndex: dayOfYear,
+                timestamp: timeStampDate,
+                lvlCodes: [
 
-            ],
-            total: 0
-        });
-        movementsByDate.projectedIncome.push({
-            humanDate: date,
-            timestamp: timeStampDate,
-            movements: [
+                ],
+                total: 0
+            });
+        }); 
+        // movementsByDate.ingresos.push({
+        //     humanDate: date,
+        //     timestamp: timeStampDate,
+        //     lvlCodes: [
 
-            ],
-            total: 0,
-        });
-        movementsByDate.projectedOutcome.push({
-            humanDate: date,
-            timestamp: timeStampDate,
-            movements: [
+        //     ],
+        //     total: 0
+        // });
+        // movementsByDate.egresos.push({
+        //     humanDate: date,
+        //     timestamp: timeStampDate,
+        //     lvlCodes: [
 
-            ],
-            total: 0,
-        });
+        //     ],
+        //     total: 0
+        // });
+        // movementsByDate.projectedIncome.push({
+        //     humanDate: date,
+        //     timestamp: timeStampDate,
+        //     movements: [
+
+        //     ],
+        //     total: 0,
+        // });
+        // movementsByDate.projectedOutcome.push({
+        //     humanDate: date,
+        //     timestamp: timeStampDate,
+        //     movements: [
+
+        //     ],
+        //     total: 0,
+        // });
     });
     return movementsByDate;
 }
@@ -1397,7 +1722,6 @@ function matchAllMyMovements() {
     const totalTr = document.querySelectorAll('tbody .resumeRowTotal')[0];
     const balanceTr = document.querySelectorAll('tbody .resumeRowBalance')[0];
 
-
     const totalDailyBalance = allMyDates.map((date, index) => {
         const totalIncome = allDaysMovementsArray.ingresos[index].total;
         const totalOutCome = allDaysMovementsArray.egresos[index].total;
@@ -1634,24 +1958,19 @@ function orderAllMyMovementsByDate(allDailyMovesWithBankMovement) {
 
         if (lvl4.split('.')[0] == 4) {
             movements.debito.forEach(({ folio, data }) => {
-
-
                 //get year day number from date using dayOfYear
                 const dayOfYear = moment(data.fecha_contabilizacion_humana, 'DD-MM-YYYY').dayOfYear();
                 const dayTimeStamp = moment(data.fecha_contabilizacion_humana, 'DD-MM-YYYY').format('X');
                 // find if contable account exists
-
                 movementsByDate.ingresos[dayOfYear - 1].total += parseInt(data.debito);
                 const contableAccountExists = movementsByDate.ingresos[dayOfYear - 1].lvlCodes.find((accCode) => {
                     return accCode.lvl4 == lvl4;
                 });
-
                 // create account Object for calendar day
                 // push account to calendar day if it does not exist
                 if (!contableAccountExists) {
                     movementsByDate.ingresos[dayOfYear - 1].lvlCodes.push(accToPush(lvl4, lvlName));
                 }
-
                 // find account name index on date array
                 const indexOfAcc = movementsByDate.ingresos[dayOfYear - 1].lvlCodes.map(account => account.lvl4).indexOf(lvl4);
                 // push data to account movements on dailyBookMovement date
@@ -1746,6 +2065,17 @@ const setProjectedDocumentsRow = () => {
     tr.innerHTML = `${firstTd}${contentTd}`;
     return tr;
 }
+const setEmptyRow = () => {
+    const tr = document.createElement('tr');
+    tr.classList.add('emptyRow', '--headerRow');
+    let firstTd = `<td></td>`;
+    let contentTd = '';
+    for (let i = 1; i <= allMyDates.length; i++) {
+        contentTd += '<td></td>';
+    }
+    tr.innerHTML = `${firstTd}${contentTd}`;
+    return tr;
+}
 const setOutNoDocumentRow = (accountCode) => {
     const tr = document.createElement('tr');
     tr.classList.add('codeAccountRow', '--selectableRow', '--outcomeRow');
@@ -1759,6 +2089,7 @@ const setOutNoDocumentRow = (accountCode) => {
 }
 const setOutComeProjectedDocumentsRow = (accountCode) => {
     const tr = document.createElement('tr');
+    tr.id = 'projectedOutComeRow';
     tr.classList.add('codeAccountRow', '--selectableRow', '--outcomeRow');
     let firstTd = `<td lvlCode='CSTM.PROJ.004'>Egresos futuros</td>`;
     let contentTd = ''
@@ -1785,6 +2116,7 @@ const setTotalRow = () => {
     const tr = document.createElement('tr');
     tr.classList.add('resumeRowTotal', '--headerRow');
     let firstTd = `<td id="resumeTotalRow">Total</td>`;
+    console.log('allMydates', allMyDates);
     let contentTd = ''
     for (let i = 1; i <= allMyDates.length; i++) {
         contentTd += '<td></td>';
@@ -1798,7 +2130,7 @@ function newIncomeRow(accountCode) {
     const tr = document.createElement('tr');
     tr.classList.add('codeAccountRow', '--selectableRow', '--incomeRow');
     let firstTd = `<td lvlCode=${accountCode.lvl4}>${accountCode.lvl4Name}</td>`;
-    let contentTd = ''
+    let contentTd = '';
     for (let i = 1; i <= allMyDates.length; i++) {
         contentTd += '<td></td>';
     }
