@@ -70,6 +70,7 @@ $('#fechaInicio').on('change', async function() {
   setIngresos();
   
   await setTakenPersonalByRangeDate();
+  console.log("event_data",event_data.event_id)
   setAllPersonal_DiscountTakenPersonal();
   printAllSelectedPersonal();
 

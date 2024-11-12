@@ -747,49 +747,18 @@ function changePersonalAmount(personal_id, newCost) {
     })
 }
 
-function AddSelectedPersonal(personal_id) {
+function AddSelectedPersonal(personal_id){
 
-    console.log("BUSNCAO ESTE ID EN PERSONAL", personal_id)
-    console.log("BUSNCAO ESTE ID EN PERSONAL", personal_id)
-    console.log("BUSNCAO ESTE ID EN PERSONAL", personal_id)
-    console.log("BUSNCAO ESTE ID EN PERSONAL", personal_id)
-    console.log("BUSNCAO ESTE ID EN PERSONAL", personal_id)
-    console.log("BUSNCAO ESTE ID EN PERSONAL", allPersonal)
-    console.log("BUSNCAO ESTE ID EN PERSONAL", allPersonal)
-    console.log("BUSNCAO ESTE ID EN PERSONAL", allPersonal)
-    console.log("BUSNCAO ESTE ID EN PERSONAL", allPersonal)
-    console.log("BUSNCAO ESTE ID EN PERSONAL", allPersonal)
+    console.log("BUSNCAO ESTE ID EN PERSONAL", personal_id);
+    // if (personal.id === personal_id) {
+    //     return true;
+    // }
+    const personal = allPersonal.find((personal) => personal.id === personal_id);
 
-
-
-    const personal = allPersonal.find((personal) => {
-        if (personal.id === personal_id) {
-            return true;
-        }
-    });
-    console.log('EXISTS',personal);
-    console.log('EXISTS',personal);
-    console.log('EXISTS',personal);
-    console.log('EXISTS',personal);
-    console.log('EXISTS',personal);
-    console.log('EXISTS',personal);
-    console.log('EXISTS',personal);
-    console.log('EXISTS',personal);
-    console.log('EXISTS',personal);
-    console.log('EXISTS',personal);
     console.log('EXISTS',personal);
     if (personal) {
         personal.isSelected = true;
         allSelectedPersonal.push(personal);
-        console.log('allSelectedPersonal',allSelectedPersonal);
-        console.log('allSelectedPersonal',allSelectedPersonal);
-        console.log('allSelectedPersonal',allSelectedPersonal);
-        console.log('allSelectedPersonal',allSelectedPersonal);
-        console.log('allSelectedPersonal',allSelectedPersonal);
-        console.log('allSelectedPersonal',allSelectedPersonal);
-        console.log('allSelectedPersonal',allSelectedPersonal);
-        console.log('allSelectedPersonal',allSelectedPersonal);
-        console.log('allSelectedPersonal',allSelectedPersonal);
         console.log('allSelectedPersonal',allSelectedPersonal);
     }
 
@@ -822,15 +791,11 @@ function printAllSelectedPersonal() {
     // selectedPersonalSideResume
 
     console.log("allSelectedPersonal", allSelectedPersonal);
-
     allPersonal.forEach((personal) => {
-
         if(personal.isDelete == 1){
             return;
         }
-
         personal.nombre = setPersonalName(personal.nombre,personal.personalName);
-
         // const personalExists = allSelectedPersonal.find((personalSelected)=>{
         //     if(personalSelected.id === personal.id){
         //         return true;
@@ -1672,14 +1637,12 @@ function setAllPersonal_DiscountTakenPersonal() {
     // MODIFY ALLPERSONAL ARRAY AND ADD IF IS PICKED
 
     // console.log("selectedPersonal", allSelectedPersonal);
-
-
     allPersonal.forEach((personal) => {
         personal.isPicked = false
     });
 
     _takenPersonal.forEach((takenPersonal) => {
-        if (takenPersonal.proyecto_id !== EVENT_ID) {
+        if (takenPersonal.proyecto_id !== event_data.event_id) {
             // DISCOUNTS ON ALLPERSONAL ON NO SELECTED ARRAY
             const personalExists = allPersonal.find((personal) => {
                 return personal.id === takenPersonal.personal_id;
@@ -1847,19 +1810,14 @@ $('#triggerNewFreeLance').on('click', function () {
 
 
 function setNetoPersonal(selPersonal){
-
     selPersonal.forEach((selPersonal)=>{
-        
-
         const PERSONAL = allPersonal.find((personal)=>{
             return personal.id == selPersonal.id
         });
-
         if(PERSONAL){
             selPersonal.neto = PERSONAL.neto
         }
     })
-
 }
 
 

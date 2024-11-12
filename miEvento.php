@@ -204,7 +204,7 @@ require_once('./includes/head.php');
     <script src="./js/bottomBar.js"></script>
     <script src="./js/bottomBar/assignedElementsSelector.js"></script>
     <script src="./js/factSheet.js"></script>
-    <script src="./js/evento/viewUploadedFiles.js"></script>
+    <script src="./js/evento/viewUploadedFiles.js?v=<?php echo time();?>"></script>
     <script src="./js/evento/eventComments.js"></script>
     
     
@@ -296,6 +296,12 @@ require_once('./includes/head.php');
         // SET EVENT_ID
         <?php if (isset($_GET['event_id'])) : ?>
             const EVENT_ID = <?= $_GET['event_id']; ?>;
+            console.log('EVENT_ID', EVENT_ID);
+            console.log('EVENT_ID', EVENT_ID);
+            console.log('EVENT_ID', EVENT_ID);
+            console.log('EVENT_ID', EVENT_ID);
+            console.log('EVENT_ID', EVENT_ID);
+            console.log('EVENT_ID', EVENT_ID);
             event_data.event_id = EVENT_ID;
             projectDates.project_id = EVENT_ID;
             eventIsCreated = true;

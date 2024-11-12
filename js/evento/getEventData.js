@@ -278,7 +278,7 @@ async function getAllProjectData(event_id, empresa_id) {
         const TOTAL_PER_ITEM_PRODUCTOS = RESPONSE_TOTAL_PER_ITEM.equipos;
         totalPerItem.equipos = TOTAL_PER_ITEM_PRODUCTOS;
 
-
+        console.log('PRIMERA MANERA');
         if(SELECTED_PERSONAL === ""){
             if (responseGetData.asignados.personal.length > 0) {
                 responseGetData.asignados.personal.forEach(personal => {
@@ -302,6 +302,7 @@ async function getAllProjectData(event_id, empresa_id) {
         }
 
         // PRINT PRODUCTOS
+           
             printAllProductsOnTable();
             printAllSelectedProducts();
             setIngresos();
@@ -329,6 +330,7 @@ async function getAllProjectData(event_id, empresa_id) {
         printAllProductsOnTable();
         printAllSelectedProducts();
         setIngresos();
+        console.log('SEGUNDA MANERA');
         
         if (responseGetData.asignados.personal.length > 0) {
             responseGetData.asignados.personal.forEach(personal => {
@@ -342,9 +344,6 @@ async function getAllProjectData(event_id, empresa_id) {
 
         if (responseGetData.asignados.vehiculos.length > 0) {
             responseGetData.asignados.vehiculos.forEach(vehiculo => {
-
-                
-
                 addVehicle(vehiculo.id)
             });
         } else { }

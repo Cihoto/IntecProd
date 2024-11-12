@@ -13,6 +13,7 @@ BACKUPINVENTARIO copy.PHP
 /test4.php
 /dailyBookMovs.js
 Clay/
+/views.sql
 # the fuelphp document
 # you may install these packages with `oil package`.
 # http://fuelphp.com/docs/packages/oil/package.html

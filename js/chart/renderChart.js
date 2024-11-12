@@ -44,13 +44,6 @@ function setChartData(chartData) {
 function renderChart(data) {
 
     console.log('data', data);
-    console.log('data', data);
-    console.log('data', data);
-    console.log('data', data);
-    console.log('data', data);
-    console.log('data', data);
-    console.log('data', data);
-    console.log('data', data);
 
     // data.data2 = [100, 12, 32, 43, 54, 65, 76, 87, 98, 109, 120, 131]
 
