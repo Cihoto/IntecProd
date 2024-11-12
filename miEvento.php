@@ -204,7 +204,7 @@ require_once('./includes/head.php');
     <script src="./js/bottomBar.js"></script>
     <script src="./js/bottomBar/assignedElementsSelector.js"></script>
     <script src="./js/factSheet.js"></script>
-    <script src="./js/evento/viewUploadedFiles.js?v=<?php echo time();?>"></script>
+    <script src="./js/evento/viewUploadedFiles.js"></script>
     <script src="./js/evento/eventComments.js"></script>
     
     
