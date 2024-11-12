@@ -1,20 +1,34 @@
 
-const DEMO_BUTTON = document.getElementById('activeDemoDataInAccount');
+// const DEMO_BUTTON = document.getElementById('activeDemoDataInAccount');
 
 
-DEMO_BUTTON.addEventListener('click', function () {
-    // alert(bussinessIsDemo)
-    // headbreadcrumb variable init on script
+// DEMO_BUTTON.addEventListener('click', function () {
+//     // alert(bussinessIsDemo)
+//     // headbreadcrumb variable init on script
     
-    if (bussinessIsDemo) {
+//     if (bussinessIsDemo) {
 
-        showModalDeleteDemoData();
+//         showModalDeleteDemoData();
         
-        return
-    }
+//         return
+//     }
 
-    showModalAddDemoData();
+//     showModalAddDemoData();
+// });
+
+document.addEventListener('click', function (e) {
+    if (e.target.id === 'activeDemoDataInAccount') {
+        if (bussinessIsDemo) {
+
+            showModalDeleteDemoData();
+            
+            return
+        }
+    
+        showModalAddDemoData();
+    }
 });
+
 
 
 
