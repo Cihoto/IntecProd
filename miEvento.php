@@ -181,7 +181,7 @@ require_once('./includes/head.php');
     <script src="./js/packages.js"></script>
     <script src="./js/clientes.js"></script>
     <script src="./js/direccion.js"></script>
-    <script src="./js/personal.js"></script>
+    <script src="./js/personal.js?v=<?php echo time();?>"></script>
     <script src="./js/vehiculos.js"></script>
     <script src="./js/valuesValidator/validator.js"></script>
     <script src="./js/ClearData/clearFunctions.js"></script>
