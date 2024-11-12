@@ -154,7 +154,7 @@ require_once('./includes/head.php');
     <?php require_once('./includes/footerScriptsJs.php');?>
 
     <!-- SIDEMENUS -->
-    <?php require_once('./includes/sidemenu/viewUploadedFiles.php?v'); ?>
+    <?php require_once('./includes/sidemenu/viewUploadedFiles.php'); ?>
     <?php require_once('./includes/sidemenu/newFreelanceSideMenu.php'); ?>
     <?php require_once('./includes/sidemenu/eventComments.php'); ?>
     <?php require_once('./includes/sidemenu/vehicleSideMenu.php'); ?>
