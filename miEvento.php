@@ -154,7 +154,7 @@ require_once('./includes/head.php');
     <?php require_once('./includes/footerScriptsJs.php');?>
 
     <!-- SIDEMENUS -->
-    <?php require_once('./includes/sidemenu/viewUploadedFiles.php'); ?>
+    <?php require_once('./includes/sidemenu/viewUploadedFiles.php?v'); ?>
     <?php require_once('./includes/sidemenu/newFreelanceSideMenu.php'); ?>
     <?php require_once('./includes/sidemenu/eventComments.php'); ?>
     <?php require_once('./includes/sidemenu/vehicleSideMenu.php'); ?>
@@ -204,7 +204,7 @@ require_once('./includes/head.php');
     <script src="./js/bottomBar.js"></script>
     <script src="./js/bottomBar/assignedElementsSelector.js"></script>
     <script src="./js/factSheet.js"></script>
-    <script src="./js/evento/viewUploadedFiles.js"></script>
+    <script src="./js/evento/viewUploadedFiles.js?v=<?php echo time();?>"></script>
     <script src="./js/evento/eventComments.js"></script>
     
     

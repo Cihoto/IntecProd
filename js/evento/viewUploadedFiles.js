@@ -71,17 +71,16 @@ $(document).on('click', '.-file-options', function () {
 
 
 function createTrUploadedFilesTable(fileData) {
-
     const FILE_EXTENSION = getFileExtension(fileData.name);
 
     const FILE_EXTENSION_LOGO = fileExtensionLogos.find((logo) => { return logo.name === FILE_EXTENSION });
+    const path = `../../assets/svg/fileExtensions/${FILE_EXTENSION_LOGO == undefined ? 'default-file-svgrepo-com.svg' : FILE_EXTENSION_LOGO.svg}`;
 
 
     return `<tr file_id="${fileData.file_id}" class="assigned">
-        <td><img src="../../assets/svg/fileExtensions/${FILE_EXTENSION_LOGO.svg}" alt="aa" height="64" width="64">${fileData.name}</td>
+        <td><img src="${path}" alt="aa" height="64" width="64">${fileData.name}</td>
         <td></td>
-        <td>
-        </td>
+        <td></td>
         <td>
             <div class="-file-box-header">
                 <div class="-file-options-container" >
