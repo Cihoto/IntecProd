@@ -47,6 +47,8 @@ function GetItems($empresaId){
         $response []= $dataResponseBd;
     }
 
+    $conn->desconectar();
+
     return $response;
 
 }
@@ -66,6 +68,8 @@ function AddItems($request,$empresaId){
             array_push($arrayIdsInserted,$conn->mysqli->insert_id);
         }
     }
+
+    $conn->desconectar();
     
     return $arrayIdsInserted;
 

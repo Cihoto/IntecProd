@@ -44,7 +44,7 @@
             $response []= $dataResponseBd;
             
         }
-
+        $conn->desconectar();
         return $response;
 
     }

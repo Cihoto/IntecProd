@@ -112,6 +112,7 @@ if ( $empresaId && count($request) > 0) {
             "persona_id_contacto" => $persona_id_contacto
         ];
     }
+    $conn->desconectar();
     echo json_encode($response);
 
 }else{

@@ -75,6 +75,8 @@ function AddCategorias($request,$empresaId){
             array_push($arrayIdsInserted,$conn->mysqli->insert_id);
         }
     }
+
+    $conn->desconectar();
     return $arrayIdsInserted;
 }
 

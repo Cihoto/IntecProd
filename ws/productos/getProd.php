@@ -18,6 +18,7 @@
                 $productos[] = $dataProductos;
             }
         }
+        $conn->desconectar();
         return $productos;
     }
 ?>

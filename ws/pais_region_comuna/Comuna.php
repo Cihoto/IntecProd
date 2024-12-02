@@ -41,7 +41,7 @@ if ($_POST) {
                 $comunas [] = $dataComunas;
             }
         }
-
+        $conn->desconectar();
         return $comunas;
     }
 ?>

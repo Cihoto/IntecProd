@@ -82,6 +82,7 @@ function SetNewRent($empresa_id,$request){
         $personaInsertId = $conn->mysqli->insert_id;
     }else{
         $success = false;
+        $conn->desconectar();
         return array("error"=>true,"message"=>"No se ha podido completar, por favor intente nuevamente");
     }
 
@@ -92,6 +93,7 @@ function SetNewRent($empresa_id,$request){
         $proveedorInsertId = $conn->mysqli->insert_id;
     }else{
         $success = false;
+        $conn->desconectar();
         return array("error"=>true,"message"=>"No se ha podido completar, por favor intente nuevamente");
     }
 
@@ -101,6 +103,7 @@ function SetNewRent($empresa_id,$request){
     if($conn->mysqli->query($queryInsertArriendo)){
 
     }else{
+        $conn->desconectar();
         $success = false;
         return array("error"=>true,"message"=>"No se ha podido completar, por favor intente nuevamente");
     }

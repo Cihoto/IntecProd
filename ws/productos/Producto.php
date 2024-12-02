@@ -541,7 +541,7 @@ function addProdsMasiva($requestProds, $empresa_id)
                 continue;
             }
         }
-
+        $conn->desconectar();
         return array("success" => true, "insert_count" => $inserted_counter, "total" => count($requestProds));
     } catch (Exception $e) {
         return array("fatalError" => true, "message" => "No hemos podido completar su solicitud, intente nuevamente");
@@ -650,7 +650,7 @@ function addProd($jsonCreateProd)
             }
         }
     }
-
+    $conn->desconectar();
     return json_encode(array("total" => count($jsonCreateProd), "errMarca" => $jsonErrMarca, "errHasItem" => $jsonErrItemHasClass));
 }
 
@@ -762,8 +762,10 @@ function assignProductJSONToProject($json, $empresa_id, $event_id)
     $queryInsert = "";
 
     if ($conn->mysqli->query($queryInsert)) {
+        $conn->desconectar();
         return array("success" => true, "message" => "JSON Object has been assigned successfuly");
     } else {
+        $conn->desconectar();
         return array("error" => true, "message" => "JSON Object hasn't been assigned");
     }
 }
@@ -780,6 +782,7 @@ function assignOtherProdsToEvent($request)
         WHERE project_id = $request->event_id";
 
     if (!$conn->mysqli->query($queryClearOldData)) {
+        $conn->desconectar();
         return array("error" => true, "message" => "Fatal Error");
     }
 
@@ -792,8 +795,10 @@ function assignOtherProdsToEvent($request)
         }
     }
     if ($counter === $totalexec) {
+        $conn->desconectar();
         return array("success" => true, "message" => "Others Prods has been assigned successfuly");
     } else {
+        $conn->desconectar();
         return array("error" => true, "message" => "Others Prods hasn't been assigned");
     }
 }
@@ -836,7 +841,7 @@ function getCatsAndSubCatsByBussiness($empresa_id)
             $allSubCats[] = $data;
         }
     }
-
+    $conn->desconectar();
     return array("success" => true, "cats" => $categorias, "subcats" => $subCategorias, "allSubCats" => $allSubCats);
 }
 
@@ -870,7 +875,10 @@ function insertCatsOnArr($empresa_id, $arrCats)
             if (count($arrCats) > 1) {
                 $message = "Categorías insertadas";
             }
+            $conn->desconectar();
             return array("success" => true, "message" => $message);
+        }else{
+            $conn->desconectar();
         }
     } catch (Exception $error) {
         return array("fatalError" => true, "message" => "Tenemos problemas para procesar tu solicitud, intenta nuevamente", "asd" => $error);
@@ -908,8 +916,10 @@ function getProductById($empresa_id, $product_id)
             while ($data = $response->fetch_object()) {
                 $productData = $data;
             }
+            $conn->desconectar();
             return array("success" => true, "data" => $productData, "message" => "success");
         } else {
+            $conn->desconectar();
             return array("error" => true, "message" => "No se ha podido completar la solicitud, intente nuevamente");
         }
     } catch (Exception $error) {
@@ -926,8 +936,6 @@ function insertSubCatOnArr($empresa_id, $arrCats)
         $arrayLength = count($arrCats);
         $insertvalues = "";
 
-
-
         if ($arrayLength > 0) {
             foreach ($arrCats as $key => $catData) {
                 if ($key < $arrayLength) {
@@ -939,6 +947,7 @@ function insertSubCatOnArr($empresa_id, $arrCats)
                 }
             }
         }
+
         $queryInsertCategorie = "INSERT INTO item 
         (item, createAt,  IsDelete,  empresa_id) 
         VALUES $insertvalues";
@@ -948,6 +957,7 @@ function insertSubCatOnArr($empresa_id, $arrCats)
             if (count($arrCats) > 1) {
                 $message = "Subcategorías insertadas";
             }
+            $conn->desconectar();
             return array("success" => true, "message" => $message);
         }
     } catch (Exception $error) {
@@ -1020,6 +1030,7 @@ function updateProductById($request, $empresa_id, $product_id)
                 }
             }
         } else {
+            $conn->desconectar();
             return array("error" => true);
         }
 
@@ -1055,6 +1066,7 @@ function updateProductById($request, $empresa_id, $product_id)
                     return array("error" => true);
                 }
             }
+            $conn->desconectar();
             return array("success" => true);
         }
     } catch (Exception $error) {

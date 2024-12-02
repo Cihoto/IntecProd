@@ -68,6 +68,7 @@ if ($_POST) {
 
     // Devolver la respuesta como JSON
     header('Content-Type: application/json');
+    $conn->desconectar();
     echo $result;
 } else {
     require_once('./ws/bd/bd.php');

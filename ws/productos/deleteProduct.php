@@ -30,6 +30,7 @@ if (isset($data->empresaId) && isset($data->productId)) {
         $conn->desconectar();
     } else {
         // Return an error response
+        $conn->desconectar();
         echo json_encode(array('error' => 'Failed to delete product'));
     }
 
@@ -39,5 +40,6 @@ if (isset($data->empresaId) && isset($data->productId)) {
     // echo json_encode(array('message' => 'Product deleted successfully'));
 } else {
     // Return an error response if the required parameters are missing
+    $conn->desconectar();
     echo json_encode(array('error' => 'Missing parameters'));
 }

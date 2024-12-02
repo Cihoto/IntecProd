@@ -100,11 +100,14 @@ function GetAllUsuariosByEmpresa($empresa_id)
             while ($dataReponse = $responseDb->fetch_object()) {
                 $usuarios[] = $dataReponse;
             }
+            $conn->desconectar();
             return array("success" => true, "data" => $usuarios, "message" => "Se han encontrado " . count($usuarios) . " usuarios");
         } else {
+            $conn->desconectar();
             return array("success" => true, "data" => $usuarios, "message" => "No se han encontrado usuarios");
         }
     } else {
+        $conn->desconectar();
         return array("error", "message" => "Ha ocurrido un error, intente nuevamente");
     }
 }
@@ -263,12 +266,15 @@ function LogUser($request)
             // return password_verify($pass, $cred_pass->password);
 
             if(!password_verify($pass, $cred_pass->password)){
+                $conn->desconectar();
                 return array("error"=>true);
             }
         }else{
+            $conn->desconectar();
             return array("error"=>true);
         }
     }catch(Exception $e){
+        $conn->desconectar();
         return array("error"=>true);
         
     }
@@ -458,16 +464,19 @@ function createNewAccount($request){
             $empresa_id =  $conn->mysqli->insert_id;
         }else{
             deleteDatosFacturacion($datos_facturacion_id);
+            $conn->desconectar();
             return array("error"=>true,"message"=>"Intenta nuevamente");
         }
     }catch(Exception $e){
         deleteDatosFacturacion($datos_facturacion_id);
+        $conn->desconectar();
         return array("error"=>true,"message"=>"Intenta nuevamente");
     }
 
 
     if($empresa_id === 0){
         deleteDatosFacturacion($datos_facturacion_id);
+        $conn->desconectar();
         return array("error"=>true,"message"=>"No hemos podido crear tu cuenta, intenta nuevamente");
     }
 
@@ -482,17 +491,20 @@ function createNewAccount($request){
         }else{
             deleteDatosFacturacion($datos_facturacion_id);
             deleteEmpresa($empresa_id);
+            $conn->desconectar();
             return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
         }
     }catch(Exception $e){
         deleteDatosFacturacion($datos_facturacion_id);
         deleteEmpresa($empresa_id);
+        $conn->desconectar();
         return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
     }
 
     if($user_id === 0){
         deleteDatosFacturacion($datos_facturacion_id);
         deleteEmpresa($empresa_id);
+        $conn->desconectar();
         return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
     };
 
@@ -536,11 +548,13 @@ function createNewAccount($request){
     }
 
     if($tries === 123321){
+        $conn->desconectar();
         return array("success"=>true,"message"=>"su cuenta ha sido registrada exsitosamente junto a su organización");
     }else{
         deleteDatosFacturacion($datos_facturacion_id);
         deleteEmpresa($empresa_id);
         removeuserFromDb($user_id);
+        $conn->desconectar();
         return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
     }
 }
@@ -578,7 +592,7 @@ function createPersonalOnNewBussiness($empresa_id,$email,$uName,$user_id){
     $resultPersonal = $mysqli->query($query_personal);
     $personal_id = $mysqli->insert_id;
 
-
+    $conn->desconectar();
     return $personal_id;
     
 }
@@ -600,7 +614,7 @@ function createCategorieAndSubcategorieOnNewAccount($empresa_id){
     VALUES('Sin Subcategoría', '$today', $empresa_id);";
     $mysqli->query($querySubcategoria);
 
-
+    $conn->desconectar();
 }
 
 function createPass($pass){
@@ -623,8 +637,10 @@ function deleteDatosFacturacion($df_id){
     
         $queryDeleteDatosFaturacion = "DELETE FROM datos_facturacion WHERE id = $df_id ";
         if($conn->mysqli->query($queryDeleteDatosFaturacion)){
+            $conn->desconectar();
             return true;
         }else{
+            $conn->desconectar();
             return false;
         }
     }catch(Exception $e){
@@ -640,8 +656,10 @@ function deleteEmpresa($empresa_id){
         $conn->conectar();
         $queryDeleteBussiness = "DELETE FROM empresa WHERE id = $empresa_id ";
         if($conn->mysqli->query($queryDeleteBussiness)){
+            $conn->desconectar();
             return true;
         }else{
+            $conn->desconectar();
             return false;
         }
     }catch(Exception $e){
@@ -657,8 +675,10 @@ function deletePersona($persona_id){
         $conn->conectar();
         $queryDeletePersona = "DELETE FROM persona WHERE id = $persona_id ";
         if($conn->mysqli->query($queryDeletePersona)){
+            $conn->desconectar();
             return true;
         }else{
+            $conn->desconectar();
             return false;
         }
     }catch(Exception $e){
@@ -674,8 +694,10 @@ function removeuserFromDb($usuario_id){
         $conn->conectar();
         $queryDeleteUser = "DELETE FROM usuario WHERE id = $usuario_id ";
         if($conn->mysqli->query($queryDeleteUser)){
+            $conn->desconectar();
             return true;
         }else{
+            $conn->desconectar();
             return false;
         }
     }catch(Exception $e){

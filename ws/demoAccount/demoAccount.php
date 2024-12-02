@@ -158,6 +158,7 @@ function activeDemoAccountOnBussiness($empresa_id){
         $stmt = $mysqli->prepare("UPDATE empresa SET demo_active = 1, demo_activation_date = ? WHERE id = ?;");
         $stmt->bind_param("si",$today, $empresa_id);
         $stmt->execute();
+        $conn->desconectar();
         return true;
     } catch (Exception $err) {
         $conn->desconectar();
@@ -174,6 +175,7 @@ function addProductsToDemoAccount($empresa_id)
         $stmt = $mysqli->prepare("SELECT addProductsToDemoAccount(?);");
         $stmt->bind_param("i", $empresa_id);
         $stmt->execute();
+        $conn->desconectar();
         return true;
     } catch (Exception $err) {
         $conn->desconectar();
@@ -412,6 +414,7 @@ function addCategorieHasItemToDemoAccount($request)
     $conn = new bd();
     $conn->conectar();
     $mysqli = $conn->mysqli;
+    $conn->desconectar();
 }
 
 function addPersonalToDemoAccount($empresa_id)
@@ -550,6 +553,7 @@ function addCargosAndEspecialidades($empresa_id){
 
 
         if(!execCargoProcedure($empresa_id)){
+            $conn->desconectar();
             return false;
         }
 
@@ -655,7 +659,7 @@ function getCatsHasItem_demoAccount($empresa_id)
         // return $categories;
         // return $subCategories;
         // return $demo_prods;
-
+        $conn->desconectar();
         return array('subcats' => $subCategories, 'categories' => $categories, 'demo_prods' => $demo_prods);
 
         $cats_name = [];

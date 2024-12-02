@@ -53,7 +53,7 @@ if ($_POST) {
             $request = $data->request;
             // Llama a la función SetTotalProject y devuelve el resultado
             $response = SetTotalProject($request);
-            echo json_encode($response);
+            echo json_encode(["success"=>true]);
             break;
         case 'AddPersonal':
             // Recibe el parámetro request
@@ -237,8 +237,10 @@ function AddPersonal($request, $empresaId)
     // return $queryInsert;
 
     if ($conn->mysqli->query($queryInsert)) {
+        $conn->desconectar();
         return array("success" => array("message" => "Se ha ingresado a " . $nombre . " " . $apellido . " al sistema"));
     } else {
+        $conn->desconectar();
         return array("error" => array("message" => "No se ha podido ingresar a " . $nombre . " " . $apellido . " al sistema"));
     }
 }
@@ -407,6 +409,8 @@ function SetTotalProject($request)
         VALUES($idIngreso, $req->idProject, '$today')";
 
         $conn->mysqli->query($queryInsertTotal);
+
+        
     }
 }
 
@@ -506,7 +510,7 @@ function getEspecialidad($empresaId)
     while ($dataEspecialidad = $responseBd->fetch_object()) {
         $especialidades[] = $dataEspecialidad;
     }
-
+    $conn->desconectar();
     return array("especialidades" => $especialidades);
 }
 function getCargo($empresaId)
@@ -521,7 +525,7 @@ function getCargo($empresaId)
     while ($datosCargo = $responseBd->fetch_object()) {
         $cargos[] = $datosCargo;
     }
-
+    $conn->desconectar();
     return array("cargos" => $cargos);
 }
 
@@ -763,8 +767,10 @@ function addPersonalMasiva($request, $empresaId)
     }
 
     if ($counterInserted === count($request)) {
+        $conn->desconectar();
         return array("success" => array("inserted" => $counterInserted, "total" => count($request)));
     } else {
+        $conn->desconectar();
         return array('error' => array("inserted" => $counterInserted, 'total' => count($request), 'arrErr' => $arrayNoCompleteData));
     }
 }
@@ -885,9 +891,11 @@ function insertPersonal($request, $empresa_id)
                 $personal = $dataPersonal;
             }
         }
-        // return $queryPersonal;
+
+        $conn->desconectar();
         return array("success" => array("message" => "Se ha ingresado a " . $nombre . " al sistema"), "personalInserted" => $personal);
     } else {
+        $conn->desconectar();
         return array("error" => array("message" => "No se ha podido ingresar a " . $nombre . " al sistema"));
     }
 }
@@ -1051,11 +1059,14 @@ function getPersonalById($personal_id, $empresa_id)
             while ($data = $response->fetch_object()) {
                 $personal_events []= $data;
             }
+            $conn->desconectar();
             return array("success" => true, "data" => $personalData, "events" => $personal_events);
         } else {
+            $conn->desconectar();
             return array("error" => true, "message" => "No se ha podido completar la solicitud,  intente nuevamente");
         }
     } else {
+        $conn->desconectar();
         return array("error" => true, "message" => "No se ha podido completar la solicitud,  intente nuevamente");
     }
 }
@@ -1115,8 +1126,10 @@ function updatePersonal($request, $empresa_id)
     AND empresa_id=$empresa_id;";
 
     if ($conn->mysqli->query($queryUpdatePersonal)) {
+        $conn->desconectar();
         return array("success" => true, "message" => "Técnico modificado exitosamente");
     } else {
+        $conn->desconectar();
         return array("error" => true, "message" => "Intente nuevamente");
     }
 }
@@ -1131,11 +1144,14 @@ function deleteEspecialidad($especialidad_id, $empresa_id){
     if($conn->mysqli->query($queryUpdateEspecialidad)){
         
         if($conn->mysqli->affected_rows > 0){
+            $conn->desconectar();
             return array("success"=>true,"message"=>"Especialidad eliminada exitosamente");
         }else{
+            $conn->desconectar();
             return array("error"=>true,"message"=>"Ha ocurrido un error, intente nuevamente");
         }
     }else{
+        $conn->desconectar();
         return array("error"=>true,"message"=>"Ha ocurrido un error, intente nuevamente");
     }
 }
@@ -1149,11 +1165,14 @@ function deleteCargo($cargo_id, $empresa_id){
     if($conn->mysqli->query($queryUpdateCargo)){
         
         if($conn->mysqli->affected_rows > 0){
+            $conn->desconectar();
             return array("success"=>true,"message"=>"Cargo eliminado exitosamente");
         }else{
+            $conn->desconectar();
             return array("error"=>true,"message"=>"Ha ocurrido un error, intente nuevamenteee");
         }
     }else{
+        $conn->desconectar();
         return array("error"=>true,"message"=>"Ha ocurrido un error, intente nuevamente");
     }
 }

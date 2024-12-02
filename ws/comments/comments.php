@@ -72,6 +72,7 @@ function addAndAssignCommentsToEvent($event_id,$tempCommentsData,){
 
             
         }
+        $conn->desconectar();
         return array('success'=>true);  
     }catch(Exception $e){
 
@@ -89,7 +90,6 @@ function replyAssignedComment($assignedReplyData,$empresa_id,$event_id,$commentI
         $mysqli = $conn->mysqli;
         $nowDateTime = date("Y-m-d H:i:s");
 
-
         $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.comment (`text`, post_user_id, isDelete, post_date) VALUES(?, ?, 0, '$nowDateTime');"); 
         $stmt->bind_param("si", $assignedReplyData->reply_text, $assignedReplyData->post_user_id);
         $stmt->execute();
@@ -98,7 +98,7 @@ function replyAssignedComment($assignedReplyData,$empresa_id,$event_id,$commentI
         $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.comment_has_reply (comment_id, reply_id) VALUES(?, ?);");
         $stmt->bind_param("ii", $commentId, $reply_id);
         $stmt->execute();
-       
+        $conn->desconectar();
         return array('success'=>true,'reply_id'=>$reply_id);  
     }catch(Exception $e){
 
@@ -123,6 +123,7 @@ function updateComment($request){
         $empresa_id = $response->fetch_object()->empresa_id;
        
         if(!$request->empresa_id === $empresa_id){
+            $conn->desconectar();
             return array('error'=>true, 'message'=>'data not available');
         } 
     
@@ -142,7 +143,7 @@ function updateComment($request){
         $stmt->bind_param("sisi", $nowDateTime,$request->user_id, $parsed_request,$request->comment_id);
         
         $stmt->execute();
-    
+        $conn->desconectar();
         return array('success'=>true,'message'=>'comment has been updated successfully');
     // }catch(Exception $e){
     //     return array('error'=>true,'message'=>"couldn't proccess petition");
@@ -164,6 +165,7 @@ function deleteComment($request){
     $empresa_id = $response->fetch_object()->empresa_id;
    
     if(!$request->empresa_id === $empresa_id){
+        $conn->desconectar();
         return array('error'=>true, 'message'=>'data not available');
     }
 
@@ -182,6 +184,7 @@ function deleteComment($request){
     $parsed_request = json_encode($request);
     $stmt->bind_param("isis", $request->comment_id, $parsed_request, $request->user_id, $nowDateTime,);
     $stmt->execute();
+    $conn->desconectar();
     return array('success'=>true,'message'=>'comment has been deleted successfully');
   
 }

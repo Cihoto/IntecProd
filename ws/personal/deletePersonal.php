@@ -16,10 +16,11 @@ foreach($personalArr as $persona){
 
     $queryDelete = 'update personal set IsDelete = 1 , deleteAt = "'.$today.'" where id = '.$persona->id;
 
-
     if($conn->mysqli->query($queryDelete)){
+        $conn->desconectar();
         echo json_encode(array("status"=> 1,"message"=>"Se ha eliminado exitosamente "));
     }else{
+        $conn->desconectar();
         echo json_encode(array("status"=> 0,"message"=>"Error al eliminar"));
     }
 }

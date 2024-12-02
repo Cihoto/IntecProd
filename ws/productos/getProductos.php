@@ -46,6 +46,6 @@
     while($dataItems =$responseBdProd->fetch_object()){
         $productos [] = $dataItems;
     }
-
+    $conn->desconectar();
     echo json_encode($productos);
 ?>

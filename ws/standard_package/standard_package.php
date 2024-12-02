@@ -202,8 +202,10 @@ if ($_POST) {
         VALUES $inserts;";
 
         if($conn->mysqli->query($query)){
+            $conn->desconectar();
             return array('success'=>true);
         }else{
+            $conn->desconectar();
             return array('false'=>true);
         }
     

@@ -723,8 +723,10 @@ function GetAllMyProjects($empresa_id)
         while ($dataProjects = $responseBd->fetch_object()) {
             $projects[] = $dataProjects;
         }
+        $conn->desconectar();
         return $projects;
     } else {
+        $conn->desconectar();
         return array("error" => true, "message" => "NO DATA RECOVERED");
     }
 }
@@ -821,8 +823,10 @@ function UpdateProjectData($request)
     // return $queryUpdateProject;
 
     if ($conn->mysqli->query($queryUpdateProject)) {
+        $conn->desconectar();
         return array("success" => array("message" => "Evento modificado exitosamente"));
     } else {
+        $conn->desconectar();
         return array("error" => array("message" => "No se ha podido actualizar el proyecto, por favor intente nuevamente"));
     }
 
@@ -852,8 +856,10 @@ function UpdateProjectDataStatus($idProject)
     $queryUpdate = "UPDATE proyecto_has_estado set estado_id = estado_id + 1 where proyecto_id = $idProject";
 
     if ($conn->mysqli->query($queryUpdate)) {
+        $conn->desconectar();
         return true;
     } else {
+        $conn->desconectar();
         return false;
     }
 }
@@ -877,8 +883,10 @@ function GetEventsByClient($cliente_id)
         while ($dataRecord = $resposneDbRecord->fetch_object()) {
             $record[] = $dataRecord;
         }
+        $conn->desconectar();
         return array("success" => true, "data" => $record);
     } else {
+        $conn->desconectar();
         return array("error" => true, "message" => "Ha ocurrido un error, por favor intente nuevamente");
     }
 }
@@ -938,6 +946,7 @@ function getAllMyProjects_list_toExecute($empresa_id)
     }
 
     // return $queryProyectos;
+    $conn->desconectar();
     return $projects;
 }
 
@@ -1144,7 +1153,7 @@ function getAllMyEvents($empresa_id)
         }
     }
 
-
+    $conn->desconectar();
     return array("wd" => $projects_with_Date, "woutd" => $projects_without_Date);
 }
 
@@ -1234,6 +1243,8 @@ function  getEventByStatus_id($empresa_id, $status_id)
             $projects_without_Date[] = $dataProject;
         }
     }
+
+    $conn->desconectar();
     return array("wd" => $projects_with_Date, "woutd" => $projects_without_Date);
 }
 
@@ -1327,6 +1338,7 @@ function getOperEvents($empresa_id)
     }
 
     // return $queryProyectos_with_date;
+    $conn->desconectar();
     return array("wd" => $projects_with_Date, "woutd" => $projects_without_Date);
 }
 function getSellsEvents($empresa_id)
@@ -1377,6 +1389,8 @@ function getSellsEvents($empresa_id)
             $projects_with_Date[] = $dataProject;
         }
     }
+
+    $conn->desconectar();
     return array("wd" => $projects_with_Date, "woutd" => $projects_without_Date);
 
     // $queryProyectos_without_date = "SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
@@ -1459,6 +1473,7 @@ function getAdmEvents($empresa_id)
             $projects_with_Date[] = $dataProject;
         }
     }
+    $conn->desconectar();
     return array("wd" => $projects_with_Date, "woutd" => $projects_without_Date);
 }
 
@@ -1529,6 +1544,7 @@ function updateProject($empresa_id, $request, $event_id)
     } else {
         return array("error" => "error", "message" => "No se han podido realizar los detalles del evento");
     }
+    $conn->desconectar();
     return $queryUpdate;
 }
 
@@ -1542,8 +1558,10 @@ function removeAddressFromEvent($empresa_id, $event_id)
     WHERE id=$event_id AND empresa_id = $empresa_id;";
 
     if ($conn->mysqli->query($query)) {
+        $conn->desconectar();
         return array("success" => true, "message" => "Address has been removed successfully from event");
     } else {
+        $conn->desconectar();
         return array("error" => true, "message" => "Address has not been removed form event");
     }
 }
@@ -1627,7 +1645,8 @@ function getDashResume($empresa_id)
             $currentMonthIncome  = $dataResponse;
         }
     }
-
+    
+    $conn->desconectar();
     return array(
         "success" => true,
         "event_quanity_cur_last_month" => $currentAndLastMonthEventQuantity,
@@ -1651,9 +1670,10 @@ function insertOrUpdateIncomeAndCosts($request)
         WHERE event_id = $request->event_id";
 
         if ($conn->mysqli->query($queryUpdate)) {
-
+            $conn->desconectar();
             return array("success" => true, "message" => "Event finance updated");
         } else {
+            $conn->desconectar();
             return array("success" => true, "message" => "Event finance couldn't be updated");
         }
     } else {
@@ -1664,9 +1684,10 @@ function insertOrUpdateIncomeAndCosts($request)
 
 
         if ($conn->mysqli->query($query)) {
-
+            $conn->desconectar();
             return array("success" => true, "message" => "Event finance created");
         } else {
+            $conn->desconectar();
             return array("success" => true, "message" => "Event finance couldn't be created");
         }
     }
@@ -1726,8 +1747,10 @@ function getEventsForDashboard($request, $empresa_id)
         while ($data = $response->fetch_object()) {
             $eventos[] = $data;
         }
+        $conn->desconectar();
         return array("success" => true, "events" => $eventos);
     } else {
+        $conn->desconectar();
         return array("error" => true);
     }
 }
@@ -1747,8 +1770,10 @@ function getTodayEvent()
             while ($data = $response->fetch_object()) {
                 $events[] = $data;
             }
+            $conn->desconectar();
             return array("success" => true, "data" => $events);
         } else {
+            $conn->desconectar();
             return array("error" => true);
         }
     } catch (Exception $e) {
@@ -1774,8 +1799,10 @@ function getEventDay($empresa_id, $date){
             while ($data = $response->fetch_object()) {
                 $events[] = $data;
             }
+            $conn->desconectar();
             return array("success" => true, "data" => $events);
         } else {
+            $conn->desconectar();
             return array("error" => true);
         }
     } catch (Exception $e) {

@@ -43,6 +43,6 @@
             // return json_encode(array("error"=>true,"message"=>"Intente nuevamente"));
         }
     };
-
+    $conn->desconectar();
     echo json_encode(array("data"=>'Se han ingresado '.$counter.' de '.$countTotal,"query"=>$queryInsert));                                             
 ?>

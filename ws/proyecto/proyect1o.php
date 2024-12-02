@@ -35,8 +35,10 @@
 
     if($conn->mysqli->query($query)){
         $id_project = $conn->mysqli->insert_id;
+        $conn->desconectar();
         return json_encode(array("id_project"=>$id_project));
     }else{
+        $conn->desconectar();
         return false;
     }
  }

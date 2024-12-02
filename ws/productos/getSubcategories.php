@@ -41,7 +41,7 @@ function GetItems($empresaId){
     while($dataResponseBd = $responseBd->fetch_object()){
         $response []= $dataResponseBd;
     }
-
+    $conn->desconectar();
     return $response;
 
 }

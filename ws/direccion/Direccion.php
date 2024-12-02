@@ -82,8 +82,10 @@ if ($_POST){
 
         if($conn->mysqli->query($queryInsertAddress)){
             $address_id = $conn->mysqli->insert_id;
+            $conn->desconectar();
             return array("success"=>true,"message"=>"Dirección creada exitosamente","address_id"=>$address_id);
         }else{
+            $conn->desconectar();
             return array("error"=>true,"message"=>"No se ha podido crear la dirección");
         }
     } 
@@ -103,8 +105,10 @@ if ($_POST){
             WHERE id = $event_id AND empresa_id=$empresa_id;";
 
             if($conn->mysqli->query($queryAssign)){
+                $conn->desconectar();
                 return json_encode(array("success"=>true,"message"=>"Se ha la dirección asignado al evento"));
             }else{
+                $conn->desconectar();
                 return json_encode(array("error"=>true,"message"=>"No se ha podido asignar la dirección"));
             }
 
@@ -151,6 +155,7 @@ if ($_POST){
             $conn->desconectar();
             return false;
         }
+        $conn->desconectar();
         return json_encode(array("direcciones"=>$direcciones)); 
     }
 ?>

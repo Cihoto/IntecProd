@@ -67,8 +67,8 @@
   </script>
 
 
-<!-- cahrt js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- cahrt js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- LOTTIEFILES -->
 
   <!-- MOMENT JS -->

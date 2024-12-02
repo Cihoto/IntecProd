@@ -58,11 +58,14 @@ function assignSubRentToEvent($event_id,$empresa_id,$request){
         VALUES $insertvalues";
     
         if($conn->mysqli->query($queryInsertAccountablesToProject)){
+            $conn->desconectar();
             return array("success"=>true,"message"=>"Sub Rents has been assgined to event successfully");
         }else{
+            $conn->desconectar();
             return array("error"=>true,"message"=>"Something happend, Sub Rents hasn't been assigned to event, please try again");
         }
     }else{
+        $conn->desconectar();
         return array("success"=>true, "message"=>"No data to insert");
     }
 }   
@@ -84,8 +87,10 @@ function removeAllRentsFromEvent($event_id,$empresa_id){
     // return $queryDeleteSchedules;
 
     if($conn->mysqli->query($queryDeleteSchedules)){
+        $conn->desconectar();
         return array("success"=>true,"message"=>"Sub Rents has been removed from event successfully");
     }else{
+        $conn->desconectar();
         return array("error"=>true,"message"=>"Sub Rents hasn't been removed from event, try again");
     }
 }

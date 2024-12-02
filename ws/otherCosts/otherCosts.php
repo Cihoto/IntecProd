@@ -57,11 +57,14 @@ function assignOtherCostsToEvent($event_id,$empresa_id,$request){
         VALUES $insertvalues";
     
         if($conn->mysqli->query($queryInsertAccountablesToProject)){
+            $conn->desconectar();
             return array("success"=>true,"message"=>"Other Costs has been assgined to event successfully");
         }else{
+            $conn->desconectar();
             return array("error"=>true,"message"=>"Something happend, Other Costs hasn't been assigned to event, please try again");
         }
     }else{
+        $conn->desconectar();
         return array("success"=>true, "message"=>"No data to insert");
     }
 }   
@@ -75,6 +78,7 @@ function removeAllOtherCostsFromEvent($event_id,$empresa_id){
     where p.id = $event_id and p.empresa_id = $empresa_id";
 
     if(!$conn->mysqli->query($queryGetMyEvent)){
+        $conn->desconectar();
         return array("error"=>true,"message"=>"Access Denied, event not found");
     }
 
@@ -83,8 +87,10 @@ function removeAllOtherCostsFromEvent($event_id,$empresa_id){
     // return $queryDeleteSchedules;
 
     if($conn->mysqli->query($queryDeleteSchedules)){
+        $conn->desconectar();
         return array("success"=>true,"message"=>"Other Costs has been removed from event successfully");
     }else{
+        $conn->desconectar();
         return array("error"=>true,"message"=>"Other Costs hasn't been removed from event, try again");
     }
 }

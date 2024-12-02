@@ -58,6 +58,7 @@
         if($conn->mysqli->query($queryInsertPersona)){
             $persona_id = $conn->mysqli->insert_id;
         }else{
+            $conn->desconectar();
             return array("success"=>false);
         }
 
@@ -70,6 +71,7 @@
         }else{
             $querydelete = "DELETE FROM u136839350_intec.persona WHERE id = $persona_id;";
             $conn->mysqli->query($querydelete);
+            $conn->desconectar();
             return array("success"=>false);
         }
 
@@ -80,12 +82,14 @@
 
         if($conn->mysqli->query($queryInsertProvider)){
             $proveedor_id = $conn->mysqli->insert_id;
+            $conn->desconectar();
             return array("success"=>true, "message"=>"Proveedor agregado exitosamente");
         }else{
             $querydelete = "DELETE FROM u136839350_intec.persona WHERE id = $persona_id;";
             $conn->mysqli->query($querydelete);
             $querydelete = "DELETE FROM u136839350_intec.datos_facturacion WHERE id = $datosFacturacion_id;";
             $conn->mysqli->query($querydelete);
+            $conn->desconectar();
             return array("success"=>false);
         }
     }

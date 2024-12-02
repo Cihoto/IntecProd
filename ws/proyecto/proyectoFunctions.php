@@ -56,7 +56,7 @@ function getProjectResume($request){
             }
         }
     }
-
+    $conn->desconectar();
     return json_encode(array("dataProject"=>$projects,"asignados"=>$asignados));
 }
 

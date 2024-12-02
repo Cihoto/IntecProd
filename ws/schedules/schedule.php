@@ -63,8 +63,10 @@ function insertAndAssignSchedulesToEvent($event_id,$empresa_id,$schedules){
     VALUES $insertvalues";
 
     if($conn->mysqli->query($queryInsertSchedulesToProject)){
+        $conn->desconectar();
         return array("success"=>true,"message"=>"Schedules has been assgined to event successfully");
     }else{
+        $conn->desconectar();
         return array("error"=>true,"message"=>"Something happend, schedules hasn't been assigned to event, please try again");
     }
 }   
@@ -87,8 +89,10 @@ function removeAllSchedulesFromEvent($event_id,$empresa_id){
     WHERE event_id = $event_id; ";
 
     if($conn->mysqli->query($queryDeleteSchedules)){
+        $conn->desconectar();
         return array("success"=>true,"message"=>"Schedules has been removed from event successfully");
     }else{
+        $conn->desconectar();
         return array("error"=>true,"message"=>"Schedules hasn't been removed from event, try again");
     }
 }

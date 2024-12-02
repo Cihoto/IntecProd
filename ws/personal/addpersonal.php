@@ -8,7 +8,7 @@
     $data = json_decode($json);
     $personalArr = $data->request;
     // return json_encode($personalArr);
-     $today = date('Y-m-d');
+    $today = date('Y-m-d');
 
     // foreach ($personalArr as $key => $value){
 

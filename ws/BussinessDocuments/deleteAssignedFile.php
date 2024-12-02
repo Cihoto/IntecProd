@@ -44,7 +44,7 @@ function deleteAssignedFile($file_name,$file_id,$empresa_id,$event_id){
             $stmt->bind_param("ii", $file_id,$event_id);
             $stmt->execute();
             $result = $stmt->affected_rows;
-
+            $conn->desconectar();   
             return array('success'=>true,'message'=>'Documento Eliminado Exitosamente');
         } 
 

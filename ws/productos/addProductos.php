@@ -100,5 +100,5 @@ foreach ($productoArr as $key => $value) {
             }
         }
 }
-
+$conn->desconectar();
 echo json_encode(array("status"=>200, "success"=>true));

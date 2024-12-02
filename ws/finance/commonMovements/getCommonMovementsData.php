@@ -15,9 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['status' => 'success', 'message' => 'Data fetched successfully', "data" => []]);
             exit;
         }
-
+        $conn->desconectar();
         echo json_encode(['status' => 'success', 'message' => 'Data fetched successfully', "data" => $commonMovements]);
     } else {
+        $conn->desconectar();
         echo json_encode(['status' => 'error', 'message' => 'No data found',"data"=>[]]);
     }
 } else {

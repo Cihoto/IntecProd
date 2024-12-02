@@ -143,6 +143,7 @@ function getVehiclesByBussiness($empresa_id){
 
         return array("success"=>true,"data"=>$vehiculos);
     }else{
+        $conn->desconectar();
         return array("error"=>true,"message"=>"Intente nuevamente");
         // return $vehiculos;
     }
@@ -167,9 +168,10 @@ function deleteVehicleDash($vehicle_id,$empresa_id){
         // return $stmt->affected_rows;
 
         if($stmt->affected_rows > 0){
+            $conn->desconectar();
             return true;
         }
-
+        $conn->desconectar();
         return false;
 
     } catch (Exception $e) {
@@ -398,8 +400,10 @@ function addVehicle($vehicleData, $empresaId)
     }
 
     if (count($returnErrArray) > 0) {
+        $conn->desconectar();
         return json_encode(array("status" => 0, "array" => $returnErrArray));
     } else {
+        $conn->desconectar();
         return json_encode(array("status" => 1, "array" => $returnErrArray));
     }
 }
@@ -451,12 +455,14 @@ function insertVehicle($request, $empresa_id){
     VALUES('$request->patente', 0, $empresa_id, $request->owner, $request->costPerTrip, $request->type, $request->brand, $request->model);";
 
     if($conn->mysqli->query($queryInsert)){
+        $conn->desconectar();
         return json_encode(array("success"=>true,"message"=>"Vehículo ingresado exitosamente"));
     }else{
-        
+        $conn->desconectar();
         return json_encode(array("error"=>true,"message"=>"Intente nuevamente"));
     }
 }
+
 function getVehicleInfoById($vehicle_id, $empresa_id){
     $conn = new bd();
     $conn->conectar();
@@ -491,7 +497,7 @@ function getVehicleInfoById($vehicle_id, $empresa_id){
         }
     }
 
-
+    $conn->desconectar();
     return json_encode(array("success"=>true,"data"=>$vehicle_data,"events"=>$vehicle_events));  
 }
 ?>
