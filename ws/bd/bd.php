@@ -19,7 +19,8 @@ class bd{
         $this->port = getenv('mysql_port');
         */
         
-        $this->servidor = '154.49.142.103';
+        // $this->servidor = '154.49.142.103';
+        $this->servidor = '145.223.105.141';
         $this->usuario = 'u136839350_intec_admin';
         $this->password = 'intecBd2023';
         // $this->password = 'Intec2023.';
