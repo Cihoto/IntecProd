@@ -25,4 +25,4 @@ Clay/
 # /fuel/packages/orm/
 # /fuel/packages/parser/
 # dynamically generated files
-
+/DB_CONNECTION_AUDIT
