@@ -1,6 +1,6 @@
 <?php
 if ($_POST) {
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -202,13 +202,12 @@ if ($_POST) {
             break;
     }
 } else {
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
 function AddPersonal($request, $empresaId)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $today = date('Y-m-d');
 
     foreach ($request as $req) {
@@ -237,10 +236,10 @@ function AddPersonal($request, $empresaId)
     // return $queryInsert;
 
     if ($conn->mysqli->query($queryInsert)) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => array("message" => "Se ha ingresado a " . $nombre . " " . $apellido . " al sistema"));
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => array("message" => "No se ha podido ingresar a " . $nombre . " " . $apellido . " al sistema"));
     }
 }
@@ -253,13 +252,12 @@ function deletePersonalDash($personal_id,$empresa_id){
             return ['error', 'message'=>'personal has not been found'];
         }   
         $now = date('Y-m-d H:i:s');
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("UPDATE personal SET IsDelete = 1 , deleteAt = ? WHERE id = ?");
         $stmt->bind_param("si",$now, $personal_id);
         $stmt->execute();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
 
         // return $stmt->affected_rows;
 
@@ -270,15 +268,14 @@ function deletePersonalDash($personal_id,$empresa_id){
         return false;
 
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return 'error while deleting personal';
     }
 }
 
 function viewIfPersonalOnBussieness($personal_id,$empresa_id){
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("SELECT * FROM personal p WHERE p.empresa_id  = ? AND  p.id = ?;");
         $stmt->bind_param("ii", $empresa_id,$personal_id);
@@ -286,21 +283,20 @@ function viewIfPersonalOnBussieness($personal_id,$empresa_id){
 
         $results = $stmt->get_result();
         
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         if($results->num_rows > 0){
             return true;
         }
         return false;
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return ['message'=>'error in view PERSONAL On Bussiness petition'];
     }
 }
 
 function setviatico($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $arrayResponse = [];
 
     foreach ($request as $req) {
@@ -336,13 +332,12 @@ function setviatico($request)
             array_push($arrayResponse, array("NoAsignado" => array("id" => $valor)));
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $arrayResponse;
 }
 function setArriendos($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $arrayResponse = [];
 
     foreach ($request as $req) {
@@ -373,14 +368,13 @@ function setArriendos($request)
             array_push($arrayResponse, array("NoAsignado" => array("id" => $valor)));
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $arrayResponse;
 }
 
 function SetTotalProject($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $today = date('Y-m-d');
 
     // return json_encode($request);
@@ -416,8 +410,7 @@ function SetTotalProject($request)
 
 function getAvailablePersonal($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $personal = [];
 
     $empresaId = $request->empresaId;
@@ -447,7 +440,7 @@ function getAvailablePersonal($request)
             $personal[] = $dataVehiculos;
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $personal;
 }
 
@@ -455,8 +448,7 @@ function getAvailablePersonal($request)
 function AddEspecialidad($request, $empresaId)
 {
 
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $arrayIdsInserted = [];
     $today = date('Y-m-d');
 
@@ -478,8 +470,7 @@ function AddEspecialidad($request, $empresaId)
 function AddCargo($request, $empresaId)
 {
 
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $arrayIdsInserted = [];
     $today = date('Y-m-d');
 
@@ -501,8 +492,7 @@ function AddCargo($request, $empresaId)
 function getEspecialidad($empresaId)
 {
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $especialidades = [];
     $queryGetEspecialidad = "SELECT id, especialidad FROM especialidad e WHERE empresa_id = $empresaId and IsDelete = 0 OR IsDelete IS NULL";
     $responseBd = $conn->mysqli->query($queryGetEspecialidad);
@@ -510,14 +500,13 @@ function getEspecialidad($empresaId)
     while ($dataEspecialidad = $responseBd->fetch_object()) {
         $especialidades[] = $dataEspecialidad;
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return array("especialidades" => $especialidades);
 }
 function getCargo($empresaId)
 {
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $cargos = [];
     $queryGetCargo = "SELECT id, cargo FROM cargo  WHERE empresa_id = $empresaId and IsDelete = 0;";
     $responseBd = $conn->mysqli->query($queryGetCargo);
@@ -525,14 +514,13 @@ function getCargo($empresaId)
     while ($datosCargo = $responseBd->fetch_object()) {
         $cargos[] = $datosCargo;
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return array("cargos" => $cargos);
 }
 
 function getPersonal($empresaId){
     try{
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $personal =  [];
         $queryPersonal = "SELECT  p.id, p.cargo_id, CONCAT(per.nombre ,' ',per.apellido) as nombre,per.nombre as personalName,
                                 c.cargo,per.rut, e.especialidad, p.neto, tc.contrato, p.IsDelete
@@ -550,7 +538,7 @@ function getPersonal($empresaId){
                 $personal[] = $dataPersonal;
             }
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return $personal;
     }catch(Exception $e){
         return array("fatalError"=>true,"code"=>404);
@@ -560,8 +548,7 @@ function getPersonal($empresaId){
 
 function getAllPersonalData($empresaId)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $personal =  [];
     $queryPersonal = "SELECT  p.id, p.cargo_id, per.nombre, per.apellido, per.rut,per.email,c.cargo ,e.especialidad,
                         c.cargo, e.especialidad, p.neto, tc.contrato, per.telefono
@@ -580,14 +567,13 @@ function getAllPersonalData($empresaId)
         }
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $personal;
 }
 
 function addPersonalToProject($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $arrayResponse = [];
 
 
@@ -623,14 +609,13 @@ function addPersonalToProject($request)
         }
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $arrayResponse;
 }
 
 function dropAssigmentPersonal($idProject)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $queryIfAssigned = "SELECT * from personal_has_proyecto php where php.proyecto_id = $idProject";
 
@@ -639,7 +624,7 @@ function dropAssigmentPersonal($idProject)
         $conn->mysqli->query($qdelete);
     }
     $deleted = $conn->mysqli->affected_rows;
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $deleted;
 }
 
@@ -648,8 +633,7 @@ function getAllContratos()
 
     try{
 
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $contratos = [];
         $queryAllContratos = "SELECT * FROM tipo_contrato tc";
     
@@ -658,7 +642,7 @@ function getAllContratos()
                 $contratos[] = $dataContratos;
             }
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return $contratos;
 
     }catch(Exception $e){
@@ -668,8 +652,7 @@ function getAllContratos()
 
 function addPersonalMasiva($request, $empresaId)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $today = date('Y-m-d');
 
     $arrayNoCompleteData = [];
@@ -767,10 +750,10 @@ function addPersonalMasiva($request, $empresaId)
     }
 
     if ($counterInserted === count($request)) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => array("inserted" => $counterInserted, "total" => count($request)));
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array('error' => array("inserted" => $counterInserted, 'total' => count($request), 'arrErr' => $arrayNoCompleteData));
     }
 }
@@ -781,8 +764,7 @@ function GetPersonalByEmpresa($empresa_id){
 
     try{
 
-        $conn =  new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $personal = [];
     
         $queryGetPersonal = "SELECT CONCAT(per.nombre,' ',per.apellido) as nombre, p.id as personal_id,per.email FROM personal p
@@ -794,10 +776,10 @@ function GetPersonalByEmpresa($empresa_id){
             while ($dataPersonal = $responseDb->fetch_object()) {
                 $personal[] = $dataPersonal;
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "data" => $personal);
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array('error' => true, "message" => "No se ha podido completar la solicitud, por favor intente nuevamente");
         }
     }catch(Exception $e){
@@ -811,8 +793,7 @@ function GetPersonalByEmpresa($empresa_id){
 
 function getTakenPersonalByDateRange($request, $empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $fecha_inicio = $request->data->fecha_inicio;
     $fecha_termino = $request->data->fecha_termino;
@@ -836,11 +817,11 @@ function getTakenPersonalByDateRange($request, $empresa_id)
         while ($dataDb = $responseDb->fetch_object()) {
             $unavailablePersonal[] = $dataDb;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "data" => $unavailablePersonal);
     } else {
 
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "data" => $unavailablePersonal);
     }
 }
@@ -848,8 +829,7 @@ function getTakenPersonalByDateRange($request, $empresa_id)
 
 function insertPersonal($request, $empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $today = date('Y-m-d');
 
     // return json_encode($request);
@@ -892,10 +872,10 @@ function insertPersonal($request, $empresa_id)
             }
         }
 
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => array("message" => "Se ha ingresado a " . $nombre . " al sistema"), "personalInserted" => $personal);
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => array("message" => "No se ha podido ingresar a " . $nombre . " al sistema"));
     }
 }
@@ -905,8 +885,7 @@ function getPersonalByBussiness($empresa_id)
 {
     try{
 
-        $conn  = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $personal = [];
     
         $query = "SELECT *, p.id as personal_id FROM personal p
@@ -921,10 +900,10 @@ function getPersonalByBussiness($empresa_id)
             while ($data = $response->fetch_object()) {
                 $personal[] = $data;
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "data" => $personal);
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error" => true);
         }
     }catch(Exception $e){
@@ -937,8 +916,7 @@ function getPersonalByBussiness($empresa_id)
 
 function insertPersonalForm($request, $empresa_id)
 {
-    $conn  = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $personal = [];
     $persona_id = 0;
 
@@ -977,7 +955,7 @@ function insertPersonalForm($request, $empresa_id)
     if ($response = $conn->mysqli->query($queryPersona)) {
         $persona_id = $conn->mysqli->insert_id;
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "Ha ocurrido un error,intente nuevamente");
     }
 
@@ -987,11 +965,11 @@ function insertPersonalForm($request, $empresa_id)
     $request->tipoContratoPersonal, '$today', 0,  $empresa_id);";
 
     if ($conn->mysqli->query($query)) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "message" => "Técnico creado exitosamente");
     } else {
         $conn->mysqli->query("DELETE FROM persona where id = $persona_id");
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true);
     }
 }
@@ -999,8 +977,7 @@ function insertPersonalForm($request, $empresa_id)
 
 function getPersonalById_quotes($personal_id, $empresa_id){
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
     $personalData = [];
 
@@ -1019,18 +996,17 @@ function getPersonalById_quotes($personal_id, $empresa_id){
         while ($data = $result->fetch_object()) {
             $personalData = $data;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return $personalData;
     }catch(Exception $err ){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true);
     }
 }
 
 function getPersonalById($personal_id, $empresa_id)
 {
-    $conn  = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $personalData = [];
     $personal_events = [];
 
@@ -1059,22 +1035,21 @@ function getPersonalById($personal_id, $empresa_id)
             while ($data = $response->fetch_object()) {
                 $personal_events []= $data;
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "data" => $personalData, "events" => $personal_events);
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error" => true, "message" => "No se ha podido completar la solicitud,  intente nuevamente");
         }
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "No se ha podido completar la solicitud,  intente nuevamente");
     }
 }
 
 function updatePersonal($request, $empresa_id)
 {
-    $conn  = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $today = date("Y-m-d");
 
@@ -1126,17 +1101,16 @@ function updatePersonal($request, $empresa_id)
     AND empresa_id=$empresa_id;";
 
     if ($conn->mysqli->query($queryUpdatePersonal)) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "message" => "Técnico modificado exitosamente");
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "Intente nuevamente");
     }
 }
 
 function deleteEspecialidad($especialidad_id, $empresa_id){
-    $conn  = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $queryUpdateEspecialidad = "UPDATE especialidad set IsDelete = 1 where id = $especialidad_id and empresa_id = $empresa_id";
 
@@ -1144,20 +1118,19 @@ function deleteEspecialidad($especialidad_id, $empresa_id){
     if($conn->mysqli->query($queryUpdateEspecialidad)){
         
         if($conn->mysqli->affected_rows > 0){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success"=>true,"message"=>"Especialidad eliminada exitosamente");
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error"=>true,"message"=>"Ha ocurrido un error, intente nuevamente");
         }
     }else{
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message"=>"Ha ocurrido un error, intente nuevamente");
     }
 }
 function deleteCargo($cargo_id, $empresa_id){
-    $conn  = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $queryUpdateCargo = "UPDATE cargo set IsDelete = 1 where id = $cargo_id and empresa_id = $empresa_id";
     
@@ -1165,14 +1138,14 @@ function deleteCargo($cargo_id, $empresa_id){
     if($conn->mysqli->query($queryUpdateCargo)){
         
         if($conn->mysqli->affected_rows > 0){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success"=>true,"message"=>"Cargo eliminado exitosamente");
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error"=>true,"message"=>"Ha ocurrido un error, intente nuevamenteee");
         }
     }else{
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message"=>"Ha ocurrido un error, intente nuevamente");
     }
 }

@@ -12,9 +12,8 @@
     }
 
 function getPersonal($empresaId){
-    require_once ('../bd/bd.php');
-    $conn = new bd();
-    $conn->conectar();
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
+    $conn = getDBConnection(); // Auto-managed connection
     $personal= [];
     $queryPersonal = "SELECT  p.id, CONCAT(p.nombre,' ',p.apellido) as nombre, c.cargo, es.especialidad  from personal p 
                         LEFT JOIN especialidad es on es.id  = p.especialidad_id 
@@ -27,15 +26,15 @@ function getPersonal($empresaId){
             $personal [] = $dataPersonal;
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $personal;
 }
 
 
 function addtoProject($request){
-    require_once ('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
-    $conn = new bd();
+    $conn = getDBConnection(); // Auto-managed connection
     $conn ->conectar();
 
     $arrayResponse = [];
@@ -54,6 +53,6 @@ function addtoProject($request){
             array_push($arrayResponse, array("NoAsignado"=>array("id"=>$idPersonal)));
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
 }
 ?>

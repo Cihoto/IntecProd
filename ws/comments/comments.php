@@ -1,7 +1,7 @@
 <?php 
 date_default_timezone_set('America/Santiago');
 if ($_POST){
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -42,8 +42,7 @@ function addAndAssignCommentsToEvent($event_id,$tempCommentsData,){
 
 
     try{
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $nowDateTime  =date("Y-m-d H:i:s");
     
@@ -72,7 +71,7 @@ function addAndAssignCommentsToEvent($event_id,$tempCommentsData,){
 
             
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array('success'=>true);  
     }catch(Exception $e){
 
@@ -85,7 +84,7 @@ function addAndAssignCommentsToEvent($event_id,$tempCommentsData,){
 function replyAssignedComment($assignedReplyData,$empresa_id,$event_id,$commentId,$post_user_id){
 
     try{
-        $conn = new bd();
+        $conn = getDBConnection(); // Auto-managed connection
         $conn -> conectar();
         $mysqli = $conn->mysqli;
         $nowDateTime = date("Y-m-d H:i:s");
@@ -98,7 +97,7 @@ function replyAssignedComment($assignedReplyData,$empresa_id,$event_id,$commentI
         $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.comment_has_reply (comment_id, reply_id) VALUES(?, ?);");
         $stmt->bind_param("ii", $commentId, $reply_id);
         $stmt->execute();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array('success'=>true,'reply_id'=>$reply_id);  
     }catch(Exception $e){
 
@@ -111,7 +110,7 @@ function replyAssignedComment($assignedReplyData,$empresa_id,$event_id,$commentI
 function updateComment($request){
 
     // try{
-        $conn = new bd();
+        $conn = getDBConnection(); // Auto-managed connection
         $conn -> conectar();
         $mysqli = $conn->mysqli;
         $nowDateTime = date("Y-m-d H:i:s");
@@ -123,7 +122,7 @@ function updateComment($request){
         $empresa_id = $response->fetch_object()->empresa_id;
        
         if(!$request->empresa_id === $empresa_id){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array('error'=>true, 'message'=>'data not available');
         } 
     
@@ -143,7 +142,7 @@ function updateComment($request){
         $stmt->bind_param("sisi", $nowDateTime,$request->user_id, $parsed_request,$request->comment_id);
         
         $stmt->execute();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array('success'=>true,'message'=>'comment has been updated successfully');
     // }catch(Exception $e){
     //     return array('error'=>true,'message'=>"couldn't proccess petition");
@@ -153,7 +152,7 @@ function updateComment($request){
 
 function deleteComment($request){
 
-    $conn = new bd();
+    $conn = getDBConnection(); // Auto-managed connection
     $conn -> conectar();
     $mysqli = $conn->mysqli;
     $nowDateTime = date("Y-m-d H:i:s");
@@ -165,7 +164,7 @@ function deleteComment($request){
     $empresa_id = $response->fetch_object()->empresa_id;
    
     if(!$request->empresa_id === $empresa_id){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array('error'=>true, 'message'=>'data not available');
     }
 
@@ -184,7 +183,7 @@ function deleteComment($request){
     $parsed_request = json_encode($request);
     $stmt->bind_param("isis", $request->comment_id, $parsed_request, $request->user_id, $nowDateTime,);
     $stmt->execute();
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return array('success'=>true,'message'=>'comment has been deleted successfully');
   
 }

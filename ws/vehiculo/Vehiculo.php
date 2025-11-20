@@ -2,7 +2,7 @@
 date_default_timezone_set('America/Santiago');
 
 if ($_POST) {
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -121,12 +121,11 @@ if ($_POST) {
             break;
     }
 }else{
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
 function getVehiclesByBussiness($empresa_id){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $vehiculos = [];
 
     $query = "SELECT v.*,v.id as vehicle_id, tv.tipo, vb.*, vm.* from vehiculo v 
@@ -139,11 +138,11 @@ function getVehiclesByBussiness($empresa_id){
         while ($data = $response->fetch_object()) {
             $vehiculos[] = $data;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
 
         return array("success"=>true,"data"=>$vehiculos);
     }else{
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message"=>"Intente nuevamente");
         // return $vehiculos;
     }
@@ -157,33 +156,31 @@ function deleteVehicleDash($vehicle_id,$empresa_id){
         }   
         $now = date('Y-m-d H:i:s');
 
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("UPDATE vehiculo set IsDelete = 1 , deleteAt = ? where id = ?");
         $stmt->bind_param("si",$now, $vehicle_id);
         $stmt->execute();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
 
         // return $stmt->affected_rows;
 
         if($stmt->affected_rows > 0){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return true;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
 
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return 'error while deleting vehicle';
     }
 }
 
 function viewIfVehicleIsOnBussieness($vehicle_id,$empresa_id){
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("SELECT * FROM vehiculo v WHERE v.empresa_id  = ? AND v.id = ?");
         $stmt->bind_param("ii", $empresa_id,$vehicle_id);
@@ -191,21 +188,20 @@ function viewIfVehicleIsOnBussieness($vehicle_id,$empresa_id){
 
         $results = $stmt->get_result();
         
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         if($results->num_rows > 0){
             return true;
         }
         return false;
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return ['message'=>'error in view VEHICLE On Bussieness petition'];
     }
 }
 
 function getVehiculos($empresaId)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $vehiculos = [];
     $queryVehiculos = "SELECT v.id,v.patente,v.ownCar,v.tripValue,tv.tipo, v.IsDelete FROM vehiculo v 
     LEFT JOIN persona p ON p.id = v.persona_id
@@ -218,13 +214,12 @@ function getVehiculos($empresaId)
             $vehiculos[] = $dataVehiculos;
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $vehiculos;
 }
 function getVehiculosForEvents($empresaId)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $vehiculos = [];
     $queryVehiculos = "SELECT v.id,v.patente,v.ownCar,v.tripValue,tv.tipo, v.IsDelete FROM vehiculo v 
     LEFT JOIN persona p ON p.id = v.persona_id
@@ -237,14 +232,13 @@ function getVehiculosForEvents($empresaId)
             $vehiculos[] = $dataVehiculos;
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $vehiculos;
 }
 
 function getAvailableVehiculos($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $vehiculos = [];
 
     foreach($request as $req){
@@ -266,14 +260,13 @@ function getAvailableVehiculos($request)
             $vehiculos[] = $dataVehiculos;
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $vehiculos;
 }
 
 function addVehicleToProject($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $arrayResponse = [];
     $idProject = 0;
     
@@ -301,13 +294,12 @@ function addVehicleToProject($request)
             array_push($arrayResponse, array("NoAsignado" => array("id" => $idVehicle)));
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $arrayResponse;
 }
 
 function dropAssigmentVehicles($idProject){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $queryIfAssigned = "SELECT * from proyecto_has_vehiculo phv where phv.proyecto_id =$idProject";
 
     if($conn->mysqli->query($queryIfAssigned)->num_rows>0){
@@ -320,8 +312,7 @@ function dropAssigmentVehicles($idProject){
 
 function getAssigned($empresaId)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $vehiculos = [];
     $queryVehiculos = "SELECT v.id ,v.patente ,v.personal_id  FROM vehiculo v
                                 INNER JOIN personal p on p.id = v.personal_id 
@@ -333,7 +324,7 @@ function getAssigned($empresaId)
             $vehiculos[] = $dataVehiculos;
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $vehiculos;
 }
 
@@ -342,8 +333,7 @@ function getAssigned($empresaId)
 
 function deleteVehicle($arrayIdVehicles)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $today = date('Y-m-d');
     $arrayResponse = [];
@@ -359,14 +349,13 @@ function deleteVehicle($arrayIdVehicles)
         }
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $arrayResponse;
 }
 
 function addVehicle($vehicleData, $empresaId)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     // return json_encode($vehicleData);
     $returnErrArray = [];
     foreach ($vehicleData->arrayRequest as $value) {
@@ -400,17 +389,16 @@ function addVehicle($vehicleData, $empresaId)
     }
 
     if (count($returnErrArray) > 0) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return json_encode(array("status" => 0, "array" => $returnErrArray));
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return json_encode(array("status" => 1, "array" => $returnErrArray));
     }
 }
 
 function getVehicleBrandsAndModels(){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $brands = [];
     $models = [];
     $type = [];
@@ -434,14 +422,13 @@ function getVehicleBrandsAndModels(){
         $type [] = $data;
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return json_encode(array("brands"=>$brands, "models"=>$models,"types"=>$type));
 }
 
 
 function insertVehicle($request, $empresa_id){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     if($request->type === "" || $request->type === null ){ $request->type = "NULL";}
     if($request->brand === "" || $request->brand === null ){ $request->brand = "NULL";}
@@ -455,17 +442,16 @@ function insertVehicle($request, $empresa_id){
     VALUES('$request->patente', 0, $empresa_id, $request->owner, $request->costPerTrip, $request->type, $request->brand, $request->model);";
 
     if($conn->mysqli->query($queryInsert)){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return json_encode(array("success"=>true,"message"=>"Vehículo ingresado exitosamente"));
     }else{
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return json_encode(array("error"=>true,"message"=>"Intente nuevamente"));
     }
 }
 
 function getVehicleInfoById($vehicle_id, $empresa_id){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $vehicle_data = [];
     $vehicle_events = [];
 
@@ -497,7 +483,7 @@ function getVehicleInfoById($vehicle_id, $empresa_id){
         }
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return json_encode(array("success"=>true,"data"=>$vehicle_data,"events"=>$vehicle_events));  
 }
 ?>

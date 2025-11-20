@@ -6,7 +6,7 @@ require_once('../../bd/bd.php');
 // $request = $data->request;
 
 
-// $conn = new bd();
+// $conn = getDBConnection(); // Auto-managed connection
 // $conn->conectar();
 // $mysqli = $conn->mysqli;
 
@@ -106,8 +106,7 @@ if (!$data || !isset($data->request)) {
 
 $request = $data->request;
 
-$conn = new bd();
-$conn->conectar();
+$conn = getDBConnection(); // Auto-managed connection
 $mysqli = $conn->mysqli;
 
 $now = date('Y-m-d H:i:s');
@@ -199,5 +198,5 @@ foreach ($request as $requestProd) {
         "productId" => $prodId
     ];
 }
-$conn->desconectar();
+// $conn->desconectar(); // Auto-closed by ConnectionManager
 echo json_encode(["status" => "success", "message" => "Request processed successfully", "data" => $response]);

@@ -1,9 +1,8 @@
 <?php
-  require_once('./ws/bd/bd.php');
+  require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 
     function getVehiculos($empresaId){
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $vehiculos= [];
         $queryVehiculos = "SELECT v.id ,v.patente ,v.personal_id  FROM vehiculo v
                             INNER JOIN personal p on p.id = v.personal_id 
@@ -15,13 +14,12 @@
                 $vehiculos [] = $dataVehiculos;
             }
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return $vehiculos;
     }
 
     function getAssigned($empresaId){
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $vehiculos= [];
         $queryVehiculos = "SELECT v.id ,v.patente ,v.personal_id  FROM vehiculo v
                             INNER JOIN personal p on p.id = v.personal_id 
@@ -33,7 +31,7 @@
                 $vehiculos [] = $dataVehiculos;
             }
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return $vehiculos;
     }
 

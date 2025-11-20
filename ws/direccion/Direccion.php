@@ -1,7 +1,7 @@
 <?php
 
 if ($_POST){
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -38,11 +38,11 @@ if ($_POST){
     header('Content-Type: application/json');
     echo $result;
 } else {
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
     function addDireccion($request){
-        $conn= new bd();
+        $conn = getDBConnection(); // Auto-managed connection
         $conn ->conectar();
         $direccion = "";
         $numero = "";
@@ -64,16 +64,16 @@ if ($_POST){
 
         if($responseBd = $conn->mysqli->query($query)){
             $insert_id = $conn->mysqli->insert_id;
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return json_encode(array("id_direccion"=> $insert_id)) ;
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
     }
 
     function insertNewAddress($request){
-        $conn= new bd();
+        $conn = getDBConnection(); // Auto-managed connection
         $conn ->conectar();
 
         $queryInsertAddress = "INSERT INTO direccion
@@ -82,16 +82,16 @@ if ($_POST){
 
         if($conn->mysqli->query($queryInsertAddress)){
             $address_id = $conn->mysqli->insert_id;
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success"=>true,"message"=>"Dirección creada exitosamente","address_id"=>$address_id);
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error"=>true,"message"=>"No se ha podido crear la dirección");
         }
     } 
     
     function addAndAssignToProject($address,$empresa_id,$event_id){
-        $conn= new bd();
+        $conn = getDBConnection(); // Auto-managed connection
         $conn ->conectar();
 
         $queryInsertAddress = "INSERT INTO direccion
@@ -105,10 +105,10 @@ if ($_POST){
             WHERE id = $event_id AND empresa_id=$empresa_id;";
 
             if($conn->mysqli->query($queryAssign)){
-                $conn->desconectar();
+                // $conn->desconectar(); // Auto-closed by ConnectionManager
                 return json_encode(array("success"=>true,"message"=>"Se ha la dirección asignado al evento"));
             }else{
-                $conn->desconectar();
+                // $conn->desconectar(); // Auto-closed by ConnectionManager
                 return json_encode(array("error"=>true,"message"=>"No se ha podido asignar la dirección"));
             }
 
@@ -120,7 +120,7 @@ if ($_POST){
 
     function getDireccion($request){
 
-        $conn= new bd();
+        $conn = getDBConnection(); // Auto-managed connection
         $conn ->conectar();
         $direccionId = $request;
 
@@ -132,14 +132,14 @@ if ($_POST){
                 $direcciones[] = $dataResponse; 
             }
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
         return json_encode(array("direcciones"=>$direcciones));
     }
     function getDireccionesByEmpresa($request){
 
-        $conn= new bd();
+        $conn = getDBConnection(); // Auto-managed connection
         $conn ->conectar();
         $direccionId = "";
         $direcciones = [];
@@ -152,10 +152,10 @@ if ($_POST){
                 $direcciones[] = $dataResponse; 
             }
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return json_encode(array("direcciones"=>$direcciones)); 
     }
 ?>

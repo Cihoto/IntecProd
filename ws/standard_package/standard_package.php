@@ -1,7 +1,7 @@
 <?php
 if ($_POST) {
 
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -49,15 +49,14 @@ if ($_POST) {
     header('Content-Type: application/json');
     echo json_encode($result);
 } else {
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
 
 
     function CreatePackage($request,$empresa_id,$nombre){
 
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
 
         $query = "INSERT INTO standard_package
         (empresa_id, nombre)
@@ -73,10 +72,10 @@ if ($_POST) {
                 VALUES($element->id, $insert_id,$element->cantidad)";
                 $conn->mysqli->query($queryInsert);
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return true;
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
 
@@ -84,8 +83,7 @@ if ($_POST) {
     }
 
     function GetAllStandardPackages($empresa_id){
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $packages = [];
 
         $query = "SELECT * FROM standard_package sp 
@@ -96,10 +94,10 @@ if ($_POST) {
             while($dataPackages = $responseDb->fetch_object()){
                 $packages [] =  $dataPackages;
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success"=>true,"data"=>$packages);
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("false"=>true,"data"=>$packages);
         }
 
@@ -107,8 +105,7 @@ if ($_POST) {
 
 
     function GetPackageDetails($package_id){
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $products = [];
         $data = [];
 
@@ -127,13 +124,12 @@ if ($_POST) {
                 $data [] = $databdData;
             }
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success"=>true, "data"=> $data, "products"=>$products);
 
     }
     function editPackage($package_id,$data){
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
 
         $counterErr = 0 ;
 
@@ -142,7 +138,7 @@ if ($_POST) {
 
 
         if(!$conn->mysqli->query($queryDeletePackageHasProduct)){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error"=>true, "message"=>"no se ha podido completar la actualización del paquete");
         }
 
@@ -157,7 +153,7 @@ if ($_POST) {
                 $counterErr ++;
             }
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success"=>true, "message"=>"Paquete actualizado exitosamente", "total"=>count($data), "withErrors"=>$counterErr);
 
 
@@ -165,24 +161,22 @@ if ($_POST) {
     }
 
     function deletePackage($package_id,$empresa_id){
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
 
         $querySoftDeletePackage = "UPDATE standard_package SET is_deleted = 1 WHERE id =$package_id AND empresa_id = $empresa_id ";
 
         if($conn->mysqli->query($querySoftDeletePackage)){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success"=>true, "message"=>"Paquete eliminado exitosamente");
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error"=>true, "message"=>"No se ha podido finalizar la acción");
         }
     }
 
 
     function assignStandardPackageToProject($request){
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         
         $arrayLenght = count($request);
 
@@ -202,18 +196,17 @@ if ($_POST) {
         VALUES $inserts;";
 
         if($conn->mysqli->query($query)){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array('success'=>true);
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array('false'=>true);
         }
     
     }
 
     function GetProductsByPackage($package_id){
-        $conn =  new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
 
 
 

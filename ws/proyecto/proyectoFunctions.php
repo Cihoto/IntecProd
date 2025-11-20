@@ -1,5 +1,5 @@
 <?php
-require_once('../bd/bd.php');
+require_once(__DIR__ . '/../bd/ConnectionManager.php');
 if($json = file_get_contents('php://input')){
    
     $data = json_decode($json);
@@ -11,8 +11,7 @@ if($json = file_get_contents('php://input')){
 }
 
 function getProjectResume($request){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $asignados = [];
     $projects = [];
@@ -56,7 +55,7 @@ function getProjectResume($request){
             }
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return json_encode(array("dataProject"=>$projects,"asignados"=>$asignados));
 }
 

@@ -1,7 +1,7 @@
 <?php 
 date_default_timezone_set('America/Santiago');
 if ($_POST){
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -27,8 +27,7 @@ if ($_POST){
 function updateBussLogo($request){
 
     return $request->formData->files->tmp_name;
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
     $now = date('Y-m-d H:i:s');
 
@@ -36,7 +35,7 @@ function updateBussLogo($request){
     $stmt->bind_param("ssi", $request->logoName,$now,$request->user_id);
     
     if(!$stmt->execute()){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return badReqBusLogo();
     }
 
@@ -47,10 +46,10 @@ function updateBussLogo($request){
     $stmt->bind_param("ii",$bus_logo_id,$request->empresa_id);
 
     if(!$stmt->execute()){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return badReqBusLogo();
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
 
     return successReq('Logo guardado correctamente');
 

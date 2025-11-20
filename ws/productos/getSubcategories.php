@@ -1,6 +1,6 @@
 <?php
 
- require_once('../bd/bd.php');
+ require_once(__DIR__ . '/../bd/ConnectionManager.php');
  // header('Content-Type: application/json');
 
 
@@ -27,8 +27,7 @@
 
 function GetItems($empresaId){
     
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $response = [];
     $querySelectMarca ="SELECT i.item,i.id  from item i 
                         INNER JOIN categoria_has_item chi on chi.item_id = i.id
@@ -41,7 +40,7 @@ function GetItems($empresaId){
     while($dataResponseBd = $responseBd->fetch_object()){
         $response []= $dataResponseBd;
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $response;
 
 }

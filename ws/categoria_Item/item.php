@@ -1,7 +1,7 @@
 <?php
 
 if ($_POST || $_SERVER['REQUEST_METHOD'] === 'POST') {
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
     header('Content-Type: application/json');
 
     $json = file_get_contents('php://input');
@@ -26,14 +26,13 @@ if ($_POST || $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 }else{
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
 
 function GetItems($empresaId){
     
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $response = [];
     $querySelectMarca ="SELECT i.item,i.id  from item i 
                         INNER JOIN categoria_has_item chi on chi.item_id = i.id
@@ -47,15 +46,14 @@ function GetItems($empresaId){
         $response []= $dataResponseBd;
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
 
     return $response;
 
 }
 
 function AddItems($request,$empresaId){
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $arrayIdsInserted = [];
     $today = date('Y-m-d');
 
@@ -69,7 +67,7 @@ function AddItems($request,$empresaId){
         }
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     
     return $arrayIdsInserted;
 

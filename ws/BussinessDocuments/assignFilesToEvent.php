@@ -1,7 +1,7 @@
 <?php
 
 if ($_POST) {
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
     
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -11,8 +11,7 @@ if ($_POST) {
     $files = $data->files;
     $usuario_id = $data->personal_id[0]->usuario_id;
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $insertvalues = "";
     $today = date('Y-m-d');

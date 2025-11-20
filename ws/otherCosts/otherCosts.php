@@ -1,6 +1,6 @@
 <?php
 if ($_POST){
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -22,14 +22,13 @@ if ($_POST){
     header('Content-Type: application/json');
     echo json_encode($result);
 } else {
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
 function assignOtherCostsToEvent($event_id,$empresa_id,$request){
 
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $arrayLength = count($request);
     $insertvalues = "";
@@ -57,28 +56,27 @@ function assignOtherCostsToEvent($event_id,$empresa_id,$request){
         VALUES $insertvalues";
     
         if($conn->mysqli->query($queryInsertAccountablesToProject)){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success"=>true,"message"=>"Other Costs has been assgined to event successfully");
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error"=>true,"message"=>"Something happend, Other Costs hasn't been assigned to event, please try again");
         }
     }else{
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success"=>true, "message"=>"No data to insert");
     }
 }   
 
 
 function removeAllOtherCostsFromEvent($event_id,$empresa_id){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $queryGetMyEvent = "SELECT p.id FROM proyecto p 
     where p.id = $event_id and p.empresa_id = $empresa_id";
 
     if(!$conn->mysqli->query($queryGetMyEvent)){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message"=>"Access Denied, event not found");
     }
 
@@ -87,10 +85,10 @@ function removeAllOtherCostsFromEvent($event_id,$empresa_id){
     // return $queryDeleteSchedules;
 
     if($conn->mysqli->query($queryDeleteSchedules)){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success"=>true,"message"=>"Other Costs has been removed from event successfully");
     }else{
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message"=>"Other Costs hasn't been removed from event, try again");
     }
 }

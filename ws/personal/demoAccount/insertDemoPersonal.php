@@ -19,8 +19,7 @@ $personalData = $data->personalData;
 $specialismData = $data->specialismData;
 $cargoData = $data->cargoData;
 
-$conn = new bd();
-$conn->conectar();
+$conn = getDBConnection(); // Auto-managed connection
 $mysqli = $conn->mysqli;
 
 $now = date('Y-m-d H:i:s');
@@ -108,5 +107,5 @@ foreach ($personalData as $key => $personal) {
     ];
     
 }
-$conn->desconectar();
+// $conn->desconectar(); // Auto-closed by ConnectionManager
 echo json_encode(["success" => true, "message" => "Request processed successfully", "data" => $response]);

@@ -1,13 +1,12 @@
 <?php
 
-require_once('../bd/bd.php');
+require_once(__DIR__ . '/../bd/ConnectionManager.php');
 session_start();
 $empresa_id = $_SESSION["empresa_id"];
 $personal_ids = $_SESSION["personal_ids"][0];
 $previusLogo = $_SESSION['buss_data']->bl;
 
-$conn = new bd();
-$conn->conectar();
+$conn = getDBConnection(); // Auto-managed connection
 $mysqli = $conn->mysqli;
 $now = date('Y-m-d H:i:s');
 $absolute_path = getcwd();
@@ -19,7 +18,7 @@ $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.businessLogo (bus_logo_na
 $stmt->bind_param("ssi", $nombreArchivo, $now, $user_id);
 
 if (!$stmt->execute()) {
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     // return badReqBusLogo();
 }
 
@@ -30,10 +29,10 @@ $stmt = $mysqli->prepare("UPDATE empresa SET bus_logo_id = ? WHERE id = ?");
 $stmt->bind_param("ii", $bus_logo_id, $empresa_id);
 
 if (!$stmt->execute()) {
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     // return badReqBusLogo();
 }
-$conn->desconectar();
+// $conn->desconectar(); // Auto-closed by ConnectionManager
 
 
 $target_path = $absolute_path . "/bussLogo";

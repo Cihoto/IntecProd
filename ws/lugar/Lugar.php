@@ -1,6 +1,6 @@
 <?php
 if ($_POST){
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -20,12 +20,12 @@ if ($_POST){
     header('Content-Type: application/json');
     echo $result;
 } else {
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
 
     function addLugar($request){
-        $conn = new bd();
+        $conn = getDBConnection(); // Auto-managed connection
         $conn ->conectar();
 
         $today = date('Y-m-d');
@@ -41,10 +41,10 @@ if ($_POST){
                 VALUES('".$lugar."', '".$today."', $direccion_id )";
         if($conn->mysqli->query($query)){
             $insert_id = $conn->mysqli->insert_id;
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return json_encode(array("id_lugar"=> $insert_id)) ;
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
     } 

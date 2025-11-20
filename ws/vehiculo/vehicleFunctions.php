@@ -1,5 +1,5 @@
 <?php
-    // $conn = new bd();
+    // $conn = getDBConnection(); // Auto-managed connection
 
 
 $json = file_get_contents('php://input');

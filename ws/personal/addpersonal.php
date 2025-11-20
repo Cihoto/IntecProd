@@ -1,7 +1,7 @@
 <?php
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
     
-    $conn = new bd();
+    $conn = getDBConnection(); // Auto-managed connection
     $conn ->conectar();
 
     $json = file_get_contents('php://input');

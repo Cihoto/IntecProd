@@ -1,6 +1,6 @@
 <?php
 if ($_POST) {
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -70,7 +70,7 @@ if ($_POST) {
     header('Content-Type: application/json');
     echo $result;
 } else {
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
 
@@ -78,8 +78,7 @@ if ($_POST) {
 function insertNewClient($request){
     
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     try{
         $empresaId = $request->empresaId;
@@ -109,14 +108,14 @@ function insertNewClient($request){
             VALUES($df_id, $persona_id, $empresaId);";
     
         if ($conn->mysqli->query($queryCliente)) {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return json_encode(array("success" => true, "created" => true, "message" => "Cliente creado exitosamente"));
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
     }catch(Exception $err){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array('error'=>true);
     }
 
@@ -132,15 +131,14 @@ function deleteClient($client_id,$empresa_id){
             return ['error', 'message'=>'client has not been found'];
         }   
 
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("UPDATE cliente set isDelete = 1 where id = ?");
         $stmt->bind_param("i", $client_id);
         $stmt->execute();
 
         $results = $stmt->get_result();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
 
 
         if($stmt->affected_rows > 0){
@@ -150,15 +148,14 @@ function deleteClient($client_id,$empresa_id){
         return false;
 
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return 'error while deleting client';
     }
 }
 
 function viewIfClienteIsOnBussieness($client_id,$empresa_id){
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("SELECT id from cliente c where c.empresa_id = ? and c.id = ?");
         $stmt->bind_param("ii", $empresa_id,$client_id);
@@ -166,13 +163,13 @@ function viewIfClienteIsOnBussieness($client_id,$empresa_id){
 
         $results = $stmt->get_result();
         
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         if($results->num_rows > 0){
             return true;
         }
         return false;
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return ['meesage'=>'error in view Cliente On Bussieness petition'];
     }
 }
@@ -180,8 +177,7 @@ function viewIfClienteIsOnBussieness($client_id,$empresa_id){
 function addCliente($request)
 {
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $clienteExist = "";
     // return json_encode($request);
 
@@ -253,8 +249,7 @@ function addCliente($request)
 
 function AddClientForm($request, $empresa_id)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $clientData = [];
     $persona_id = 0;
@@ -304,11 +299,11 @@ function AddClientForm($request, $empresa_id)
 
             if ($conn->mysqli->query($queryCliente)) {
                 $idCliente = $conn->mysqli->insert_id;
-                $conn->desconectar();
+                // $conn->desconectar(); // Auto-closed by ConnectionManager
 
                 return json_encode(array("success" => true, "created" => false, "message" => "Cliente modificado exitosamente", "client_id" => $clienteId));
             } else {
-                $conn->desconectar();
+                // $conn->desconectar(); // Auto-closed by ConnectionManager
                 return false;
             }
         }
@@ -325,7 +320,7 @@ function AddClientForm($request, $empresa_id)
              rut = '$clientRut'
             WHERE id = $df_id;";
         $conn->mysqli->query($queryUpdateDatosFacturacion);
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
 
         return json_encode(array("success" => true, "created" => false, "message" => "Cliente modificado exitosamente", "client_id" => $clienteId));
     } else {
@@ -348,11 +343,11 @@ function AddClientForm($request, $empresa_id)
 
         if ($conn->mysqli->query($queryCliente)) {
             $idCliente = $conn->mysqli->insert_id;
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
 
             return json_encode(array("success" => true, "created" => true, "message" => "Cliente creado exitosamente", "client_id" => $idCliente));
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
     }
@@ -360,8 +355,7 @@ function AddClientForm($request, $empresa_id)
 
 function AddClientMasiva($request, $empresa_id)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $regex = '/[^a-zA-Z0-9]/';
     foreach ($request as $key => $req) {
@@ -398,8 +392,7 @@ function getClientData($empresa_id)
 {
 
     try {
-        $conn =  new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $clientData = [];
 
         $queryGetClientData = "SELECT 
@@ -432,10 +425,10 @@ function getClientData($empresa_id)
             while ($dataClient = $responseDbClient->fetch_object()) {
                 $clientData[] = $dataClient;
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return json_encode(array("success" => true, "data" => $clientData));
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return json_encode(array("error" => true));
         }
     } catch (Exception $e) {
@@ -445,8 +438,7 @@ function getClientData($empresa_id)
 function getClientesByEmpresa($request)
 {
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $clientes = [];
     $empresaId = $request;
 
@@ -473,8 +465,7 @@ function getClientesByEmpresa($request)
 }
 function getClienteById($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $clientes = [];
     $clienteId = $request;
 
@@ -496,8 +487,7 @@ function getClienteById($request)
 
 function UpdateCliente($request)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     foreach ($request as $key => $req) {
         $idCliente = $req->idCliente;
@@ -537,8 +527,7 @@ function UpdateCliente($request)
 
 function getClientInformation($cliente_id)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $clientInfo = [];
     $events = [];
 
@@ -553,18 +542,17 @@ function getClientInformation($cliente_id)
         while ($dataCliente = $responseDbClientInfo->fetch_object()) {
             $clienteInfo[] = $dataCliente;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return json_encode(array("success" => true, "data" => $clienteInfo));
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return json_encode(array("error" => true, "message" => "Ha ocurrido un error, por favor intente nuevamente"));
     }
 }
 
 function getClienteById_dataAndEvents($cliente_id, $empresa_id)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $clientInfo = [];
     $events = [];
 
@@ -594,10 +582,10 @@ function getClienteById_dataAndEvents($cliente_id, $empresa_id)
                 $events[] = $dataEventsClient;
             }
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return json_encode(array("success" => true, "data" => $clienteInfo, "events" => $events));
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return json_encode(array("error" => true, "message" => "Ha ocurrido un error, por favor intente nuevamente"));
     }
 }

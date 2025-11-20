@@ -1,6 +1,6 @@
 <?php
     if ($_POST) {
-        require_once('../bd/bd.php');
+        require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
         $json = file_get_contents('php://input');
         $data = json_decode($json);
@@ -28,14 +28,13 @@
         }
 
     }else{
-        require_once('./ws/bd/bd.php');
+        require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
     }
 
 
     function addNewProvider($request,$empresa_id){
     
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
 
 
 
@@ -58,7 +57,7 @@
         if($conn->mysqli->query($queryInsertPersona)){
             $persona_id = $conn->mysqli->insert_id;
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success"=>false);
         }
 
@@ -71,7 +70,7 @@
         }else{
             $querydelete = "DELETE FROM u136839350_intec.persona WHERE id = $persona_id;";
             $conn->mysqli->query($querydelete);
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success"=>false);
         }
 
@@ -82,22 +81,21 @@
 
         if($conn->mysqli->query($queryInsertProvider)){
             $proveedor_id = $conn->mysqli->insert_id;
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success"=>true, "message"=>"Proveedor agregado exitosamente");
         }else{
             $querydelete = "DELETE FROM u136839350_intec.persona WHERE id = $persona_id;";
             $conn->mysqli->query($querydelete);
             $querydelete = "DELETE FROM u136839350_intec.datos_facturacion WHERE id = $datosFacturacion_id;";
             $conn->mysqli->query($querydelete);
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success"=>false);
         }
     }
 
 
     function getAllProviderByBussiessId($empresa_id){
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $providers = [];
     
         $query = "SELECT pro.id, df.nombre_fantasia, per.nombre FROM proveedor pro 
@@ -109,10 +107,10 @@
             while($dataProviders = $bdResponse->fetch_object()){
                 $providers[] = $dataProviders;
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success"=>true,"providers"=>$providers);
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("false"=>true);
         }
     }

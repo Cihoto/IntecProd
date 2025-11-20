@@ -1,6 +1,6 @@
     <?php
 
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
     // header('Content-Type: application/json');
 
 
@@ -24,8 +24,7 @@
 
     function GetCategorias($empresaId){
         
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
 
         $response = [];
 
@@ -44,7 +43,7 @@
             $response []= $dataResponseBd;
             
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return $response;
 
     }

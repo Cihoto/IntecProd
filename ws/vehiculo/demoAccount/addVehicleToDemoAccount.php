@@ -11,8 +11,7 @@ $empresaId = $data->empresaId;
 
 // Validar que se hayan enviado todos los campos requeridos
 if ( $empresaId && count($request) > 0) {  
-    $conn = new bd();
-    $conn->conectar();  
+    $conn = getDBConnection(); // Auto-managed connection  
     $response = [];
     foreach ($request as $vehicle) {
         $patente = $vehicle->patente;
@@ -52,5 +51,5 @@ if ( $empresaId && count($request) > 0) {
 }
 
 // Convertir la respuesta a formato JSON y enviarla
-$conn->desconectar();
+// $conn->desconectar(); // Auto-closed by ConnectionManager
 echo json_encode($response);

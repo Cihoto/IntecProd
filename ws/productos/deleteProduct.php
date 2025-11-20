@@ -1,8 +1,7 @@
 <?php
-require_once('../bd/bd.php');
+require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
-$conn = new bd();
-$conn->conectar();
+$conn = getDBConnection(); // Auto-managed connection
 
 $json = file_get_contents('php://input');
 $data = json_decode($json);
@@ -27,10 +26,10 @@ if (isset($data->empresaId) && isset($data->productId)) {
         // Return a success response
         echo json_encode(array('message' => 'Product deleted successfully'));
         $stmt->close();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
     } else {
         // Return an error response
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         echo json_encode(array('error' => 'Failed to delete product'));
     }
 
@@ -40,6 +39,6 @@ if (isset($data->empresaId) && isset($data->productId)) {
     // echo json_encode(array('message' => 'Product deleted successfully'));
 } else {
     // Return an error response if the required parameters are missing
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     echo json_encode(array('error' => 'Missing parameters'));
 }

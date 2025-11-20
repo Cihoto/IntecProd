@@ -1,9 +1,8 @@
 <?php
-  require_once('./ws/bd/bd.php');
+  require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 
     function getProductos($empresaId){
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
 
         $productos = [];
         $queryRegiones = "SELECT p.id, p.nombre, c.nombre as categoria, i.item, p.precio_arriendo FROM producto p 
@@ -18,7 +17,7 @@
                 $productos[] = $dataProductos;
             }
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return $productos;
     }
 ?>

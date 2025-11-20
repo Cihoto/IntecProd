@@ -1,8 +1,7 @@
 <?php
-require_once('../bd/bd.php');
+require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
-$conn = new bd();
-$conn->conectar();
+$conn = getDBConnection(); // Auto-managed connection
 
 $json = file_get_contents('php://input');
 $data = json_decode($json);
@@ -100,5 +99,5 @@ foreach ($productoArr as $key => $value) {
             }
         }
 }
-$conn->desconectar();
+// $conn->desconectar(); // Auto-closed by ConnectionManager
 echo json_encode(array("status"=>200, "success"=>true));

@@ -5,7 +5,7 @@ if ($_POST || $_SERVER['REQUEST_METHOD'] === 'POST') {
     // $empresaId = 1;
     $json = file_get_contents('php://input');
     $data = json_decode($json);
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
 
     $action = $data->action;
@@ -178,13 +178,12 @@ if ($_POST || $_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
     }
 } else {
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
 function sortProducts($requestJson)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $data = $requestJson;
     $item = $data->item;
     $categoria = $data->categoria;
@@ -223,7 +222,7 @@ function sortProducts($requestJson)
         $productos[] = $dataItems;
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     if (count($productos) === 0) {
         return $productos;
     }
@@ -233,8 +232,7 @@ function sortProducts($requestJson)
 
 function getProductos($empresaId)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $productos = [];
     $queryProductos = "SELECT p.id, p.nombre, c.nombre as categoria, i.item, p.precio_arriendo, inv.cantidad FROM producto p 
@@ -250,13 +248,12 @@ function getProductos($empresaId)
             $productos[] = $dataProductos;
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $productos;
 }
 function getAllMyProductsToList($empresaId)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $productos = [];
     $queryProductos = "SELECT p.id as product_id, p.nombre as nombre_producto, c.nombre as categoria, 
@@ -275,13 +272,12 @@ function getAllMyProductsToList($empresaId)
             $productos[] = $dataProductos;
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $productos;
 }
 function customProdSearch($request, $empresaId)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $categoriaWhere = "";
     $subcategoriaWhere = "";
@@ -322,18 +318,17 @@ function customProdSearch($request, $empresaId)
         while ($dataProductos = $responseProductos->fetch_object()) {
             $productos[] = $dataProductos;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "data" => $productos);
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true);
     }
 }
 
 function GetProductDataById($product_id)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $queryGetProduct = "SELECT * FROM productos ";
 }
@@ -341,8 +336,7 @@ function GetProductDataById($product_id)
 
 function GetAvailableProducts()
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $products = [];
 
 
@@ -370,14 +364,13 @@ function GetAvailableProducts()
     while ($dataResponseBd = $responseDB->fetch_object()) {
         $products[] = $dataResponseBd;
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $products;
 }
 
 function assignProductToProject($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $arrayResponse = [];
 
     foreach (array_slice($request, 0, 1) as $req) {
@@ -409,15 +402,14 @@ function assignProductToProject($request)
         }
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $arrayResponse;
     // return $query;
 }
 
 function dropAssigmentProduct($idProject)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $queryIfAssigned = "SELECT * FROM proyecto_has_producto php WHERE php.proyecto_id = $idProject";
 
@@ -426,7 +418,7 @@ function dropAssigmentProduct($idProject)
         $qdelete = "DELETE FROM proyecto_has_producto WHERE proyecto_id =$idProject";
         $conn->mysqli->query($qdelete);
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return true;
 }
 
@@ -436,8 +428,7 @@ function addProdsMasiva($requestProds, $empresa_id)
 
     try {
 
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
 
         $today = date('Y-m-d');
         $inserted_counter = 0;
@@ -541,7 +532,7 @@ function addProdsMasiva($requestProds, $empresa_id)
                 continue;
             }
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "insert_count" => $inserted_counter, "total" => count($requestProds));
     } catch (Exception $e) {
         return array("fatalError" => true, "message" => "No hemos podido completar su solicitud, intente nuevamente");
@@ -552,8 +543,7 @@ function addProdsMasiva($requestProds, $empresa_id)
 
 function addProd($jsonCreateProd)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     return $jsonCreateProd;
 
@@ -650,14 +640,13 @@ function addProd($jsonCreateProd)
             }
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return json_encode(array("total" => count($jsonCreateProd), "errMarca" => $jsonErrMarca, "errHasItem" => $jsonErrItemHasClass));
 }
 
 function GetUnavailableProductsByDate($request, $empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $fecha_inicio = $request->data->fecha_inicio;
     $fecha_termino = $request->data->fecha_termino;
@@ -684,11 +673,11 @@ function GetUnavailableProductsByDate($request, $empresa_id)
         while ($dataDb = $responseDb->fetch_object()) {
             $unavailableProducts[] = $dataDb;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "data" => $unavailableProducts);
     } else {
 
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "data" => $unavailableProducts);
     }
 }
@@ -696,8 +685,7 @@ function GetUnavailableProductsByDate($request, $empresa_id)
 
 function GetAllProductsByBussiness($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $products = [];
 
     $query = "SELECT p.*, inv.cantidad,c.nombre as categoria, i.item  FROM producto p
@@ -712,10 +700,10 @@ function GetAllProductsByBussiness($empresa_id)
         while ($dataDb = $responseDb->fetch_object()) {
             $products[] = $dataDb;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "data" => $products);
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "data" => $products);
     }
 }
@@ -723,8 +711,7 @@ function GetAllProductsByBussiness($empresa_id)
 
 function AssignOthersToProject($request, $project_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $counter = 0;
 
     $arrayLength = count($request);
@@ -744,10 +731,10 @@ function AssignOthersToProject($request, $project_id)
             (detalle, cantidad, valor,project_id)
             VALUES" . $insertvalues;
         if ($conn->mysqli->query($query)) {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "message" => "Se han agregado otros productos al proyecto");
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error" => true, "message" => "No se han podido agregar todos los otros productos al proyecto");
         }
     }
@@ -755,25 +742,23 @@ function AssignOthersToProject($request, $project_id)
 
 function assignProductJSONToProject($json, $empresa_id, $event_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
 
     $queryInsert = "";
 
     if ($conn->mysqli->query($queryInsert)) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "message" => "JSON Object has been assigned successfuly");
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "JSON Object hasn't been assigned");
     }
 }
 
 function assignOtherProdsToEvent($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $counter = 0;
     $totalexec = count($request->request);
 
@@ -782,7 +767,7 @@ function assignOtherProdsToEvent($request)
         WHERE project_id = $request->event_id";
 
     if (!$conn->mysqli->query($queryClearOldData)) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "Fatal Error");
     }
 
@@ -795,10 +780,10 @@ function assignOtherProdsToEvent($request)
         }
     }
     if ($counter === $totalexec) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "message" => "Others Prods has been assigned successfuly");
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "Others Prods hasn't been assigned");
     }
 }
@@ -806,8 +791,7 @@ function assignOtherProdsToEvent($request)
 
 function getCatsAndSubCatsByBussiness($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $categorias = [];
     $subCategorias = [];
@@ -841,7 +825,7 @@ function getCatsAndSubCatsByBussiness($empresa_id)
             $allSubCats[] = $data;
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return array("success" => true, "cats" => $categorias, "subcats" => $subCategorias, "allSubCats" => $allSubCats);
 }
 
@@ -850,8 +834,7 @@ function insertCatsOnArr($empresa_id, $arrCats)
 {
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $today = date('Y-m-d');
         $arrayLength = count($arrCats);
         $insertvalues = "";
@@ -875,10 +858,10 @@ function insertCatsOnArr($empresa_id, $arrCats)
             if (count($arrCats) > 1) {
                 $message = "Categorías insertadas";
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "message" => $message);
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
         }
     } catch (Exception $error) {
         return array("fatalError" => true, "message" => "Tenemos problemas para procesar tu solicitud, intenta nuevamente", "asd" => $error);
@@ -890,8 +873,7 @@ function getProductById($empresa_id, $product_id)
 {
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
 
         $productData = [];
 
@@ -916,10 +898,10 @@ function getProductById($empresa_id, $product_id)
             while ($data = $response->fetch_object()) {
                 $productData = $data;
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "data" => $productData, "message" => "success");
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error" => true, "message" => "No se ha podido completar la solicitud, intente nuevamente");
         }
     } catch (Exception $error) {
@@ -930,8 +912,7 @@ function insertSubCatOnArr($empresa_id, $arrCats)
 {
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $today = date('Y-m-d');
         $arrayLength = count($arrCats);
         $insertvalues = "";
@@ -957,7 +938,7 @@ function insertSubCatOnArr($empresa_id, $arrCats)
             if (count($arrCats) > 1) {
                 $message = "Subcategorías insertadas";
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "message" => $message);
         }
     } catch (Exception $error) {
@@ -969,8 +950,7 @@ function updateProductById($request, $empresa_id, $product_id)
 {
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $today = date('Y-m-d');
         $insertvalues = "";
 
@@ -1030,7 +1010,7 @@ function updateProductById($request, $empresa_id, $product_id)
                 }
             }
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error" => true);
         }
 
@@ -1066,7 +1046,7 @@ function updateProductById($request, $empresa_id, $product_id)
                     return array("error" => true);
                 }
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true);
         }
     } catch (Exception $error) {
@@ -1077,11 +1057,10 @@ function updateProductById($request, $empresa_id, $product_id)
 
 
 function insertNewProduct($request){
-    $conn = new bd();
+    $conn = getDBConnection(); // Auto-managed connection
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
         $createNomProd = $request->createNomProd;
@@ -1118,10 +1097,10 @@ function insertNewProduct($request){
         $prodId = $stmt->insert_id;
 
         insertOrUpdateStock($prodId, $createStockProd);
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
@@ -1132,8 +1111,7 @@ function insertOrGetBrand($brand)
     // return $brand;
     // return "SELECT m.id FROM marca m where UPPER(m.marca)  = UPPER($brand);";
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
         $today = date('Y-m-d');
@@ -1152,14 +1130,14 @@ function insertOrGetBrand($brand)
             $stmt->execute();
             $results = $stmt->get_result();
 
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return $stmt->insert_id;
         }
 
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return $results->id;
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
@@ -1170,8 +1148,7 @@ function insertOrGetCategorieHasSubCategorie($catId, $subcatId)
 
     // return $subcatId;
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
         // if($subcatId == ""){$subcatId = 0;}
@@ -1187,14 +1164,14 @@ function insertOrGetCategorieHasSubCategorie($catId, $subcatId)
             $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.categoria_has_item (categoria_id, item_id) VALUES(?,?);");
             $stmt->bind_param("ii", $catId, $subcatId);
             $stmt->execute();
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return $stmt->insert_id;
         }
 
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return $results->id;
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
@@ -1202,8 +1179,7 @@ function insertOrUpdateStock($prodId, $stock)
 {
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $today = date('Y-m-d');
 
@@ -1218,17 +1194,17 @@ function insertOrUpdateStock($prodId, $stock)
             VALUES(?, ?, ?);");
             $stmt->bind_param("iis", $prodId, $stock, $today);
             $stmt->execute();
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return $stmt->insert_id;
         } else {
             $stmt = $mysqli->prepare("UPDATE inventario set cantidad = ? WHERE id = ?");
             $stmt->bind_param("ii", $stock, $prodId);
             $stmt->execute();
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return $stmt->insert_id;
         }
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }

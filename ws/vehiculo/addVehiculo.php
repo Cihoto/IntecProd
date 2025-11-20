@@ -1,7 +1,7 @@
 <?php
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
     
-    $conn = new bd();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $conn ->conectar();
 
@@ -43,6 +43,6 @@
             // return json_encode(array("error"=>true,"message"=>"Intente nuevamente"));
         }
     };
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     echo json_encode(array("data"=>'Se han ingresado '.$counter.' de '.$countTotal,"query"=>$queryInsert));                                             
 ?>

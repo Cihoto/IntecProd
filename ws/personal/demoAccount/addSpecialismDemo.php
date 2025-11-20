@@ -17,8 +17,7 @@ if (!$data || !isset($data->request)) {
 $request = $data->request;
 $empresaId = $data->empresaId;
 
-$conn = new bd();
-$conn->conectar();
+$conn = getDBConnection(); // Auto-managed connection
 $mysqli = $conn->mysqli;
 
 $now = date('Y-m-d H:i:s');
@@ -67,7 +66,7 @@ foreach ($request as $key => $specialism) {
     
 }
 
-$conn->desconectar();
+// $conn->desconectar(); // Auto-closed by ConnectionManager
 
 echo json_encode(["success"=>true,"specialisms"=>$specialisms]);
 

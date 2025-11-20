@@ -1,7 +1,7 @@
 <?php
 
 if ($_POST) {
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
     $json = file_get_contents('php://input');
     $data = json_decode($json);
     $action = $data->action;
@@ -39,13 +39,12 @@ if ($_POST) {
             break;
     }
 }else{
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 
 }
 
 function SetNewRent($empresa_id,$request){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     // return $empresa_id;
 
     $success = true;
@@ -82,7 +81,7 @@ function SetNewRent($empresa_id,$request){
         $personaInsertId = $conn->mysqli->insert_id;
     }else{
         $success = false;
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message"=>"No se ha podido completar, por favor intente nuevamente");
     }
 
@@ -93,7 +92,7 @@ function SetNewRent($empresa_id,$request){
         $proveedorInsertId = $conn->mysqli->insert_id;
     }else{
         $success = false;
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message"=>"No se ha podido completar, por favor intente nuevamente");
     }
 
@@ -103,25 +102,24 @@ function SetNewRent($empresa_id,$request){
     if($conn->mysqli->query($queryInsertArriendo)){
 
     }else{
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         $success = false;
         return array("error"=>true,"message"=>"No se ha podido completar, por favor intente nuevamente");
     }
 
 
     if($success){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("sucess"=>true,"message" => "Se ha ingresado un nuevo subArriendo");
     }else{
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message" => "No se ha podido ingresar un nuevo subArriendo");
     }
 
 }
 
 function GetArriendos($empresa_id){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $arriendos = [];
 
     $query = "SELECT a.id, a.item, per.nombre, per.apellido, df.rut FROM arriendos a
@@ -134,18 +132,17 @@ function GetArriendos($empresa_id){
         while($dataArriendos = $responseBd->fetch_object()){
             $arriendos [] = $dataArriendos;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success"=>true, "message"=>"Se han encontrado ".count($arriendos)."","data"=>$arriendos);
     }else{
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message"=>"Ha ocurrido un error, por favor intente nuevamente");
     }
 }
 
 
 function GetArriendoById($arriendo_id){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $arriendos = [];
 
     $query = "SELECT a.id, a.item, per.nombre, per.apellido, df.rut FROM arriendos a
@@ -158,18 +155,17 @@ function GetArriendoById($arriendo_id){
         while($dataArriendos = $responseBd->fetch_object()){
             $arriendos [] = $dataArriendos;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success"=>true, "message"=>"Se han encontrado ".count($arriendos)."","data"=>$arriendos);
     }else{
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message"=>"Ha ocurrido un error, por favor intente nuevamente");
     }
 }
 
 
 function AssignRentToProject($request){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $counter = 0;
 
     $arrayLength = count($request);
@@ -195,17 +191,16 @@ function AssignRentToProject($request){
     }
 
     if($conn->mysqli->query($query)){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success"=>true,"message"=>"Se han agregado todos los subarriendos al proyecto");
     }else{
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message"=>"Se han agregado ".$counter." de ".count($request)."");
     }
 }
 
 function getAllMyProviders($empresa_id){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $providers = [];
 
     $query = "SELECT * FROM proveedor pro 
@@ -216,10 +211,10 @@ function getAllMyProviders($empresa_id){
         while($dataProviders = $bdResponse->fetch_object()){
             $providers[] = $dataProviders;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success"=>true,"providers"=>$providers);
     }else{
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("false"=>true);
     }
 }

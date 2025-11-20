@@ -2,7 +2,7 @@
 
 header('Content-Type: application/json');
 if ($_POST) {
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -28,8 +28,7 @@ if ($_POST) {
 
 function GetMarcas($empresaId){
     
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $response = [];
     $querySelectMarca ="SELECT m.marca, m.id  from marca m
                             INNER JOIN producto p on p.marca_id = m.id
@@ -41,7 +40,7 @@ function GetMarcas($empresaId){
     while($dataResponseBd = $responseBd->fetch_object()){
         $response []= $dataResponseBd;
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $response;
 
 }

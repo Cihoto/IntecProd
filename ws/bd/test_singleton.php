@@ -203,8 +203,7 @@ echo "TEST 8: Simulación de uso real\n";
 try {
     // Simular 10 operaciones como las que existen en proyecto.php
     for ($i = 1; $i <= 10; $i++) {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         
         // Simular query
         $result = $conn->mysqli->query("SELECT 1");
@@ -212,7 +211,7 @@ try {
             $result->free();
         }
         
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
     }
     
     $stats_final = bd::getStats();

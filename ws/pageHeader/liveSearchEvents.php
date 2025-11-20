@@ -1,13 +1,12 @@
 <?php
 
-require_once('../bd/bd.php');
+require_once(__DIR__ . '/../bd/ConnectionManager.php');
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 
 $request = $data->request;
 
-$conn = new bd();
-$conn->conectar();
+$conn = getDBConnection(); // Auto-managed connection
 $mysqli = $conn->mysqli;
 
 $events = [];
@@ -30,7 +29,7 @@ while ($data = $result->fetch_object()) {
     $events [] = $data;
 }
 
-$conn->desconectar();
+// $conn->desconectar(); // Auto-closed by ConnectionManager
 echo json_encode([
     'success' => true,
     'events' => $events

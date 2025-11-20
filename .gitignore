@@ -26,3 +26,7 @@ Clay/
 # /fuel/packages/parser/
 # dynamically generated files
 /DB_CONNECTION_AUDIT
+
+# Archivos de backup automáticos de migración
+*.backup_*
+

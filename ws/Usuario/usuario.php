@@ -1,7 +1,7 @@
 <?php
 if ($_POST) {
     date_default_timezone_set('America/Santiago');
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -59,13 +59,12 @@ if ($_POST) {
     header('Content-Type: application/json');
     echo json_encode($result);
 } else {
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
 function GetUsuario($email)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     // $query="SELECT per.email from persona per 
     // INNER JOIN personal p on p.persona_id = per.id 
     // INNER JOIN usuario u on u.id = p.usuario_id
@@ -74,18 +73,17 @@ function GetUsuario($email)
     // return $query;
 
     if ($conn->mysqli->query($query)->num_rows > 0) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
 
 function GetAllUsuariosByEmpresa($empresa_id)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $usuarios = [];
 
     $queryGetAlUsers = "SELECT u.is_deleted , u.empresa_id,u.id as user_id, per.nombre , per.apellido,per.email,u.user as user_email FROM usuario u 
@@ -100,22 +98,21 @@ function GetAllUsuariosByEmpresa($empresa_id)
             while ($dataReponse = $responseDb->fetch_object()) {
                 $usuarios[] = $dataReponse;
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "data" => $usuarios, "message" => "Se han encontrado " . count($usuarios) . " usuarios");
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "data" => $usuarios, "message" => "No se han encontrado usuarios");
         }
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error", "message" => "Ha ocurrido un error, intente nuevamente");
     }
 }
 
 function GetUserByUserId($user_id)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 }
 
 
@@ -123,8 +120,7 @@ function GetUserRol($user_id)
 {
 
 
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $roles = [];
     $userData = [];
@@ -143,10 +139,10 @@ function GetUserRol($user_id)
         while ($dataInfoUser = $responseDbData->fetch_object()) {
             $userData[] = $dataInfoUser;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "data" => $roles, "user_data" => $userData);
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "No se ha podido completar la solicitud, por favor intente nuevamente");
     }
 }
@@ -161,8 +157,7 @@ function getUserRoles($user_id)
         return array("fatalError" => true, "code" => 400);
     }
 
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $roles = [];
     $userData = [];
@@ -181,10 +176,10 @@ function getUserRoles($user_id)
         while ($dataInfoUser = $responseDbData->fetch_object()) {
             $userData[] = $dataInfoUser;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "data" => $roles, "user_data" => $userData);
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "No se ha podido completar la solicitud, por favor intente nuevamente");
     }
 }
@@ -197,15 +192,14 @@ function AssignRoles($user_id, $arrayRoles)
 
 
     try {
-        $conn =  new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $arrayLength = count($arrayRoles);
         $insertvalues = "";
 
         $conn->mysqli->query("DELETE FROM rol_has_usuario WHERE usuario_id = $user_id");
 
         if ($arrayLength === 0) {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "message" => "Roles asignados correctamente");
         } else {
 
@@ -229,10 +223,10 @@ function AssignRoles($user_id, $arrayRoles)
             // return $query;
 
             if ($conn->mysqli->query($query)) {
-                $conn->desconectar();
+                // $conn->desconectar(); // Auto-closed by ConnectionManager
                 return array("success" => true, "message" => "Roles asignados correctamente");
             } else {
-                $conn->desconectar();
+                // $conn->desconectar(); // Auto-closed by ConnectionManager
                 return array("error" => true, "message" => "No se ha podido completar el requerimiento, por favor intente nuevamente");
             }
         }
@@ -243,8 +237,7 @@ function AssignRoles($user_id, $arrayRoles)
 
 function LogUser($request)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $correo = $request->email;
     $pass = $request->pass;
@@ -266,15 +259,15 @@ function LogUser($request)
             // return password_verify($pass, $cred_pass->password);
 
             if(!password_verify($pass, $cred_pass->password)){
-                $conn->desconectar();
+                // $conn->desconectar(); // Auto-closed by ConnectionManager
                 return array("error"=>true);
             }
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error"=>true);
         }
     }catch(Exception $e){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true);
         
     }
@@ -357,22 +350,21 @@ function LogUser($request)
             } else {
                 $_SESSION["rol_id"] = [];
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "message" => "Excelente", "ref" => true);
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "message" => "Credenciales Erroneas", "ref" => false);
         }
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "Ha ocurrido un error, intente nuevamente");
     }
 }
 
 function CreateUser($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $today = date('Y-m-d');
     $personal_id = $request->personal_id;
     $email = $request->email;
@@ -387,10 +379,10 @@ function CreateUser($request)
         $user_id = $conn->mysqli->insert_id;
         $queryAssignUserToPersonal = "UPDATE personal SET usuario_id = $user_id WHERE id = $personal_id";
         $conn->mysqli->query($queryAssignUserToPersonal);
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "message" => "Usuario Creado Exsitosamente", "user_id" => $user_id);
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "Ha ocurrido un error, intente nuevamente");
     }
 }
@@ -398,16 +390,15 @@ function CreateUser($request)
 function DeleteUser($user_id)
 {
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $query = "UPDATE usuario SET is_deleted = 1 WHERE id = $user_id";
 
     if ($conn->mysqli->query($query)) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "message" => "Usuario eliminado exitosamente");
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "Ha ocurrido un error por favor intente nuevamente");
     }
 }
@@ -420,8 +411,7 @@ function DeleteUser($user_id)
 
 
 function createNewAccount($request){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     // REQUEST DATA
     $nombre_fanta = $request->nombre_fanta;
     $razon_social = $request->razon_social;
@@ -464,19 +454,19 @@ function createNewAccount($request){
             $empresa_id =  $conn->mysqli->insert_id;
         }else{
             deleteDatosFacturacion($datos_facturacion_id);
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error"=>true,"message"=>"Intenta nuevamente");
         }
     }catch(Exception $e){
         deleteDatosFacturacion($datos_facturacion_id);
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message"=>"Intenta nuevamente");
     }
 
 
     if($empresa_id === 0){
         deleteDatosFacturacion($datos_facturacion_id);
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"message"=>"No hemos podido crear tu cuenta, intenta nuevamente");
     }
 
@@ -491,20 +481,20 @@ function createNewAccount($request){
         }else{
             deleteDatosFacturacion($datos_facturacion_id);
             deleteEmpresa($empresa_id);
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
         }
     }catch(Exception $e){
         deleteDatosFacturacion($datos_facturacion_id);
         deleteEmpresa($empresa_id);
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
     }
 
     if($user_id === 0){
         deleteDatosFacturacion($datos_facturacion_id);
         deleteEmpresa($empresa_id);
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
     };
 
@@ -548,21 +538,20 @@ function createNewAccount($request){
     }
 
     if($tries === 123321){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success"=>true,"message"=>"su cuenta ha sido registrada exsitosamente junto a su organización");
     }else{
         deleteDatosFacturacion($datos_facturacion_id);
         deleteEmpresa($empresa_id);
         removeuserFromDb($user_id);
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error"=>true,"code"=>400,"message"=>"Intente nuevamente");
     }
 }
 
 function createPersonalOnNewBussiness($empresa_id,$email,$uName,$user_id){
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
 
     $cargo = 'Administrador';
@@ -592,15 +581,14 @@ function createPersonalOnNewBussiness($empresa_id,$email,$uName,$user_id){
     $resultPersonal = $mysqli->query($query_personal);
     $personal_id = $mysqli->insert_id;
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $personal_id;
     
 }
 
 function createCategorieAndSubcategorieOnNewAccount($empresa_id){
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
 
     $today= Date('Y-m-d');
@@ -614,7 +602,7 @@ function createCategorieAndSubcategorieOnNewAccount($empresa_id){
     VALUES('Sin Subcategoría', '$today', $empresa_id);";
     $mysqli->query($querySubcategoria);
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
 }
 
 function createPass($pass){
@@ -632,15 +620,14 @@ function createPass($pass){
 function deleteDatosFacturacion($df_id){
 
     try{
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
     
         $queryDeleteDatosFaturacion = "DELETE FROM datos_facturacion WHERE id = $df_id ";
         if($conn->mysqli->query($queryDeleteDatosFaturacion)){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return true;
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
     }catch(Exception $e){
@@ -652,14 +639,13 @@ function deleteDatosFacturacion($df_id){
 function deleteEmpresa($empresa_id){
 
     try{
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $queryDeleteBussiness = "DELETE FROM empresa WHERE id = $empresa_id ";
         if($conn->mysqli->query($queryDeleteBussiness)){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return true;
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
     }catch(Exception $e){
@@ -671,14 +657,13 @@ function deleteEmpresa($empresa_id){
 function deletePersona($persona_id){
 
     try{
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $queryDeletePersona = "DELETE FROM persona WHERE id = $persona_id ";
         if($conn->mysqli->query($queryDeletePersona)){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return true;
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
     }catch(Exception $e){
@@ -690,14 +675,13 @@ function deletePersona($persona_id){
 function removeuserFromDb($usuario_id){
 
     try{
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $queryDeleteUser = "DELETE FROM usuario WHERE id = $usuario_id ";
         if($conn->mysqli->query($queryDeleteUser)){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return true;
         }else{
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
     }catch(Exception $e){

@@ -4,7 +4,7 @@ header("Content-Type: text/html;charset=utf-8");
 date_default_timezone_set('America/Santiago');
 
 if ($_POST) {
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -67,7 +67,7 @@ if ($_POST) {
     header('Content-Type: application/json');
     echo json_encode($result);
 } else {
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
 
@@ -79,8 +79,7 @@ function returnBadReq()
 
 function createDemoAccount($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
 
     $empresa_id = intval($empresa_id);
@@ -140,7 +139,7 @@ function createDemoAccount($empresa_id)
     }
     $_SESSION['buss_data'] = $buss_data;
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
 
     return array("success"=>true);
 
@@ -148,8 +147,7 @@ function createDemoAccount($empresa_id)
 
 function activeDemoAccountOnBussiness($empresa_id){
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
 
     $today = date("Y-m-d H:i:s");
@@ -158,27 +156,26 @@ function activeDemoAccountOnBussiness($empresa_id){
         $stmt = $mysqli->prepare("UPDATE empresa SET demo_active = 1, demo_activation_date = ? WHERE id = ?;");
         $stmt->bind_param("si",$today, $empresa_id);
         $stmt->execute();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }   
 
 function addProductsToDemoAccount($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
     try {
         $stmt = $mysqli->prepare("SELECT addProductsToDemoAccount(?);");
         $stmt->bind_param("i", $empresa_id);
         $stmt->execute();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
@@ -186,42 +183,39 @@ function addProductsToDemoAccount($empresa_id)
 function addCategorie($empresa_id)
 {
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
         $stmt = $mysqli->prepare("SELECT addCategoriesToDemoAccount(?);");
         $stmt->bind_param("i", $empresa_id);
         $stmt->execute();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
 
 function addSubcategories($empresa_id){
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
         $stmt = $mysqli->prepare("SELECT addSubCategoriesToDemoAccount(?);");
         $stmt->bind_param("i", $empresa_id);
         $stmt->execute();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
 
 function addStockToProducts($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
 
     try {
@@ -266,18 +260,17 @@ function addStockToProducts($empresa_id)
             
             // return true;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
 
 function setMyCatsAndSubCats($chiArr){
     try{
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
         foreach ($chiArr as $prod) {
@@ -290,17 +283,16 @@ function setMyCatsAndSubCats($chiArr){
             $stmt->bind_param("ii",$cat_id,$subcatId);
             $stmt->execute();
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     }catch(Exception $err){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }   
 }
 
 function setMyChiOnNewBussiness($prod_data,$empresa_id){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
 
     foreach ($prod_data as $prod) {
@@ -311,15 +303,14 @@ function setMyChiOnNewBussiness($prod_data,$empresa_id){
         $stmt->bind_param("iii",$chi_id,$prod_id,$empresa_id);
         $stmt->execute();
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return true;
 }
 
 
 function newAccountProdData($empresa_id){
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
     $chi = [];
     $products = [];
@@ -349,7 +340,7 @@ function newAccountProdData($empresa_id){
     while($data = $results->fetch_object()){
         $products [] = $data;
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return [
         "products"=>$products,
         "chi"=>$chi
@@ -359,24 +350,22 @@ function newAccountProdData($empresa_id){
 function addVehiclesToDemoAccount($empresa_id){
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("SELECT addVehiclesToDemoAccount(?);");
         $stmt->bind_param("i", $empresa_id);
         $stmt->execute();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
 
 function getDemoProducts($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
     $demo_prods = [];
     $prods = [];
@@ -400,10 +389,10 @@ function getDemoProducts($empresa_id)
         while ($data = $result->fetch_object()) {
             $prods[] = $data;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("demo" => $demo_prods, "prods" => $prods);
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
@@ -411,10 +400,9 @@ function getDemoProducts($empresa_id)
 function addCategorieHasItemToDemoAccount($request)
 {
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
 }
 
 function addPersonalToDemoAccount($empresa_id)
@@ -493,8 +481,7 @@ function addPersonalToDemoAccount($empresa_id)
         if(!addCargosAndEspecialidades($empresa_id)){ 
             return false;
         }
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
         $stmt = $mysqli->prepare("SELECT * FROM cargo WHERE empresa_id = ?;");
@@ -535,10 +522,10 @@ function addPersonalToDemoAccount($empresa_id)
             $counter ++;
         }  
 
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success");
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
@@ -546,14 +533,13 @@ function addPersonalToDemoAccount($empresa_id)
 function addCargosAndEspecialidades($empresa_id){
     try{
 
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
 
 
         if(!execCargoProcedure($empresa_id)){
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
 
@@ -561,7 +547,7 @@ function addCargosAndEspecialidades($empresa_id){
         if(!execEspecProcedure($empresa_id)){
             deleteCargoProcedure($empresa_id);
 
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
 
@@ -569,14 +555,13 @@ function addCargosAndEspecialidades($empresa_id){
 
     }
     catch(Exception $e){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
 
 function execCargoProcedure($empresa_id){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
 
     $stmt_cargos = $mysqli->prepare("SELECT addCargoToDemoAccount(?)");
@@ -586,40 +571,37 @@ function execCargoProcedure($empresa_id){
 
     // return $result;
     if(!$result){
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return true;
 }
 
 function deleteCargoProcedure($empresa_id){
 
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
 
     $stmt_delete_especialidades = $mysqli->prepare("DELETE FROM especialidad where empresa_id = ?");
     $stmt_delete_especialidades->bind_param("i", $empresa_id);
     $result = $stmt_delete_especialidades->execute();
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
 }
 function execEspecProcedure($empresa_id){
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
 
     $stmt_especialidades = $mysqli->prepare("SELECT addEspecialidadToDemoAccount(?)");
     $stmt_especialidades->bind_param("i", $empresa_id);
     $result_esp = $stmt_especialidades->execute();
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $result_esp;
 }
 
 function getCatsHasItem_demoAccount($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
 
     $demo_prods = [];
@@ -659,7 +641,7 @@ function getCatsHasItem_demoAccount($empresa_id)
         // return $categories;
         // return $subCategories;
         // return $demo_prods;
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array('subcats' => $subCategories, 'categories' => $categories, 'demo_prods' => $demo_prods);
 
         $cats_name = [];
@@ -721,8 +703,7 @@ function getCatsHasItem_demoAccount($empresa_id)
 function removeDemoAccount($empresa_id){
     
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
         $now = date('Y-m-d H:i:s');
@@ -747,10 +728,10 @@ function removeDemoAccount($empresa_id){
             session_start();
         }
         $_SESSION['buss_data'] = $buss_data;
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 

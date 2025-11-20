@@ -2,7 +2,7 @@
 
 if ($_POST) {
 
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -153,13 +153,12 @@ if ($_POST) {
     header('Content-Type: application/json');
     echo $result;
 } else {
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
 function addProject($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $today = date('Y-m-d');
 
     foreach ($request as $req) {
@@ -226,10 +225,10 @@ function addProject($request)
         VALUES($id_project, $status_id, '$today');";
         $conn->mysqli->query($queryInsertEstado);
 
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return json_encode(array("id_project" => $id_project));
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
@@ -238,8 +237,7 @@ function addProject($request)
 function insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles, $creditedBalance,$_subRentsToAssign,$_allMyOtherCosts)
 {
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
         $stmt = $mysqli->prepare("SELECT id FROM event_data ed where ed.event_id = ?");
@@ -251,10 +249,10 @@ function insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProduct
             return insertEventData_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles, $creditedBalance,$_subRentsToAssign,$_allMyOtherCosts);
         }
 
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles,$creditedBalance,$_subRentsToAssign,$_allMyOtherCosts);
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
@@ -263,8 +261,7 @@ function insertOrUpdateEventData_json($event_id, $totalPerItem, $selectedProduct
 function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $selectedPersonal, $selectedVehicles,$creditedBalance,$_subRentsToAssign,$_allMyOtherCosts)
 {
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("INSERT INTO u136839350_intec.event_data 
         (event_id, selected_prods_json, totalPerItem_json,selectedPersonal_json,selectedVehicles_json,creditedBalance,subRent_json,otherCost_json) VALUES
@@ -301,10 +298,10 @@ function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $sele
 
         $stmt->bind_param("isssssss",  $event_id, $selectedProducts, $totalPerItem, $selectedPersonal, $selectedVehicles,$creditedBalance,$_subRentsToAssign,$_allMyOtherCosts);
         $stmt->execute();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
@@ -312,8 +309,7 @@ function insertEventData_json($event_id, $totalPerItem, $selectedProducts, $sele
 function updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelectedPersonal, $selectedVehicles,$creditedBalance,$_subRentsToAssign,$_allMyOtherCosts)
 {
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $stmt = $mysqli->prepare("UPDATE u136839350_intec.event_data 
         SET selected_prods_json= ? , 
@@ -336,32 +332,27 @@ function updateEvent_json($event_id, $totalPerItem, $selectedProducts, $allSelec
 
         $stmt->bind_param("sssssssi", $selectedProducts, $totalPerItem, $allSelectedPersonal, $selectedVehicles,$creditedBalance,$_subRentsToAssign,$_allMyOtherCosts,$event_id);
         $stmt->execute();
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
 
 function getProjectResume($request)
 {
-
-
     try {
-
-        $conn = new bd();
-        $conn->conectar();
+        // OPTIMIZADO: Reutilizar conexión global
+        $conn = getDBConnection();
+        $mysqli = $conn->mysqli;  // Obtener mysqli para queries directas
 
         $empresa_id = $request->projectRequest->empresa_id;
         $event_id = $request->projectRequest->idProject;
 
-        // return json_encode();// ->empresa_id; 
-
-        // $queryGetEvent = "SELECT * FROM proyecto p WHERE p.id = $event_id AND p.empresa_id = $empresa_id;";
+        // Validar acceso al evento
         $queryGetEvent = "SELECT p.empresa_id FROM proyecto p WHERE p.id = $event_id";
-        // AND p.empresa_id = 2;
-        if ($result = $conn->mysqli->query($queryGetEvent)) {
+        if ($result = $mysqli->query($queryGetEvent)) {
             while ($dataEvent = $result->fetch_object()) {
                 $empresa_id_get[] = $dataEvent;
             }
@@ -610,7 +601,7 @@ function getProjectResume($request)
                 }
             }
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return json_encode(array(
             "dataProject" => $projects,
             "asignados" => array(
@@ -634,15 +625,14 @@ function getProjectResume($request)
             )
         ));
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array('fatalError' => true, 'code' => 400);
     }
 }
 
 function getMyProjects($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $empresaId = $request->empresaId;
     $status = $request->status;
 
@@ -670,8 +660,7 @@ function getMyProjects($request)
 
 function GetAllProjects($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $allProjects = [];
 
     $queryGetAll = "SELECT p.id, p.nombre_proyecto, 
@@ -705,8 +694,7 @@ function GetAllProjects($empresa_id)
 function GetAllMyProjects($empresa_id)
 {
 
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $projects = [];
 
     $queryGetAllMyProjects = "SELECT p.id, 
@@ -723,10 +711,10 @@ function GetAllMyProjects($empresa_id)
         while ($dataProjects = $responseBd->fetch_object()) {
             $projects[] = $dataProjects;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return $projects;
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "NO DATA RECOVERED");
     }
 }
@@ -736,8 +724,7 @@ function GetAllMyProjects($empresa_id)
 function GetCalendarProjects($empresaId, $status)
 {
 
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $projects = [];
     $queryQuoteStatus = "";
 
@@ -769,8 +756,7 @@ function GetCalendarProjects($empresaId, $status)
 function UpdateProjectData($request)
 {
 
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     // return $request;
 
@@ -823,10 +809,10 @@ function UpdateProjectData($request)
     // return $queryUpdateProject;
 
     if ($conn->mysqli->query($queryUpdateProject)) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => array("message" => "Evento modificado exitosamente"));
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => array("message" => "No se ha podido actualizar el proyecto, por favor intente nuevamente"));
     }
 
@@ -851,23 +837,21 @@ function UpdateProjectData($request)
 
 function UpdateProjectDataStatus($idProject)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $queryUpdate = "UPDATE proyecto_has_estado set estado_id = estado_id + 1 where proyecto_id = $idProject";
 
     if ($conn->mysqli->query($queryUpdate)) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
 
 function GetEventsByClient($cliente_id)
 {
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $record = [];
 
@@ -883,10 +867,10 @@ function GetEventsByClient($cliente_id)
         while ($dataRecord = $resposneDbRecord->fetch_object()) {
             $record[] = $dataRecord;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "data" => $record);
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "Ha ocurrido un error, por favor intente nuevamente");
     }
 }
@@ -897,8 +881,7 @@ function GetEventsByClient($cliente_id)
 
 function getAllMyProjects_list_toExecute($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $empresa_id = $empresa_id;
 
     $today = date('Y-m-d');
@@ -946,7 +929,7 @@ function getAllMyProjects_list_toExecute($empresa_id)
     }
 
     // return $queryProyectos;
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $projects;
 }
 
@@ -960,8 +943,7 @@ function getAllMyEvents_notDeleted($empresa_id)
 {
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $projects_with_Date = [];
 
@@ -1004,10 +986,10 @@ function getAllMyEvents_notDeleted($empresa_id)
         while ($dataProject = $result->fetch_object()) {
             $projects_with_Date[] = $dataProject;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("events" => $projects_with_Date);
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true);
     }
 }
@@ -1015,8 +997,7 @@ function getAllCalendarEvents($empresa_id, $status_id)
 {
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         $projects_with_Date = [];
 
@@ -1059,10 +1040,10 @@ function getAllCalendarEvents($empresa_id, $status_id)
         while ($dataProject = $result->fetch_object()) {
             $projects_with_Date[] = $dataProject;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("events" => $projects_with_Date);
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true);
     }
 }
@@ -1070,8 +1051,7 @@ function getAllCalendarEvents($empresa_id, $status_id)
 
 function getAllMyEvents($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $empresa_id = $empresa_id;
     $today = date('Y-m-d');
     $projects_with_Date = [];
@@ -1153,15 +1133,14 @@ function getAllMyEvents($empresa_id)
         }
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return array("wd" => $projects_with_Date, "woutd" => $projects_without_Date);
 }
 
 
 function  getEventByStatus_id($empresa_id, $status_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $empresa_id = $empresa_id;
     $today = date('Y-m-d');
     $projects_with_Date = [];
@@ -1244,14 +1223,13 @@ function  getEventByStatus_id($empresa_id, $status_id)
         }
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return array("wd" => $projects_with_Date, "woutd" => $projects_without_Date);
 }
 
 function getOperEvents($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $empresa_id = $empresa_id;
     $today = date('Y-m-d');
     $projects_with_Date = [];
@@ -1338,13 +1316,12 @@ function getOperEvents($empresa_id)
     }
 
     // return $queryProyectos_with_date;
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return array("wd" => $projects_with_Date, "woutd" => $projects_without_Date);
 }
 function getSellsEvents($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $empresa_id = $empresa_id;
     $today = date('Y-m-d');
     $projects_with_Date = [];
@@ -1390,7 +1367,7 @@ function getSellsEvents($empresa_id)
         }
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return array("wd" => $projects_with_Date, "woutd" => $projects_without_Date);
 
     // $queryProyectos_without_date = "SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
@@ -1428,8 +1405,7 @@ function getSellsEvents($empresa_id)
 }
 function getAdmEvents($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $empresa_id = $empresa_id;
     $today = date('Y-m-d');
     $projects_with_Date = [];
@@ -1473,15 +1449,14 @@ function getAdmEvents($empresa_id)
             $projects_with_Date[] = $dataProject;
         }
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return array("wd" => $projects_with_Date, "woutd" => $projects_without_Date);
 }
 
 
 function updateProject($empresa_id, $request, $event_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     // let requestProject = {
     //   'nombre_proyecto': projectName,
@@ -1544,24 +1519,23 @@ function updateProject($empresa_id, $request, $event_id)
     } else {
         return array("error" => "error", "message" => "No se han podido realizar los detalles del evento");
     }
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $queryUpdate;
 }
 
 function removeAddressFromEvent($empresa_id, $event_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $query = "UPDATE proyecto
     SET address_id=NULL
     WHERE id=$event_id AND empresa_id = $empresa_id;";
 
     if ($conn->mysqli->query($query)) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "message" => "Address has been removed successfully from event");
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true, "message" => "Address has not been removed form event");
     }
 }
@@ -1569,8 +1543,7 @@ function removeAddressFromEvent($empresa_id, $event_id)
 
 function getDashResume($empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
 
     $incomeResume = [];
@@ -1646,7 +1619,7 @@ function getDashResume($empresa_id)
         }
     }
     
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return array(
         "success" => true,
         "event_quanity_cur_last_month" => $currentAndLastMonthEventQuantity,
@@ -1657,8 +1630,7 @@ function getDashResume($empresa_id)
 
 function insertOrUpdateIncomeAndCosts($request)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $udpate = false;
 
     $query = "SELECT id FROM project_finance_resume pfr where pfr.event_id = $request->event_id ;";
@@ -1670,10 +1642,10 @@ function insertOrUpdateIncomeAndCosts($request)
         WHERE event_id = $request->event_id";
 
         if ($conn->mysqli->query($queryUpdate)) {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "message" => "Event finance updated");
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "message" => "Event finance couldn't be updated");
         }
     } else {
@@ -1684,10 +1656,10 @@ function insertOrUpdateIncomeAndCosts($request)
 
 
         if ($conn->mysqli->query($query)) {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "message" => "Event finance created");
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "message" => "Event finance couldn't be created");
         }
     }
@@ -1696,8 +1668,7 @@ function insertOrUpdateIncomeAndCosts($request)
 
 function getEventsForDashboard($request, $empresa_id)
 {
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $eventos = [];
 
@@ -1747,10 +1718,10 @@ function getEventsForDashboard($request, $empresa_id)
         while ($data = $response->fetch_object()) {
             $eventos[] = $data;
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("success" => true, "events" => $eventos);
     } else {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true);
     }
 }
@@ -1760,8 +1731,7 @@ function getTodayEvent()
 {
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $today = date('Y-m-d');
         $events = [];
         $query = "SELECT * FROM proyecto p WHERE p.fecha_inicio = '$today'";
@@ -1770,10 +1740,10 @@ function getTodayEvent()
             while ($data = $response->fetch_object()) {
                 $events[] = $data;
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "data" => $events);
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error" => true);
         }
     } catch (Exception $e) {
@@ -1784,8 +1754,7 @@ function getTodayEvent()
 function getEventDay($empresa_id, $date){
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $events = [];
         $query = "SELECT p.*, pers.nombre as owner FROM proyecto p 
         LEFT JOIN personal per on per.id = p.owner 
@@ -1799,10 +1768,10 @@ function getEventDay($empresa_id, $date){
             while ($data = $response->fetch_object()) {
                 $events[] = $data;
             }
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("success" => true, "data" => $events);
         } else {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return array("error" => true);
         }
     } catch (Exception $e) {
@@ -1814,8 +1783,7 @@ function getDeletedEvents($empresa_id)
 {
     $deleteEvents = [];
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
         try {
             $stmt = $mysqli->prepare("SELECT   p.id, p.nombre_proyecto, estado , p.status_id as 'estado_id',
@@ -1860,11 +1828,11 @@ function getDeletedEvents($empresa_id)
             }
             return $deleteEvents;
         } catch (Exception $err) {
-            $conn->desconectar();
+            // $conn->desconectar(); // Auto-closed by ConnectionManager
             return false;
         }
     } catch (Exception $e) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return array("error" => true);
     }
 }
@@ -1874,8 +1842,7 @@ function deleteEvent($empresa_id, $event_id)
 {
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
         $stmt = $mysqli->prepare("UPDATE proyecto set IsDelete = 1, deleteAt = CURDATE() WHERE empresa_id = ? and id = ? ;");
@@ -1883,10 +1850,10 @@ function deleteEvent($empresa_id, $event_id)
         $stmt->bind_param("ii", $empresa_id, $event_id);
         $stmt->execute();
 
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
@@ -1895,8 +1862,7 @@ function returnEventToList($empresa_id, $event_id)
 {
 
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
         $stmt = $mysqli->prepare("UPDATE proyecto set IsDelete = 0, deleteAt = NULL  WHERE empresa_id = ? and id = ? ;");
@@ -1904,18 +1870,17 @@ function returnEventToList($empresa_id, $event_id)
         $stmt->bind_param("ii", $empresa_id, $event_id);
         $stmt->execute();
 
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }
 
 function updateEventStatusFromEventList($status_id,$empresa_id,$event_id){
     try {
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         $mysqli = $conn->mysqli;
 
         $stmt = $mysqli->prepare("UPDATE proyecto set status_id = ?  WHERE empresa_id = ? and id = ? ;");
@@ -1923,10 +1888,10 @@ function updateEventStatusFromEventList($status_id,$empresa_id,$event_id){
         $stmt->bind_param("sii", $status_id,$empresa_id, $event_id);
         $stmt->execute();
 
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return true;
     } catch (Exception $err) {
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return false;
     }
 }

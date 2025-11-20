@@ -1,7 +1,7 @@
 <?php
 
 if ($_POST) {
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
 
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -29,14 +29,13 @@ if ($_POST) {
     }
 
 }else{
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 }
 
 
 function GetCategorias($empresaId){
     
-    $conn = new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
 
     $response = [];
 
@@ -60,8 +59,7 @@ function GetCategorias($empresaId){
 
 function AddCategorias($request,$empresaId){
     
-    $conn =  new bd();
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $arrayIdsInserted = [];
     $today = date('Y-m-d');
 
@@ -76,7 +74,7 @@ function AddCategorias($request,$empresaId){
         }
     }
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
     return $arrayIdsInserted;
 }
 

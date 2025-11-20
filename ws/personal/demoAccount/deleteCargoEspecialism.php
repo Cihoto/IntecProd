@@ -16,8 +16,7 @@ if (!$data || !isset($data->empresaId)) {
 
 $empresaId = $data->empresaId;
 
-$conn = new bd();
-$conn->conectar();
+$conn = getDBConnection(); // Auto-managed connection
 $mysqli = $conn->mysqli;
 // 
 $stmt = $mysqli->prepare("DELETE FROM especialidad WHERE empresa_id = ? AND is_demo = 1;");
@@ -30,7 +29,7 @@ $stmt->bind_param("i", $empresaId);
 $stmt->execute();
 
 
-$conn->desconectar();
+// $conn->desconectar(); // Auto-closed by ConnectionManager
 
 echo json_encode(["success"=>true]);
 

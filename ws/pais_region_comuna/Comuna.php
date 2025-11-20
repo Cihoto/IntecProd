@@ -1,7 +1,7 @@
 <?php
 
 if ($_POST) {
-    require_once('../bd/bd.php');
+    require_once(__DIR__ . '/../bd/ConnectionManager.php');
     $json = file_get_contents('php://input');
     $data = json_decode($json);
     $action = $data->action;
@@ -21,14 +21,13 @@ if ($_POST) {
             break;
     }
 }else{
-    require_once('./ws/bd/bd.php');
+    require_once(__DIR__ . '/ws/bd/ConnectionManager.php');
 
 }
 
     function getComunasByRegion($idRegion){
 
-        $conn = new bd();
-        $conn->conectar();
+        $conn = getDBConnection(); // Auto-managed connection
         // $idRegion = $jsonRequest->idRegion;
         $comunas = [];
     
@@ -41,7 +40,7 @@ if ($_POST) {
                 $comunas [] = $dataComunas;
             }
         }
-        $conn->desconectar();
+        // $conn->desconectar(); // Auto-closed by ConnectionManager
         return $comunas;
     }
 ?>

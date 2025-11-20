@@ -18,8 +18,7 @@
 
     $request = $data->request;  
     $empresaId = $data->empresaId;  
-    $conn = new bd();   
-    $conn->conectar();
+    $conn = getDBConnection(); // Auto-managed connection
     $mysqli = $conn->mysqli;
     $now = date('Y-m-d H:i:s');
     $today = date('Y-m-d');
@@ -161,7 +160,7 @@
     }
     $_SESSION['buss_data'] = $buss_data;
 
-    $conn->desconectar();
+    // $conn->desconectar(); // Auto-closed by ConnectionManager
 
     $response = ["status" => "success", "message" => "Events added successfully"];
     echo json_encode($response);
