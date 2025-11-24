@@ -1,6 +1,6 @@
 <?php
 
-require('../bd/bd.php');
+require_once(__DIR__ . '/../bd/ConnectionManager.php');
 session_start();
 $empresa_id = $_SESSION["empresa_id"];
 
